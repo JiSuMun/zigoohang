@@ -1,0 +1,76 @@
+from django.db import models
+from django.contrib.auth.models import AbstractUser, User
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
+import os
+from django.conf import settings
+from django.core.validators import RegexValidator
+from stores.models import Product
+from datetime import datetime, timedelta
+
+
+
+class User(AbstractUser):
+    followings = models.ManyToManyField('self', related_name='followers', symmetrical=False)
+    address = models.CharField(max_length=100)
+
+    def profile_image_path(instance, filename):
+        return f'profile/{instance.username}/{filename}'
+    image = ProcessedImageField(upload_to=profile_image_path, blank=True, null=True)
+
+    SELLER = '판매자'
+    GENERAL = '일반회원'
+    USER_CHOICES = [(SELLER, '판매자'), (GENERAL, '일반회원')]
+    is_seller = models.CharField(max_length=10, choices=USER_CHOICES, default='일반회원')
+    phoneNumberRegex = RegexValidator(regex=r'^0[1-9]\d{0,2}-\d{3,4}-\d{4}$')
+    phone = models.CharField(validators=[phoneNumberRegex], max_length=14)
+    points = models.IntegerField(default=0)
+
+    def reset_points_if_needed(self):
+        one_year_ago = datetime.now().date() - timedelta(days=365)
+        if self.last_login.date() < one_year_ago:
+            self.points = 0
+
+    def points_save(self, *args, **kwargs):
+        self.reset_points_if_needed()
+        super().save(*args, **kwargs)
+        
+    def subtract_points(self, amount):
+        self.points -= amount
+        self.save()
+    
+    def delete(self, *args, **kargs):
+        if self.image:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.image.path))
+        super(User, self).delete(*args, **kargs)
+
+    def save(self, *args, **kwargs):
+        if self.id:
+            old_user = User.objects.get(id=self.id)
+            if self.image != old_user.image:
+                if old_user.image:
+                    os.remove(os.path.join(settings.MEDIA_ROOT, old_user.image.path))
+        super(User, self).save(*args, **kwargs)  
+
+
+
+class Order(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    added_at = models.DateField(auto_now_add=True)
+    pass
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE) # 상품 pk
+    quantity = models.IntegerField() # 상품 개수
+
+
+class SaleList(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    added_at = models.DateField(auto_now_add=True)
+    pass
+
+class SaleItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE) # 상품 pk
+    quantity = models.IntegerField() # 상품 개수
