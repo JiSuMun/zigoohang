@@ -1,0 +1,30 @@
+.main-image {
+  width: 100%;
+  aspect-ratio: 5184 / 3456;
+}
+
+.carousel-item {
+  height: 600px ;
+}
+
+.carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 5px;
+}
+
+/* .main-product {
+  color: black;
+}
+
+.main-product::before {
+  content: "";
+  position: absolute;
+  display: block;
+  background-color: #EDF1F4;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 500px;
+} */
