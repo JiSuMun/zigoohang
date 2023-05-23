@@ -12,9 +12,24 @@ class Post(models.Model):
     content = RichTextUploadingField(blank=True, null=True)
     rating = models.DecimalField(default=0, max_digits=5, decimal_places=1)
     tags = TaggableManager(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
+
+    # def save(self, *args, **kwargs):
+    #     # 새로운 게시글 작성인지 확인
+    #     if self._state.adding:
+    #         self.user.points += 100
+    #         self.user.save()
+    #     super().save(*args, **kwargs)
+
+    # def delete(self, *args, **kwargs):
+    #     # Subtract points when a post is deleted
+    #     self.user.points -= 100
+    #     self.user.save()
+    #     super().delete(*args, **kwargs)
 
 
 class Review(models.Model):
