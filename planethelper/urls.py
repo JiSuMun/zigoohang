@@ -20,9 +20,12 @@ from django.conf.urls.static import static
 from ckeditor_uploader import views as views_ckeditor
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+from . import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.main, name="main"),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path(r'^upload/', login_required(views_ckeditor.upload), name='ckeditor_upload'),
     # path(r'^browse/', never_cache(login_required(views_ckeditor.browse)), name='ckeditor_browse'),

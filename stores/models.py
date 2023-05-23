@@ -58,8 +58,8 @@ class Cart(models.Model):
 
 #
 class Order(models.Model):
-    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders_as_seller')
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders_as_customer')
     # product = models.ForeignKey(Product, on_delete=models.CASCADE)
     # amount = models.IntegerField()
     # quantity = models.IntegerField()
