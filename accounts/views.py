@@ -10,12 +10,12 @@ from django.contrib.auth import update_session_auth_hash
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect('planethelper:main')
+        return redirect('main')
     if request.method == 'POST':
         form = CustomAutentication(request, request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect('planethelper:main')
+            return redirect('main')
     else:
         form = CustomAutentication()
     
@@ -28,7 +28,7 @@ def login(request):
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
-    return redirect('planethelper:main')
+    return redirect('main')
 
 
 def signup(request):
@@ -40,7 +40,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            return redirect('planethelper:main')
+            return redirect('main')
     else:
         form = CustomUserCreationForm()
 
@@ -53,7 +53,7 @@ def signup(request):
 def delete(request):
     request.user.delete()
     auth_logout(request)
-    return redirect('planethelper:main')
+    return redirect('main')
 
 @login_required
 def update(request):
@@ -61,7 +61,7 @@ def update(request):
         form = CustomUserChangeForm(request.POST, files=request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('planethelper:main')
+            return redirect('main')
     else:
         form = CustomUserChangeForm(instance=request.user)
 
@@ -77,7 +77,7 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return redirect('planethelper:main')
+            return redirect('main')
     else:
         form = CustomPasswordChangeForm(request.user)
 
