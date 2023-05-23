@@ -1,0 +1,4 @@
+<h1>Store Index</h1>
+{% for store in stores %}
+  <a href="{% url 'stores:detail' store.pk %}">{{ store.name }}</a>
+{% endfor %}
