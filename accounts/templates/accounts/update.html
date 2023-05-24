@@ -7,5 +7,8 @@
       <a href="{% url 'accounts:change_password' %}">비밀번호 변경</a>
       <button type="submit" class="update-button">회원정보 수정</button>
   </form>
-
+  <form action="{% url 'accounts:delete' %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="회원탈퇴" >
+  </form>
 {% endblock content %}

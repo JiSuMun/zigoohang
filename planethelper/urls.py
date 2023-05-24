@@ -31,4 +31,5 @@ urlpatterns = [
     path('upload/', login_required(views_ckeditor.upload), name='ckeditor_upload'),
     path('browse/', never_cache(login_required(views_ckeditor.browse)), name='ckeditor_browse'),
     path('accounts/', include('accounts.urls')),
+    path('accounts/', include('allauth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,5 +2,8 @@
 {% block content %}
 
     {{ user.username }}님 안녕하세요!
-    
+    <div class='mt-3'>
+        <a href="{% url 'accounts:update' %}">회원정보수정</a>
+        <a href="{% url 'accounts:change_password' %}">비밀번호변경</a>
+    </div>
 {% endblock content %}
