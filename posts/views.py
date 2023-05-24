@@ -16,6 +16,8 @@ def subtract_points_on_post_deletion(sender, instance, **kwargs):
     instance.user.points -= 100
     instance.user.save()
 
+def main(request):
+    return render(request, 'posts/main.html')
 
 def index(request):
     posts = Post.objects.all()

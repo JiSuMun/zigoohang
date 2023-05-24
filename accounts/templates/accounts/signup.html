@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="회원가입">
+<div class="signup-wrapper">
+  <form class="account-signup-form" action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-3">
+        {{ field }}
+      </div>
+    {% endfor %} 
+    <div class="d-grid">
+      <button class="btn btn-primary" type="submit">회원가입</button>
+    </div>
   </form>
-  
+</div>
 {% endblock content %}

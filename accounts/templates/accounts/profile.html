@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<div class="profile-wrap">
     {{ user.username }}님 안녕하세요!
-    
+    <a href="{% url 'accounts:update' %}">회원정보 변경</a>
+    <a href="{% url 'accounts:change_password' %}">비밀번호 변경</a>
+</div>
 {% endblock content %}

@@ -1,60 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div>
-    {{ post.title }}
-    {{ post.content }}
-  </div>
+{% extends 'base.html' %}
 
-  <div>
-    <a href="{% url 'posts:update' post.pk %}"> 수정 </a>
-    <a href="{% url 'posts:delete' post.pk %}" onclick="return confirm('삭제하시겠습니까?')"> 삭제 </a>
-  </div>
+{% block content %}
+<div>
+  {{ post.title }}
+  {{ post.content }}
+</div>
 
-  <div>
-    {% for review in reviews %}
-    <div>
-      <h3>{{ review.title }}</h3>
-  
-      <button type="button" onclick="toggleReviewUpdateForm({{ review.pk }})">리뷰 수정</button>
-  
-      <form id="reviewUpdateForm{{ review.pk }}" method="POST" action="{% url 'posts:review_update' post.pk review.pk %}" enctype="multipart/form-data" style="display:none;">
-        {% csrf_token %}
-        <h3>리뷰 수정</h3>
-        {{ u_review_form.as_p }}
-        {{ u_image_form.as_p }}
-        {{ delete_form.as_p }}
-        <button type="submit" class="btn btn-primary">리뷰 수정</button>
-      </form>
-    </div>
-  {% endfor %}
-  </div>
+<div>
+  <a href="{% url 'posts:update' post.pk %}"> 수정 </a>
+  <a href="{% url 'posts:delete' post.pk %}" onclick="return confirm('삭제하시겠습니까?')"> 삭제 </a>
+</div>
 
+<div>
+  {% for review in reviews %}
   <div>
-    <form action="{% url 'posts:review_create' post.pk %}" method="POST" enctype="multipart/form-data">
+    <h3>{{ review.title }}</h3>
+
+    <button type="button" onclick="toggleReviewUpdateForm({{ review.pk }})">리뷰 수정</button>
+
+    <form id="reviewUpdateForm{{ review.pk }}" method="POST" action="{% url 'posts:review_update' post.pk review.pk %}" enctype="multipart/form-data" style="display:none;">
       {% csrf_token %}
-      {{ review_form.as_p }}
-      {{ image_form.as_p }}
-      <input type="submit" value="댓글작성">
+      <h3>리뷰 수정</h3>
+      {{ u_review_form.as_p }}
+      {{ u_image_form.as_p }}
+      {{ delete_form.as_p }}
+      <button type="submit" class="btn btn-primary">리뷰 수정</button>
     </form>
   </div>
+{% endfor %}
+</div>
 
-  <script>
-    function toggleReviewUpdateForm(review_id) {
-      var form = document.getElementById("reviewUpdateForm" + review_id);
-      if (form.style.display === "none") {
-        form.style.display = "block";
-      } else {
-        form.style.display = "none";
-      }
+<div>
+  <form action="{% url 'posts:review_create' post.pk %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ review_form.as_p }}
+    {{ image_form.as_p }}
+    <input type="submit" value="댓글작성">
+  </form>
+</div>
+
+<script>
+  function toggleReviewUpdateForm(review_id) {
+    var form = document.getElementById("reviewUpdateForm" + review_id);
+    if (form.style.display === "none") {
+      form.style.display = "block";
+    } else {
+      form.style.display = "none";
     }
-    </script>
-    
-</body>
-</html>
+  }
+  </script>
+{% endblock content %}

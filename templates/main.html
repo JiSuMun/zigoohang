@@ -13,19 +13,19 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active" data-bs-interval="10000">
-        <img src="{% static 'img/main/carousel1.jpg' %}" class="d-block main-image " alt="...">
+        <img src="{% static 'img/main/carousel5.jpg' %}" class="d-block main-image " alt="...">
       </div>
-      <div class="carousel-item" data-bs-interval="10000">
+      <div class="carousel-item" data-bs-interval="7000">
         <img src="{% static 'img/main/carousel2.jpg' %}" class="d-block main-image" alt="...">
       </div>
-      <div class="carousel-item" data-bs-interval="10000">
+      <div class="carousel-item" data-bs-interval="7000">
         <img src="{% static 'img/main/carousel3.jpg' %}" class="d-block main-image" alt="...">
       </div>
-      <div class="carousel-item" data-bs-interval="10000">
+      <div class="carousel-item" data-bs-interval="7000">
         <img src="{% static 'img/main/carousel4.jpg' %}" class="d-block main-image" alt="...">
       </div>
-      <div class="carousel-item" data-bs-interval="10000">
-        <img src="{% static 'img/main/carousel5.jpg' %}" class="d-block main-image" alt="...">
+      <div class="carousel-item" data-bs-interval="7000">
+        <img src="{% static 'img/main/carousel1.jpg' %}" class="d-block main-image" alt="...">
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -51,6 +51,7 @@
       <div class="main-box main-box-wrap">
         <p class="main-button_title">RECYCLE</p>
         <p class="main-button_text">Planet Helper는 지속 가능한 소비와 재활용을 장려하기 위해 중고 제품 거래를 지원합니다.</p>
+        {% comment %} <a class="main-button" href="{% url 'secondhands:index' %}">View More</a> {% endcomment %}
         <a class="main-button" href="#">View More</a>
       </div>
       <div class="main-box">
@@ -78,10 +79,10 @@
       <div class="main-box main-box-wrap">
         <p class="main-button_title">ECO</p>
         <p class="main-button_text">Planet Helper는 환경 보호와 관련된 다양한 정보와 팁을 제공합니다. 환경에 대한 인식을 높이고, 지속 가능한 삶을 촉진하는 데 도움을 줍니다.</p>
-        <a class="main-button" href="#">View More</a>
+        <a class="main-button" href="{% url 'posts:main' %}">View More</a>
       </div>
       <div class="main-box">
-        <a href="#"><img class="main-box-image" src="{% static 'img/main/eco.jpg' %}" alt=""></a>
+        <img class="main-box-image" src="{% static 'img/main/eco.jpg' %}" alt="">
       </div>
     </div>
   </div>

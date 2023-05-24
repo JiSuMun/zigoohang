@@ -1,8 +1,26 @@
 .navbar {
-  background-color: white;
-  color: #8BBE86;
+  min-height:70px;
+  border-bottom: 0.5px solid #80808073;
 }
-
+.navbar-brand:hover {
+  color: #297821;
+}
 .logo {
   font-size: 26px !important;
+  color: #297821;
+}
+
+.h-search {
+  width: 300px;
+  margin-right: 5px;
+}
+
+/* .form-control:focus {
+  outline: none;
+} */
+
+@media (max-width: 991.9px) {
+  .h-search {
+    width: 100%;
+  }
 }

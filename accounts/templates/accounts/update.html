@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <form action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ form.as_p}}
-      <a href="{% url 'accounts:change_password' %}">비밀번호 변경</a>
-      <button type="submit" class="update-button">회원정보 수정</button>
+<div class="update-wrapper">
+  <form class="account-update-form" action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-3">
+        {{ field }}
+      </div>
+    {% endfor %} 
+    <div class="d-grid">
+      <button class="btn btn-primary" type="submit">회원정보 수정</button>
+    </div>
   </form>
-
+</div>
 {% endblock content %}
