@@ -72,14 +72,13 @@ class CustomUserCreationForm(UserCreationForm):
             }),
     )
 
-    is_seller = forms.ChoiceField(
-    choices=User.USER_CHOICES,
-    initial=User.GENERAL,
-    required=True,
-    label="회원 유형",
-    widget=forms.Select(
+    is_seller = forms.BooleanField(
+    required=False,
+    label="판매자",
+    widget=forms.CheckboxInput(
         attrs={
-            "class": "form-control",
+            "type":"checkbox",
+            "class": "form-check-input",
         }
     ),
 )
