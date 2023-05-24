@@ -1,14 +1,37 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
+{% load static %}
 {% block content %}
 
-<h2>로그인</h2>
-  <form action="{% url 'accounts:login' %}" method="POST">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="로그인">
+<div class="login-wrapper">
+  <form class="account-login-form" action="{% url 'accounts:login' %}" method="POST">
+    {% csrf_token %}
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+      로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.
+    </div>
+    {% endif %}
+    {% for field in form %}
+      <div class="mb-3">
+        {{ field }}
+      </div>
+    {% endfor %} 
+    <div class="d-grid">
+      <button class="btn btn-primary" type="submit">로그인</button>
+    </div>
   </form>
+</div>
+
+  <h1>간편 로그인</h1>
+  <hr>
+  <div class='kakao-button'>
+  <a href="{% provider_login_url 'kakao' method='oauth2' %}">
+    <img class='kakao-button-img' src="{% static 'img/accounts/kakao_login_large_wide.png' %}" alt="카카오_로그인">
+  </a>
+</div>
   
 {% endblock content %}
+
 
 
 

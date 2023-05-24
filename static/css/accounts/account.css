@@ -1,0 +1,67 @@
+/* 로그인 */
+.login-wrapper {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background: url(../../img/base/login_image.jpg) no-repeat;
+	background-color: white;
+	background-size: 100%;
+}
+.account-login-form {
+  width: 20rem;
+  padding-top: 20%;
+  z-index: 1;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* 회원가입 */
+.signup-wrapper {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background: url(../../img/base/signup_image.jpg) no-repeat;
+	background-color: white;
+	background-size: 100%;
+}
+.account-signup-form {
+  width: 20rem;
+  padding-top: 20%;
+  z-index: 1;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* 정보수정 */
+.update-wrapper {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background: url(../../img/base/update_image.jpg) no-repeat;
+	background-color: white;
+	background-size: 100%;
+}
+.account-update-form {
+  width: 20rem;
+  padding-top: 20%;
+  z-index: 1;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* 정보수정 */
+.password-wrapper {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background: url(../../img/base/password_image.jpg) no-repeat;
+	background-color: white;
+	background-size: 100%;
+}
+.account-password-form {
+  width: 20rem;
+  padding-top: 20%;
+  z-index: 1;
+  position: relative;
+  margin: 0 auto;
+}

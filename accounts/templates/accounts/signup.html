@@ -6,15 +6,22 @@
 {% endblock title %}
 
 {% block content %}
-
-  <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+<div class="signup-wrapper">
+  <form class="account-signup-form" action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+      <div class="mb-3">
+        {{ field }}
+      </div>
+    {% endfor %} 
     <input type="text" id="address" placeholder="주소" name="address" class="form-address">
     <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
-    <input type="submit" value="회원가입">
+    <div class="d-grid">
+      <button class="btn btn-primary" type="submit">회원가입</button>
+    </div>
   </form>
-  
+</div>
+
 {% endblock content %}
 
 {% block script %}

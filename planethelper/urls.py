@@ -22,6 +22,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from . import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main, name="main"),
@@ -32,4 +33,5 @@ urlpatterns = [
     path('browse/', never_cache(login_required(views_ckeditor.browse)), name='ckeditor_browse'),
     path('posts/', include('posts.urls')),
     path('accounts/', include('accounts.urls')),
+    path('accounts/', include('allauth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

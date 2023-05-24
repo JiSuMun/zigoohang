@@ -18,6 +18,8 @@ import json
 #     instance.user.points -= 100
 #     instance.user.save()
 
+def main(request):
+    return render(request, 'posts/main.html')
 
 def index(request):
     posts = Post.objects.all()
