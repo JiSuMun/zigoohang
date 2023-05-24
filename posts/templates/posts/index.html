@@ -1,14 +1,25 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
-
 {% block title %}
 Index
 {% endblock title %}
 
 {% block content %}
+<!--포럼 타이틀-->
+<div class="index-title-wrap">
+  <div class="index-title-box">
+    <p class="index-title-title">FORUM</p>
+    <p class="index-title-text">FORUM은 환경에 대한 인식을 넓히고 협력과 아이디어 공유를 촉진하여 지속 가능한 미래를 위한 행동에 동참할 수 있는 공간입니다.</p>
+  </div>
+</div>
 
-  {% for post in posts %}
-    {{ post.title }}
-  {% endfor %}
+<!--게시글 목록-->
+<div>
+
+</div>
+
+{% for post in posts %}
+  {{ post.title }}
+{% endfor %}
 
 {% endblock content %}

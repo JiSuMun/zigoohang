@@ -3,7 +3,8 @@ from . import views
 
 app_name = 'posts'
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.main, name='main'),
+    path('index', views.index, name='index'),
     path('news/', views.news, name='news'),
     path('create/', views.create, name='create'),
     path('<int:post_pk>/update/', views.update, name='update'),

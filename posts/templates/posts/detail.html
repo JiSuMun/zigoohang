@@ -61,8 +61,6 @@ Detail
   {% endfor %}
 </div>
 
-
-
 <div>
   <form action="{% url 'posts:review_create' post.pk %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}

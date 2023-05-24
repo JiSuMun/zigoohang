@@ -22,6 +22,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from . import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main, name="main"),
