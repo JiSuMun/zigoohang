@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 
+{% block title %}Create{% endblock title %}
+
+{% block head %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock head %}
+
 {% block content %}
-<h1>게시글을 작성해주세요!</h1>
-<form action="{% url 'posts:create' %}" method='POST' enctype='multipart/form-data'>
-  {% csrf_token %}
-  {{ post_form.as_p }}
-  {{ image_form.as_p }}
-  <input type="submit" value="등록">
-  <input type="submit" value="뒤로가기" onclick=window.history.back()>
-</form>
+  <h1>게시글을 작성해주세요!</h1>
+  <form action="{% url 'posts:create' %}" method='POST' enctype='multipart/form-data'>
+    {% csrf_token %}
+    {{ post_form.as_p }}
+    {{ image_form.as_p }}
+    <input type="submit" value="등록">
+    <input type="submit" value="뒤로가기" onclick=window.history.back()>
+  </form>
+
 {% endblock content %}

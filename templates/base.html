@@ -5,9 +5,12 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PLANET HELPER</title>
+  <title>{% block title %}{% endblock title %}</title>
   <link rel="icon" href="{% static 'img/main/favicon.png' %}">
+
   {% include 'style.html' %}
+  {% block head %}{% endblock head %}
+  {% block style %}{% endblock style %}
 </head>
 <body>
   {% include 'header.html' %}
@@ -15,7 +18,13 @@
   <div id="wrapper-body">
   {% block content %}
   {% endblock content %}
+
+
+  {% block script %}
+  {% endblock script %}
+
   </div>
+
   {% include 'footer.html' %}
 
   {% include 'script.html' %}

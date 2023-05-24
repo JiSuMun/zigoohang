@@ -17,10 +17,8 @@ class User(AbstractUser):
         return f'profile/{instance.username}/{filename}'
     image = ProcessedImageField(upload_to=profile_image_path, blank=True, null=True)
 
-    SELLER = '판매자'
-    GENERAL = '일반회원'
-    USER_CHOICES = [(SELLER, '판매자'), (GENERAL, '일반회원')]
-    is_seller = models.CharField(max_length=10, choices=USER_CHOICES, default='일반회원')
+    
+    is_seller = models.BooleanField(default=False)
     phoneNumberRegex = RegexValidator(regex=r'^0[1-9]\d{0,2}-\d{3,4}-\d{4}$')
     phone = models.CharField(validators=[phoneNumberRegex], max_length=14)
     points = models.IntegerField(default=0)

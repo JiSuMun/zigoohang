@@ -72,21 +72,29 @@ class CustomUserCreationForm(UserCreationForm):
             }),
     )
 
-    is_seller = forms.ChoiceField(
-    choices=User.USER_CHOICES,
-    initial=User.GENERAL,
-    required=True,
-    label="회원 유형",
-    widget=forms.Select(
+    is_seller = forms.BooleanField(
+    required=False,
+    label="판매자",
+    widget=forms.CheckboxInput(
         attrs={
-            "class": "form-control",
+            "type":"checkbox",
+            "class": "form-check-input",
         }
     ),
 )
 
+    email = forms.EmailField(
+        label = "이메일",
+        widget = forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "이메일",
+            }),
+    )
+
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ('username', 'first_name', 'last_name', 'password1', 'password2', 'image', 'is_seller',)
+        fields = ('username', 'first_name', 'last_name', 'password1', 'password2', 'image', 'is_seller', 'email',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
