@@ -3,6 +3,7 @@ from .models import Post, Review, PostImage, ReviewImage
 from taggit.forms import TagWidget
 from django.conf import settings
 import os
+from django.forms.widgets import ClearableFileInput
 
 
 class PostForm(forms.ModelForm):
@@ -33,11 +34,13 @@ class PostForm(forms.ModelForm):
             'tags': '',
         }
 
+class CustomClearableFileInput(ClearableFileInput):
+    template_name = 'posts/custom_clearable_file_input.html'
 
 class PostImageForm(forms.ModelForm):
     image = forms.ImageField(
         label='관련 이미지(필수)',
-        widget=forms.ClearableFileInput(
+        widget=CustomClearableFileInput(
             attrs={
                 'multiple': True, 
                 'class': 'form-control', 
@@ -96,7 +99,7 @@ class ReviewImageForm(forms.ModelForm):
     image = forms.ImageField(
         label='이미지 선택',
         required=False,
-        widget=forms.ClearableFileInput(
+        widget=CustomClearableFileInput(
             attrs={
                 'multiple': True, 
                 'class': 'form-control', 
