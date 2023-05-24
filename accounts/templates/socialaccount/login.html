@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+
+
+{% block content %}
+
+
+  <form method="POST">
+    {% csrf_token %}
+    <button id="loginButton" type="submit" class="" >
+      잠시 기다려 주세요
+    </button>
+  </form>
+
+
+
+<script>
+  const button = document.getElementById('loginButton');
+  button.click();
+</script>
+
+
+{% endblock content %}
