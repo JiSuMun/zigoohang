@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Index
+{% endblock title %}
+
+{% block content %}
+
+  {% for post in posts %}
+    {{ post.title }}
+  {% endfor %}
+
+{% endblock content %}

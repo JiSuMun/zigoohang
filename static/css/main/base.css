@@ -53,3 +53,9 @@ a {
 .white-text{
 	color: white;
 }
+
+#wrapper-body {
+  position: relative;
+  height: auto;
+  min-height: 100vh;
+}

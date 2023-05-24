@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Echo News{% endblock title %}
+
+{% block content %}
+
+  {% for news in result.items %}
+    <h2>{{ news.title|safe }}</h2>
+    <p>{{ news.description|safe }}</p>
+    <p>기사 날짜: {{ news.pubDate }}</p>
+    <p><a href="{{ news.link }}" target="_blank">더 읽기</a></p>
+    <hr>
+  {% endfor %}
+{% endblock content %}
