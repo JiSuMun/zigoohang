@@ -1,0 +1,1 @@
+<input type="{{ widget.type }}" name="{{ widget.name }}" id="{{ widget.attrs.id }}" {% if widget.value %}value="{{ widget.value.url }}"{% endif %} {% if widget.attrs.placeholder %}placeholder="{{ widget.attrs.placeholder }}"{% endif %} {% for name, value in widget.attrs.items %}{{ name }}="{{ value }}"{% endfor %}>

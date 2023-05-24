@@ -4,17 +4,19 @@ from django.dispatch import receiver
 from .models import Post, Review, PostImage, ReviewImage
 from .forms import PostForm, ReviewForm, PostImageForm, DeleteImageForm, ReviewImageForm, DeleteReviewImageForm
 from django.http import JsonResponse
+from utils.news import search_naver_news
+import json
 
-@receiver(post_save, sender=Post)
-def add_points_on_post_creation(sender, instance, created, **kwargs):
-    if created:
-        instance.user.points += 100
-        instance.user.save()
+# @receiver(post_save, sender=Post)
+# def add_points_on_post_creation(sender, instance, created, **kwargs):
+#     if created:
+#         instance.user.points += 100
+#         instance.user.save()
 
-@receiver(post_delete, sender=Post)
-def subtract_points_on_post_deletion(sender, instance, **kwargs):
-    instance.user.points -= 100
-    instance.user.save()
+# @receiver(post_delete, sender=Post)
+# def subtract_points_on_post_deletion(sender, instance, **kwargs):
+#     instance.user.points -= 100
+#     instance.user.save()
 
 
 def index(request):
@@ -23,6 +25,14 @@ def index(request):
         'posts' : posts,
     }
     return render(request, 'posts/index.html', context)
+
+
+def news(request):
+    keyword = "친환경"
+    result = search_naver_news(keyword)
+    result_json = json.loads(result)
+    context = {'result': result_json}
+    return render(request, 'posts/news.html', context)
 
 
 def create(request):
@@ -51,15 +61,25 @@ def create(request):
 def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     reviews = post.reviews.all().order_by('-created_at')
-    u_review_form = ReviewForm()
-    u_image_form = ReviewImageForm()
-    delete_form = None
+    image_form = ReviewImageForm()
+    review_form = ReviewForm()
+    u_review_forms = []
+
+    for review in reviews:
+        u_review_form = (
+            review,
+            ReviewForm(instance=review),
+            ReviewImageForm(instance=review.reviewimage_set.first()),
+            DeleteReviewImageForm(review=review)
+        )
+        u_review_forms.append(u_review_form)
+
     context = {
         'post': post,
         'reviews': reviews,
-        'u_review_form': u_review_form, 
-        'u_image_form': u_image_form,
-        'delete_form': delete_form,
+        'image_form': image_form,
+        'review_form': review_form,
+        'u_review_forms': u_review_forms,
     }
     return render(request, 'posts/detail.html', context)
 
