@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Store, Product, ProductReview
 from django.contrib.auth.decorators import login_required
-
+from .forms import *
 
 
 ##### stores
@@ -15,16 +15,27 @@ def index(request):
 
 # seller만
 def create(request):
+    store_form = StoreForm()
     if request.method == 'POST':
-        pass
-        # return redirect('stores:detail',) # store.pk
-    return render(request, 'stores/create.html')
+        store_form = StoreForm(request.POST, request.FILES)
+        if store_form.is_valid():
+            store = store_form.save(commit=False)
+            store.user = request.user
+            store.save()
+            return redirect('stores:index')
+
+    context = {
+        'store_form': store_form,
+    }
+    return render(request, 'stores/create.html', context)
 
 # 상품 나열
 def detail(request, store_pk):
     products = Product.objects.filter(store=store_pk)
+    store = Store.objects.get(pk=store_pk)
     context = {
         'products': products,
+        'store': store,
     }
     return render(request, 'stores/detail.html', context)
 
@@ -46,13 +57,38 @@ def delete(request, store_pk):
 ##### products
 # 해당하는 seller만
 def products_create(request, store_pk):
-    return render(request, 'stores/products_create.html')
+    store = Store.objects.get(pk=store_pk)
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST)
+        if product_form.is_valid():
+            product = product_form.save(commit=False)
+            product.store = store
+            product.save()
+            for image in request.FILES.getlist('image'):
+                # print(image)
+                # image = ProductImage(request.POST)
+                # image.product = product
+                # image.image = image
+                # image.save()
+                ProductImage.objects.create(image=image, product=product) 
+            return redirect('stores:products_detail', store.pk, product.pk)
+    else:
+        product_form = ProductForm()
+        image_form = ProductImageForm()
+    context = {
+        'product_form': product_form,
+        'image_form': image_form,
+        'store': store,
+    }
+    return render(request, 'stores/products_create.html', context)
 
 
 def products_detail(request, store_pk, product_pk):
+    store = Store.objects.get(pk=store_pk)
     product = Product.objects.get(pk=product_pk)
     reviews = ProductReview.objects.filter(product=product_pk)
     context = {
+        'store': store,
         'product': product,
         'reviews': reviews,
     }

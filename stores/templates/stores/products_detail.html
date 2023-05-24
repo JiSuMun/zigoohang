@@ -1,5 +1,9 @@
 <h1>products_detail</h1>
+{% for image in product.images.all %}
+  <img src="{{ image.image.url }}" alt="">
+{% endfor %}
 {{ product.name }}
 {% for review in reviews %}
   {{ review.title }}
 {% endfor %}
+<a href="{% url 'stores:detail' store.pk %}">[상품 목록으로]</a>

@@ -11,20 +11,27 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 POINT_PER_PRICE = 0.01
 
 class Store(models.Model):
-    name = models.CharField(max_length=255)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+
+    def store_image_path(instance, filename):
+        return f'stores/{instance.name}/{filename}'
+    image = ProcessedImageField(upload_to=store_image_path, blank=True, null=True)
+
+
+    # delivery_fee = models.IntegerField()
 
     def __str__(self):
         return f'{self.user.username}의 상점: {self.name}'
 
 
 class Product(models.Model):
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='store')
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products')
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_products', blank=True)
     name = models.CharField(max_length=255)
     content = RichTextUploadingField(blank=True, null=True)
     price = models.IntegerField()  # 상품가격
     rating = models.DecimalField(default=0, max_digits=5, decimal_places=1)
-    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_products', blank=True)
     CATEGORY_CHOICES = [('미용', '미용'), ('의류', '의류'), ('잡화', '잡화'), ('기타', '기타')]
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
 
@@ -32,11 +39,11 @@ class Product(models.Model):
         return f'{self.store.name} 상점의 {self.name}'
     
 
-class ProductImages(models.Model):
+class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    
     def product_image_path(instance, filename):
         return f'stores/{instance.product.store.name}/{instance.product.name}/{filename}'
- 
     image = ProcessedImageField(upload_to=product_image_path, blank=True, null=True)
 
 
