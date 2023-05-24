@@ -60,13 +60,13 @@ class ProductForm(forms.ModelForm):
 
 class ProductImageForm(forms.ModelForm):
     image = forms.ImageField(
-        label = '상품 이미지(필수)',
+        label = '상품 이미지',
         widget=forms.ClearableFileInput(
             attrs={
                 'multiple': True,
             }
         ),
-        required=True,
+        required=False,
     )
 
     class Meta:

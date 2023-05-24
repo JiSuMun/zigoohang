@@ -1,9 +1,15 @@
 <h1>products_detail</h1>
+<h2>{{ product.name }}</h2>
 {% for image in product.images.all %}
-  <img src="{{ image.image.url }}" alt="">
+  <img src="{{ image.image.url }}" alt="" style="width: 100px;">
 {% endfor %}
-{{ product.name }}
 {% for review in reviews %}
   {{ review.title }}
 {% endfor %}
 <a href="{% url 'stores:detail' store.pk %}">[상품 목록으로]</a>
+<a href="{% url 'stores:products_update' store.pk product.pk %}">[상품 수정]</a>
+<form action="{% url 'stores:products_delete' store.pk product.pk %}">
+  {% csrf_token %}
+  <input type="submit" value="상품 삭제">
+</form>
+

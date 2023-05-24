@@ -1,5 +1,43 @@
 <h1>products_update</h1>
-<form action="#" method="POST">
+<form action="#" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% comment %} {{ product_form.as_p }} {% endcomment %}
+  {% comment %} {{ image_form.as_p }} {% endcomment %}
+  
+  <p>
+    <label for="{{ product_form.name.auto_id }}">{{ product_form.name.label }}</label>
+    {{ product_form.name }}
+  </p>
+  <p>
+    <label for="{{ product_form.price.auto_id }}">{{ product_form.price.label }}</label>
+    {{ product_form.price }}
+  </p>
+  <p>
+    <label for="{{ product_form.category.auto_id }}">{{ product_form.category.label }}</label>
+    {{ product_form.category}}
+  </p>
+  <p>
+    <label for="{{ product_form.content.auto_id }}">{{ product_form.content.label }}</label>
+    {{ product_form.content }}
+  </p>
+
+
+  <p>
+    <label for="{{ image_form.image.auto_id }}">추가할 {{ image_form.image.label }}</label>
+    {{ image_form.image }}
+  </p>
+  <p>기존 이미지 삭제하기</p>
+  <ul>
+    {% for image in images %}
+    <li>
+      <label for="delete_images-{{ image.id }}">
+        <img src="{{ image.image.url }}" alt="{{ image.image }}" class="item-img" style="width: 100px;">
+        <input type="checkbox" name="delete_image" value="{{ image.id }}" id="delete_images-{{ image.id }}">
+        {{ image.image }}
+      </label>
+    </li>
+    {% endfor %}
+  </ul>
   <input type="submit">
 </form>
-<a href="{% url 'stores:index' %}">[back]</a>
+<a href="{% url 'stores:detail' store.pk %}">[back]</a>

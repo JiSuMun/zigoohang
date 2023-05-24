@@ -1,7 +1,7 @@
 <h1>Store Index</h1>
 {% for store in stores %}
 <div>
-  <img src="{{ store.image.url }}" alt="">
+  <img src="{{ store.image.url }}" alt="" style="width: 100px;">
   <a href="{% url 'stores:detail' store.pk %}">{{ store.name }}</a>
 </div>
 {% endfor %}

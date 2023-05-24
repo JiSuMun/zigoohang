@@ -1,5 +1,17 @@
 <h1>update</h1>
-<form action="#" method="POST">
+<form action="#" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  {% comment %} {{ store_form.as_p }} {% endcomment %}
+  <p>
+    <label for="{{ store_form.name.auto_id }}">{{ store_form.name.label }}</label>
+    {{ store_form.name }}
+  </p>
+  
+  <p>
+    <label for="{{ store_form.image.auto_id }}">{{ store_form.image.label }}</label>
+    {{ store_form.image }}
+  </p>
   <input type="submit">
 </form>
-<a href="{% url 'stores:index' %}">[back]</a>
+<a href="{% url 'stores:detail' store.pk %}">[back]</a>

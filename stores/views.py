@@ -15,7 +15,6 @@ def index(request):
 
 # seller만
 def create(request):
-    store_form = StoreForm()
     if request.method == 'POST':
         store_form = StoreForm(request.POST, request.FILES)
         if store_form.is_valid():
@@ -23,6 +22,8 @@ def create(request):
             store.user = request.user
             store.save()
             return redirect('stores:index')
+    else:
+        store_form = StoreForm()
 
     context = {
         'store_form': store_form,
@@ -42,14 +43,30 @@ def detail(request, store_pk):
 
 # 해당하는 seller만
 def update(request, store_pk):
+    store = Store.objects.get(pk=store_pk)
     if request.method == 'POST':
-        pass
-        # return redirect('stores:detail',) # store.pk
-    return render(request, 'stores/update.html')
+        store_form = StoreForm(request.POST, request.FILES, instance=store)
+        if store_form.is_valid():
+            store = store_form.save(commit=False)
+            store.user = request.user
+            store.save()
+            return redirect('stores:index')
+    else:
+        store_form = StoreForm(instance=store)
+    
+    context = {
+        'store_form': store_form,
+        'store': store,
+    }
+
+    return render(request, 'stores/update.html', context)
 
 
 # 해당하는 seller만
 def delete(request, store_pk):
+    store = Store.objects.get(pk=store_pk)
+    if request.user == store.user:
+        store.delete()
     return redirect('stores:index')
 
 
@@ -65,11 +82,6 @@ def products_create(request, store_pk):
             product.store = store
             product.save()
             for image in request.FILES.getlist('image'):
-                # print(image)
-                # image = ProductImage(request.POST)
-                # image.product = product
-                # image.image = image
-                # image.save()
                 ProductImage.objects.create(image=image, product=product) 
             return redirect('stores:products_detail', store.pk, product.pk)
     else:
@@ -97,11 +109,37 @@ def products_detail(request, store_pk, product_pk):
 
 # 해당하는 seller만
 def products_update(request, store_pk, product_pk):
-    return render(request, 'stores/products_update.html')
+    store = Store.objects.get(pk=store_pk)
+    product = Product.objects.get(pk=product_pk)
+    images = product.images.all()
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST, instance=product)
+        if product_form.is_valid():
+            product = product_form.save()
+            for image in request.FILES.getlist('image'):
+                ProductImage.objects.create(image=image, product=product)
+            for image_pk in request.POST.getlist('delete_image'):
+                ProductImage.objects.get(pk=image_pk).delete()
+        return redirect('stores:products_detail', store.pk, product.pk)
+    else:
+        product_form = ProductForm(instance=product)
+        image_form = ProductImageForm()
+    context = {
+        'product_form': product_form,
+        'image_form': image_form,
+        'store': store,
+        'images': images,
+    }
+
+    return render(request, 'stores/products_update.html', context)
 
 
 # 해당하는 seller만
 def products_delete(request, store_pk, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    store = Store.objects.get(pk=store_pk)
+    if request.user == store.user:
+        product.delete()
     return redirect('stores:detail', store_pk)
 
 
