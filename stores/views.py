@@ -98,7 +98,9 @@ def products_create(request, store_pk):
 def products_detail(request, store_pk, product_pk):
     store = Store.objects.get(pk=store_pk)
     product = Product.objects.get(pk=product_pk)
-    reviews = ProductReview.objects.filter(product=product_pk)
+    reviews = ProductReview.objects.filter(product=product)
+    for review in reviews:
+        review.review_images = [review.image1, review.image2, review.image3, review.image4, review.image5]
     context = {
         'store': store,
         'product': product,
@@ -137,16 +139,51 @@ def products_update(request, store_pk, product_pk):
 # 해당하는 seller만
 def products_delete(request, store_pk, product_pk):
     product = Product.objects.get(pk=product_pk)
-    store = Store.objects.get(pk=store_pk)
-    if request.user == store.user:
+    if request.user == product.store.user:
         product.delete()
     return redirect('stores:detail', store_pk)
 
 
 ##### reviews
+def reviews_create(request, store_pk, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    if request.method == 'POST':
+        review_form = ProductReviewForm(request.POST, request.FILES)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
+            return redirect('stores:products_detail', store_pk, product.pk)
+    else:
+        review_form = ProductReviewForm()
+    context = {
+        'review_form': review_form,
+        'product': product,
+    }
+    return render(request, 'stores/reviews_create.html', context)
 
+def reviews_update(request, store_pk, product_pk, review_pk):
+    review = ProductReview.objects.get(pk=review_pk)
+    # product = Product.objects.get(pk=product_pk)
+    if request.method == 'POST':
+        review_form = ProductReviewForm(request.POST, request.FILES, instance=review)
+        if review_form.is_valid():
+            review = review_form.save()
+            return redirect('stores:products_detail', review.product.store.pk, review.product.pk)
+    else:
+        review_form = ProductReviewForm(instance=review)        
+    context = {
+        'review_form': review_form,
+        'review': review,
+    }
+    return render(request, 'stores/reviews_update.html', context)
 
-
+def reviews_delete(request, store_pk, product_pk, review_pk):
+    review = ProductReview.objects.get(pk=review_pk)
+    if review.user == request.user:
+        review.delete()
+    return redirect('stores:products_detail', store_pk, product_pk )
 
 
 ##### cart

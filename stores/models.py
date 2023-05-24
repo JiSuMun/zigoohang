@@ -7,6 +7,9 @@ from django.db.models import Sum
 import os
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 POINT_PER_PRICE = 0.01
 
@@ -53,16 +56,32 @@ class ProductReview(models.Model):
     title = models.CharField(max_length=50)
     content = RichTextUploadingField(blank=True,null=True)
     rating = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
+
+    def product_review_image_path(instance, filename):
+        return f'stores/{instance.product.store.name}/{instance.product.name}/reviews/{filename}'
+    image1 = ProcessedImageField(upload_to=product_review_image_path, null=True, blank=True)
+    image2 = ProcessedImageField(upload_to=product_review_image_path, null=True, blank=True)
+    image3 = ProcessedImageField(upload_to=product_review_image_path, null=True, blank=True)
+    image4 = ProcessedImageField(upload_to=product_review_image_path, null=True, blank=True)
+    image5 = ProcessedImageField(upload_to=product_review_image_path, null=True, blank=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_p_reviews')
     dislike_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='dislike_p_reviews')
 
-
+    # @receiver(post_save)
     def save(self, *args, **kwargs):
         self.product.rating = (self.product.rating*self.product.p_reviews.count() + self.rating) / (self.product.p_reviews.count() + 1)
         self.product.save()
         super(ProductReview, self).save(*args, **kwargs)
+
+# class ProductReviewImage(models.Model):
+#     review = models.ForeignKey(ProductReview, on_delete=models.CASCADE, related_name='images')
+    
+#     def product_review_image_path(instance, filename):
+#         return f'stores/{instance.product.store.name}/{instance.product.name}/{instance.pk}/{filename}'
+#     image = ProcessedImageField(upload_to=product_image_path, blank=True, null=True)
 
 
 class Cart(models.Model):

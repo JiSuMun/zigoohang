@@ -1,5 +1,7 @@
 from django import forms
 from .models import Store, Product, ProductImage, ProductReview
+from ckeditor_uploader.fields import RichTextUploadingField
+
 from django.conf import settings
 
 class StoreForm(forms.ModelForm):
@@ -72,3 +74,42 @@ class ProductImageForm(forms.ModelForm):
     class Meta:
         model = ProductImage
         fields = ('image',)
+
+
+class ProductReviewForm(forms.ModelForm):
+    title = forms.CharField(
+        label = '제목',
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': '리뷰 제목',
+            },
+        ),
+        required=True,
+    )
+    # content = forms.CharField(
+    #     label = False,
+    #     widget = forms.Textarea(
+    #         attrs = {
+    #             'placeholder': '리뷰를 입력해주세요.',
+    #         }
+    #     )
+    # )
+    rating = forms.IntegerField(
+        label = False,
+        widget=forms.NumberInput(
+            attrs = {
+                'placeholder': '평가 점수',
+            }
+        )
+    )
+    class Meta:
+        model = ProductReview
+        fields = ('title', 'content', 'rating', 'image1', 'image2', 'image3', 'image4', 'image5',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in ['image1', 'image2', 'image3', 'image4', 'image5']:
+            self.fields[field_name].widget.attrs.update({'class': ''})
+            self.fields[field_name].label = field_name
+
+
