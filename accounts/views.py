@@ -38,6 +38,8 @@ def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
+            user = form.save(commit=False)
+            user.address = request.POST.get('address')
             user = form.save()
             auth_login(request, user)
             return redirect('main')
@@ -60,6 +62,8 @@ def update(request):
     if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, files=request.FILES, instance=request.user)
         if form.is_valid():
+            user = form.save(commit=False)
+            user.address = request.POST.get('address')
             form.save()
             return redirect('main')
     else:
