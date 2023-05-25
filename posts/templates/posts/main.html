@@ -13,57 +13,43 @@
 </div>
 
 <div class="main-link-wrap">
-  <!--친환경 기업 바로가기-->
+  <!--친환경 지도 바로가기-->
   <div class="m-reverse">
     <div class="main-wrap">
-      <div class="main-box main-box-wrap">
-        <p class="main-button_title">녹색 기업</p>
-        <p class="main-button_text">녹색 기업은 우리가 사는 지구의 생태계와 자원을 보호하고, 사회적 책임을 다하는 기업들입니다.</p>
-        <a class="main-button" href="#">View More</a>
-      </div>
-      <div class="main-box">
-        <img class="main-box-image" src="{% static 'img/post/company.jpg' %}" alt="">
-      </div>
-    </div>
-  </div>
-  <!--친환경 지도 바로가기-->
-  <div>
-    <div class="main-wrap">
-      <div class="main-box">
-        <a href="#"><img class="main-box-image" src="{% static 'img/post/map.jpg' %}" alt=""></a>
-      </div>
       <div class="main-box main-box-wrap">
         <p class="main-button_title">친환경 지도</p>
         <p class="main-button_text">지구를 보호하고 지속 가능한 삶을 추구하는 사람들에게 친환경 업체들은 매우 중요한 존재입니다. 하지만 종종 우리 주변에 있는 이러한 업체들을 찾는 것은 어려운 일일 수 있습니다. 저희는 친환경 지도를 통해 여러분에게 도움을 줄 수 있습니다.</p>
         <a class="main-button" href="#">View More</a>
       </div>
+      <div class="main-box">
+        <img class="main-box-image" src="{% static 'img/post/map.jpg' %}" alt="">
+      </div>
     </div>
   </div>
-  
   <!--에코뉴스-->
-  <div class="m-reverse">
+  <div>
     <div class="main-wrap">
-      <div class="main-box main-box-wrap">
-        <p class="main-button_title">ECO NEWS</p>
-        <p class="main-button_text">우리는 지구의 자연 자원을 보호하고, 기후 변화와 생태계 파괴 등의 문제에 대응하기 위해 최신의 환경 뉴스와 정보에 접근할 필요가 있습니다.</p>
-        <a class="main-button" href="#">View More</a>
-      </div>
       <div class="main-box">
         <a href="#"><img class="main-box-image" src="{% static 'img/post/news.jpg' %}" alt=""></a>
       </div>
+      <div class="main-box main-box-wrap">
+        <p class="main-button_title">ECO NEWS</p>
+        <p class="main-button_text">우리는 지구의 자연 자원을 보호하고, 기후 변화와 생태계 파괴 등의 문제에 대응하기 위해 최신의 환경 뉴스와 정보에 접근할 필요가 있습니다.</p>
+        <a class="main-button" href="{% url 'posts:news' %}">View More</a>
+      </div>
     </div>
   </div>
-
+  
   <!--게시판-->
-  <div>  
+  <div class="m-reverse">
     <div class="main-wrap">
-      <div class="main-box">
-        <a href="#"><img class="main-box-image" src="{% static 'img/post/board.jpg' %}" alt=""></a>
-      </div>
       <div class="main-box main-box-wrap">
         <p class="main-button_title">FORUM</p>
         <p class="main-button_text">FORUM은 환경에 대한 인식을 넓히고 협력과 아이디어 공유를 촉진하여 지속 가능한 미래를 위한 행동에 동참할 수 있는 공간입니다.</p>
         <a class="main-button" href="{% url 'posts:index' %}">View More</a>
+      </div>
+      <div class="main-box">
+        <a href="#"><img class="main-box-image" src="{% static 'img/post/board.jpg' %}" alt=""></a>
       </div>
     </div>
   </div>

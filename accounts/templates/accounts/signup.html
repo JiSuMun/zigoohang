@@ -5,21 +5,26 @@
   SignUp
 {% endblock title %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
+{% endblock head %}
+
 {% block content %}
+
 <div class="signup-wrapper">
-  <form class="account-signup-form" action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for field in form %}
-      <div class="mb-3">
-        {{ field }}
-      </div>
-    {% endfor %} 
-    <input type="text" id="address" placeholder="주소" name="address" class="form-address">
-    <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
-    <div class="d-grid">
-      <button class="btn btn-primary" type="submit">회원가입</button>
+  <div class="signup-page">
+    <div class="signup-page-title">
+      <h1>SIGNUP</h1>
     </div>
-  </form>
+    <form class="signup-page-form" action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+          {{ field }}
+      {% endfor %} 
+      <input class="form-address" type="text" id="address" placeholder="주소" name="address">
+      <input class="address--btn" type="button" onclick="search_address()" value="주소 검색" >
+      <button type="submit">회원가입</button>
+    </form>
 </div>
 
 {% endblock content %}

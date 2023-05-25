@@ -1,0 +1,12 @@
+{% if carts %}
+
+  {% for cart in carts %}
+      <h3>{{ cart.product.store.name }} - {{ cart.product.product }}</h3>
+      <p>수량: {{ cart.quantity }}</p>
+      <p>가격: {{ cart.get_total_price }} 원</p>
+  {% endfor %}
+
+{% else %}
+    <h3>장바구니가 비어있습니다.</h3>
+    
+{% endif %}

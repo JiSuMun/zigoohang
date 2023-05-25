@@ -1,65 +1,64 @@
-<nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <div class="container-fluid d-flex align-items-center flex-wrap justify-content-between">
+{% load static %}
+
+<nav class="navbar">
+  <input class="drawer_check" type="checkbox" id="drawercheck">   
+  <div class="nav-inner">
+    <div class="nav-inner-left">
+    <!--로고-->
       <div>
-        <a class="navbar-brand logo" href="{% url 'main' %}">PLANET HELPER
-        </a>
+        <a class="logo" href="{% url 'main' %}">PLANET HELPER</a>
       </div>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active " aria-current="page" href="#">플래닛마켓</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#">중고거래</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#">기부</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link active dropdown-toggle " href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              환경
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'posts:main' %}">전체</a></li>
-              <li><hr class="dropdown-divider"></li>              
-              <li><a class="dropdown-item" href="#">녹색 기업</a></li>
-              <li><a class="dropdown-item" href="#">친환경 지도</a></li>
-              <li><a class="dropdown-item" href="#">ECO NEWS</a></li>
-              <li><a class="dropdown-item" href="{% url 'posts:index' %}">FORUM</a></li>
-            </ul>
-          </li>
-        </ul>
-        <form class="d-flex input-group h-search" role="search">
-          <input class="form-control" type="search" placeholder="검색" aria-label="Search" aria-describedby="button-addon">
-          <button class="btn btn-outline-success" type="submit"  id="button-addon"><i class="bi bi-search"></i></button>
-        </form>
-        {% comment %} <form class="d-flex" role="search">
-          <input class="form-control me-2" id="search" type="search" placeholder="검색" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i>
-          </button>
-        </form> {% endcomment %}
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link " href="{% url 'accounts:profile' request.user.username %}">프로필</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active " href="{% url 'accounts:logout' %}">로그아웃</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link active " href="{% url 'accounts:signup' %}">회원가입</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{% url 'accounts:login' %}">로그인</a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
+      <!--메뉴-->
+      <ul class="nav-ul">
+        <li>
+          <a class="nav-link" aria-current="page" href="#">플래닛마켓</a>          
+        </li>
+        <li>
+          <a class="nav-link" href="#">중고거래</a>
+        </li>
+        <li>
+          <a class="nav-link" href="#">기부</a>
+        </li>
+        <li class="nav-hover">
+          <a class="nav-link" href="{% url 'posts:main' %}">환경</a>
+          <ul class="nav-hover-title">
+            <li><a class="nav-hover-list" href="#">친환경 지도</a></li>
+            <li><a class="nav-hover-list" href="{% url 'posts:news' %}">ECO NEWS</a></li>
+            <li><a class="nav-hover-list" href="{% url 'posts:index' %}">FORUM</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
+    <div class="nav-inner-right">
+      <!--검색-->
+      <div class="search">
+        <input class="search-input" type="text" placeholder="검색">
+        <button class="search-button"><img class="search-button-size" src="{% static 'img/base/search.svg' %}" alt=""></button>
+      </div>
+      <!--로그인-->
+      <ul class="nav-ul">
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:profile' request.user.username %}">프로필</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'accounts:signup' %}">회원가입</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
+        </li>
+        {% endif %}
+      </ul>
+      <label class="drawer_icon" for="drawercheck">
+        <span class="drawer_sticks"></span>
+      </label>
+    </div>
+  </div>
+  <div class="drawer">
+    
   </div>
 </nav>

@@ -16,6 +16,9 @@ from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from posts.models import Post
+from stores.models import Product, Order, OrderItem, Cart
+from secondhands.models import S_Purchase, S_Product
 
 
 def login(request):
@@ -151,9 +154,28 @@ def change_password(request):
 
 @login_required
 def profile(request, username):
+    q = request.GET.get('q')
     User = get_user_model()
     person = User.objects.get(username=username)
+    posts = Post.objects.filter(user=person)
+    interests = person.like_products.all()
+    orders = Order.objects.filter(customer=person)
+    carts = Cart.objects.filter(user=person)
+    purchases = S_Purchase.objects.filter(user=person).select_related('product')
+    purchase_details = []
+    for order in orders:
+        items = OrderItem.objects.filter(order=order)
+        purchase_details.append({
+            'order': order,
+            'items': items 
+        })
     context = {
+        'q':q,
         'person':person,
+        'posts':posts,
+        'interests':interests,
+        'purchase_details': purchase_details,
+        'purchases': purchases,
+        'carts': carts,
     }
     return render(request, 'accounts/profile.html', context)

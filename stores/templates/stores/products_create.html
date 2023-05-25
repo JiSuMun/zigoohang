@@ -1,0 +1,31 @@
+<h1>products_create</h1>
+<form action="#" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% comment %} {{ product_form.as_p }} {% endcomment %}
+  {% comment %} {{ image_form.as_p }} {% endcomment %}
+  
+  <p>
+    <label for="{{ product_form.name.auto_id }}">{{ product_form.name.label }}</label>
+    {{ product_form.name }}
+  </p>
+  <p>
+    <label for="{{ product_form.price.auto_id }}">{{ product_form.price.label }}</label>
+    {{ product_form.price }}
+  </p>
+  <p>
+    <label for="{{ product_form.category.auto_id }}">{{ product_form.category.label }}</label>
+    {{ product_form.category}}
+  </p>
+  <p>
+    <label for="{{ product_form.content.auto_id }}">{{ product_form.content.label }}</label>
+    {{ product_form.content }}
+  </p>
+
+
+  <p>
+    <label for="{{ image_form.image.auto_id }}">{{ image_form.image.label }}</label>
+    {{ image_form.image }}
+  </p>
+  <input type="submit">
+</form>
+<a href="{% url 'stores:detail' store.pk %}">[back]</a>
