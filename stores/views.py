@@ -13,8 +13,10 @@ def index(request):
     }
     return render(request, 'stores/index.html', context)
 
-# seller만
+@login_required
 def create(request):
+    if not(request.user.is_seller or request.user.is_superuser):
+        return redirect('stores:index')
     if request.method == 'POST':
         store_form = StoreForm(request.POST, request.FILES)
         if store_form.is_valid():
@@ -41,9 +43,11 @@ def detail(request, store_pk):
     return render(request, 'stores/detail.html', context)
 
 
-# 해당하는 seller만
+@login_required
 def update(request, store_pk):
     store = Store.objects.get(pk=store_pk)
+    if not(request.user.is_seller or request.user.is_superuser) or request.user != store.user:
+        return redirect('stores:index')
     if request.method == 'POST':
         store_form = StoreForm(request.POST, request.FILES, instance=store)
         if store_form.is_valid():
@@ -62,9 +66,11 @@ def update(request, store_pk):
     return render(request, 'stores/update.html', context)
 
 
-# 해당하는 seller만
+@login_required
 def delete(request, store_pk):
     store = Store.objects.get(pk=store_pk)
+    if not(request.user.is_seller or request.user.is_superuser) or request.user != store.user:
+        return redirect('stores:index')
     if request.user == store.user:
         store.delete()
     return redirect('stores:index')
@@ -72,9 +78,11 @@ def delete(request, store_pk):
 
 
 ##### products
-# 해당하는 seller만
+@login_required
 def products_create(request, store_pk):
     store = Store.objects.get(pk=store_pk)
+    if not(request.user.is_seller or request.user.is_superuser) or request.user != store.user:
+        return redirect('stores:index')
     if request.method == 'POST':
         product_form = ProductForm(request.POST)
         if product_form.is_valid():
@@ -109,9 +117,11 @@ def products_detail(request, store_pk, product_pk):
     return render(request, 'stores/products_detail.html', context)
 
 
-# 해당하는 seller만
+@login_required
 def products_update(request, store_pk, product_pk):
     store = Store.objects.get(pk=store_pk)
+    if not(request.user.is_seller or request.user.is_superuser) or request.user != store.user:
+        return redirect('stores:index')
     product = Product.objects.get(pk=product_pk)
     images = product.images.all()
     if request.method == 'POST':
@@ -136,15 +146,18 @@ def products_update(request, store_pk, product_pk):
     return render(request, 'stores/products_update.html', context)
 
 
-# 해당하는 seller만
+@login_required
 def products_delete(request, store_pk, product_pk):
     product = Product.objects.get(pk=product_pk)
+    if not(request.user.is_seller or request.user.is_superuser) or request.user != product.store.user:
+        return redirect('stores:index')
     if request.user == product.store.user:
         product.delete()
     return redirect('stores:detail', store_pk)
 
 
 ##### reviews
+@login_required
 def reviews_create(request, store_pk, product_pk):
     product = Product.objects.get(pk=product_pk)
     if request.method == 'POST':
@@ -163,8 +176,11 @@ def reviews_create(request, store_pk, product_pk):
     }
     return render(request, 'stores/reviews_create.html', context)
 
+@login_required
 def reviews_update(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
+    if request.user != review.user:
+        return redirect('stores:products_detail', review.product.store.pk, review.product.pk)
     # product = Product.objects.get(pk=product_pk)
     if request.method == 'POST':
         review_form = ProductReviewForm(request.POST, request.FILES, instance=review)
@@ -179,6 +195,7 @@ def reviews_update(request, store_pk, product_pk, review_pk):
     }
     return render(request, 'stores/reviews_update.html', context)
 
+@login_required
 def reviews_delete(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
     if review.user == request.user:
