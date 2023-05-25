@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!--환경 타이틀-->
+<div class="title-wrap">
+  <div class="title-box">
+    <p class="title-box-title">환경</p>
+    <p class="title-box-text">Planet Helper는 환경 보호와 관련된 다양한 정보와 팁을 제공합니다. </p>
+    <p class="title-box-text">환경에 대한 인식을 높이고, 지속 가능한 삶을 촉진하는 데 도움을 줍니다.</p>
+  </div>
+</div>
+
+<div class="main-link-wrap">
+  <!--친환경 지도 바로가기-->
+  <div class="m-reverse">
+    <div class="main-wrap">
+      <div class="main-box main-box-wrap">
+        <p class="main-button_title">친환경 지도</p>
+        <p class="main-button_text">지구를 보호하고 지속 가능한 삶을 추구하는 사람들에게 친환경 업체들은 매우 중요한 존재입니다. 하지만 종종 우리 주변에 있는 이러한 업체들을 찾는 것은 어려운 일일 수 있습니다. 저희는 친환경 지도를 통해 여러분에게 도움을 줄 수 있습니다.</p>
+        <a class="main-button" href="#">View More</a>
+      </div>
+      <div class="main-box">
+        <img class="main-box-image" src="{% static 'img/post/map.jpg' %}" alt="">
+      </div>
+    </div>
+  </div>
+  <!--에코뉴스-->
+  <div>
+    <div class="main-wrap">
+      <div class="main-box">
+        <a href="#"><img class="main-box-image" src="{% static 'img/post/news.jpg' %}" alt=""></a>
+      </div>
+      <div class="main-box main-box-wrap">
+        <p class="main-button_title">ECO NEWS</p>
+        <p class="main-button_text">우리는 지구의 자연 자원을 보호하고, 기후 변화와 생태계 파괴 등의 문제에 대응하기 위해 최신의 환경 뉴스와 정보에 접근할 필요가 있습니다.</p>
+        <a class="main-button" href="{% url 'posts:news' %}">View More</a>
+      </div>
+    </div>
+  </div>
+  
+  <!--게시판-->
+  <div class="m-reverse">
+    <div class="main-wrap">
+      <div class="main-box main-box-wrap">
+        <p class="main-button_title">FORUM</p>
+        <p class="main-button_text">FORUM은 환경에 대한 인식을 넓히고 협력과 아이디어 공유를 촉진하여 지속 가능한 미래를 위한 행동에 동참할 수 있는 공간입니다.</p>
+        <a class="main-button" href="{% url 'posts:index' %}">View More</a>
+      </div>
+      <div class="main-box">
+        <a href="#"><img class="main-box-image" src="{% static 'img/post/board.jpg' %}" alt=""></a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

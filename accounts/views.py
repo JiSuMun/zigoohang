@@ -54,6 +54,7 @@ def signup(request):
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
+            user.address = request.POST.get('address')
             user.is_active = False  # 이메일 인증 전까지 비활성화
             user.save()
 
@@ -73,6 +74,7 @@ def signup(request):
             email.send()
 
             return render(request, 'accounts/wait_for_email.html')
+
 
     context = {
         'form': form,
@@ -120,6 +122,8 @@ def update(request):
     if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, files=request.FILES, instance=request.user)
         if form.is_valid():
+            user = form.save(commit=False)
+            user.address = request.POST.get('address')
             form.save()
             return redirect('main')
     else:

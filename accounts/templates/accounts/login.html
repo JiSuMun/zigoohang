@@ -1,20 +1,30 @@
 {% extends 'base.html' %}
 {% load socialaccount %}
 {% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
+{% endblock head %}
 {% block content %}
 
-<h2>로그인</h2>
-  <form action="{% url 'accounts:login' %}" method="POST">
+<div class="login-wrapper">
+  <form class="account-login-form" action="{% url 'accounts:login' %}" method="POST">
     {% csrf_token %}
     {% if form.errors %}
     <div class="alert alert-danger" role="alert">
       로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.
     </div>
     {% endif %}
-      {{ form.as_p }}
-      <input type="submit" value="로그인">
+    {% for field in form %}
+      <div class="mb-3">
+        {{ field }}
+      </div>
+    {% endfor %} 
+    <div class="d-grid">
+      <button class="btn btn-primary" type="submit">로그인</button>
+    </div>
   </form>
-  
+</div>
+
   <h1>간편 로그인</h1>
   <hr>
   <div class='kakao-button'>
@@ -24,6 +34,7 @@
 </div>
   
 {% endblock content %}
+
 
 
 

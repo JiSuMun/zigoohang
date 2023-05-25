@@ -22,9 +22,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from . import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main, name="main"),
+    path('stores/', include('stores.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path(r'^upload/', login_required(views_ckeditor.upload), name='ckeditor_upload'),
     # path(r'^browse/', never_cache(login_required(views_ckeditor.browse)), name='ckeditor_browse'),

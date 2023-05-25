@@ -59,3 +59,19 @@ a {
   height: auto;
   min-height: 100vh;
 }
+
+.btn {
+	background-color: white;
+	color: #00a95c;
+	border: 1px solid #00a95c;
+}
+
+.btn:hover {
+	background-color: #00a95c;
+	border: 1px solid #00a95c
+}
+
+.form-control:focus {
+	border-color: #dee2e6;
+	box-shadow: none;
+}

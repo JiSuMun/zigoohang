@@ -4,7 +4,7 @@
 }
 
 .carousel-item {
-  max-height: 100vh ;
+  max-height: 860px ;
 }
 
 .carousel-indicators [data-bs-target] {
