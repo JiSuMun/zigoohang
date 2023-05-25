@@ -2,7 +2,7 @@
   <div class="container">
     <div class="container-fluid d-flex align-items-center flex-wrap justify-content-between">
       <div>
-        <a class="navbar-brand  logo" href="#">PLANET HELPER</a>
+        <a class="navbar-brand logo" href="{% url 'main' %}">PLANET HELPER</a>
       </div>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -13,35 +13,44 @@
             <a class="nav-link active " aria-current="page" href="#">플래닛마켓</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="#">중고거래</a>
+            <a class="nav-link active" href="#">중고거래</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="#">기부</a>
+            <a class="nav-link active" href="#">기부</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link active dropdown-toggle " href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               환경
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">친환경 기업</a></li>
+              <li><a class="dropdown-item" href="{% url 'posts:main' %}">전체</a></li>
+              <li><hr class="dropdown-divider"></li>              
               <li><a class="dropdown-item" href="#">친환경 지도</a></li>
-              <li><a class="dropdown-item" href="#">에코뉴스</a></li>
-              <li><a class="dropdown-item" href="#">블로그/팁</a></li>
-              <li><a class="dropdown-item" href="#">게시판</a></li>
+              <li><a class="dropdown-item" href="{% url 'posts:news' %}">ECO NEWS</a></li>
+              <li><a class="dropdown-item" href="{% url 'posts:index' %}">FORUM</a></li>
             </ul>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="검색" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+        <form class="d-flex input-group h-search" role="search">
+          <input class="form-control" type="search" placeholder="검색" aria-label="Search" aria-describedby="button-addon">
+          <button class="btn btn-outline-success" type="submit"  id="button-addon"><i class="bi bi-search"></i></button>
         </form>
         <ul class="navbar-nav mb-2 mb-lg-0">
+          {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link active " href="#">회원가입</a>
+            <a class="nav-link active" href="{% url 'accounts:profile' request.user.username %}">프로필</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="#">로그인</a>
+            <a class="nav-link active " href="{% url 'accounts:logout' %}">로그아웃</a>
           </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link active " href="{% url 'accounts:signup' %}">회원가입</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'accounts:login' %}">로그인</a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </div>
