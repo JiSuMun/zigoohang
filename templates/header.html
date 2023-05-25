@@ -2,8 +2,7 @@
   <div class="container">
     <div class="container-fluid d-flex align-items-center flex-wrap justify-content-between">
       <div>
-        <a class="navbar-brand logo" href="{% url 'main' %}">PLANET HELPER
-        </a>
+        <a class="navbar-brand logo" href="{% url 'main' %}">PLANET HELPER</a>
       </div>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -26,9 +25,8 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{% url 'posts:main' %}">전체</a></li>
               <li><hr class="dropdown-divider"></li>              
-              <li><a class="dropdown-item" href="#">녹색 기업</a></li>
               <li><a class="dropdown-item" href="#">친환경 지도</a></li>
-              <li><a class="dropdown-item" href="#">ECO NEWS</a></li>
+              <li><a class="dropdown-item" href="{% url 'posts:news' %}">ECO NEWS</a></li>
               <li><a class="dropdown-item" href="{% url 'posts:index' %}">FORUM</a></li>
             </ul>
           </li>
@@ -37,15 +35,10 @@
           <input class="form-control" type="search" placeholder="검색" aria-label="Search" aria-describedby="button-addon">
           <button class="btn btn-outline-success" type="submit"  id="button-addon"><i class="bi bi-search"></i></button>
         </form>
-        {% comment %} <form class="d-flex" role="search">
-          <input class="form-control me-2" id="search" type="search" placeholder="검색" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i>
-          </button>
-        </form> {% endcomment %}
         <ul class="navbar-nav mb-2 mb-lg-0">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link " href="{% url 'accounts:profile' request.user.username %}">프로필</a>
+            <a class="nav-link active" href="{% url 'accounts:profile' request.user.username %}">프로필</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active " href="{% url 'accounts:logout' %}">로그아웃</a>

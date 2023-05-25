@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}
   SignUp
 {% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
+{% endblock head %}
 
 {% block content %}
+
 <div class="signup-wrapper">
   <form class="account-signup-form" action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
