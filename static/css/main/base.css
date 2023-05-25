@@ -17,18 +17,15 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
+	font-family: 'Noto Sans KR', sans-serif;
+	line-height: 1;
 	vertical-align: baseline;
+	box-sizing: border-box;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
-}
-body {
-	line-height: 1;
-	font-family: 'Noto Sans KR', sans-serif;
-
 }
 ol, ul {
 	list-style: none;
@@ -48,6 +45,7 @@ table {
 
 a {
 	text-decoration: none;
+	color: black;
 }
 
 .white-text{
@@ -58,20 +56,4 @@ a {
   position: relative;
   height: auto;
   min-height: 100vh;
-}
-
-.btn {
-	background-color: white;
-	color: #00a95c;
-	border: 1px solid #00a95c;
-}
-
-.btn:hover {
-	background-color: #00a95c;
-	border: 1px solid #00a95c
-}
-
-.form-control:focus {
-	border-color: #dee2e6;
-	box-shadow: none;
 }
