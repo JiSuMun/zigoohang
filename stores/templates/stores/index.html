@@ -1,5 +1,8 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
-{% endblock content %}
+<h1>Store Index</h1>
+{% for store in stores %}
+<div>
+  <img src="{{ store.image.url }}" alt="" style="width: 100px;">
+  <a href="{% url 'stores:detail' store.pk %}">{{ store.name }}</a>
+</div>
+{% endfor %}
+<a href="{% url 'stores:create' %}">[상점 생성]</a>

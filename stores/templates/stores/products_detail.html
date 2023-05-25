@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>products_detail</h1>
+<h2>{{ product.store.name }}</h2>
+<h3>{{ product.name }} {{ product.rating }}</h3>
+{% for image in product.images.all %}
+  <img src="{{ image.image.url }}" alt="" style="width: 100px;">
+{% endfor %}
+
+<a href="{% url 'stores:detail' store.pk %}">[상품 목록으로]</a>
+<a href="{% url 'stores:products_update' store.pk product.pk %}">[상품 수정]</a>
+<form action="{% url 'stores:products_delete' store.pk product.pk %}">
+  {% csrf_token %}
+  <input type="submit" value="상품 삭제">
+</form>
+{{ product.price }} 원
+<a href="#">[바로구매]</a>
+<form action="#" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="카트 추가">
+</form>
+<form action="{% url 'stores:products_likes' store.pk product.pk %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="좋아요">
+</form>
+<hr>
+<a href="{% url 'stores:reviews_create' store.pk product.pk %}">[리뷰작성]</a>
+<hr>
+{% for review in reviews %}
+  <p>{{ review.title }}</p>
+  <p>{{ review.content|safe }}</p>
+  <p>{{ review.rating }}</p>
+  {% for review_image in review.review_images %}
+    {% if review_image %}
+      <img src="{{ review_image.url }}" alt="" style="width: 100px;">
+    {% endif %}
+  {% endfor %}
+  <form action="{% url 'stores:reviews_likes' store.pk product.pk review.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="좋아요">
+  </form>
+  <form action="{% url 'stores:reviews_dislikes' store.pk product.pk review.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="싫어요">
+  </form>
+  <a href="{% url 'stores:reviews_update' store.pk product.pk review.pk %}">[리뷰 수정]</a>
+  <form action="{% url 'stores:reviews_delete' store.pk product.pk review.pk %}">
+    <input type="submit" value="리뷰삭제">
+  </form>
+  <hr>
+{% endfor %}
+{% endblock content %}

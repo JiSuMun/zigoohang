@@ -1,0 +1,43 @@
+<h1>reviews_create</h1>
+
+<form action="#" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% comment %} {{ review_form.as_p }} {% endcomment %}
+
+  <p>
+    <label for="{{ review_form.title.auto_id }}">{{ review_form.title.label }}</label>
+    {{ review_form.title }}
+  </p>
+  <p>
+    <label for="{{ review_form.content.auto_id }}">{{ review_form.content.label }}</label>
+    {{ review_form.content }}
+  </p>
+  <p>
+    <label for="{{ review_form.rating.auto_id }}">{{ review_form.rating.label }}</label>
+    {{ review_form.rating }}
+  </p>
+
+  <p>
+    <label for="{{ review_form.image1.auto_id }}">{{ review_form.image1.label }}</label>
+    {{ review_form.image1 }}
+  </p>
+  <p>
+    <label for="{{ review_form.image2.auto_id }}">{{ review_form.image2.label }}</label>
+    {{ review_form.image2 }}
+  </p>
+  <p>
+    <label for="{{ review_form.image3.auto_id }}">{{ review_form.image3.label }}</label>
+    {{ review_form.image3 }}
+  </p>
+  <p>
+    <label for="{{ review_form.image4.auto_id }}">{{ review_form.image4.label }}</label>
+    {{ review_form.image4 }}
+  </p>
+  <p>
+    <label for="{{ review_form.image5.auto_id }}">{{ review_form.image5.label }}</label>
+    {{ review_form.image5 }}
+  </p>
+
+  <input type="submit">
+</form>
+<a href="{% url 'stores:products_detail' product.store.pk product.pk %}">[back]</a>
