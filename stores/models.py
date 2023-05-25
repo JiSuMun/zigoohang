@@ -84,16 +84,16 @@ class ProductReview(models.Model):
 #     image = ProcessedImageField(upload_to=product_image_path, blank=True, null=True)
 
 
-class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
+# class Cart(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     quantity = models.PositiveIntegerField()
 
-    def __str__(self):
-        return f"{self.user.username}'의 장바구니"
+#     def __str__(self):
+#         return f"{self.user.username}'의 장바구니"
 
-    def get_total_price(self):
-        return self.product.price * self.quantity
+#     def get_total_price(self):
+#         return self.product.price * self.quantity
 
 
 #

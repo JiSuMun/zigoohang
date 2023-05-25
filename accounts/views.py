@@ -17,7 +17,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from posts.models import Post
-from stores.models import Product, Order, OrderItem, Cart
+from stores.models import Product, Order, OrderItem
 from secondhands.models import S_Purchase, S_Product
 
 
@@ -160,7 +160,6 @@ def profile(request, username):
     posts = Post.objects.filter(user=person)
     interests = person.like_products.all()
     orders = Order.objects.filter(customer=person)
-    carts = Cart.objects.filter(user=person)
     purchases = S_Purchase.objects.filter(user=person).select_related('product')
     purchase_details = []
     for order in orders:
@@ -176,6 +175,5 @@ def profile(request, username):
         'interests':interests,
         'purchase_details': purchase_details,
         'purchases': purchases,
-        'carts': carts,
     }
     return render(request, 'accounts/profile.html', context)

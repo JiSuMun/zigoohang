@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'posts',
     'stores',
     'secondhands',
+    'carts',
+
     'imagekit',
     'ckeditor',
     'ckeditor_uploader',
