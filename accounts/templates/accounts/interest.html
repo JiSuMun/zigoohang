@@ -1,0 +1,22 @@
+{% if interests %}
+  <table>
+    <thead>
+      <tr>
+        <th>상품명</th>
+        <th>가격</th>
+     </tr>
+    </thead>
+    <tbody>
+      {% for interest_item in interests %}
+        <tr>
+          <td>{{ interest_item.product }}</td>
+          <td>{{ interest_item.price }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+{% else %}
+  <p>관심상품이 없습니다.</p>
+
+{% endif %}

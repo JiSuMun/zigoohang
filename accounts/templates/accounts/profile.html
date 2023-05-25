@@ -1,6 +1,50 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
+<div>
+    <a class="{% if not q %} {% else %} pass {% endif %}" href="{% url 'accounts:profile' person.username %}">회원정보
+    <a class="{% if q == 'post' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=post">작성글
+    </a>
+    <a class="{% if q == 'interest' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=interest">관심상품            
+    </a>
+    <a class="{% if q == 'cart' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=cart">장바구니            
+    </a>
+    <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">구매내역            
+    </a>
+    <a class="{% if q == 'second_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=second_detail">중고거래내역            
+    </a>
+</div>
+
+    <h2>{{ user.username }}님 안녕하세요!
+      <p>아이디: {{ user.username }}</p>
+      <p>닉네임: {{ user.first_name }}</p>
+      <p>이름: {{ user.last_name }}</p>
+      <p>이메일: {{ user.email }}</p>
+    </h2>
+    {% if request.user.image %}
+        <img src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image">
+    {% else %}
+        <img src="#" alt="noimage">
+    {% endif %}
+    <div class='mt-3'>
+        <a href="{% url 'accounts:update' %}">회원정보수정</a>
+        <a href="{% url 'accounts:change_password' %}">비밀번호변경</a>
+    </div>
+
+
+  {% if q == 'post' %}
+    {% include 'accounts/post.html' %}
+  {% elif q == 'interest' %}
+    {% include 'accounts/interest.html' %}
+  {% elif q == 'cart' %}
+    {% include 'accounts/cart.html' %}
+  {% elif q == 'purchase_detail' %}
+    {% include 'accounts/purchase_detail.html' %}
+  {% elif q == 'second_detail' %}
+    {% include 'accounts/second_detail.html' %}
+  {% endif %}
+  
 <div class="profile-wrap">
     {{ user.username }}님 안녕하세요!
     <a href="{% url 'accounts:update' %}">회원정보 변경</a>
