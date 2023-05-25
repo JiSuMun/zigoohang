@@ -1,4 +1,11 @@
 {% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
+{% endblock head %}
+
 {% block content %}
 
 <div class="signup-wrapper">

@@ -20,6 +20,8 @@ Index
 
 {% for post in posts %}
   {{ post.title }}
+  {{ post.content }}
+  {{ post.user.username }}
 {% endfor %}
 
 {% endblock content %}
