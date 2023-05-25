@@ -13,6 +13,7 @@ def index(request):
     }
     return render(request, 'stores/index.html', context)
 
+
 @login_required
 def create(request):
     if not(request.user.is_seller or request.user.is_superuser):
@@ -31,6 +32,7 @@ def create(request):
         'store_form': store_form,
     }
     return render(request, 'stores/create.html', context)
+
 
 # 상품 나열
 def detail(request, store_pk):
@@ -74,7 +76,6 @@ def delete(request, store_pk):
     if request.user == store.user:
         store.delete()
     return redirect('stores:index')
-
 
 
 ##### products
@@ -156,6 +157,16 @@ def products_delete(request, store_pk, product_pk):
     return redirect('stores:detail', store_pk)
 
 
+@login_required
+def products_likes(request, store_pk, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    if product.like_users.filter(pk=request.user.pk).exists():
+        product.like_users.remove(request.user)
+    else:
+        product.like_users.add(request.user)
+    return redirect('stores:products_detail', store_pk, product_pk)
+
+
 ##### reviews
 @login_required
 def reviews_create(request, store_pk, product_pk):
@@ -176,6 +187,7 @@ def reviews_create(request, store_pk, product_pk):
     }
     return render(request, 'stores/reviews_create.html', context)
 
+
 @login_required
 def reviews_update(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
@@ -195,12 +207,37 @@ def reviews_update(request, store_pk, product_pk, review_pk):
     }
     return render(request, 'stores/reviews_update.html', context)
 
+
 @login_required
 def reviews_delete(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
     if review.user == request.user:
         review.delete()
     return redirect('stores:products_detail', store_pk, product_pk )
+
+
+@login_required
+def reviews_likes(request, store_pk, product_pk, review_pk):
+    review = ProductReview.objects.get(pk=review_pk)
+    if review.like_users.filter(pk=request.user.pk).exists():
+        review.like_users.remove(request.user)
+    else:
+        review.like_users.add(request.user)
+        if review.dislike_users.filter(pk=request.user.pk).exists():
+            review.dislike_users.remove(request.user)
+    return redirect('stores:products_detail', store_pk, product_pk)
+
+
+@login_required
+def reviews_dislikes(request, store_pk, product_pk, review_pk):
+    review = ProductReview.objects.get(pk=review_pk)
+    if review.dislike_users.filter(pk=request.user.pk).exists():
+        review.dislike_users.remove(request.user)
+    else:
+        review.dislike_users.add(request.user)
+        if review.like_users.filter(pk=request.user.pk).exists():
+            review.like_users.remove(request.user)
+    return redirect('stores:products_detail', store_pk, product_pk)
 
 
 ##### cart
