@@ -60,19 +60,6 @@
           </a>
         </div>
 
-<div>
-    <a class="{% if not q %} {% else %} pass {% endif %}" href="{% url 'accounts:profile' person.username %}">회원정보
-    <a class="{% if q == 'post' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=post">작성글
-    </a>
-    <a class="{% if q == 'interest' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=interest">관심상품            
-    </a>
-    <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">구매내역            
-    </a>
-    <a class="{% if q == 'second_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=second_detail">중고거래내역            
-    </a>
-</div>
-
-
         <div class="profile-box-item">
           <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">           
             <span class="material-symbols-outlined">shopping_bag</span>
@@ -110,22 +97,3 @@
 </div>
 
 {% endblock content %}
-
-
-  {% if q == 'post' %}
-    {% include 'accounts/post.html' %}
-  {% elif q == 'interest' %}
-    {% include 'accounts/interest.html' %}
-  {% elif q == 'purchase_detail' %}
-    {% include 'accounts/purchase_detail.html' %}
-  {% elif q == 'second_detail' %}
-    {% include 'accounts/second_detail.html' %}
-  {% endif %}
-
-
-{% comment %} 
-{{ user.username }}님 안녕하세요!
-<p>아이디: {{ user.username }}</p>
-<p>닉네임: {{ user.first_name }}</p>
-<p>이름: {{ user.last_name }}</p>
-<p>이메일: {{ user.email }}</p> {% endcomment %}
