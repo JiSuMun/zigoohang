@@ -1,0 +1,16 @@
+{% extends 'base.html' %} 
+{% block content %} 
+
+{% if messages %}
+{% for message in messages %}
+  <div{% if message.tags %} class="bg-{{message.tags}}"{% endif %}>{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+<h2>아이디 찾기</h2>
+<form method="post">
+  {% csrf_token %} 
+  {{ form.as_p }} 
+  <button type="submit">아이디 찾기</button>
+</form>
+{% endblock %}

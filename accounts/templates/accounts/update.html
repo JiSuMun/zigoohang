@@ -16,6 +16,9 @@
     <div class="update-page-title">
       <h1>UPDATE</h1>
     </div>
+
+
+
     <form class="update-page-form" action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in form %}
@@ -25,8 +28,12 @@
       <input class="address--btn" type="button" onclick="search_address()" value="주소 검색">
       <button type="submit">회원정보 수정</button>
     </form>
-  
+  <form action="{% url 'accounts:delete' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="회원탈퇴">
+    </form>
   </div>
+
 </div>
 {% endblock content %}
 
