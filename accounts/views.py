@@ -31,11 +31,53 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.forms import SetPasswordForm
 from django.views.generic import View
 
+from django.contrib.auth.views import LoginView
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from carts.models import Cart, CartItem
+
+import json
+
+class CustomLoginView(LoginView):    
+    def form_valid(self, form):
+        # 로그인 작업 완료
+        # login(self.request, form.get_user())
+        auth_login(self.request, form.get_user())
+
+        cart_data = self.request.POST.get('cart_data')
+        if cart_data:
+            cart_items = json.loads(cart_data)
+            
+            # 인증된 사용자를 사용하여 Cart 인스턴스 생성 또는 조회
+            cart, created = Cart.objects.get_or_create(user=self.request.user)
+            
+            # cart_data를 CartItem에 저장, 이미 존재하는 경우 quantity 업데이트
+            for item in cart_items:
+                # product 인스턴스를 가져옵니다 (id로 조회).
+                product_instance = get_object_or_404(Product, id=item['id'])
+
+                # 기존 cart_item이 있는지 확인함
+                cart_item, cart_item_created = CartItem.objects.get_or_create(cart=cart, product=product_instance)
+
+                if cart_item_created:
+                    # 새로운 cart_item의 경우
+                    cart_item.quantity = item['quantity']
+                else:
+                    # 기존 cart_item의 경우 quantity를 더해줌
+                    cart_item.quantity += item['quantity']
+
+                # 변경된 quantity 값을 저장함
+                cart_item.save()
+
+        # 로그인 한 사용자의 프로필로 리디렉션
+        return HttpResponseRedirect(self.get_success_url())
 
 def login(request):
     if request.user.is_authenticated:
         return redirect('main')
+    # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', request.body)
     if request.method == 'POST':
+        # jsonObj = 
         form = CustomAutentication(request, request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
