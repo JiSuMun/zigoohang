@@ -1,30 +1,12 @@
 {% if purchases %}
-    <table>
-        <thead>
-            <tr>
-                <th>상품명</th>
-                <th>카테고리</th>
-                <th>가격</th>
-                <th>수량</th>
-                <th>총금액</th>
-                <th>거래일</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for purchase in purchases %}
-            <tr>
-                <td>{{ purchase.product.product }}</td>
-                <td>{{ purchase.product.get_category_display }}</td>
-                <td>{{ purchase.product.price }}</td>
-                <td>{{ purchase.quantity }}</td>
-                <td>{{ purchase.amount }}</td>
-                <td>{{ purchase.date }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+        {% for purchase in purchases %}
+            <p>상품명 {{ purchase.product.product }}</p>
+            <p>카테고리 {{ purchase.product.get_category_display }}</p>
+            <p>가격 {{ purchase.product.price }}</p>
+            <p>수량 {{ purchase.quantity }}</p>
+            <p>합계{{ purchase.amount }}</p>
+            <p>거래일{{ purchase.date }}</p>
+        {% endfor %}
 {% else %}
     <p>중고거래 내역이 없습니다.</p>
-    
 {% endif %}

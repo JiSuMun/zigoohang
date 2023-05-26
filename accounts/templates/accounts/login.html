@@ -21,17 +21,18 @@
     {% endfor %} 
     <div class="d-grid">
       <button class="btn btn-primary" type="submit">로그인</button>
+      <div class='kakao-button'>
+        <a href="{% provider_login_url 'kakao' method='oauth2' %}">
+          <img class='kakao-button-img' src="{% static 'img/accounts/kakao_login_large_wide.png' %}" alt="카카오_로그인">
+        </a>
+      </div>
     </div>
   </form>
+  <a href="{% url 'accounts:find_user_id' %}">아이디 찾기</a> /
+  <a href="{% url 'accounts:password_reset_request' %}">비밀번호 찾기</a> 
 </div>
 
-  <h1>간편 로그인</h1>
-  <hr>
-  <div class='kakao-button'>
-  <a href="{% provider_login_url 'kakao' method='oauth2' %}">
-    <img class='kakao-button-img' src="{% static 'img/accounts/kakao_login_large_wide.png' %}" alt="카카오_로그인">
-  </a>
-</div>
+  
   
 {% endblock content %}
 
