@@ -11,30 +11,15 @@
     <p>운송장 번호: {{ purchase.order.tracking_number }}</p>
     {% endif %}
     
-    <table>
-        <thead>
-            <tr>
-                <th>상품명</th>
-                <th>수량</th>
-                <th>가격(개당)</th>
-                <th>합계</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in purchase.items %}
-            <tr>
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.product.price }}</td>
-                <td>{{ item.sub_total }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% for item in purchase.items %}
+            <p>상품명 {{ item.product.name }}</p>
+            <p>수량 {{ item.quantity }}</p>
+            <p>가격 {{ item.product.price }}</p>
+            <p>합계{{ item.sub_total }}</p>
+        {% endfor %}
     <p>주문 총 금액: {{ purchase.order.total }}</p>
-    {% endfor %}
+        {% endfor %}
 
 {% else %}
     <p>주문한 상품이 없습니다.</p>
-
 {% endif %}
