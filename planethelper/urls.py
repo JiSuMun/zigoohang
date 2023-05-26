@@ -31,6 +31,7 @@ urlpatterns = [
     path('posts/', include('posts.urls')),
     path('stores/', include('stores.urls')),
     path('carts/', include('carts.urls')),
+    path('secondhands/', include('secondhands.urls')),
 
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path(r'^upload/', login_required(views_ckeditor.upload), name='ckeditor_upload'),

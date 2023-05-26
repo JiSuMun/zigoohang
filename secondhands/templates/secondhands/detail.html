@@ -1,5 +1,90 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}Detail{% endblock title %}
 
 {% block content %}
 
+<a href="{% url 'secondhands:update' product.pk %}">수정하기</a>
+<a href="{% url 'secondhands:delete' product.pk %}" onclick="return confirm('삭제하시겠습니까?')"> 삭제 </a>
+
+<div>
+  {{ product.product }}
+  {{ product.price }}
+  {{ product.content|safe }}
+  {{ s_address }}
+
+  {% for image in product.s_productimage_set.all %}
+    <img src="{{ image.image.url }}" alt="">
+  {% endfor %}
+</div>
+
+<div>
+  {% if request.user.is_authenticated %}
+  <form id="likes-form" data-product-id="{{ product.pk }}">
+    {% csrf_token %}
+    {% if request.user in product.like_users.all %}
+      <button type="submit">
+        <i class="bi bi-suit-heart-fill" id="product-heart"></i>
+      </button>
+    {% else %}
+      <button type="submit">
+        <i class="bi bi-suit-heart" id="product-heart"></i>
+      </button>
+    {% endif %}
+  </form>
+  {% else %}
+    <button disabled>
+      <i class="bi bi-suit-heart" id="product-heart"></i>
+    </button>
+  {% endif %}
+</div>
+
+<div class="map" id="map" style="width: 400px; height: 400px;" data-longitude="{{ longitude }}" data-latitude="{{ latitude }}">
+
 {% endblock content %}
+
+{% block script %}
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_script_key }}&libraries=services"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const longitude = document.getElementById('map').dataset.longitude;
+  const latitude = document.getElementById('map').dataset.latitude;
+  const container = document.getElementById('map');
+  const options = {
+    center: new kakao.maps.LatLng(latitude, longitude),
+    level: 3
+  };
+  const map = new kakao.maps.Map(container, options);
+  const markerPosition = new kakao.maps.LatLng(latitude, longitude);
+  const marker = new kakao.maps.Marker({
+    position: markerPosition
+  });
+  marker.setMap(map);
+</script>
+<script>
+  const form = document.querySelector('#likes-form')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  form.addEventListener('submit', function (event) {
+    event.preventDefault()
+    const productId = event.target.dataset.productId
+    axios({
+      method: 'post',
+      url: `/secondhands/${productId}/likes/`,
+      headers: {'X-CSRFToken': csrftoken},
+    })
+      .then((response) => {
+        const isLiked = response.data.is_liked
+        const likeBtn = document.querySelector('#product-heart')
+        
+        if (isLiked === true) {
+          likeBtn.classList.remove('bi-suit-heart');
+          likeBtn.classList.add('bi-suit-heart-fill');
+        } else {
+          likeBtn.classList.remove('bi-suit-heart-fill');
+          likeBtn.classList.add('bi-suit-heart');
+        }
+
+      })
+  })
+</script>
+{% endblock script %}

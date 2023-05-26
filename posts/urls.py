@@ -15,4 +15,7 @@ urlpatterns = [
     path('<int:post_pk>/<int:review_pk>/update/', views.review_update, name='review_update'),
     path('<int:post_pk>/<int:review_pk>/likes/', views.review_likes, name='review_likes'),
     path('<int:post_pk>/<int:review_pk>/dislikes/', views.review_dislikes, name='review_dislikes'),
+    path('import_zero/', views.import_zero, name='import_zero'),
+    path('zero_map/', views.zero_map, name='zero_map'),
+    path('get_zeros/', views.get_zeros, name='get_zeros'),
 ]

@@ -172,9 +172,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 # 서버 포트		 
 EMAIL_PORT = '587'
 # 우리가 사용할 Gmail	 
-EMAIL_HOST_USER = 'finalhot6@gmail.com' 
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') 
 # 우리가 사용할 Gmail pw
-EMAIL_HOST_PASSWORD = 'ulvryubufltftmtw'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') 
 # TLS 보안 설정
 EMAIL_USE_TLS = True
 # 응답 메일 관련 설정

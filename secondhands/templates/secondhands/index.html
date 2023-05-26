@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
+{% block title %}Secondhands{% endblock title %}
+
 
 {% block content %}
+
+{% for product in products %}
+  {{ product }}
+{% endfor %}
 
 {% endblock content %}

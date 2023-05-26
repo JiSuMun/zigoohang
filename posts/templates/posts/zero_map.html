@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Zero_map{% endblock title %}
+
+{% block head %}
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+{% endblock head %}
+
+{% block content %}
+
+  <select id="region-select" onchange="changeRegion()">
+    {% for region in regions %}
+      <option value="{{ region }}" {% if region == '서울' %}selected{% endif %}>{{ region }}</option>
+    {% endfor %}
+  </select>
+
+  <div class="map" id="map" style="width:500px; height:500px;"></div>
+
+{% endblock content %}
+
+{% block script %}
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_script_key }}&libraries=services"></script>
+  <script>
+    const API_KEY = "{{ kakao_key }}";
+    const mapContainer = document.getElementById('map');
+    const mapOption = {
+      center: new kakao.maps.LatLng(37.566826, 126.9786567),
+      level: 11,
+    };
+    
+    const map = new kakao.maps.Map(mapContainer, mapOption);
+    const geocoder = new kakao.maps.services.Geocoder();
+    const regionSelect = document.getElementById('region-select');
+    
+    function setCenter(coords) {
+      map.setCenter(new kakao.maps.LatLng(coords.latitude, coords.longitude));
+    }
+    
+    function changeRegion() {
+      axios.get('/posts/get_zeros/', {
+        params: {
+          'region': regionSelect.value,
+        },
+        headers: {
+          Authorization: `KakaoAK ${API_KEY}`,
+        },
+      }).then((response) => {
+        const { addresses, zeros } = response.data;
+        const coordsList = [];
+  
+        zeros.forEach((zero, index) => {
+          geocoder.addressSearch(zero.address, (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              const latitude = result[0].y;
+              const longitude = result[0].x;
+    
+              coordsList.push(new kakao.maps.LatLng(latitude, longitude));
+    
+              const markerPosition = new kakao.maps.LatLng(latitude, longitude);
+              const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                map: map,
+                title: zero.name,
+              });
+
+              kakao.maps.event.addListener(marker, 'click', function() {
+                const apiUrl = "https://dapi.kakao.com/v2/local/geo/transcoord.json?x=127.423084&y=37.078956&input_coord=WGS84&output_coord=TM";
+                
+                fetch(apiUrl, {
+                  headers: {
+                    "Authorization": "KakaoAK " + API_KEY
+                  }
+                })
+                .then(response => response.json())
+                .then(data => {
+                  const latitude = markerPosition.getLat();
+                  const longitude = markerPosition.getLng();
+                  const title = marker.getTitle();
+              
+                  const directionsUrl = "https://map.kakao.com/link/to/" + title + "," + latitude + "," + longitude;
+                
+                  window.open(directionsUrl, "_blank");
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+              });
+              
+
+              if (coordsList.length === zeros.length) {
+                const center = getCenterCoordinate(coordsList);
+                map.setCenter(center);
+              }
+            }
+          });
+        });
+      });
+    
+      function getCenterCoordinate(coordinates) {
+        let totalLat = 0;
+        let totalLng = 0;
+        for (let i = 0; i < coordinates.length; i++) {
+          totalLat += coordinates[i].getLat();
+          totalLng += coordinates[i].getLng();
+        }
+        const averageLat = totalLat / coordinates.length;
+        const averageLng = totalLng / coordinates.length;
+        return new kakao.maps.LatLng(averageLat, averageLng);
+      }
+    }
+    
+    changeRegion();
+
+    
+  </script>
+  
+{% endblock script %}
