@@ -91,3 +91,10 @@ class ReviewImage(models.Model):
                 if old_post.image:
                     os.remove(os.path.join(settings.MEDIA_ROOT, old_post.image.name))
         super(ReviewImage, self).save(*args, **kwargs)
+
+
+class Zero(models.Model):
+    name = models.CharField(max_length=100)
+    address = models.CharField(max_length=100)
+    region = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=100, blank=True)

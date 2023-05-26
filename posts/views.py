@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from .models import Post, Review, PostImage, ReviewImage
+from .models import Post, Review, PostImage, ReviewImage, Zero
 from .forms import PostForm, ReviewForm, PostImageForm, DeleteImageForm, ReviewImageForm, DeleteReviewImageForm
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from utils.news import search_naver_news
+from utils.zero import import_zero_data
+from utils.map import get_latlng_from_address
 import json
+import os
+from django.conf import settings
+
 
 # @receiver(post_save, sender=Post)
 # def add_points_on_post_creation(sender, instance, created, **kwargs):
@@ -247,3 +252,64 @@ def review_dislikes(request, post_pk, review_pk):
         'review_likes_count': review.like_users.count(),
     }
     return JsonResponse(context)
+
+
+def import_zero(request):
+    file_path = os.path.join(settings.BASE_DIR, 'utils', 'zero.xlsx')
+    import_zero_data(file_path)
+    return HttpResponse("Data Imported Successfully")
+
+
+def zero_map(request):
+    region = request.GET.get('region', '서울')
+    all_zero = Zero.objects.all()
+    regions = {a_zero.region for a_zero in all_zero}
+    zeros = Zero.objects.filter(region=region).values()
+    kakao_script_key = os.getenv('kakao_script_key')
+    kakao_key = os.getenv('KAKAO_KEY')
+    
+    context = {
+        'all_zero': all_zero,
+        'zeros': list(zeros),
+        'regions': regions,
+        'kakao_script_key': kakao_script_key,
+        'kakao_key': kakao_key,
+    }
+    if request.is_ajax():
+        return JsonResponse(context)
+    return render(request, 'posts/zero_map.html', context)
+
+
+
+def zero_map(request):
+    region = request.GET.get('region', '서울')
+    all_zero = Zero.objects.all()
+    # regions = {a_zero.region for a_zero in all_zero}
+    regions = sorted({a_zero.region for a_zero in all_zero},
+        key=lambda x: ['서울', '경기', '인천', '강원', '충북', '충남', '대전', '경북', '경남', '대구', '전북', '전남', '부산', '울산', '제주특별자치도'].index(x))
+    zeros = Zero.objects.filter(region=region).values()
+    addresses = [zero['address'] for zero in zeros]
+    kakao_script_key = os.getenv('kakao_script_key')
+    kakao_key = os.getenv('KAKAO_KEY')
+    context = {
+        'all_zero': all_zero,
+        'zeros': list(zeros),
+        'regions': regions,
+        'kakao_script_key': kakao_script_key,
+        'kakao_key': kakao_key,
+        'addresses': json.dumps(addresses),
+    }
+
+    return render(request, 'posts/zero_map.html', context)
+
+
+def get_zeros(request):
+    region = request.GET.get('region', '서울')
+    zeros = Zero.objects.filter(region=region).values('name', 'address')
+    addresses = [zero['address'] for zero in zeros]
+    kakao_key = os.getenv('KAKAO_KEY')
+    return JsonResponse({
+        'addresses': addresses,
+        'zeros': list(zeros),
+        'kakao_key': kakao_key,
+    })

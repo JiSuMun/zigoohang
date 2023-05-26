@@ -93,15 +93,15 @@ class CustomUserCreationForm(UserCreationForm):
     )
 
     is_seller = forms.BooleanField(
-    required=False,
-    label="판매자",
-    widget=forms.CheckboxInput(
-        attrs={
-            "type":"checkbox",
-            "class": "form-check-input",
-        }
-    ),
-)
+        required=False,
+        label="판매자",
+        widget=forms.CheckboxInput(
+            attrs={
+                "type":"checkbox",
+                "class": "form-check-input",
+            }
+        ),
+    )
 
     email = forms.EmailField(
         label = "이메일",
