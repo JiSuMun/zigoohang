@@ -1,6 +1,6 @@
 const addItemBtn = document.getElementById('addItem')
 const quantityElem = document.getElementById('quantity')
-
+console.log(isAuthenticated)
 addItemBtn.addEventListener('click', () => {
   const productId = Number(addItemBtn.dataset.productId)
   const newQuantity = Number(quantityElem.value)

@@ -1,0 +1,5 @@
+{% if user.is_authenticated %}
+  <div id="user-auth" data-authenticated="true"></div>
+{% else %}
+  <div id="user-auth" data-authenticated="false"></div>
+{% endif %}

@@ -17,17 +17,17 @@
   {% include 'header.html' %}
 
   <div id="wrapper-body">
-  {% block content %}
-  {% endblock content %}
-
-
-  {% block script %}
-  {% endblock script %}
-
+    {% block content %}
+    {% endblock content %}
   </div>
 
   {% include 'footer.html' %}
 
+  {% include 'carts/base_cart.html' %}
+
   {% include 'script.html' %}
+
+  {% block script %}
+  {% endblock script %}
 </body>
 </html>
