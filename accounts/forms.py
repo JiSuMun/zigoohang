@@ -3,6 +3,26 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm
 from accounts.models import User
 
+
+class FindUserIDForm(forms.Form):
+    last_name = forms.CharField(label="이름",widget=forms.TextInput(attrs={'placeholder': '이름'}))
+    email = forms.EmailField(label="이메일",widget=forms.EmailInput(attrs={'placeholder': '이메일'}))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError("입력한 이메일이 존재하지 않습니다.")
+        
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(label='이메일 주소', required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError("입력한 이메일이 존재하지 않습니다.")
+        
 class CustomAutentication(AuthenticationForm):
     username = forms.CharField(
         label = False,

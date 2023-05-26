@@ -10,8 +10,15 @@
       </div>
       <!--메뉴-->
       <ul class="nav-ul">
-        <li>
-          <a class="nav-link" aria-current="page" href="#">플래닛마켓</a>          
+        <li class="nav-hover">
+          <div class="nav-drop">
+            <a class="nav-link" href="{% url 'posts:main' %}">플래닛 마켓</a>
+          </div>
+          <ul class="nav-hover-title">
+            <li><a class="nav-hover-list" href="#">링크1</a></li>
+            <li><a class="nav-hover-list" href="#">링크2</a></li>
+            <li><a class="nav-hover-list" href="#">링크3</a></li>
+          </ul>
         </li>
         <li>
           <a class="nav-link" href="#">중고거래</a>
@@ -20,8 +27,11 @@
           <a class="nav-link" href="#">기부</a>
         </li>
         <li class="nav-hover">
-          <a class="nav-link" href="{% url 'posts:main' %}">환경</a>
+          <div class="nav-drop">
+            <a class="nav-link" href="{% url 'posts:main' %}">환경</a>
+          </div>
           <ul class="nav-hover-title">
+            <li><a class="nav-hover-list" href="#">친환경 지도</a></li>
             <li><a class="nav-hover-list" href="#">친환경 지도</a></li>
             <li><a class="nav-hover-list" href="{% url 'posts:news' %}">ECO NEWS</a></li>
             <li><a class="nav-hover-list" href="{% url 'posts:index' %}">FORUM</a></li>

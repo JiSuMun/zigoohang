@@ -39,7 +39,7 @@ class CustomClearableFileInput(ClearableFileInput):
 
 class PostImageForm(forms.ModelForm):
     image = forms.ImageField(
-        label='관련 이미지(필수)',
+        label='이미지',
         widget=CustomClearableFileInput(
             attrs={
                 'multiple': True, 
@@ -112,9 +112,6 @@ class ReviewImageForm(forms.ModelForm):
         model = ReviewImage
         fields = ('image',)
 
-    def clean(self):
-        cleaned_data = super().clean()
-        images = self.files.getlist('image')
 
 
 class DeleteReviewImageForm(forms.Form):

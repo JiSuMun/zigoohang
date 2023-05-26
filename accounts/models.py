@@ -49,7 +49,4 @@ class User(AbstractUser):
             if self.image != old_user.image:
                 if old_user.image:
                     os.remove(os.path.join(settings.MEDIA_ROOT, old_user.image.path))
-        super(User, self).save(*args, **kwargs)  
-
-
-
+        super(User, self).save(*args, **kwargs)
