@@ -2,11 +2,14 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
+<link rel="stylesheet" href="{% static 'css/accounts/wait_for_email.css' %}">
 {% endblock head %}
 
 {% block content %}
-
-<h2>이메일을 확인해주세요. 이메일에 있는 링크를 클릭하여 계정을 활성화하세요.</h2>
-
+<div class="wait-wrapper">
+  <div class="wait-page">
+    <h2>이메일을 확인해주세요.</h2>
+    <h2>이메일에 있는 링크를 클릭하여 계정을 활성화하세요.</h2>
+  </div>
+</div>
 {% endblock content %}
