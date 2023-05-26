@@ -1,5 +1,5 @@
 const userAuth = document.getElementById("user-auth")
-const isAuthenticated = userAuth.dataset.authenticated === "true"
+const isAuthenticated = userAuth.dataset.authenticated === "True"
 
 window.onload = function() {
   // localStorage에 cart key 값 확인

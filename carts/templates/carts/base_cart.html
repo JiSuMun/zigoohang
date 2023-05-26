@@ -1,5 +1,6 @@
-{% if user.is_authenticated %}
+{% comment %} {% if user.is_authenticated %}
   <div id="user-auth" data-authenticated="true"></div>
 {% else %}
   <div id="user-auth" data-authenticated="false"></div>
-{% endif %}
+{% endif %} {% endcomment %}
+<div id="user-auth" data-authenticated="{{ user.is_authenticated }}"></div>

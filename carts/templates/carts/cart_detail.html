@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>cart</h1>
+<table id="cart_table" style="border: 1px solid black;">
+  <th>이미지</th>
+  <th>제품</th>
+  <th>개수</th>
+  <th>합계</th>
+  {% if is_logged_in %}
+    {% for cart_item in cart.cartitems.all %}
+      <tr>
+        <td><img src="{{ cart_item.product.images.first.image.url }}" alt="" width="100px"></td>
+        <td>{{ cart_item.product.name }}</td>
+        <td>{{ cart_item.quantity }}</td>
+        <td>{{ cart_item.sub_total }}</td>
+        <td>{{ cart_item.product.images.first.image.url }}</td>
+        <td>{{ cart_item.product.images.first.image }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan = "5"> 장바구니가 비어있습니다.</td>
+      </tr>
+    {% endfor %}
+  {% endif %}
+</table>
+<div ></div>
+{% endblock content %}
+
+
+{% block script %}
+<script src="{% static 'carts/js/cart_detail.js' %}"></script>
+{% endblock script %}
