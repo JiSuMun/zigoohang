@@ -8,7 +8,7 @@
   <th>제품</th>
   <th>개수</th>
   <th>합계</th>
-  {% if is_logged_in %}
+  {% if user.is_authenticated %}
     {% for cart_item in cart.cartitems.all %}
       <tr>
         <td><img src="{{ cart_item.product.images.first.image.url }}" alt="" width="100px"></td>

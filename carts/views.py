@@ -6,15 +6,13 @@ from .models import Cart, CartItem
 from stores.models import Product
 import json
 
-# @login_required
 def cart_detail(request):
-    is_logged_in = request.user.is_authenticated
 
-    if is_logged_in:
+    if request.user.is_authenticated:
         cart = Cart.objects.get(user=request.user)
-        context = {'is_logged_in': is_logged_in, 'cart': cart}
+        context = {'cart': cart}
     else:
-        context = {'is_logged_in': is_logged_in}
+        context = { }
 
     return render(request, 'carts/cart_detail.html', context)
 

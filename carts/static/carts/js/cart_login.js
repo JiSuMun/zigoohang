@@ -1,83 +1,38 @@
-// // const loginBtn = document.getElementById('login_btn')
-// // console.log(loginBtn);
-// const loginForm = document.getElementById('login-form');
-
-// function fetchCartFromLocalStorage() {
-//   const cart = localStorage.getItem("cart");
-//   return JSON.parse(cart) || [];
-// }
-
-// loginForm.addEventListener('submit', function (event) {
-//   // event.preventDefault();
-//   onUserLoggedIn()
-// })
-
-// function onUserLoggedIn() {
-//   const cart = fetchCartFromLocalStorage();
-//   console.log(123);
-//   console.log(123);
-//   console.log(123);
-//   console.log(123);
-//   console.log(123);
-//   console.log(123);
-//   if (cart.length > 0) {
-//     axios({
-//       method: 'POST',
-//       url: '/accounts/login/',
-//       data: JSON.stringify(cart),
-//       // contentType: 'application/json',
-//       // dataType: 'json',
-//     })
-//   //     success: (data) => {
-//   //       if (data.status === "success") {
-//   //         // 장바구니 데이터가 성공적으로 전송되고 서버에서 처리 완료되면 Local Storage의 데이터를 지웁니다.
-//   //         // localStorage.removeItem("cart");
-//   //       }
-//   //     },
-//   //     error: (xhr, status, errorThrown) => {
-//   //       console.error("Error: " + errorThrown);
-//   //     }
-//   //   });
-//   // }
-//   }
-// }
-
-
-// import axios from 'axios';
-
-// async function login(username, password) {
-//   // localStorage에서 cart 데이터 가져오기
-//   const cartData = localStorage.getItem('cart');
-//   const parsedCartData = cartData ? JSON.parse(cartData) : [];
-
-//   // 로그인 요청하기 (localStorage의 cart 데이터를 포함시킴)
-//   const response = await axios.post('/accounts/login/', {
-//     username: username,
-//     password: password,
-//     cart_data: parsedCartData
-//   });
-// }
-
 window.addEventListener('DOMContentLoaded', (event) => {
-  const loginForm = document.getElementById('login-form');
+  const loginForm = document.getElementById('login-form')
   
-  loginForm.addEventListener('submit', (e) => {
+  loginForm.addEventListener('submit', async (e) => {
     // 기본 폼 제출 행위를 막음
-    e.preventDefault();
+    e.preventDefault()
 
     // localStorage에서 cart 데이터 가져오기
-    const cartData = localStorage.getItem('cart');
+    const cartData = localStorage.getItem('cart')
     
-    // cart_data 필드를 생성함
-    const cartDataInput = document.createElement('input');
-    cartDataInput.type = 'hidden';
-    cartDataInput.name = 'cart_data';
-    cartDataInput.value = cartData || '[]';
+    // FormData 객체 생성
+    const formData = new FormData(loginForm)
+    formData.set('cart_data', cartData || '[]')
     
-    // cart_data 필드를 폼에 추가함
-    loginForm.appendChild(cartDataInput);
-    
-    // 폼을 제출함
-    loginForm.submit();
-  });
-});
+    // 로그인 요청(POST)을 보냄
+    const response = await fetch(loginForm.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+      },
+      credentials: 'same-origin', // 로그인한 사용자에 대한 쿠키를 전송
+    })
+
+    // 서버에서 반환한 JSON 데이터
+    const json = await response.json()
+
+    if (json.status === 'success') {
+      // 로컬 스토리지의 카트 데이터를 삭제하고
+      localStorage.removeItem('cart')
+      // 지정된 URL로 리디렉션
+      window.location.replace(json.redirect_url)
+    } else {
+      // 에러 메시지 표시 (실패한 경우)
+      alert(json.message)
+    }
+  })
+})

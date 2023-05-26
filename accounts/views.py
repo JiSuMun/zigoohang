@@ -33,12 +33,15 @@ from django.views.generic import View
 
 from django.contrib.auth.views import LoginView
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from carts.models import Cart, CartItem
 
 import json
 
 class CustomLoginView(LoginView):    
+    def form_invalid(self, form):
+        return JsonResponse({'status': 'error', 'message': 'Username or password is incorrect'})
+
     def form_valid(self, form):
         # 로그인 작업 완료
         # login(self.request, form.get_user())
@@ -70,7 +73,8 @@ class CustomLoginView(LoginView):
                 cart_item.save()
 
         # 로그인 한 사용자의 프로필로 리디렉션
-        return HttpResponseRedirect(self.get_success_url())
+        # return HttpResponseRedirect(self.get_success_url())
+        return JsonResponse({'status': 'success', 'redirect_url': self.get_success_url()})
 
 def login(request):
     if request.user.is_authenticated:
