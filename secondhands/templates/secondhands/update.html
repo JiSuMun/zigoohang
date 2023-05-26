@@ -1,5 +1,54 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}Update{% endblock title %}
+
+{% block style %}
+<style>
+  .form--box {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+{% endblock style %}
 
 {% block content %}
 
+<form action="{% url 'secondhands:update' product.pk %}" method='POST' enctype='multipart/form-data'>
+  {% csrf_token %}
+  <div class="form--box">
+    {{ product_form.product }}
+    {{ product_form.price }}
+    {{ product_form.category }}
+    {{ product_form.content }}
+    {{ image_form.as_p }}
+    {{ delete_form.as_p }}
+  </div>
+  <input type="text" id="address" placeholder="주소" name="address" class="form-address" value="{{ product.address }}">
+  <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
+  {{ product_form.extra_address }}
+  <input type="submit" value="수정">
+  <input type="submit" value="뒤로가기" onclick=window.history.back()>
+</form>
+
 {% endblock content %}
+
+{% block script %}
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+<script>
+  ClassicEditor.create( document.querySelector('#id_content'), {
+    language: "ko"
+  } );
+</script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  function search_address() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        const addr = data.address;
+        document.getElementById("address").value = addr;
+      }
+    }).open();
+  }
+</script>
+{% endblock script %}
