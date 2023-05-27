@@ -18,7 +18,7 @@
 {{ product.price }} 원
 <a href="#">[바로구매]</a>
 <input type="hidden" id="quantity" value="1">
-<button id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1">카트 추가</button>
+<button id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">카트 추가</button>
 {% comment %} <form action="#" method="POST">
   {% csrf_token %}
   <input type="submit" value="카트 추가">

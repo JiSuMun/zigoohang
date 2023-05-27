@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import Cart, CartItem
 from stores.models import Product
+from django.http import JsonResponse
 import json
 
 def cart_detail(request):
@@ -40,3 +41,17 @@ def add_item(request):
 
     cart_item.save()
     return JsonResponse({'success': 'Item added to cart'})
+
+
+def product_info(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    image = product.images.first()
+    print(product)
+    print(image.image.url)
+    data = {
+        'id': product.id,
+        'name': product.name,
+        'price': product.price,
+        'image': image.image.url,
+    }
+    return JsonResponse(data)
