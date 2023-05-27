@@ -19,6 +19,5 @@ urlpatterns = [
     path('<int:store_pk>/<int:product_pk>/<int:review_pk>/delete/', views.reviews_delete, name='reviews_delete'),
     path('<int:store_pk>/<int:product_pk>/<int:review_pk>/likes/', views.reviews_likes, name='reviews_likes'),
     path('<int:store_pk>/<int:product_pk>/<int:review_pk>/dislikes/', views.reviews_dislikes, name='reviews_dislikes'),
-    # 카트..
     # 주문(카카오페이, ...)
 ]

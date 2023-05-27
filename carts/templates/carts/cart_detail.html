@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>cart</h1>
+<table id="cart_table" style="border: 1px solid black;">
+  <thead>
+    <tr>
+      <th>이미지</th>
+      <th>제품</th>
+      <th>가격</th>
+      <th>개수</th>
+      <th>합계</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if user.is_authenticated %}
+      {% for cart_item in cart.cartitems.all %}
+        <tr>
+          <td><img src="{{ cart_item.product.images.first.image.url }}" alt="" width="100px"></td>
+          <td>{{ cart_item.product.name }}</td>
+          <td>{{ cart_item.quantity }}</td>
+          <td>{{ cart_item.sub_total }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan = "5"> 장바구니가 비어있습니다.</td>
+        </tr>
+      {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
+<div ></div>
+{% endblock content %}
+
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'carts/js/cart_detail.js' %}"></script>
+{% endblock script %}
