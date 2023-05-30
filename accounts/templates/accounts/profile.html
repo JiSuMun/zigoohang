@@ -27,7 +27,7 @@
         </div>
         <div class="profile-box-text">
           <h2>{{ user.last_name }} 님</h2>
-          <span>에코포인트 : </span>
+          <span>에코포인트 : {{ user.points }}</span>
         </div>
       </div>
 
@@ -54,13 +54,6 @@
         </div>
 
         <div class="profile-box-item">
-          <a class="{% if q == 'cart' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=cart">          
-            <span class="material-symbols-outlined">shopping_cart</span>
-            장바구니  
-          </a>
-        </div>
-
-        <div class="profile-box-item">
           <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">           
             <span class="material-symbols-outlined">shopping_bag</span>
             구매내역 
@@ -82,14 +75,12 @@
         {% include 'accounts/post.html' %}
       {% elif q == 'interest' %}
         {% include 'accounts/interest.html' %}
-      {% elif q == 'cart' %}
-        {% include 'accounts/cart.html' %}
       {% elif q == 'purchase_detail' %}
         {% include 'accounts/purchase_detail.html' %}
       {% elif q == 'second_detail' %}
         {% include 'accounts/second_detail.html' %}
       {% elif not q %}
-        <a href="{% url 'accounts:update' %}">회원정보수정</a>
+        <a href="{% url 'accounts:update' %}">회원정보수정</a> / 
         <a href="{% url 'accounts:change_password' %}">비밀번호변경</a>
       {% endif %}
     </div>

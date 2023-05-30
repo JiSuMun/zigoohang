@@ -11,7 +11,9 @@
 {% block content %}
 <div id="step-1" class="signup-wrapper">
   <div class="agreement-page">
-    <h2>약관 동의</h2>
+    <div class="agreement-page-title">
+      <h1>약관 동의</h1>
+    </div>
     <form id="agreement-form" action="{% url 'accounts:signup' %}" method="POST">
       {% csrf_token %}
       <input type="hidden" name="agreement-csrfmiddlewaretoken" value="{{ csrf_token }}">

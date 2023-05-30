@@ -3,9 +3,14 @@
   width: 100%;
   text-align: center;
 }
-.profie-title h1 {
+.profile-title {
+  height: 100px;
+}
+.profile-title h1{
+  margin-top: 10px;
   font-weight: bold;
   align-items: center;
+  font-size: 50px;
 }
 .profile-page {
   text-align: center;
@@ -62,4 +67,17 @@
   padding-top: 10%;
   border: 1px solid grey;
   margin: 0 auto;
+}
+
+@media (max-width: 1080px) {
+  /* .profile-page {
+    width: 50%;
+  } */
+  .profile-page-content {
+    width: 80%;
+  }
+  .profile-page-profile {
+    width: 80%;
+  }
+
 }
