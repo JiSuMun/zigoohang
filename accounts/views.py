@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomAutentication, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm
 from django.contrib.auth import get_user_model
@@ -13,7 +12,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from posts.models import Post
@@ -25,8 +24,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.template.loader import render_to_string
 from .forms import FindUserIDForm, PasswordResetRequestForm
-from django.utils.encoding import force_bytes
-from django.utils.encoding import force_str
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.forms import SetPasswordForm
 from django.views.generic import View
@@ -56,58 +54,103 @@ def logout(request):
     return redirect('main')
 
 
-class AgreementView(View):
-    def get(self, request, *args, **kwargs):
-        request.session['agreement'] = False
-        return render(request, 'accounts/agreement.html')
+# class AgreementView(View):
+#     def get(self, request, *args, **kwargs):
+#         request.session['agreement'] = False
+#         return render(request, 'accounts/agreement.html')
 
-    def post(self, request, *args, **kwarg):
-        if request.POST.get('agreement1', False) and request.POST.get('agreement2', False):
-            request.session['agreement'] = True
+#     def post(self, request, *args, **kwarg):
+#         if request.POST.get('agreement1', False) and request.POST.get('agreement2', False):
+#             request.session['agreement'] = True
 
-            if request.POST.get('csregister') == 'csregister':       
-                return redirect('accounts:signup')
-            else:
-                return redirect('accounts:signup')
-        else:
-            messages.info(request, "약관에 모두 동의해주세요.")
-            return render(request, 'accounts/agreement.html')
+#             if request.POST.get('csregister') == 'csregister':       
+#                 return redirect('accounts:signup')
+#             else:
+#                 return redirect('accounts:signup')
+#         else:
+#             messages.info(request, "약관에 모두 동의해주세요.")
+#             return render(request, 'accounts/agreement.html')
         
         
-def signup(request):
-    if request.user.is_authenticated:
-        return redirect('main')
+# def signup(request):
+#     if request.user.is_authenticated:
+#         return redirect('main')
     
-    form = CustomUserCreationForm()
-    if request.method == 'POST':
+#     form = CustomUserCreationForm()
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.address = request.POST.get('address')
+#             user.is_active = False  # 이메일 인증 전까지 비활성화
+#             user.save()
+
+#             # 이메일 인증 메시지 작성
+#             domain = request.get_host()
+#             mail_subject = '계정 활성화'
+#             message = render_to_string('accounts/activate_email.html', {
+#             'user': user,
+#             'domain': domain,
+#             'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
+#             'token': default_token_generator.make_token(user),
+#         })
+
+#             # 이메일 발송
+#             to_email = form.cleaned_data.get('email')
+#             email = EmailMessage(mail_subject, message, to=[to_email])
+#             email.send()
+
+#             return render(request, 'accounts/wait_for_email.html')
+
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'accounts/signup.html', context)
+
+
+
+class SignupView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('main')
+
+        form = CustomUserCreationForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'accounts/signup.html', context)
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('main')
+        
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.address = request.POST.get('address')
-            user.is_active = False  # 이메일 인증 전까지 비활성화
+            user.is_active = False  # Deactivate user until email confirmation
             user.save()
 
-            # 이메일 인증 메시지 작성
+            # Send email activation message
             domain = request.get_host()
             mail_subject = '계정 활성화'
             message = render_to_string('accounts/activate_email.html', {
-            'user': user,
-            'domain': domain,
-            'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': default_token_generator.make_token(user),
-        })
+                'user': user,
+                'domain': domain,
+                'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
 
-            # 이메일 발송
+            # Send email
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
+            return JsonResponse({'status': 'success'})
 
-            return render(request, 'accounts/wait_for_email.html')
-
-    context = {
-        'form': form,
-    }
-    return render(request, 'accounts/signup.html', context)
+        context = {
+            'form': form,
+        }
+        return render(request, 'accounts/signup.html', context)
 
 
 def activate(request, uidb64, token):
@@ -120,7 +163,6 @@ def activate(request, uidb64, token):
 
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
-        
         user.save()
         messages.success(request, '가입이 성공적으로 완료되었습니다!')
         return redirect('accounts:login')
