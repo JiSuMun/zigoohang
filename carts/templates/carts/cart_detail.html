@@ -1,8 +1,72 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'carts/css/cart_detail.css' %}">
+{% endblock head %}
+
 {% block content %}
-<h1>cart</h1>
+<div class="cart_container">
+  <h1>cart</h1>
+  <div class="cart_div">
+    <div class="cart_check">
+
+    </div>
+    <div class="cart_list_header">
+      <div class="cart_checkbox_col">
+        <input type="checkbox">
+      </div>
+      <div class="cart_product">
+        상품 정보
+      </div>
+      <div class="cart_quantity_col">
+        상품 수량
+      </div>
+      <div class="cart_subtotal">
+        상품 금액
+      </div>
+    </div>
+    {% if user.is_authenticated %}
+      {% if cart %}
+        {% for cart_item in cart.cartitems.all %}
+          <div class="cart_list_content">
+            <div class="cart_checkbox_col">
+              <input type="checkbox">
+            </div>
+            <div class="cart_product">
+              <div class="cart_img_container">
+                <img src="{{ cart_item.product.images.first.image.url }}" alt="">
+              </div>
+              <div class="cart_list_product_text">
+                <div class="cart_list_name">{{ cart_item.product.name }}</div>
+                <div class="cart_list_price">{{ cart_item.product.price }}</div>
+              </div>
+            </div>
+            <div class="cart_quantity_col">
+              <div class="cart_quantity_container">
+                <button>-</button>
+                <div class="cart_quantity">{{ cart_item.quantity }}</div>
+                <button>+</button>
+              </div>
+            </div>
+            <div class="cart_subtotal">{{ cart_item.sub_total }}</div>
+          </div>
+        {% endfor %}
+        <div>
+          합계 : {{ cart.total }} 원
+        </div>
+      {% else %}
+        <div>
+          장바구니가 비어있습니다.
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+<hr>
+
+<div class="cart_container">
 <table id="cart_table" style="border: 1px solid black;">
   <thead>
     <tr>
@@ -19,6 +83,7 @@
         <tr>
           <td><img src="{{ cart_item.product.images.first.image.url }}" alt="" width="100px"></td>
           <td>{{ cart_item.product.name }}</td>
+          <td>{{ cart_item.product.price }}</td>
           <td>{{ cart_item.quantity }}</td>
           <td>{{ cart_item.sub_total }}</td>
         </tr>
@@ -30,6 +95,7 @@
     {% endif %}
   </tbody>
 </table>
+</div>
 <div ></div>
 {% endblock content %}
 
