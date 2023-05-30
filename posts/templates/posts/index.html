@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-Index
+FORUM
 {% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/posts/index.css' %}">
+{% endblock head %}
 
 {% block content %}
 <!--포럼 타이틀-->
@@ -14,14 +18,47 @@ Index
 </div>
 
 <!--게시글 목록-->
-<div>
+<div class="p-wrapper">
+  <table class="p-table">
+    <!--테이블 비율-->
+    <colgroup>
+      <col width="11%"/>
+      <col width="50%"/>
+      <col width="13%"/>
+      <col width="13%"/>
+      <col width="13%"/>
+    </colgroup>
+    <thead>
+      <tr class="p-tr">
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>날짜</th>
+        <th>조회</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for post in posts %}
+      <tr>
+        <td class="p-td p-center">{{ post.id }}</td>
+        <td class="p-td">
+          <a class="p-td-title" href="{% url 'posts:detail' post.id %}">
+            {{ post.title }}
+          </a>
+        </td>
+        <td class="p-td p-center">{{ post.user.username  }}</td>
+        <td class="p-td p-center">{{ post.created_at|date:'m-d' }}</td>
+        <td class="p-td p-center">{{ post.id }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% comment %} <div class="p-write">
+    <a href="{% url 'posts:create' %}">글쓰기</a>
+  </div> {% endcomment %}
 
 </div>
 
-{% for post in posts %}
-  {{ post.title }}
-  {{ post.content }}
-  {{ post.user.username }}
-{% endfor %}
+
 
 {% endblock content %}
