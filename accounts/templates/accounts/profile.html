@@ -30,7 +30,7 @@
           <span>에코포인트 : {{ user.points }}</span>
         </div>
       </div>
-
+{% comment %} 위에 있던 항목들을 왼쪽 사이드바로 만들기 / 반응형 할 때 밑으로 내리기{% endcomment %}
       <div class="profile-box">
         <div class="profile-box-item">
           <a class="{% if not q %} {% else %} pass {% endif %}" href="{% url 'accounts:profile' person.username %}">

@@ -91,3 +91,12 @@
 	border-radius: 5px;
 	cursor: pointer;
 }
+
+/*비밀번호 재설정*/
+.reset_pw-form ul {
+	padding-left: 0;
+}
+.reset_pw-form li {
+	margin-bottom: 5px;
+	color: grey;
+}
