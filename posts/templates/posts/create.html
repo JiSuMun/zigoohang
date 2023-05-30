@@ -1,19 +1,49 @@
 {% extends 'base.html' %}
 
-{% block title %}Create{% endblock title %}
+{% load static %}
+
+{% block title %}
+CREATE
+{% endblock title %}
 
 {% block head %}
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/posts/create.css' %}">
 {% endblock head %}
 
 {% block content %}
-  <h1>게시글을 작성해주세요!</h1>
+<!--create 타이틀-->
+<div class="create-title-wrap">
+  <div class="create-title-box">
+    <p class="create-title-title">FORUM</p>
+    <p class="create-title-text">FORUM은 환경에 대한 인식을 넓히고 협력과 아이디어 공유를 촉진하여 지속 가능한 미래를 위한 행동에 동참할 수 있는 공간입니다.</p>
+  </div>
+</div>
+<div class="c-wrapper">
   <form action="{% url 'posts:create' %}" method='POST' enctype='multipart/form-data'>
     {% csrf_token %}
-    {{ post_form.as_p }}
-    {{ image_form.as_p }}
-    <input type="submit" value="등록">
-    <input type="submit" value="뒤로가기" onclick=window.history.back()>
+    <div class="c-form-wrap">
+      <div>
+        <p class="form_label">제목<span class="required_star">*</span></p>
+        {{ post_form.title }}
+      </div>
+      <div>
+        <p class="form_label">내용<span class="required_star">*</span></p>
+        {{ post_form.content }}
+      </div>
+      <div>
+        <p class="form_label">태그</p>
+        {{ post_form.tags }}
+      </div>
+      <div>
+        <p class="form_label">파일 첨부하기</p>
+        {{ image_form.image }}
+      </div>
+    </div>
+    <div class="button-wrapper">
+      <input class="c-button-cancel" type="submit" value="취소" onclick=window.history.back()>
+      <input class="c-button" type="submit" value="등록하기">
+    </div>
   </form>
-
+</div>
 {% endblock content %}
