@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  {% if chat_rooms %}
+    {% for chat_room in chat_rooms %}
+      <a href="{% url 'chat:room' chat_room.name %}">{{ chat_room }}</a>
+      <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Delete chat">
+      </form>
+    {% endfor %}
+
+  {% else %}
+    <p>채팅방이 없습니다.</p>
+  {% endif %}
+
+{% endblock content %}
