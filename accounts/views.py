@@ -290,7 +290,7 @@ def profile(request, username):
         'posts':posts,
         'interests':interests,
         'purchase_details': purchase_details,
-        'purchases': purchases,
+        # 'purchases': purchases,
     }
     return render(request, 'accounts/profile.html', context)
     

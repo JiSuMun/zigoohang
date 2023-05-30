@@ -27,7 +27,7 @@ def main(request):
     return render(request, 'posts/main.html')
 
 def index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-created_at')
     context = {
         'posts' : posts,
     }

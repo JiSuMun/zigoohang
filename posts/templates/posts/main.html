@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/posts/main.css' %}">
+{% endblock head %}
 
 {% block content %}
 <!--환경 타이틀-->
