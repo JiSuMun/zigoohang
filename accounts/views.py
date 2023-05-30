@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomAutentication, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm
 from django.contrib.auth import get_user_model
@@ -13,11 +12,11 @@ from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from posts.models import Post
-from stores.models import Product, Order, OrderItem, Cart
+from stores.models import Product, Order, OrderItem
 from secondhands.models import S_Purchase, S_Product
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -25,21 +24,65 @@ from django.urls import reverse
 from django.conf import settings
 from django.template.loader import render_to_string
 from .forms import FindUserIDForm, PasswordResetRequestForm
-from django.utils.encoding import force_bytes
-from django.utils.encoding import force_str
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.forms import SetPasswordForm
 from django.views.generic import View
 from django.core.exceptions import ValidationError
 from django.db import transaction
 
+from django.contrib.auth.views import LoginView
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect, JsonResponse
+from carts.models import Cart, CartItem
+
+import json
+
+class CustomLoginView(LoginView):    
+    def form_invalid(self, form):
+        return JsonResponse({'status': 'error', 'message': 'Username or password is incorrect'})
+
+    def form_valid(self, form):
+        # 로그인 작업 완료
+        # login(self.request, form.get_user())
+        auth_login(self.request, form.get_user())
+
+        cart_data = self.request.POST.get('cart_data')
+        if cart_data:
+            cart_items = json.loads(cart_data)
+            
+            # 인증된 사용자를 사용하여 Cart 인스턴스 생성 또는 조회
+            cart, created = Cart.objects.get_or_create(user=self.request.user)
+            
+            # cart_data를 CartItem에 저장, 이미 존재하는 경우 quantity 업데이트
+            for item in cart_items:
+                # product 인스턴스를 가져옵니다 (id로 조회).
+                product_instance = get_object_or_404(Product, id=item['id'])
+
+                # 기존 cart_item이 있는지 확인함
+                cart_item, cart_item_created = CartItem.objects.get_or_create(cart=cart, product=product_instance)
+
+                if cart_item_created:
+                    # 새로운 cart_item의 경우
+                    cart_item.quantity = item['quantity']
+                else:
+                    # 기존 cart_item의 경우 quantity를 더해줌
+                    cart_item.quantity += item['quantity']
+
+                # 변경된 quantity 값을 저장함
+                cart_item.save()
+
+        # 로그인 한 사용자의 프로필로 리디렉션
+        # return HttpResponseRedirect(self.get_success_url())
+        return JsonResponse({'status': 'success', 'redirect_url': self.get_success_url()})
 
 def login(request):
     if request.user.is_authenticated:
         return redirect('main')
-
+    # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', request.body)
     if request.method == 'POST':
-        form = CustomAuthentication(request, request.POST)
+        # jsonObj = 
+        form = CustomAutentication(request, request.POST)
         if form.is_valid():
             user = form.get_user()
             if not user.is_active:
@@ -87,35 +130,76 @@ def logout(request):
     return redirect('main')
 
 
-class AgreementView(View):
-    def get(self, request, *args, **kwargs):
-        request.session['agreement'] = False
-        return render(request, 'accounts/agreement.html')
+# class AgreementView(View):
+#     def get(self, request, *args, **kwargs):
+#         request.session['agreement'] = False
+#         return render(request, 'accounts/agreement.html')
 
-    def post(self, request, *args, **kwarg):
-        if request.POST.get('agreement1', False) and request.POST.get('agreement2', False):
-            request.session['agreement'] = True
+#     def post(self, request, *args, **kwarg):
+#         if request.POST.get('agreement1', False) and request.POST.get('agreement2', False):
+#             request.session['agreement'] = True
 
-            if request.POST.get('csregister') == 'csregister':       
-                return redirect('accounts:signup')
-            else:
-                return redirect('accounts:signup')
-        else:
-            messages.info(request, "약관에 모두 동의해주세요.")
-            return render(request, 'accounts/agreement.html')
+#             if request.POST.get('csregister') == 'csregister':       
+#                 return redirect('accounts:signup')
+#             else:
+#                 return redirect('accounts:signup')
+#         else:
+#             messages.info(request, "약관에 모두 동의해주세요.")
+#             return render(request, 'accounts/agreement.html')
         
-
-
-from django.contrib import messages
-
-def signup(request):
-    if request.user.is_authenticated:
-        return redirect('main')
-
-    User = get_user_model()
-    form = CustomUserCreationForm()
+        
+# def signup(request):
+#     if request.user.is_authenticated:
+#         return redirect('main')
     
-    if request.method == 'POST':
+#     form = CustomUserCreationForm()
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.address = request.POST.get('address')
+#             user.is_active = False  # 이메일 인증 전까지 비활성화
+#             user.save()
+
+#             # 이메일 인증 메시지 작성
+#             domain = request.get_host()
+#             mail_subject = '계정 활성화'
+#             message = render_to_string('accounts/activate_email.html', {
+#             'user': user,
+#             'domain': domain,
+#             'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
+#             'token': default_token_generator.make_token(user),
+#         })
+
+#             # 이메일 발송
+#             to_email = form.cleaned_data.get('email')
+#             email = EmailMessage(mail_subject, message, to=[to_email])
+#             email.send()
+
+#             return render(request, 'accounts/wait_for_email.html')
+
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'accounts/signup.html', context)
+
+
+
+class SignupView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('main')
+
+        form = CustomUserCreationForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'accounts/signup.html', context)
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('main')
+        
         form = CustomUserCreationForm(request.POST, request.FILES)
         
         if form.is_valid():
@@ -152,9 +236,10 @@ def signup(request):
             
             user = form.save(commit=False)
             user.address = request.POST.get('address')
-            user.is_active = False 
+            user.is_active = False  # Deactivate user until email confirmation
             user.save()
 
+            # Send email activation message
             domain = request.get_host()
             mail_subject = '계정 활성화'
             message = render_to_string('accounts/activate_email.html', {
@@ -164,17 +249,16 @@ def signup(request):
                 'token': default_token_generator.make_token(user),
             })
 
+            # Send email
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
+            return JsonResponse({'status': 'success'})
 
-            return render(request, 'accounts/wait_for_email.html')
-        else:
-            messages.error(request, "양식이 올바르지 않습니다. 다시 확인해주세요.")
-            print(form.errors)
-
-    context = {'form': form}
-    return render(request, 'accounts/signup.html', context)
+        context = {
+            'form': form,
+        }
+        return render(request, 'accounts/signup.html', context)
 
 
 
@@ -224,7 +308,6 @@ def activate(request, uidb64, token):
 
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
-        
         user.save()
         messages.success(request, '가입이 성공적으로 완료되었습니다!')
         return redirect('accounts:login')

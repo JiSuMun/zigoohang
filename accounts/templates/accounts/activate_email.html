@@ -1,7 +1,6 @@
 {% autoescape off %}
 안녕하세요, {{ user.username }}님!
-다음 링크를 클릭하여 회원가입을 완료해주세요:
-<a href="http://{{ domain }}{% url 'accounts:activate' uidb64=uidb64 token=token %}">
+<a href="http://{{ domain }}{% url 'accounts:activate' uidb64=uidb64 token=token %}">링크를 클릭하여 회원가입을 완료해주세요</a>
 
 {% endautoescape %}
 
