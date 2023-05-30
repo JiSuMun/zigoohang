@@ -5,9 +5,11 @@ from .views import SignupView, activate
 
 
 
+
 app_name = "accounts"
 urlpatterns = [
-    path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'), 
+    # path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'), 
+     path('login/', views.CustomLoginView.as_view(template_name='accounts/login.html'), name='login'),
     path("logout/", views.logout, name="logout"),
     path('signup/', SignupView.as_view(), name='signup'),
     path("update/", views.update, name="update"),

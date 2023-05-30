@@ -36,17 +36,22 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost',]
 # Application definition
 
 INSTALLED_APPS = [
+    # Application
     'accounts',
     'donations',
     'posts',
     'stores',
     'secondhands',
+    'carts',
+
+    # third party
     'imagekit',
     'ckeditor',
     'ckeditor_uploader',
     'taggit.apps.TaggitAppConfig',
     'taggit_templatetags2', 
     
+    # django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -16,7 +16,7 @@
     <div class="login-page-title">
       <h1>LOGIN</h1>
     </div>
-    <form class="login-page-form" action="{% url 'accounts:login' %}" method="POST">
+    <form class="login-page-form" id="login-form" action="{% url 'accounts:login' %}" method="POST">
       {% csrf_token %}
       {% for field in form %}
         {{ field }}
@@ -49,3 +49,7 @@
  
 {% endblock content %}
 
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{% static 'carts/js/cart_login.js' %}"></script>
+{% endblock script %}
