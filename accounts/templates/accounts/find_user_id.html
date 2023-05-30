@@ -1,16 +1,27 @@
 {% extends 'base.html' %} 
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/accounts/find_account.css' %}">
+{% endblock head %}
+
 {% block content %} 
 
 {% if messages %}
 {% for message in messages %}
-  <div>{% if message.tags %} class="bg-{{message.tags}}"{% endif %}>{{ message }}</div>
+  <div>{% if message.tags %} class="bg-{{message.tags}}"{% endif %}{{ message }}</div>
 {% endfor %}
 {% endif %}
-
-<h2>아이디 찾기</h2>
-<form method="post">
-  {% csrf_token %} 
-  {{ form.as_p }} 
-  <button type="submit">아이디 찾기</button>
-</form>
+<div class="find_id-wrapper">
+  <div class="find_id-page">
+    <h1>아이디 찾기</h1>
+    <div class="find_id-page-form">
+      <form method="post">
+        {% csrf_token %} 
+        {{ form.as_p }} 
+        <button type="submit">아이디 찾기</button>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

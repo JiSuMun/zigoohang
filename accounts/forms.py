@@ -15,7 +15,7 @@ class FindUserIDForm(forms.Form):
             raise forms.ValidationError("입력한 이메일이 존재하지 않습니다.")
         
 class PasswordResetRequestForm(forms.Form):
-    email = forms.EmailField(label='이메일 주소', required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='이메일 주소', required=True, widget=forms.TextInput(attrs={'class': 'form-control', "placeholder": "이메일",}))
 
     def clean(self):
         cleaned_data = super().clean()
