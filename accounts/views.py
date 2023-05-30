@@ -276,7 +276,7 @@ def profile(request, username):
     posts = Post.objects.filter(user=person)
     interests = request.user.like_products.all()
     orders = Order.objects.filter(customer=person)
-    purchases = S_Purchase.objects.filter(user=person).select_related('product')
+    # purchases = S_Purchase.objects.filter(user=person).select_related('product')
     purchase_details = []
     for order in orders:
         items = OrderItem.objects.filter(order=order)
@@ -290,7 +290,7 @@ def profile(request, username):
         'posts':posts,
         'interests':interests,
         'purchase_details': purchase_details,
-        'purchases': purchases,
+        # 'purchases': purchases,
     }
     return render(request, 'accounts/profile.html', context)
     

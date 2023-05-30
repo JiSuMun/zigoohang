@@ -48,6 +48,13 @@ a {
 	color: black;
 }
 
+:root {
+	--planet-color1: #EDF1F4;
+	--planet-color2: #ADCBC9;
+	--planet-color3: #8BBE86;
+	--planet-color4: #363636;
+}
+
 .white-text{
 	color: white;
 }
