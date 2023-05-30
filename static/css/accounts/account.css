@@ -115,6 +115,19 @@
 	border-radius: 5px;
 	cursor: pointer;
 }
+#agreement-form label {
+	margin-bottom: 30px;
+}
+#agreement1, #agreement2 {
+	margin-top: 30px;
+}
+.agreement_div ol {
+	padding-left: 0;
+}
+.agreement-submit {
+	display: flex;
+	gap: 10px;
+}
 
 
 /* 정보 수정 */

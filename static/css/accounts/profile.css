@@ -64,7 +64,7 @@
 .profile-page-content {
   width: 1000px;
   height: 1000px;
-  padding-top: 10%;
+  /* padding-top: 10%; */
   border: 1px solid grey;
   margin: 0 auto;
 }

@@ -1,13 +1,29 @@
 {% comment %} 내가 작성한 게시글 {% endcomment %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/accounts/posts.css' %}">
+{% endblock head %}
 
 {% if posts %}
-    {% for post in posts  %}
-    <p>제목: {{ post.title }}</p>
-    <p>내용: {{ post.content }}</p>
-    <p>작성일: {{ post.created_at }}</p>
-    <hr>
-    {% endfor %}
-    
+    <div class="post-page">
+        <div class="post-page-title">
+            <h2>내가 작성한 게시글📚</h2>
+        </div>
+        <div class="card-grid">
+            {% for post in posts %}
+            <a href="{% url 'posts:detail' post.pk %}">
+                <div class="card">
+                    <h3 class="card-title">{{ post.title }}</h3>
+                    <p class="card-content">{{ post.content }}</p>
+                    <p class="card-date">{{ post.created_at }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
 {% else %}
     <h5>작성한 게시글이 없습니다.</h5>
 {% endif %}
+
+  
