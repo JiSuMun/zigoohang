@@ -63,14 +63,26 @@
   text-align: center;
 }
 
-.p-write {
-  width: 70px;
-  text-align: center;
-  padding: 5px 5px;
-  border: 1px solid #297821;
+.p-write-wrapper {
   display: flex;
   justify-content: flex-end;
 }
+.p-write {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;;
+  border: 1px solid #297821;
+  font-size: 13px;
+  color: #297821;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.p-write:hover {
+  background-color: #297821;
+  color: white;
+}
+
 @media (max-width: 1079.9px) {
   .index-title-wrap {
     padding-left: 1rem;

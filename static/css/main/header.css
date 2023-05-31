@@ -43,8 +43,18 @@
   color: black;
   align-items: center;
 }
-
 .nav-link:hover {
+  color: #297821;
+}
+
+.nav-image {
+  height: 70px;
+  display: flex;
+  padding: 0rem 0.7rem;
+  color: black;
+  align-items: center;
+}
+.nav-image:hover {
   color: #297821;
 }
 

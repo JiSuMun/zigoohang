@@ -34,7 +34,7 @@ FORUM
         <th>제목</th>
         <th>작성자</th>
         <th>날짜</th>
-        <th>조회</th>
+        <th>추천</th>
       </tr>
     </thead>
     <tbody>
@@ -53,10 +53,9 @@ FORUM
     {% endfor %}
     </tbody>
   </table>
-  {% comment %} <div class="p-write">
-    <a href="{% url 'posts:create' %}">글쓰기</a>
-  </div> {% endcomment %}
-
+  <div class="p-write-wrapper">
+    <a class="p-write" href="{% url 'posts:create' %}">글쓰기</a>
+  </div>
 </div>
 
 
