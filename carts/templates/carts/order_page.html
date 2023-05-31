@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>order_page</h1>
+<p>{{ products }}</p>
+{% comment %} <p>{{ order }}</p>
+{% for order_item in order.order_items.all %}
+  <p>{{ order_item.pk }}</p>
+  <p>{{ order_item.name }}</p>
+  <p>{{ order_item.quantity }}</p>
+  <p>{{ order_item.price }}</p>
+  <p>{{ order_item.sub_total }}</p>
+{% endfor %}
+<p>{{ order.total }}</p> {% endcomment %}
+{% for item in products %}
+  <p>{{ item.product.name }}</p>
+  <p>{{ item.quantity }}</p>
+  <p>{{ item.sub_total }}</p>
+{% endfor %}
+{{ total }}
+<p>주소</p>
+<button>
+  결제하기
+</button>
+{% endblock content %}

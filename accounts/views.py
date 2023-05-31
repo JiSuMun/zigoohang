@@ -16,7 +16,8 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from posts.models import Post
-from stores.models import Product, Order, OrderItem
+from stores.models import Product
+from carts.models import Order, OrderItem
 from secondhands.models import S_Purchase, S_Product
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
