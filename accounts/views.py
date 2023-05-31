@@ -1,42 +1,33 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render,redirect, get_object_or_404
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import CustomAutentication, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm
-from django.contrib.auth import get_user_model
-from django.contrib.auth import update_session_auth_hash
-from django.urls import reverse_lazy
+from django.contrib.auth import get_user_model, update_session_auth_hash
+from django.urls import reverse_lazy, reverse
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
 from posts.models import Post
 from stores.models import Product, Order, OrderItem
 from secondhands.models import S_Purchase, S_Product
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.urls import reverse
 from django.conf import settings
-from django.template.loader import render_to_string
 from .forms import FindUserIDForm, PasswordResetRequestForm
 from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth.forms import SetPasswordForm
 from django.views.generic import View
 from django.core.exceptions import ValidationError
 from django.db import transaction
-
 from django.contrib.auth.views import LoginView
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, JsonResponse
 from carts.models import Cart, CartItem
-
 import json
+
 
 class CustomLoginView(LoginView):    
     def form_invalid(self, form):
@@ -375,7 +366,7 @@ def profile(request, username):
     posts = Post.objects.filter(user=person)
     interests = request.user.like_products.all()
     orders = Order.objects.filter(customer=person)
-    purchases = S_Purchase.objects.filter(user=person).select_related('product')
+    purchases = S_Purchase.objects.filter(customer=person).select_related('product')
     purchase_details = []
     for order in orders:
         items = OrderItem.objects.filter(order=order)
@@ -470,3 +461,25 @@ def password_reset_confirm(request, uidb64, token):
     else:
         messages.error(request, '비밀번호 재설정 링크가 유효하지 않습니다.')
         return redirect('accounts:password_reset_request')
+    
+
+@login_required
+def follow(request, user_pk):
+    User = get_user_model()
+    you = User.objects.get(pk=user_pk)
+    me = request.user
+
+    if you != me:
+        if me in you.followers.all():
+            you.followers.remove(me)
+            is_followed = False
+        else:
+            you.followers.add(me)
+            is_followed = True
+        context = {
+            'is_followed': is_followed,
+            'followings_count': you.followings.count(),
+            'followers_count': you.followers.count(),
+        }
+        return JsonResponse(context)
+    return redirect('accounts:profile', you.username)

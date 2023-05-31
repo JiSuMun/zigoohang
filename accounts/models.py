@@ -16,7 +16,6 @@ class User(AbstractUser):
     def profile_image_path(instance, filename):
         return f'profile/{instance.username}/{filename}'
     image = ProcessedImageField(upload_to=profile_image_path, blank=True, null=True)
-
     
     is_seller = models.BooleanField(default=False)
     phoneNumberRegex = RegexValidator(regex=r'^0[1-9]\d{0,2}-\d{3,4}-\d{4}$')

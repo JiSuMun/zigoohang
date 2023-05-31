@@ -28,6 +28,52 @@
         <div class="profile-box-text">
           <h2>{{ user.last_name }} 님</h2>
           <span>에코포인트 : </span>
+          <br>
+          <span id="followings-count" class="follower-following">
+            <span id="followings-count">
+                <strong>{{ person.followings.all|length }}</strong>
+                팔로잉
+            </span>
+            <span id="followers-count">
+                <strong>{{ person.followers.all|length }}</strong>
+                팔로워
+            </span>
+            </span>
+            {% if request.user != person %}
+            <form id="follow-form" data-user-id="{{ person.pk }}">
+              {% csrf_token %}
+              {% if request.user in person.followers.all %}
+                <input type="submit" value="언팔로우">
+              {% else %}
+                <input type="submit" value="팔로우">
+              {% endif %}
+            </form>
+          {% endif %}
+
+        {% comment %} 팔로우관련 목록 {% endcomment %}
+      
+      <!-- 팔로잉 사용자 이미지 출력 -->
+      <h3>Following:</h3>
+{% for following in person.followings.all %}
+    {% if following.image %}
+        <img class="profile-image" src="{{ following.image.url }}" alt="{{ following.username }}'s profile image">
+    {% else %}
+        <img class="profile-image" src="{% static 'path/to/default/profile/image' %}" alt="{{ following.username }}'s profile image">
+    {% endif %}
+    <p>{{ following.username }}</p>
+{% endfor %}
+
+<!-- 팔로워 사용자 이미지 출력 -->
+<h3>Followers:</h3>
+{% for follower in person.followers.all %}
+    {% if follower.image %}
+        <img class="profile-image" src="{{ follower.image.url }}" alt="{{ follower.username }}'s profile image">
+    {% else %}
+        <img class="profile-image" src="{% static 'path/to/default/profile/image' %}" alt="{{ follower.username }}'s profile image">
+    {% endif %}
+    <p>{{ follower.username }}</p>
+{% endfor %}
+
         </div>
       </div>
 
@@ -96,4 +142,51 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const form = document.querySelector('#follow-form')
+    const csrftoken = document
+      .querySelector('[name=csrfmiddlewaretoken]')
+      .value
+
+      form
+      .addEventListener('submit', function (event) {
+        // 이벤트 기본 동작 취소
+        event.preventDefault()
+
+        // HTML로 부터 전달받은 프로필 유저의 PK
+        const userId = event.target.dataset.userId
+
+        // axios로 요청 보내기
+        axios({
+          method: 'post',
+          url: `/accounts/${userId}/follow/`,
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        }).then((response) => {
+          const isFollowed = response.data.is_followed
+          const followBtn = document.querySelector('#follow-form > input[type=submit]')
+
+          // isFollowed에 따라 버튼을 조작
+          if (isFollowed === true) {
+            followBtn.value = '언팔로우'
+          } else {
+            followBtn.value = '팔로우'
+          }
+
+          // 팔로잉&팔로워 수 DOM 조작
+          const followingCountTag = document.querySelector('#followings-count strong')
+          const followerCountTag = document.querySelector('#followers-count strong')
+
+          const followingsCountData = response.data.followings_count
+          const followersCountData = response.data.followers_count
+
+          // 선택한 span 태그의 내용을 팔로잉과 팔로워 수 데이터로 채워넣기
+          followingCountTag.textContent = followingsCountData
+          followerCountTag.textContent = followersCountData
+        })
+
+      })
+  </script>
 {% endblock content %}
