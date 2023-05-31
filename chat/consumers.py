@@ -8,7 +8,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
-        print(self.room_group_name)
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -49,8 +48,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def save_message(self, message):
         chat_room = ChatRoom.objects.get(name=self.room_name)
         sender = self.scope['user']
+
         new_message = Message(chat_room=chat_room, sender=sender, content=message)
         new_message.save()
+
 
     @database_sync_to_async
     def get_or_create_room(self, user1_id, user2_id):

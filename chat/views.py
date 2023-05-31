@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import ChatRoom, Message
 from django.contrib.auth import get_user_model
+from django.db.models import Q, Count
 
 
 def inbox(request):
@@ -28,5 +29,18 @@ def room(request, room_name):
 
 def delete_chat(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
-    chat_room.delete()
+
+    if request.user in chat_room.participants.all():
+        chat_room.participants.remove(request.user)
+
+    if chat_room.participants.count() == 0:
+        chat_room.delete()
+
     return redirect('chat:inbox')
+
+
+
+# def delete_chat(request, room_name):
+#     chat_room = ChatRoom.objects.get(name=room_name)
+#     chat_room.delete()
+#     return redirect('chat:inbox')
