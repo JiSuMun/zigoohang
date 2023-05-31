@@ -53,7 +53,7 @@ class Order(models.Model):
     added_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username}의 주문번호 {self.pk}"
+        return f"{self.customer.username}의 주문번호 {self.pk}"
 
     # 주문 총 금액
     def total(self):
@@ -65,7 +65,7 @@ class Order(models.Model):
     # 구매를 하게 되면 구매금액의 일정비율이 포인트로 추가
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        points = self.quantity * POINT_PER_PRICE
+        points = self.total() * POINT_PER_PRICE
         self.customer.points += points
         self.customer.save()
     

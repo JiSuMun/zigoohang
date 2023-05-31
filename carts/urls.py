@@ -10,7 +10,7 @@ urlpatterns = [
     path('api/products/<int:product_id>/', views.product_info, name='product_info'),
     path('order_page/', views.order_page, name='order_page'),
     path('kakaopay/', views.kakaopay, name='kakaopay'),
-    path('kakaopay/approval/', views.kakaopay_approval, name='kakaopay_approval'),
+    path('kakaopay/approval/<int:order_id>/', views.kakaopay_approval, name='kakaopay_approval'),
     path('kakaopay/cancel/', views.kakaopay_cancel, name='kakaopay_cancel'),
     path('kakaopay/fail/', views.kakaopay_fail, name='kakaopay_fail'),
 ]

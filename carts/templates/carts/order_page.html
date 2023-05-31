@@ -2,24 +2,25 @@
 
 {% block content %}
 <h1>order_page</h1>
-<p>{{ products }}</p>
-{% comment %} <p>{{ order }}</p>
+{% comment %} <p>{{ products }}</p> {% endcomment %}
+<p>{{ order }}</p>
 {% for order_item in order.order_items.all %}
   <p>{{ order_item.pk }}</p>
-  <p>{{ order_item.name }}</p>
+  <p>{{ order_item.product.name }}</p>
   <p>{{ order_item.quantity }}</p>
-  <p>{{ order_item.price }}</p>
+  <p>{{ order_item.product.price }}</p>
   <p>{{ order_item.sub_total }}</p>
+  <hr>
 {% endfor %}
-<p>{{ order.total }}</p> {% endcomment %}
-{% for item in products %}
-  <p>{{ item.product.name }}</p>
-  <p>{{ item.quantity }}</p>
-  <p>{{ item.sub_total }}</p>
-{% endfor %}
-{{ total }}
+<p>합계 : {{ order.total }}</p>
+<hr>
+<p>연락처</p>
 <p>주소</p>
-<button>
-  결제하기
-</button>
+<form action="{% url 'carts:kakaopay' %}" method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="order_id" value="{{ order.pk }}">
+  <button>
+    결제하기
+  </button>
+</form>
 {% endblock content %}
