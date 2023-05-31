@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/chat/room.css' %}">
+{% endblock head %}
+
 {% block content %}
 
 {{ room_name|json_script:"room-name" }}

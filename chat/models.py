@@ -18,9 +18,10 @@ class ChatRoom(models.Model):
         return chat_room
 
     def set_default_name(self, user1, user2):
-        self.name = f"Chat_with_{user2.username}" 
+        self.name = f"Chat_with_{user1.username}_and_{user2.username}" 
         self.save()
     
+
     def __str__(self):
         return self.name
 
