@@ -83,6 +83,11 @@
   height: 1000px;
   margin: 0 auto;
 }
+
+
+.profile-image {
+  width: 50px;
+}
 .profile-page-info-main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
