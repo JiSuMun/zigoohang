@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/chat/room.css' %}">
+{% endblock head %}
+
+{% block content %}
+
+{{ room_name|json_script:"room-name" }}
+  <div id="chat-room">
+    {% for message in messages %}
+      <div class="message">
+        <p>{{ message.sender.username }}: {{ message.content }}</p>
+      </div>
+    {% empty %}
+      <p>No messages yet.</p>
+    {% endfor %}
+  </div>
+
+  <form id="text_form" class="text-form">
+    <input type="text" id="message_input" name="message" placeholder="Type your message">
+    <button type="submit">Send</button>
+  </form>
+{% endblock %}
+
+{% block script %}
+<script>
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+    console.log(roomName);
+
+    let loc = window.location;
+    let wsStart = 'ws://';
+    if (loc.protocol == 'https:') {
+      wsStart = 'wss://';
+    }
+
+    console.log(wsStart)
+
+    console.log(window.location.host)
+  
+    const chatSocket = new WebSocket(
+      wsStart + window.location.host + '/ws/chat/' + roomName + '/'
+    );
+  
+    console.log(chatSocket);
+  
+    chatSocket.onopen = function (event) {
+      console.log('WebSocket connection established.');
+    };
+  
+    chatSocket.onmessage = function (event) {
+      const message = JSON.parse(event.data);
+      console.log('Received message:', message);
+      displayMessage({
+        sender: message.sender,
+        content: message.message,
+      });
+    };
+  
+    chatSocket.onclose = function (event) {
+      console.log('WebSocket connection closed.');
+    };
+
+    chatSocket.onerror = function (event) {
+      console.error('WebSocket error:', event);
+    };
+  
+    const form = document.getElementById('text_form');
+    const messageInput = document.getElementById('message_input');
+  
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const message = messageInput.value.trim();
+      if (message !== '') {
+        const messageData = {
+          'message': message
+        };
+        chatSocket.send(JSON.stringify(messageData));
+        messageInput.value = '';
+      }
+    });
+  
+    function displayMessage(message) {
+      const chatRoom = document.getElementById('chat-room');
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message');
+      const content = document.createElement('p');
+      content.textContent = `${message.sender}: ${message.content}`;
+      messageElement.appendChild(content);
+      chatRoom.appendChild(messageElement);
+    }
+  });
+</script>
+{% endblock script %}

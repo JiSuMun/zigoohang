@@ -12,133 +12,138 @@
 
 {% block content %}
 <div class="profile-wrapper">
-  <div class="profie-title">
-    <h1>MY PAGE</h1>
+  {% comment %} 사이드바 {% endcomment %}
+  <div class="profile-sidebar">
+    <a class="{% if not q %} {% else %} pass {% endif %}" href="{% url 'accounts:profile' person.username %}">
+      <div class="profile-sidebar-item">
+        <span class="material-symbols-outlined">settings</span>
+        <p>회원정보</p>
+      </div>
+    </a>
+    <a class="{% if q == 'post' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=post">
+      <div class="profile-sidebar-item">
+        <span class="material-symbols-outlined">notes</span>
+        <p>작성글</p>
+      </div>
+    </a>
+    <a class="{% if q == 'interest' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=interest">            
+      <div class="profile-sidebar-item">
+        <span class="material-symbols-outlined">thumb_up</span>
+        <p>관심상품</p>
+      </div>
+    </a>
+    <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">           
+      <div class="profile-sidebar-item">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        <p>구매내역</p> 
+      </div>
+    </a>
+    <a class="{% if q == 'second_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=second_detail">            
+      <div class="profile-sidebar-item">
+        <span class="material-symbols-outlined">recycling</span>
+        <p>중고거래내역</p>
+      </div>
+    </a>
   </div>
+
+  {% comment %} 페이지 {% endcomment %}
   <div class="profile-page">
-    <div class="profile-page-profile"> 
-      <div class="profile-box">
-        <div class="profile-box-img">
-          {% if request.user.image %}
-          <img src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image">
-          {% else %}
-          <img src="#" alt="noimage">
-          {% endif %}
+    {% if q == 'post' %}
+      {% include 'accounts/post.html' %}
+    {% elif q == 'interest' %}
+      {% include 'accounts/interest.html' %}
+    {% elif q == 'purchase_detail' %}
+      {% include 'accounts/purchase_detail.html' %}
+    {% elif q == 'second_detail' %}
+      {% include 'accounts/second_detail.html' %}
+    {% elif not q %}
+      <div class="profile-page-info">
+        <div class="profile-page-info-header">
+            <div class="header-img">
+              {% if request.user.image %}
+                <img src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image">
+              {% else %}
+                <img src="#" alt="noimage">
+              {% endif %}
+            </div>
+            <div class="header-text">
+              <h2>{{ user.last_name }} 님</h2>
+              {% if user.is_seller == False %}
+                <p class="not_seller">일반회원</p>
+              {% else %}
+                <p class="seller">판매자</p>
+              {% endif %}
+            </div>
+            <a href="{% url 'accounts:update' %}">회원정보수정</a> 
+            <a href="{% url 'accounts:change_password' %}">비밀번호변경</a>
         </div>
         <div class="profile-box-text">
-          <h2>{{ user.last_name }} 님</h2>
-          <span>에코포인트 : </span>
-          <br>
-          <span id="followings-count" class="follower-following">
-            <span id="followings-count">
-                <strong>{{ person.followings.all|length }}</strong>
-                팔로잉
-            </span>
-            <span id="followers-count">
-                <strong>{{ person.followers.all|length }}</strong>
-                팔로워
-            </span>
-            </span>
-            {% if request.user != person %}
-            <form id="follow-form" data-user-id="{{ person.pk }}">
-              {% csrf_token %}
-              {% if request.user in person.followers.all %}
-                <input type="submit" value="언팔로우">
-              {% else %}
-                <input type="submit" value="팔로우">
+        <div class="profile-page-info-main">
+          <div class="main-card">
+              <span class="main-card-title">나의 에코포인트</span>
+              <span class="material-symbols-outlined">eco</span>
+              <div class="main-card-content">
+                <span>{{ user.points }}</span>
+              </div>
+          </div>
+          <div class="main-card">
+            <span class="main-card-title">나의 친구관리</span>
+            <div class="main-card-content">
+              
+              {% comment %} 팔로잉테스트 {% endcomment %}
+              <span id="followings-count" class="follower-following">
+                <span id="followings-count">
+                    <strong>{{ person.followings.all|length }}</strong>
+                    팔로잉
+                </span>
+                <span id="followers-count">
+                    <strong>{{ person.followers.all|length }}</strong>
+                    팔로워
+                </span>
+                </span>
+                {% if request.user != person %}
+                <form id="follow-form" data-user-id="{{ person.pk }}">
+                  {% csrf_token %}
+                  {% if request.user in person.followers.all %}
+                    <input type="submit" value="언팔로우">
+                  {% else %}
+                    <input type="submit" value="팔로우">
+                  {% endif %}
+                </form>
               {% endif %}
-            </form>
-          {% endif %}
+    
+            {% comment %} 팔로우관련 목록 {% endcomment %}
+          
+          <!-- 팔로잉 사용자 이미지 출력 -->
+          <h3>Following:</h3>
+    {% for following in person.followings.all %}
+        {% if following.image %}
+            <img class="profile-image" src="{{ following.image.url }}" alt="{{ following.username }}'s profile image">
+        {% else %}
+            <img class="profile-image" src="{% static 'path/to/default/profile/image' %}" alt="{{ following.username }}'s profile image">
+        {% endif %}
+        <p>{{ following.username }}</p>
+    {% endfor %}
+    
+    <!-- 팔로워 사용자 이미지 출력 -->
+    <h3>Followers:</h3>
+    {% for follower in person.followers.all %}
+        {% if follower.image %}
+            <img class="profile-image" src="{{ follower.image.url }}" alt="{{ follower.username }}'s profile image">
+        {% else %}
+            <img class="profile-image" src="{% static 'path/to/default/profile/image' %}" alt="{{ follower.username }}'s profile image">
+        {% endif %}
+        <p>{{ follower.username }}</p>
+    {% endfor %}
 
-        {% comment %} 팔로우관련 목록 {% endcomment %}
-      
-      <!-- 팔로잉 사용자 이미지 출력 -->
-      <h3>Following:</h3>
-{% for following in person.followings.all %}
-    {% if following.image %}
-        <img class="profile-image" src="{{ following.image.url }}" alt="{{ following.username }}'s profile image">
-    {% else %}
-        <img class="profile-image" src="{% static 'path/to/default/profile/image' %}" alt="{{ following.username }}'s profile image">
-    {% endif %}
-    <p>{{ following.username }}</p>
-{% endfor %}
-
-<!-- 팔로워 사용자 이미지 출력 -->
-<h3>Followers:</h3>
-{% for follower in person.followers.all %}
-    {% if follower.image %}
-        <img class="profile-image" src="{{ follower.image.url }}" alt="{{ follower.username }}'s profile image">
-    {% else %}
-        <img class="profile-image" src="{% static 'path/to/default/profile/image' %}" alt="{{ follower.username }}'s profile image">
-    {% endif %}
-    <p>{{ follower.username }}</p>
-{% endfor %}
-
+            </div>
+          </div>
+          <div class="main-card">
+            3번
+          </div>
         </div>
       </div>
-
-      <div class="profile-box">
-        <div class="profile-box-item">
-          <a class="{% if not q %} {% else %} pass {% endif %}" href="{% url 'accounts:profile' person.username %}">
-            <span class="material-symbols-outlined">settings</span>
-            회원정보
-          </a>
-        </div>
-
-        <div class="profile-box-item">
-          <a class="{% if q == 'post' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=post">
-            <span class="material-symbols-outlined">notes</span>
-            작성글
-          </a>
-        </div>
-
-        <div class="profile-box-item">
-          <a class="{% if q == 'interest' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=interest">            
-            <span class="material-symbols-outlined">thumb_up</span>
-            관심상품
-          </a>
-        </div>
-
-        <div class="profile-box-item">
-          <a class="{% if q == 'cart' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=cart">          
-            <span class="material-symbols-outlined">shopping_cart</span>
-            장바구니  
-          </a>
-        </div>
-
-        <div class="profile-box-item">
-          <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">           
-            <span class="material-symbols-outlined">shopping_bag</span>
-            구매내역 
-          </a>
-        </div>
-
-        <div class="profile-box-item">
-          <a class="{% if q == 'second_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=second_detail">            
-            <span class="material-symbols-outlined">recycling</span>
-            중고거래내역
-          </a>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="profile-page-content">
-      {% if q == 'post' %}
-        {% include 'accounts/post.html' %}
-      {% elif q == 'interest' %}
-        {% include 'accounts/interest.html' %}
-      {% elif q == 'cart' %}
-        {% include 'accounts/cart.html' %}
-      {% elif q == 'purchase_detail' %}
-        {% include 'accounts/purchase_detail.html' %}
-      {% elif q == 'second_detail' %}
-        {% include 'accounts/second_detail.html' %}
-      {% elif not q %}
-        <a href="{% url 'accounts:update' %}">회원정보수정</a>
-        <a href="{% url 'accounts:change_password' %}">비밀번호변경</a>
-      {% endif %}
-    </div>
+    {% endif %}
   </div>
 </div>
 
@@ -190,3 +195,6 @@
       })
   </script>
 {% endblock content %}
+
+{% comment %} 위에 있던 항목들을 왼쪽 사이드바로 만들기 / 반응형 할 때 밑으로 내리기 {% endcomment %}
+{% comment %} 사이드바에 채팅도 추가하기 {% endcomment %}

@@ -36,6 +36,8 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost',]
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+
     # Application
     'accounts',
     'donations',
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'stores',
     'secondhands',
     'carts',
+    'chat',
 
     # third party
     'imagekit',
@@ -99,6 +102,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'planethelper.wsgi.application'
+ASGI_APPLICATION = 'planethelper.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 
 # Database

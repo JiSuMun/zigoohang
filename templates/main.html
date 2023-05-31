@@ -3,45 +3,26 @@
 
 {% block title %}PLANET HELPER{% endblock title %}
 {% block head %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+/>
 <link rel="stylesheet" href="{% static 'css/main/main.css' %}">
 {% endblock head %}
 {% block content %}
 <!--carousel-->
-<div>
-  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
-    </div>
-    <div class="carousel-inner">
-      <div class="carousel-item active" data-bs-interval="10000">
-        <img src="{% static 'img/main/carousel5.jpg' %}" class="d-block main-image " alt="...">
-      </div>
-      <div class="carousel-item" data-bs-interval="7000">
-        <img src="{% static 'img/main/carousel2.jpg' %}" class="d-block main-image" alt="...">
-      </div>
-      <div class="carousel-item" data-bs-interval="7000">
-        <img src="{% static 'img/main/carousel3.jpg' %}" class="d-block main-image" alt="...">
-      </div>
-      <div class="carousel-item" data-bs-interval="7000">
-        <img src="{% static 'img/main/carousel4.jpg' %}" class="d-block main-image" alt="...">
-      </div>
-      <div class="carousel-item" data-bs-interval="7000">
-        <img src="{% static 'img/main/carousel1.jpg' %}" class="d-block main-image" alt="...">
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+<div class="swiper mySwiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carouselnew.jpg' %}" alt=""></div>
+    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carousel2.jpg' %}" alt=""></div>
+    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carousel3.jpg' %}" alt=""></div>
+    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carousel4.jpg' %}" alt=""></div>
+    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carousel1.jpg' %}" alt=""></div>
+
   </div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-pagination"></div>
 </div>
 
 <!--플래닛마켓 제품3-4개 보여주고-->
@@ -92,4 +73,8 @@
     </div>
   </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<script src="{% static 'js/main/main.js' %}"></script>
 {% endblock content %}

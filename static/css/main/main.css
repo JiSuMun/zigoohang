@@ -1,17 +1,18 @@
+.swiper {
+  max-height: 860px;
+}
+
 .main-image {
   width: 100%;
   aspect-ratio: 5184 / 3456;
 }
 
-.carousel-item {
-  max-height: 860px ;
+.swiper-button-next, .swiper-button-prev {
+  color: #ffffff;
 }
 
-.carousel-indicators [data-bs-target] {
-  width: 10px;
-  height: 10px;
-  border: 0;
-  border-radius: 5px;
+.swiper-pagination-bullet-active {
+  background-color: #ffffff;
 }
 
 .main-product {

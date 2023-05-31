@@ -1,13 +1,33 @@
 {% extends "base.html" %}
-{% block title %}Echo News{% endblock title %}
+
+{% load static %}
+{% block title %}
+Echo News
+{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/posts/news.css' %}">
+{% endblock head %}
 
 {% block content %}
 
+<!--포럼 타이틀-->
+<div class="news-title-wrap">
+  <div class="index-title-box">
+    <p class="news-title-title">ECO NEWS</p>
+    <p class="news-title-text">우리는 지구의 자연 자원을 보호하고, 기후 변화와 생태계 파괴 등의 문제에 대응하기 위해 최신의 환경 뉴스와 정보에 접근할 필요가 있습니다.</p>
+  </div>
+</div>
+
+<div class="n-wrapper">
   {% for news in result.items %}
-    <h2>{{ news.title|safe }}</h2>
-    <p>{{ news.description|safe }}</p>
-    <p>기사 날짜: {{ news.pubDate }}</p>
-    <p><a href="{{ news.link }}" target="_blank">더 읽기</a></p>
-    <hr>
+  <div class="n-inner">
+    <a href="{{ news.link }}">
+      <p class="n-title">{{ news.title|safe }}</p>
+      <span class="n-date">{{ news.pubDate|slice:":-6" }}</span>
+      <p class="n-content">{{ news.description|safe }}<span class="n-more">&nbsp;&nbsp;더보기</span></p>
+    </a>
+</div>
   {% endfor %}
+</div>
 {% endblock content %}

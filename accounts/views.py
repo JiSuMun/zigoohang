@@ -380,7 +380,7 @@ def profile(request, username):
         'posts':posts,
         'interests':interests,
         'purchase_details': purchase_details,
-        'purchases': purchases,
+        # 'purchases': purchases,
     }
     return render(request, 'accounts/profile.html', context)
     
@@ -452,6 +452,8 @@ def password_reset_confirm(request, uidb64, token):
     # 기본 토큰 생성기를 사용한 토큰 검사
     if user is not None and default_token_generator.check_token(user, token):
         form = SetPasswordForm(user, request.POST or None)
+        form.fields['new_password1'].widget.attrs['placeholder'] = '새 비밀번호'
+        form.fields['new_password2'].widget.attrs['placeholder'] = '새 비밀번호 확인'
         if request.method == 'POST':
             if form.is_valid():
                 form.save()
