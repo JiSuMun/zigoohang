@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -6,6 +6,12 @@ from .models import Cart, CartItem, Order, OrderItem
 from stores.models import Product
 from django.http import JsonResponse
 import json
+import requests
+import os
+from dotenv import load_dotenv
+load_dotenv()
+KAKAO_AK = os.getenv('KAKAO_AK')
+
 
 def cart_detail(request):
 
@@ -108,14 +114,43 @@ def order_page(request):
 
 def kakaopay(request):
     domain = request.get_host()
-    context = {
-        'domain': domain,
+    URL = 'https://kapi.kakao.com/v1/payment/ready'
+    headers = {
+        'Authorization': 'KakaoAK ' + KAKAO_AK,
     }
-    return render(request, 'payments/kakaopay.html', context)
-    # return redirect(next_url)
-def kakaopay_success(request):
-    pass
-def kakaopay_fail(request):
-    pass
+    params = {
+        'cid': 'TC0ONETIME',    # 테스트용 코드
+        'partner_order_id': '1001',     # 주문번호
+        'partner_user_id': 'user', # 유저 아이디
+        'item_name': 'item',        # 구매 물품 이름
+        'quantity': '12',                # 구매 물품 수량
+        'total_amount': '12300',        # 구매 물품 가격
+        'tax_free_amount': '0',         # 구매 물품 비과세
+        'approval_url': f'http://{domain}/carts/kakaopay/approval/', # 결제 승인시 이동할 url
+        'cancel_url': f'http://{domain}/carts/kakaopay/cancel/', # 결제 취소 시 이동할 url
+        'fail_url': f'http://{domain}/carts/kakaopay/fail/', # 결제 실패 시 이동할 url
+    }
+
+    res = requests.post(URL, headers=headers, params=params)
+    request.session['tid'] = res.json()['tid']      # 결제 승인시 사용할 tid를 세션에 저장
+    next_url = res.json()['next_redirect_pc_url']   # 결제 페이지로 넘어갈 url을 저장
+    return redirect(next_url)
+    # return render(request, 'payments/kakaopay.html', context)
+
+
+def kakaopay_approval(request):
+    context = {
+    }
+    return render(request, 'payments/kakaopay_approval.html', context)
+
+
 def kakaopay_cancel(request):
-    pass
+    context = {
+    }
+    return render(request, 'payments/kakaopay_cancel.html', context)
+
+
+def kakaopay_fail(request):
+    context = {
+    }
+    return render(request, 'payments/kakaopay_fail.html', context)
