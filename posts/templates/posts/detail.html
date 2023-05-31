@@ -7,91 +7,111 @@ Detail
 
 {% block head %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/posts/detail.css' %}">
 {% endblock head %}
 
-{% block style %}
-<style>
-  .review--box {
-    height: 100px;
-    margin: 10px;
-  }
-
-  #id_delete_images {
-    display: flex;
-  }
-
-</style>
-{% endblock style %}
-
 {% block content %}
-<div>
-  {{ post.title }}
-  {{ post.content }}
+<!--detail 타이틀-->
+<div class="detail-title-wrap">
+  <div class="detail-title-box">
+    <p class="detail-title-title">FORUM</p>
+    <p class="detail-title-text">FORUM은 환경에 대한 인식을 넓히고 협력과 아이디어 공유를 촉진하여 지속 가능한 미래를 위한 행동에 동참할 수 있는 공간입니다.</p>
+  </div>
 </div>
 
-<div>
-  <a href="{% url 'posts:update' post.pk %}"> 수정 </a>
-  <a href="{% url 'posts:delete' post.pk %}" onclick="return confirm('삭제하시겠습니까?')"> 삭제 </a>
-</div>
+<!--detail 내용-->
+<div class="d-wrapper">
+  <div class="d-title-wrapper">
+    <p class="d-title">{{ post.title }}</p>
+    <p class="d-created_at">{{ post.created_at|date:"Y-m-d" }}&nbsp;&nbsp;&nbsp;&nbsp;{{ post.created_at|date:"H:i:s" }}</p>
+  </div>
+  <div class="d-content-wrapper">
+    <p class="d-username">작성자 : {{ post.user.username }}</p>
 
-<div>
-  {% for review, u_review_form, u_image_form, delete_form in u_review_forms %}
+    <!--이미지-->
+    {% for image in post.postimage_set.all %}
+      <img class="d-image"src="{{ image.image.url }}" alt="">
+    {% endfor %}
+
+    <!--내용-->
+    <p class="d-content">{{ post.content|linebreaksbr }}</p>
+  </div>
+  <!--좋아요-->
+  
+  <!--수정 삭제 버튼-->
+  <div class="d-button-wrapper">
     <div>
-      <div class="review--box">
-        <h3>{{ review.title }}</h3>
-        <p>{{ review.content }}</p>
-        <p>{{ review.user.username }}</p>
-        <div>
-          {% for image in review.reviewimage_set.all %}
-            <img src="{{ image.image.url }}" alt="Review Image" style="width:50px; height:50px;">
-          {% endfor %}
-        </div>
-      </div>
-
-      <button id="reviewUpdateButton{{ review.pk }}" type="button" onclick="toggleReviewUpdateForm({{ review.pk }})">리뷰 수정</button>
-      <form id="reviewUpdateForm{{ review.pk }}" method="POST" action="{% url 'posts:review_update' post.pk review.pk %}" enctype="multipart/form-data" style="display:none;">
-        {% csrf_token %}
-        <h3>리뷰 수정</h3>
-        {{ u_review_form.as_p }}
-        {{ u_image_form.as_p }}
-        {{ delete_form.as_p }}
-        <button type="submit">수정완료</button>
-      </form>
+      <a class="d-button-cancel" href="{% url 'posts:index' %}">목록</a>
+      <a class="d-button-cancel" href="{{ previous_post_url }}">이전</a>
     </div>
-  {% endfor %}
-</div>
+    <div>
+      <a class="d-button" href="{% url 'posts:update' post.pk %}">수정</a>
+      <a class="d-button-cancel"href="{% url 'posts:delete' post.pk %}" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+    </div>
+  </div>
+  
+  <!--댓글-->
+  <div>
+    {% if u_review_forms %}
+      {% for review, u_review_form, u_image_form, delete_form in u_review_forms %}
+        <div class="review-box">
+          <div class="review-name">
+            {{ review.user.username }}<span class="review-date">&nbsp; |&nbsp; {{ review.created_at|date:"Y.m.d H:i" }}</span>
+            
+            <!--리뷰 수정-->
+            <button class="review-btn" id="reviewUpdateButton{{ review.pk }}" type="button" onclick="toggleReviewUpdateForm({{ review.pk }})">수정</button>
+            <form id="reviewUpdateForm{{ review.pk }}" method="POST" action="{% url 'posts:review_update' post.pk review.pk %}" enctype="multipart/form-data" style="display:none;">
+              {% csrf_token %}
+              <p class="form_label form-title">제목<span class="required_star">*</span></p>
+              {{ u_review_form.title }}
+              <p class="form_label">내용<span class="required_star">*</span></p>
+              {{ u_review_form.content }}
+              <p class="form_label">파일 첨부하기</p>
+              <span id="u-image">{{ u_image_form.image }}</span>
+              <p class="form_label">{{ delete_form }}</p>
+              <div class="button-wrapper">
+              <button class="u-button" type="submit">수정</button>
+              </div>
+            </form>
+          </div>
 
-<div>
-  <form action="{% url 'posts:review_create' post.pk %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ review_form.as_p }}
-    {{ image_form.as_p }}
-    <input type="submit" value="댓글작성">
-  </form>
-</div>
+          <!--리뷰 내용-->
+          <p class="review-title">{{ review.title }}<p>
+          {% for image in review.reviewimage_set.all %}
+            <img class="review-image"src="{{ image.image.url }}" alt="Review Image">
+          {% endfor %}
+          <p class="review-content">{{ review.content|linebreaksbr }}</p>
+        </div>
+      {% endfor %}
+    {% else %}
+    <p class="review-none">등록된 리뷰가 없습니다.</p>
+    {% endif %}
+  </div>
+  <!--리뷰 작성-->
+  <div class="button-wrapper-left">
+  <button id="create-review">리뷰 작성</button>
+  </div>
+  {% if user.is_authenticated %}
+  <div class="r-create">
+    <form action="{% url 'posts:review_create' post.pk %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <p class="form_label form-title">제목<span class="required_star">*</span></p>
+      {{ review_form.title }}
+      <p class="form_label">내용<span class="required_star">*</span></p>
+      {{ review_form.content }}
+      <p class="form_label">파일 첨부하기</p>
+      <span id="u-image">{{ image_form.image }}</span>
+      <div class="button-wrapper">
+      <input class="u-button" type="submit" value="작성하기">
+    </div>
+    </form>
+  </div>
+  {% else %}
+  <div class="r-create">
+  <p class="login-required">리뷰를 작성하려면&nbsp;<a href="{% url 'accounts:login' %}"> 로그인</a>이 필요합니다.</p>
+  {% endif %}
+</div> 
 
+
+<script src="{% static 'js/posts/detail.js' %}"></script>
 {% endblock content %}
-
-
-{% block script %}
-
-<script>
-  function toggleReviewUpdateForm(review_id) {
-    const form = document.getElementById("reviewUpdateForm" + review_id);
-    const box = document.querySelector(".review--box");
-    const button = document.getElementById("reviewUpdateButton" + review_id);
-    
-    if (form.style.display === "none") {
-      form.style.display = "block";
-      box.style.display = "none";
-      button.innerHTML = "취소";
-    } else {
-      form.style.display = "none";
-      box.style.display = "block";
-      button.innerHTML = "리뷰 수정";
-    }
-  }
-</script>
-
-
-{% endblock script %}

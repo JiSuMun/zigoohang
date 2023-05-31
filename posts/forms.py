@@ -12,7 +12,7 @@ class PostForm(forms.ModelForm):
         widget = forms.TextInput(
             attrs = {
                 'placeholder':'제목을 입력해 주세요',
-                'class': 'c-form-control',
+                'class': 'form-control',
             }
         )
     )
@@ -20,7 +20,7 @@ class PostForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 'placeholder': '내용을 입력해 주세요',
-                'class': 'c-form-control text-form',
+                'class': 'form-control text-form',
             }
         )
     )
@@ -30,7 +30,7 @@ class PostForm(forms.ModelForm):
         fields = ('title', 'content', 'tags',)
         widgets = {
             'tags': TagWidget(attrs={
-                'class': 'c-form-control',
+                'class': 'form-control',
                 'placeholder': "태그는 콤마(,)로 구분해주세요.",
                 }),
         }
@@ -50,7 +50,7 @@ class PostImageForm(forms.ModelForm):
         widget=CustomClearableFileInput(
             attrs={
                 'multiple': True, 
-                'class': 'c-form-image', 
+                'class': 'form-image', 
             }
         ),
         required=False
@@ -95,7 +95,14 @@ class ReviewForm(forms.ModelForm):
             }
         )
     )
-
+    content = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': '내용을 입력해 주세요',
+                'class': 'form-control text-form',
+            }
+        )
+    )
     
     class Meta:
         model = Review
@@ -109,8 +116,7 @@ class ReviewImageForm(forms.ModelForm):
         widget=CustomClearableFileInput(
             attrs={
                 'multiple': True, 
-                'class': 'form-control', 
-                'style' : 'width: 400px;'
+                'class': 'form-image', 
             }
         ),
     )

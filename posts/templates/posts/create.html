@@ -19,6 +19,8 @@ CREATE
     <p class="create-title-text">FORUM은 환경에 대한 인식을 넓히고 협력과 아이디어 공유를 촉진하여 지속 가능한 미래를 위한 행동에 동참할 수 있는 공간입니다.</p>
   </div>
 </div>
+
+<!--create 내용-->
 <div class="c-wrapper">
   <form action="{% url 'posts:create' %}" method='POST' enctype='multipart/form-data'>
     {% csrf_token %}
@@ -40,6 +42,7 @@ CREATE
         {{ image_form.image }}
       </div>
     </div>
+    <!--버튼-->
     <div class="button-wrapper">
       <input class="c-button-cancel" type="submit" value="취소" onclick=window.history.back()>
       <input class="c-button" type="submit" value="등록하기">
