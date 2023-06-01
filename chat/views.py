@@ -1,18 +1,35 @@
 from django.shortcuts import render, redirect
 from .models import ChatRoom, Message
 from django.contrib.auth import get_user_model
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Max
+
+
+# def inbox(request):
+#     chat_rooms = request.user.chat_rooms.all()
+
+#     context = {
+#     'chat_rooms': chat_rooms
+#     }
+#     return render(request, 'chat/inbox.html', context)
 
 
 def inbox(request):
     chat_rooms = request.user.chat_rooms.all()
-    return render(request, 'chat/inbox.html', {'chat_rooms': chat_rooms})
+    chat_rooms_with_last_message = []
+
+    for chat_room in chat_rooms:
+        last_message = chat_room.messages.order_by('-timestamp').first()
+        chat_rooms_with_last_message.append((chat_room, last_message))
+
+    context = {
+        'chat_rooms': chat_rooms_with_last_message
+    }
+    return render(request, 'chat/inbox.html', context)
 
 
 def start_chat(request, user_id):
     user = get_user_model().objects.get(id=user_id)
     chat_room = ChatRoom.get_or_create_chat_room(request.user, user)
-    chat_room.set_default_name(request.user, user)
     return redirect('chat:room', room_name=chat_room.name)
 
 

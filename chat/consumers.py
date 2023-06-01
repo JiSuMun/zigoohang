@@ -3,6 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from .models import ChatRoom, Message
 from django.contrib.auth import get_user_model
+from datetime import datetime
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -31,16 +32,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message,
-                'sender': self.scope['user'].username
+                'sender': self.scope['user'].username,
             }
         )
 
     async def chat_message(self, event):
         message = event['message']
         sender = event['sender']
+
         await self.send(text_data=json.dumps({
             'message': message,
-            'sender': sender
+            'sender': sender,
         }))
 
 
