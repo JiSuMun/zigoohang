@@ -1,16 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import ChatRoom, Message
 from django.contrib.auth import get_user_model
-from django.db.models import Q, Count, Max
-
-
-# def inbox(request):
-#     chat_rooms = request.user.chat_rooms.all()
-
-#     context = {
-#     'chat_rooms': chat_rooms
-#     }
-#     return render(request, 'chat/inbox.html', context)
 
 
 def inbox(request):

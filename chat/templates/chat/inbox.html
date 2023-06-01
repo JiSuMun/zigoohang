@@ -14,7 +14,7 @@
         <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;">{{ chat_room }}</a>
         {% if last_message %}
           <p>{{ last_message.content }}</p>
-          <p>{{ last_message.timestamp }}</p>
+          <p>{{ last_message.formatted_timestamp }}</p>
         {% else %}
           <p>메시지 없음</p>
         {% endif %}
