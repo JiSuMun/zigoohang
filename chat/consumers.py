@@ -3,7 +3,6 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from .models import ChatRoom, Message
 from django.contrib.auth import get_user_model
-from datetime import datetime
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -24,8 +23,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-
-        await self.save_message(message)
+        formatted_timestamp = await self.save_message(message)
 
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -33,18 +31,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message': message,
                 'sender': self.scope['user'].username,
+                'formatted_timestamp': formatted_timestamp,
             }
         )
 
     async def chat_message(self, event):
         message = event['message']
         sender = event['sender']
+        formatted_timestamp = event['formatted_timestamp']
 
         await self.send(text_data=json.dumps({
             'message': message,
             'sender': sender,
+            'formatted_timestamp': formatted_timestamp,
         }))
-
 
     @database_sync_to_async
     def save_message(self, message):
@@ -53,7 +53,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         new_message = Message(chat_room=chat_room, sender=sender, content=message)
         new_message.save()
-
+        formatted_timestamp = new_message.formatted_timestamp()
+        return formatted_timestamp
 
     @database_sync_to_async
     def get_or_create_room(self, user1_id, user2_id):
