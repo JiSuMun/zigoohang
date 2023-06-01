@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
 
 {% block content %}
 <h1>order_page</h1>
@@ -13,14 +18,26 @@
   <hr>
 {% endfor %}
 <p>합계 : {{ order.total }}</p>
+<input type="hidden" id="payments_data" data-total-amount="{{ order.total }}" data-order-id="{{ order.pk }}" data-order-item="{{ order.order_items.first.product.name }}">
 <hr>
 <p>연락처</p>
 <p>주소</p>
-<form action="{% url 'carts:kakaopay' %}" method="POST">
+{% comment %} <form action="{% url 'carts:kakaopay' %}" method="POST">
   {% csrf_token %}
   <input type="hidden" name="order_id" value="{{ order.pk }}">
   <button>
     결제하기
   </button>
-</form>
+</form> {% endcomment %}
+<button onclick="requestPay()">신용카드 결제하기</button>
+<button onclick="requestPay2()">신용카드 결제하기2</button>
+<button onclick="kakaoPay()">kakaopay 결제하기</button>
+<button onclick="eximbayPay()">엑심베이(Eximbay) 결제하기</button>
 {% endblock content %}
+
+
+{% block script %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script src="{% static 'payments/js/order_page.js' %}"></script>
+{% endblock script %}
