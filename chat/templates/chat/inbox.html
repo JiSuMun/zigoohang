@@ -9,20 +9,26 @@
 
 <section>
   {% if chat_rooms %}
-    {% for chat_room in chat_rooms %}
+    {% for chat_room, last_message in chat_rooms %}
       <div class="chat_room">
-        <a href="{% url 'chat:room' chat_room.name %}">{{ chat_room }}</a>
+        <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;">{{ chat_room }}</a>
+        {% if last_message %}
+          <p>{{ last_message.content }}</p>
+          <p>{{ last_message.timestamp }}</p>
+        {% else %}
+          <p>메시지 없음</p>
+        {% endif %}
         <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
           {% csrf_token %}
           <input type="submit" value="삭제">
         </form>
       </div>
-
     {% endfor %}
 
   {% else %}
     <p>채팅방이 없습니다.</p>
   {% endif %}
 </section>
+
 
 {% endblock content %}
