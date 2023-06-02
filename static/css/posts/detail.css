@@ -51,6 +51,7 @@
 
 .d-image {
   max-width: 100%;
+  margin-bottom: 1rem;
 }
 .d-content-wrapper {
   display: block;
@@ -210,6 +211,7 @@ textarea:focus {
 }
 
 .review-btn {
+  font-family: Arial, sans-serif;
   font-size: 13px;
   border: 0;
   cursor: pointer;
@@ -262,4 +264,56 @@ textarea:focus {
 
 .login-required a {
   color: #297821;
+}
+
+.like {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+.like-forms {
+  gap: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.like-color {
+  font-size: 25px;
+  color: red;
+  border: none;
+  background-color: transparent;
+}
+.r-like-color {
+  color: #297821;
+}
+.r-like-color-gray {
+  color: #999999;
+}
+
+.review-like-btn {
+  border: none;
+  background-color: transparent;
+}
+
+.r-like-wrapper{
+  display: flex;
+  gap: 10px
+}
+
+.review-like {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-dislike {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.r-count {
+  font-size: 13px;
+  color: #333333;
 }

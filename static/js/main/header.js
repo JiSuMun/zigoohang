@@ -42,7 +42,7 @@ function mini() {
   const mNavDrops = document.querySelectorAll(".m-nav-drop");
   mNavDrops.forEach(drop => {
     const img = document.createElement("img");
-    img.setAttribute("src", "../static/img/base/drawer.svg");
+    img.setAttribute("src", "../../static/img/base/drawer.svg");
     img.classList.add("m-nav-icon");
     drop.appendChild(img);
   });

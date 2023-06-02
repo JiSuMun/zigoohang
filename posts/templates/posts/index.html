@@ -48,7 +48,7 @@ FORUM
         </td>
         <td class="p-td p-center">{{ post.user.username  }}</td>
         <td class="p-td p-center">{{ post.created_at|date:'m-d' }}</td>
-        <td class="p-td p-center">{{ post.id }}</td>
+        <td class="p-td p-center">{{ post.like_users.count }}</td>
       </tr>
     {% endfor %}
     </tbody>
