@@ -7,6 +7,7 @@
 
 {% block content %}
 <h1>order_page</h1>
+{% csrf_token %}
 {% comment %} <p>{{ products }}</p> {% endcomment %}
 <p>{{ order }}</p>
 {% for order_item in order.order_items.all %}
@@ -18,10 +19,27 @@
   <hr>
 {% endfor %}
 <p>합계 : {{ order.total }}</p>
-<input type="hidden" id="payments_data" data-total-amount="{{ order.total }}" data-order-id="{{ order.pk }}" data-order-item="{{ order.order_items.first.product.name }}">
+<input type="hidden" id="payments_data" data-user-name="{{ request.user.username }}" data-total-amount="{{ order.total }}" data-order-id="{{ order.pk }}" data-order-item="{{ order.order_items.first.product.name }}">
 <hr>
-<p>연락처</p>
-<p>주소</p>
+<p>
+  <label for="receiver">받으시는 분</label>
+  <input type="text" id="receiver" value="{{ request.user.last_name }}"></p>
+<p>
+  <label for="order_address">주소 : </label>
+  <input type="text" id="order_address" value="{{ request.user.address }}">
+</p>
+<p>
+  <label for="order_phone">연락처 : </label>
+  <input type="text" id="order_phone" value="{{ request.user.phone }}" name="phone">
+</p>
+<p>
+  <label for="order_email">이메일 : </label>
+  <input type="text" id="order_email" value="{{ request.user.email }}">
+</p>
+<p>
+  <label for="use_points">사용 포인트 : </label>
+  <input type="number" id="use_points" value="{{ request.user.points }}">
+</p>
 {% comment %} <form action="{% url 'carts:kakaopay' %}" method="POST">
   {% csrf_token %}
   <input type="hidden" name="order_id" value="{{ order.pk }}">
@@ -30,20 +48,24 @@
   </button>
 </form> {% endcomment %}
 <button onclick="requestPay()">신용카드 결제하기</button>
-{% comment %} <button onclick="requestPay2()">신용카드 결제하기2</button> {% endcomment %}
+<button onclick="requestPay2()">신용카드 결제하기2</button>
 <button onclick="kakaoPay()">kakaopay 결제하기</button>
-{% comment %} <button onclick="eximbayPay()">엑심베이(Eximbay) 결제하기</button> {% endcomment %}
+<button onclick="eximbayPay()">엑심베이(Eximbay) 결제하기</button>
 <button onclick="danalPay()">다날 결제하기</button>
 {% comment %} <button onclick="danalPay2()">다날 결제하기2</button> {% endcomment %}
 <button onclick="tossPay()">Toss 결제하기</button>
 <button onclick="paycoPay()">payco 결제하기</button>
 {% comment %} <button onclick="paypalPay()">paypal 결제하기</button> {% endcomment %}
 <button onclick="smilePay()">스마일페이 결제하기</button>
+{% comment %} <button onclick="naverPay()">네이버페이 결제하기</button> {% endcomment %}
+
 {% endblock content %}
 
 
 {% block script %}
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <script src="{% static 'payments/js/order_page.js' %}"></script>
 {% endblock script %}

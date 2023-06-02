@@ -34,7 +34,6 @@ class Order(models.Model):
     # product = models.ForeignKey(Product, on_delete=models.CASCADE)
     # amount = models.IntegerField()
     # quantity = models.IntegerField()
-    address = models.CharField(max_length=100)
     STATUS_CHOICES = (
         (0, '결제전'),
         (1, '배송준비중'),
@@ -46,10 +45,18 @@ class Order(models.Model):
     shipping_status = models.CharField(
         max_length=15,
         choices=STATUS_CHOICES,
-        # default='배송준비중'
+        default=0
     ) # 배송 상태
     tracking_number = models.CharField(max_length=20, blank=True, null=True) # 운송장 번호 # 배송중상태가 되면 값 입력(ex. order.pk)
     
+    address = models.CharField(max_length=100, blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    # email = models.EmailField(max_length=100, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
+    receiver = models.CharField(max_length=100, blank=True, null=True)
+    total_price = models.IntegerField(blank=True, null=True)
+    total_amount = models.IntegerField(blank=True, null=True)
+    use_points = models.IntegerField(blank=True, null=True)
     added_at = models.DateField(auto_now_add=True)
 
     def __str__(self):

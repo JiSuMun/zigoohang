@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import Cart, CartItem, Order, OrderItem
 from stores.models import Product
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 import json
 import requests
 import os
@@ -157,3 +157,47 @@ def kakaopay_fail(request):
     context = {
     }
     return render(request, 'payments/kakaopay_fail.html', context)
+
+def approval(request):
+    print('ApprovalApprovalApprovalApprovalApprovalApprovalApprovalApprovalApprovalApprovalApproval')
+    jsonObject = json.loads(request.body)
+    print(jsonObject)
+    order_id = int(jsonObject['orderId'])
+
+    order = Order.objects.get(pk=order_id)
+    order.address = jsonObject['orderAddress']
+    order.phone = jsonObject['orderPhone']
+    order.email = jsonObject['orderEmail']
+    order.receiver = jsonObject['receiver']
+    order.total_price = int(jsonObject['totalAmount'])
+    order.use_points = int(jsonObject['usePoints'])
+    order.total_amount = int(jsonObject['totalAmount']) - int(jsonObject['usePoints'])
+
+    order.shipping_status=1
+    order.save()
+    request.session['payment'] = {
+        'order_id': order_id,
+        'total_amount': order.total_amount
+    }
+    return JsonResponse({'result': 'success',})
+
+
+def show_approval(request):
+    payment = request.session.get('payment')
+    if not payment:
+        return HttpResponseNotFound('결제 데이터를 찾을 수 없습니다.')
+
+    order_id = payment.get('order_id')
+    total_amount = payment.get('total_amount')
+
+
+    order = Order.objects.get(pk=order_id)
+    context = {
+        'order': order,
+        'order_id': order_id,
+        'total_amount': total_amount,
+    }
+
+    del request.session['payment']
+
+    return render(request, 'payments/approval.html', context)

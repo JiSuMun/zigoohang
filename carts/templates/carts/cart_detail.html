@@ -29,7 +29,7 @@
         </div>
       </div>
       {% if user.is_authenticated %}
-        {% if cart %}
+        {% if cart.cartitems.all %}
           {% for cart_item in cart.cartitems.all %}
             <div class="cart_list_content">
               <div class="cart_checkbox_col">
