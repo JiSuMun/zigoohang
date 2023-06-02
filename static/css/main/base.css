@@ -1,5 +1,9 @@
-@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-
+@font-face {
+	font-family: 'SUITE-Regular';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+}
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -17,7 +21,7 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font-family: 'Noto Sans KR', sans-serif;
+	font-family: 'SUITE-Regular',sans-serif;
 	line-height: 1;
 	vertical-align: baseline;
 	box-sizing: border-box;
