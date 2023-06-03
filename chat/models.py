@@ -10,29 +10,19 @@ class ChatRoom(models.Model):
     name = models.CharField(max_length=255, blank=True)
 
     @classmethod
-    def get_or_create_chat_room(cls, user1, user2):
-        user1_name = user1.username
-        user2_name = user2.username
+    def get_or_create_chat_room(cls, users):
+        unique_users = set(users)
+        if len(unique_users) == 1:
+            room_name = "ME_Chat_with_" + list(unique_users)[0].username
+        else:
+            room_name = "Chat_with_" + "_".join(sorted([user.username for user in users]))
 
-        if user1_name > user2_name:
-            user1_name, user2_name = user2_name, user1_name
-
-        if user1 == user2:
-            chat_room = cls.objects.filter(name=f"ME_Chat_with_{user1_name}").first()
-            if chat_room:
-                return chat_room
-
-            chat_room = cls.objects.create(name=f"ME_Chat_with_{user1_name}")
-            chat_room.participants.set([user1])
-            return chat_room
-
-        chat_room = cls.objects.filter(participants__in=[user1, user2]).annotate(num_participants=Count('participants')).filter(num_participants=2).first()
-
+        chat_room = cls.objects.filter(name=room_name).first()
         if chat_room:
             return chat_room
 
-        chat_room = cls.objects.create(name=f"Chat_with_{user1_name}_and_{user2_name}")
-        chat_room.participants.set([user1, user2])
+        chat_room = cls.objects.create(name=room_name)
+        chat_room.participants.set(unique_users)
         return chat_room
 
 

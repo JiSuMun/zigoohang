@@ -57,8 +57,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return formatted_timestamp
 
     @database_sync_to_async
-    def get_or_create_room(self, user1_id, user2_id):
-        user1 = get_user_model().objects.get(id=user1_id)
-        user2 = get_user_model().objects.get(id=user2_id)
-        chat_room = ChatRoom.get_or_create_chat_room(user1, user2)
+    def get_or_create_room(self, user_ids):
+        users = get_user_model().objects.filter(id__in=user_ids)
+        chat_room = ChatRoom.get_or_create_chat_room(users)
         return chat_room
