@@ -25,6 +25,7 @@ class ChatRoom(models.Model):
         chat_room.participants.set(unique_users)
         return chat_room
 
+
     def __str__(self):
         return self.name
 

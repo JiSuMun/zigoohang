@@ -7,6 +7,9 @@ Detail
 
 {% block head %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<link rel="stylesheet" 
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="{% static 'css/posts/detail.css' %}">
 {% endblock head %}
 
@@ -35,9 +38,24 @@ Detail
 
     <!--내용-->
     <p class="d-content">{{ post.content|linebreaksbr }}</p>
+    <!--좋아요-->
+    <div class="like">
+      <form class="like-forms" data-post-id="{{ post.pk }}">
+        {% csrf_token %}
+        {% if request.user in post.like_users.all %}
+        <button class="like-color" type="submit" {% if not request.user.is_authenticated %}disabled{% endif %}>
+          <i id="like-{{ post.pk }}" class="fa-solid fa-heart"></i>
+        </button>
+        {% else %}
+        <button class="like-color" type="submit" {% if not request.user.is_authenticated %}disabled{% endif %}>
+          <i id="like-{{ post.pk }}" class="fa-regular fa-heart"></i>
+        </button>
+        {% endif %}
+        <span id="likes_count">{{ likes_count }}</span>
+      </form>
+    </div>
   </div>
-  <!--좋아요-->
-  
+
   <!--수정 삭제 버튼-->
   <div class="d-button-wrapper">
     <div>
@@ -58,6 +76,7 @@ Detail
           <div class="review-name">
             {{ review.user.username }}<span class="review-date">&nbsp; |&nbsp; {{ review.created_at|date:"Y.m.d H:i" }}</span>
             
+            {% if review.user.username == request.user.username %}
             <!--리뷰 수정-->
             <button class="review-btn" id="reviewUpdateButton{{ review.pk }}" type="button" onclick="toggleReviewUpdateForm({{ review.pk }})">수정</button>
             <form id="reviewUpdateForm{{ review.pk }}" method="POST" action="{% url 'posts:review_update' post.pk review.pk %}" enctype="multipart/form-data" style="display:none;">
@@ -73,6 +92,9 @@ Detail
               <button class="u-button" type="submit">수정</button>
               </div>
             </form>
+            <!--리뷰 삭제-->
+            <a class="review-btn"href="{% url 'posts:review_delete' post.pk review.pk %}" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+            {% endif %}
           </div>
 
           <!--리뷰 내용-->
@@ -81,6 +103,54 @@ Detail
             <img class="review-image"src="{{ image.image.url }}" alt="Review Image">
           {% endfor %}
           <p class="review-content">{{ review.content|linebreaksbr }}</p>
+
+          <div class="r-like-wrapper">
+            <!--리뷰 좋아요-->
+            <div class="review-like">
+              {% if request.user.is_authenticated %}
+              <form class="review-like-form" action="{% url 'posts:review_likes' post.pk review.pk %}" data-post-id="{{ post.pk }}" data-review-id="{{ review.pk }}">
+                {% csrf_token %}
+                {% if request.user in review.like_users.all %}
+                <button class="review-like-btn" type="submit">
+                  <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color"></i>
+                </button>
+                {% else %}
+                <button class="review-like-btn" type="submit">
+                  <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
+                </button>
+                {% endif %}
+              </form>
+              {% else %}
+              <button class="review-like-btn" type="submit" disabled>
+                <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
+              </button>
+              {% endif %}
+              <span class="r-count" id="review_likes_count-{{ review.pk }}">{{ review.like_users.all|length }}</span>
+            </div>
+            <!--리뷰 싫어요-->
+            <div class="review-dislike">
+              {% if request.user.is_authenticated %}
+              <form class="review-dislike-form" action="{% url 'posts:review_dislikes' post.pk review.pk %}" data-post-id="{{ post.pk }}" data-dreview-id="{{ review.pk }}">
+                {% csrf_token %}
+                {% if request.user in review.dislike_users.all %}
+                <button class="review-like-btn" type="submit">
+                  <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color"></i>
+                </button>
+                {% else %}
+                <button class="review-like-btn" type="submit">
+                  <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
+                </button>
+                {% endif %}
+                
+              </form>
+              {% else %}
+              <button class="review-like-btn" type="submit" disabled>
+                <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
+              </button>
+              {% endif %}
+              <span class="r-count" id="review_dislikes_count-{{ review.pk }}">{{ review.dislike_users.all|length }}</span>
+            </div>
+          </div>
         </div>
       {% endfor %}
     {% else %}
@@ -114,4 +184,5 @@ Detail
 
 
 <script src="{% static 'js/posts/detail.js' %}"></script>
+
 {% endblock content %}
