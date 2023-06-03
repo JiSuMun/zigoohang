@@ -12,7 +12,7 @@
     {% for message in messages %}
       <div class="message">
         <p>{{ message.sender.username }}: {{ message.content }}</p>
-        <p>{{ message.timestamp }}</p>
+        <p>{{ message.formatted_timestamp }}</p>
       </div>
     {% empty %}
       <p>No messages yet.</p>
@@ -51,9 +51,9 @@
       displayMessage({
         sender: message.sender,
         content: message.message,
+        formatted_timestamp: message.formatted_timestamp,
       });
     };
-
 
     chatSocket.onclose = function (event) {
       console.log('WebSocket connection closed.');
@@ -86,7 +86,11 @@
       const content = document.createElement('p');
       content.textContent = `${message.sender}: ${message.content}`;
       messageElement.appendChild(content);
-      
+
+      const timestamp = document.createElement('p');
+      timestamp.textContent = message.formatted_timestamp;
+      messageElement.appendChild(timestamp);
+
       chatRoom.appendChild(messageElement);
     }
   });

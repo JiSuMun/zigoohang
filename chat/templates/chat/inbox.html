@@ -6,6 +6,19 @@
 {% endblock head %}
 
 {% block content %}
+<section>
+  <a href="{% url 'chat:start_chat' user.id %}"><h2>나와의 채팅하기</h2></a>
+  <h2>사용자 목록</h2>
+  <form method="post" action="{% url 'chat:start_group_chat' %}">
+    {% csrf_token %}
+    {% for user in all_users %}
+      <input type="checkbox" name="user_ids" value="{{ user.id }}"> {{ user.username }}
+    {% empty %}
+      <p>다른 사용자가 없습니다.</p>
+    {% endfor %}
+    <input type="submit" value="채팅방 만들기">
+  </form>
+</section>
 
 <section>
   {% if chat_rooms %}
@@ -14,7 +27,7 @@
         <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;">{{ chat_room }}</a>
         {% if last_message %}
           <p>{{ last_message.content }}</p>
-          <p>{{ last_message.timestamp }}</p>
+          <p>{{ last_message.formatted_timestamp }}</p>
         {% else %}
           <p>메시지 없음</p>
         {% endif %}
@@ -24,11 +37,9 @@
         </form>
       </div>
     {% endfor %}
-
   {% else %}
     <p>채팅방이 없습니다.</p>
   {% endif %}
 </section>
-
 
 {% endblock content %}

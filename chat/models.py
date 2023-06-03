@@ -1,8 +1,8 @@
 from django.db import models
 from django.conf import settings
-from django.db.models import Max
 from django.contrib.auth import get_user_model
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Max
+from django.utils import timezone
 
 
 class ChatRoom(models.Model):
@@ -10,23 +10,19 @@ class ChatRoom(models.Model):
     name = models.CharField(max_length=255, blank=True)
 
     @classmethod
-    def get_or_create_chat_room(cls, user1, user2):
-        if user1 == user2:
-            chat_room = cls.objects.filter(name="Chat_with_me").first()
-            if chat_room:
-                return chat_room
+    def get_or_create_chat_room(cls, users):
+        unique_users = set(users)
+        if len(unique_users) == 1:
+            room_name = "ME_Chat_with_" + list(unique_users)[0].username
+        else:
+            room_name = "Chat_with_" + "_".join(sorted([user.username for user in users]))
 
-            chat_room = cls.objects.create(name="Chat_with_me")
-            chat_room.participants.set([user1])
-            return chat_room
-
-        chat_room = cls.objects.filter(participants__in=[user1, user2]).annotate(num_participants=Count('participants')).filter(num_participants=2).first()
-
+        chat_room = cls.objects.filter(name=room_name).first()
         if chat_room:
             return chat_room
 
-        chat_room = cls.objects.create(name=f"Chat_with_{user1.username}_and_{user2.username}")
-        chat_room.participants.set([user1, user2])
+        chat_room = cls.objects.create(name=room_name)
+        chat_room.participants.set(unique_users)
         return chat_room
 
     def __str__(self):
@@ -44,3 +40,8 @@ class Message(models.Model):
         if not self.is_read:
             self.is_read = True
             self.save()
+
+    def formatted_timestamp(self):
+        local_timestamp = timezone.localtime(self.timestamp)
+        am_pm = "오전" if local_timestamp.strftime('%p') == "AM" else "오후"
+        return f"{local_timestamp.strftime('%Y.%m.%d')} {am_pm} {local_timestamp.strftime('%I:%M')}"

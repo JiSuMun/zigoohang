@@ -1,45 +1,50 @@
 from django.shortcuts import render, redirect
 from .models import ChatRoom, Message
 from django.contrib.auth import get_user_model
-from django.db.models import Q, Count, Max
-
-
-# def inbox(request):
-#     chat_rooms = request.user.chat_rooms.all()
-
-#     context = {
-#     'chat_rooms': chat_rooms
-#     }
-#     return render(request, 'chat/inbox.html', context)
 
 
 def inbox(request):
     chat_rooms = request.user.chat_rooms.all()
     chat_rooms_with_last_message = []
+    all_users = get_user_model().objects.exclude(id=request.user.id)
 
     for chat_room in chat_rooms:
         last_message = chat_room.messages.order_by('-timestamp').first()
         chat_rooms_with_last_message.append((chat_room, last_message))
 
     context = {
-        'chat_rooms': chat_rooms_with_last_message
+        'chat_rooms': chat_rooms_with_last_message,
+        'all_users': all_users,
     }
     return render(request, 'chat/inbox.html', context)
 
 
 def start_chat(request, user_id):
-    user = get_user_model().objects.get(id=user_id)
-    chat_room = ChatRoom.get_or_create_chat_room(request.user, user)
+    target_user = get_user_model().objects.get(id=user_id)
+    chat_room = ChatRoom.get_or_create_chat_room([request.user, target_user])
     return redirect('chat:room', room_name=chat_room.name)
+
+
+def start_group_chat(request):
+    if request.method == 'POST':
+        selected_user_ids = request.POST.getlist('user_ids')
+        if selected_user_ids:
+            selected_users = get_user_model().objects.filter(id__in=selected_user_ids)
+            selected_users = list(selected_users) + [request.user]
+            chat_room = ChatRoom.get_or_create_chat_room(selected_users)
+            return redirect('chat:room', room_name=chat_room.name)
+    return redirect('chat:inbox')
 
 
 def room(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
     messages = chat_room.messages.all()
+    user = request.user
     context = {
         'room_name': room_name,
         'chat_room': chat_room,
-        'messages': messages
+        'messages': messages,
+        'user': user,
     }
     return render(request, 'chat/room.html', context)
 
