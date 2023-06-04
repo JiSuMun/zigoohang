@@ -9,8 +9,9 @@ def inbox(request):
     all_users = get_user_model().objects.exclude(id=request.user.id)
 
     for chat_room in chat_rooms:
+        unread_notifications = chat_room.notifications.filter(user=request.user, is_read=False).count()
         last_message = chat_room.messages.order_by('-timestamp').first()
-        chat_rooms_with_last_message.append((chat_room, last_message))
+        chat_rooms_with_last_message.append((chat_room, last_message, unread_notifications))
 
     context = {
         'chat_rooms': chat_rooms_with_last_message,
@@ -40,6 +41,12 @@ def room(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
     messages = chat_room.messages.all()
     user = request.user
+
+    # 알림 읽음 처리
+    unread_notifications = chat_room.notifications.filter(user=user, is_read=False)
+    for notification in unread_notifications:
+        notification.mark_as_read()
+
     context = {
         'room_name': room_name,
         'chat_room': chat_room,

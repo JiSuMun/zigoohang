@@ -22,9 +22,12 @@
 
 <section>
   {% if chat_rooms %}
-    {% for chat_room, last_message in chat_rooms %}
-      <div class="chat_room">
+    {% for chat_room, last_message, unread_notifications in chat_rooms %}
+      <div class="chat_room" id="{{ chat_room.name }}">
         <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;">{{ chat_room }}</a>
+        {% if unread_notifications > 0 %}
+          <p class="notification" style="color: red">!</p>
+        {% endif %}
         {% if last_message %}
           <p>{{ last_message.content }}</p>
           <p>{{ last_message.formatted_timestamp }}</p>

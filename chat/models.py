@@ -25,7 +25,6 @@ class ChatRoom(models.Model):
         chat_room.participants.set(unique_users)
         return chat_room
 
-
     def __str__(self):
         return self.name
 
@@ -46,3 +45,16 @@ class Message(models.Model):
         local_timestamp = timezone.localtime(self.timestamp)
         am_pm = "오전" if local_timestamp.strftime('%p') == "AM" else "오후"
         return f"{local_timestamp.strftime('%Y.%m.%d')} {am_pm} {local_timestamp.strftime('%I:%M')}"
+    
+
+class Notification(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    chat_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='notifications')
+    message = models.ForeignKey(Message, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+    
+    def mark_as_read(self):
+        if not self.is_read:
+            self.is_read = True
+            self.save()

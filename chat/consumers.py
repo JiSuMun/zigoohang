@@ -1,7 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from .models import ChatRoom, Message
+from .models import ChatRoom, Message, Notification
 from django.contrib.auth import get_user_model
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -35,6 +35,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
         )
 
+
     async def chat_message(self, event):
         message = event['message']
         sender = event['sender']
@@ -53,7 +54,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         new_message = Message(chat_room=chat_room, sender=sender, content=message)
         new_message.save()
+
         formatted_timestamp = new_message.formatted_timestamp()
+
+        # 추가
+        participants = chat_room.participants.exclude(id=sender.id)
+        for participant in participants:
+            notification = Notification(user=participant, chat_room=chat_room, message=new_message)
+            notification.save()
+
+
+
         return formatted_timestamp
 
     @database_sync_to_async
