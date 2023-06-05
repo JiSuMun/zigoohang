@@ -23,7 +23,7 @@ class PasswordResetRequestForm(forms.Form):
         if not User.objects.filter(email=email).exists():
             raise forms.ValidationError("입력한 이메일이 존재하지 않습니다.")
         
-class CustomAutentication(AuthenticationForm):
+class CustomAuthentication(AuthenticationForm):
     username = forms.CharField(
         label = False,
         widget = forms.TextInput(attrs = {
