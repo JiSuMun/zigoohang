@@ -1,0 +1,23 @@
+
+{% load static %}
+
+<ul id="follower-ul">
+  {% for follower in followers %}
+  <li class="follow--modal">
+    <a href="{% url 'accounts:profile' follower.username %}">
+      {% if follower.image %}
+        <div class="profile--image rounded-circle">
+          <img src="{{ follower.image.url }}" alt="follower image" class="object-fit-fill profile">
+        </div>
+      {% else %}
+        <div class="profile--image rounded-circle">
+          <img src="{% static 'image/profile-none.png' %}" alt="follower image" class="object-fit-fill profile">
+        </div>
+      {% endif %}
+      {{ follower.username }}
+    </a>
+  </li>
+  {% empty %}
+  <p class="ms-2">팔로워가 없습니다.</p>
+  {% endfor %}
+</ul>
