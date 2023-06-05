@@ -45,6 +45,46 @@
         <p>중고거래내역</p>
       </div>
     </a>
+    <a class="{% if q == 'chat_rooms' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=chat_rooms">            
+      <div class="profile-sidebar-item">
+        <span class="material-symbols-outlined">forum</span>
+        <p>채팅</p>
+      </div>
+    </a>
+  </div>
+
+  {% comment %} 반응형 사이드바 {% endcomment %}
+  <div class="profile-navbar">
+    <a class="{% if not q %} {% else %} pass {% endif %}" href="{% url 'accounts:profile' person.username %}">
+      <div class="profile-navbar-item">
+        <p>회원정보</p>
+      </div>
+    </a>
+    <a class="{% if q == 'post' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=post">
+      <div class="profile-navbar-item">
+        <p>작성글</p>
+      </div>
+    </a>
+    <a class="{% if q == 'interest' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=interest">            
+      <div class="profile-navbar-item">
+        <p>관심상품</p>
+      </div>
+    </a>
+    <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">           
+      <div class="profile-navbar-item">
+        <p>구매내역</p> 
+      </div>
+    </a>
+    <a class="{% if q == 'second_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=second_detail">            
+      <div class="profile-navbar-item">
+        <p>중고거래내역</p>
+      </div>
+    </a>
+    <a class="{% if q == 'chat_rooms' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=chat_rooms">            
+      <div class="profile-navbar-item">
+        <p>채팅</p>
+      </div>
+    </a>
   </div>
 
   {% comment %} 페이지 {% endcomment %}
@@ -57,10 +97,32 @@
       {% include 'accounts/purchase_detail.html' %}
     {% elif q == 'second_detail' %}
       {% include 'accounts/second_detail.html' %}
+    {% elif q == 'chat_rooms' %}
+      {% include 'accounts/chat.html' %}
     {% elif not q %}
       <div class="profile-page-info">
         <div class="profile-page-info-header">
+          <div class="header-info">
             <div class="header-img">
+<<<<<<< HEAD
+              {% if request.user.image %}
+              <img src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image">
+            {% else %}
+              <img src="#" alt="noimage">
+            {% endif %}
+          </div>
+          <div class="header-text">
+            <div class="header-text-name">
+              <h2>{{ user.last_name }} 님</h2>
+              <a href="#">
+                <span class="material-symbols-outlined">forum</span>
+              </a>
+            </div>
+            {% if user.is_seller == False %}
+              <p class="not_seller">일반회원</p>
+            {% else %}
+              <p class="seller">판매자</p>
+=======
               {% if person.image %}
                 <img src="{{ person.image.url }}" alt="{{ person.username }}'s Profile Image">
               {% else %}
@@ -73,22 +135,25 @@
                 <p class="not_seller">일반회원</p>
               {% else %}
                 <p class="seller">판매자</p>
+>>>>>>> develop
               {% endif %}
             </div>
-            <a href="{% url 'accounts:update' %}">회원정보수정</a> 
+          </div>
+          <div class="header-update">
+            <a href="{% url 'accounts:update' %}">회원정보수정</a>
             <a href="{% url 'accounts:change_password' %}">비밀번호변경</a>
+          </div>
         </div>
         <div class="profile-box-text">
         <div class="profile-page-info-main">
           <div class="main-card">
-              <span class="main-card-title">나의 에코포인트</span>
-              <span class="material-symbols-outlined">eco</span>
+              <span class="main-card-title">나의 에코포인트🌱</span></span>
               <div class="main-card-content">
                 <span>{{ user.points }}</span>
               </div>
           </div>
           <div class="main-card">
-            <span class="main-card-title">나의 친구관리</span>
+            <span class="main-card-title">나의 친구관리🧸</span>
             <div class="main-card-content">
               
               {% comment %} 팔로잉테스트 {% endcomment %}
@@ -200,12 +265,9 @@
 
             </div>
           </div>
-          <div class="main-card">
-            3번
-          </div>
         </div>
       </div>
-    {% endif %}
+      {% endif %}
   </div>
 </div>
 

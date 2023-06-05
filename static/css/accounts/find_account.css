@@ -100,3 +100,37 @@
 	margin-bottom: 5px;
 	color: grey;
 }
+
+/* 반응형 미디어쿼리 */
+@media (min-width: 1080px) {
+
+}
+
+@media (max-width: 1079.9px) {
+	.find_id-wrapper {
+		background: none;
+	}
+	.find_id-page {
+		border: 0.5px solid grey;
+	}
+
+	/* 비밀번호 찾기 */
+	.find_pw-wrapper {
+		background: none;
+	}
+	.find_pw-page {
+		border: 0.5px solid grey;
+	}
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (max-width:767px) {
+
+}
+
+@media (max-width: 479px) {
+	
+}

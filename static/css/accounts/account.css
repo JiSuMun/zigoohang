@@ -85,6 +85,30 @@
 	border-radius: 5px;
 	cursor: pointer;
 }
+/* #id_is_seller {
+	display: none;
+} */
+input[type=file]::file-selector-button {
+	display: none;
+}
+
+/* 중복확인 */
+.signup-page-form-check {
+	display: flex;
+	gap: 5px;
+}
+.form-check-id {
+	margin-top: 0;
+}
+.form-control {
+	flex: 8;
+}
+.form-check-id {
+	flex: 2;
+}
+.form-check-email {
+	flex: 2;
+}
 
 /*약관 동의*/
 .agreement-page {
@@ -212,51 +236,74 @@
 	cursor: pointer;
 }
 
-/* 반응형 */
-@media (max-width: 1080px) {
-	.login-page {
-		max-width: 50vh;
-		max-height: 50vh;
+/* 반응형 미디어쿼리 */
+@media (min-width: 1080px) {
+	/* 약관동의 */
+	.agreement-submit-media {
+		display: none;
 	}
-	.signup-page {
-		max-width: 50vh;
-		max-height: 50vh;
+}
+
+@media (max-width: 1079.9px) {
+	/* 약관동의 */
+	.agreement-submit-media {
+		display: none;
 	}
+	.signup-wrapper {
+		background: none;
+  }
 	.agreement-page {
-		max-width: 50vh;
-		max-height: 50vh;
+		border: 0.5px solid grey;
 	}
-	.update-page {
-		max-width: 50vh;
-		max-height: 50vh;
-	}
-	.password-page {
-		max-width: 50vh;
-		max-height: 50vh;
+
+	/* 로그인 */
+	.login-wrapper {
+		background: none;
 	}
 }
-
-@media (max-width: 768px) {
+@media (min-width: 768px) {
+	.login-page-top {
+		display: none;
+	}
+}
+@media (max-width:767px) {
+	/* 로그인 */
 	.login-page {
-		max-width: 30vh;
-		max-height: 30vh;
+		width: 50%;
+		/* margin-top: 50%; */
 	}
-	.signup-page {
-		max-width: 30vh;
-		max-height: 30vh;
+	.login-page-top {
+		width: 100%;
+		height: 100px;
 	}
-	/* .agreement-page {
-		max-width: 30vh;
-		max-height: 30vh;
-	} */
-	.update-page {
-		max-width: 30vh;
-		max-height: 30vh;
-	}
-	.password-page {
-		max-width: 30vh;
-		max-height: 30vh;
+	.login-page-top img{
+		width: 100%;
+		/* height: 100px; */
 	}
 }
 
+@media (max-width: 479px) {
+	/* 약관동의 */
+	.agreement-page {
+		width: 80%;
+	}
+	.agreement-submit {
+		display: none;
+	}
+	.agreement-submit-media {
+		display: flex;
+		gap: 10px;
+	}
 
+	/* 회원가입 */
+	.signup-page {
+		width: 50%;
+	}
+/* 
+	로그인
+	.login-page {
+		width: 50%;
+		margin-top: 50%;
+	} */
+
+}
