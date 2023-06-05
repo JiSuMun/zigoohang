@@ -47,7 +47,7 @@ class CustomLoginView(LoginView):
             
             # cart_data를 CartItem에 저장, 이미 존재하는 경우 quantity 업데이트
             for item in cart_items:
-                # product 인스턴스를 가져옵니다 (id로 조회).
+                # product 인스턴스를 가져오기 (id로 조회).
                 product_instance = get_object_or_404(Product, id=item['id'])
 
                 # 기존 cart_item이 있는지 확인함
@@ -358,33 +358,6 @@ def change_password(request):
     return render(request, 'accounts/change_password.html', context)
 
 
-@login_required
-def profile(request, username):
-    q = request.GET.get('q')
-    User = get_user_model()
-    person = User.objects.get(username=username)
-    posts = Post.objects.filter(user=person)
-    interests = request.user.like_products.all()
-    orders = Order.objects.filter(customer=person)
-    purchases = S_Purchase.objects.filter(customer=person).select_related('product')
-    purchase_details = []
-    for order in orders:
-        items = OrderItem.objects.filter(order=order)
-        purchase_details.append({
-            'order': order,
-            'items': items 
-        })
-    context = {
-        'q':q,
-        'person':person,
-        'posts':posts,
-        'interests':interests,
-        'purchase_details': purchase_details,
-        # 'purchases': purchases,
-    }
-    return render(request, 'accounts/profile.html', context)
-    
-
 User = get_user_model()
 
 def find_user_id(request):
@@ -466,22 +439,70 @@ def password_reset_confirm(request, uidb64, token):
     
 
 @login_required
+def profile(request, username):
+    q = request.GET.get('q')
+    User = get_user_model()
+    person = User.objects.get(username=username)
+    posts = Post.objects.filter(user=person)
+    interests = request.user.like_products.all()
+    orders = Order.objects.filter(customer=person)
+    purchases = S_Purchase.objects.filter(customer=person).select_related('product')
+    purchase_details = []
+    for order in orders:
+        items = OrderItem.objects.filter(order=order)
+        purchase_details.append({
+            'order': order,
+            'items': items 
+        })
+    context = {
+        'q':q,
+        'person':person,
+        'posts':posts,
+        'interests':interests,
+        'purchase_details': purchase_details,
+        # 'purchases': purchases,
+    }
+    return render(request, 'accounts/profile.html', context)
+
+
+@login_required
 def follow(request, user_pk):
     User = get_user_model()
-    you = User.objects.get(pk=user_pk)
-    me = request.user
+    person = User.objects.get(pk=user_pk)
 
-    if you != me:
-        if me in you.followers.all():
-            you.followers.remove(me)
+    if person != request.user:
+        if request.user in person.followers.all():
+            person.followers.remove(request.user)
             is_followed = False
         else:
-            you.followers.add(me)
+            person.followers.add(request.user)
             is_followed = True
         context = {
             'is_followed': is_followed,
-            'followings_count': you.followings.count(),
-            'followers_count': you.followers.count(),
+            'followings_count': person.followings.count(),
+            'followers_count': person.followers.count(),
         }
         return JsonResponse(context)
-    return redirect('accounts:profile', you.username)
+    return redirect('accounts:profile', person.username)
+
+
+@login_required
+def following_list(request, username):
+    User = get_user_model()
+    person = User.objects.get(username=username)
+    followings = person.followings.all()
+    context = {
+        'followings': followings,
+        }
+    return render(request, 'accounts/following_list.html', context)
+
+
+@login_required
+def followers_list(request, username):
+    User = get_user_model()
+    person = User.objects.get(username=username)
+    followers = person.followers.all()
+    context = {
+        'followers': followers,
+        }
+    return render(request, 'accounts/followers_list.html', context)
