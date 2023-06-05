@@ -93,6 +93,7 @@ def detail(request, post_pk):
         'review_form': review_form,
         'u_review_forms': u_review_forms,
         'previous_post_url': previous_post_url,
+        'likes_count': post.like_users.count(),
     }
     return render(request, 'posts/detail.html', context)
 

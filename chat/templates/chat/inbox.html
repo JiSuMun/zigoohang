@@ -6,20 +6,40 @@
 {% endblock head %}
 
 {% block content %}
+<section>
+  <a href="{% url 'chat:start_chat' user.id %}"><h2>나와의 채팅하기</h2></a>
+  <h2>사용자 목록</h2>
+  <form method="post" action="{% url 'chat:start_group_chat' %}">
+    {% csrf_token %}
+    {% for user in all_users %}
+      <input type="checkbox" name="user_ids" value="{{ user.id }}"> {{ user.username }}
+    {% empty %}
+      <p>다른 사용자가 없습니다.</p>
+    {% endfor %}
+    <input type="submit" value="채팅방 만들기">
+  </form>
+</section>
 
 <section>
   {% if chat_rooms %}
-    {% for chat_room in chat_rooms %}
-      <div class="chat_room">
-        <a href="{% url 'chat:room' chat_room.name %}">{{ chat_room }}</a>
+    {% for chat_room, last_message, unread_notifications in chat_rooms %}
+      <div class="chat_room" id="{{ chat_room.name }}">
+        <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;">{{ chat_room }}</a>
+        {% if unread_notifications > 0 %}
+          <p class="notification" style="color: red">!</p>
+        {% endif %}
+        {% if last_message %}
+          <p>{{ last_message.content }}</p>
+          <p>{{ last_message.formatted_timestamp }}</p>
+        {% else %}
+          <p>메시지 없음</p>
+        {% endif %}
         <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
           {% csrf_token %}
           <input type="submit" value="삭제">
         </form>
       </div>
-
     {% endfor %}
-
   {% else %}
     <p>채팅방이 없습니다.</p>
   {% endif %}

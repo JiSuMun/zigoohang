@@ -42,7 +42,7 @@ class S_ProductImage(models.Model):
 
 
 class S_Purchase(models.Model):
-    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='s_purchases')
     product = models.ForeignKey(S_Product, on_delete=models.CASCADE)
     amount = models.IntegerField()
     quantity = models.IntegerField()
