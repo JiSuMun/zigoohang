@@ -312,7 +312,7 @@ def zero_map(request):
 
 def get_zeros(request):
     region = request.GET.get('region', '서울')
-    zeros = Zero.objects.filter(region=region).values('name', 'address')
+    zeros = Zero.objects.filter(region=region).values('name', 'address', 'phone_number')
     addresses = [zero['address'] for zero in zeros]
     kakao_key = os.getenv('KAKAO_KEY')
     return JsonResponse({

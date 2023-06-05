@@ -1,27 +1,45 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Zero_map{% endblock title %}
+{% block title %}친환경 지도{% endblock title %}
 
 {% block head %}
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/posts/zero_map.css' %}">
 {% endblock head %}
 
 {% block content %}
+<!--지도 타이틀-->
+<div class="map-title-wrap">
+  <div class="map-title-box">
+    <p class="map-title-title">친환경 지도</p>
+    <p class="map-title-text">친환경 지도는 지구 보호와 지속 가능한 삶을 추구하는 사람들을 위해 지역별로 친환경 업체들을 제공하여 선택과 편의를 높여줍니다.</p>
+  </div>
+</div>
+<!--지도 영역-->
+<div class="m-wrapper">
+  <div class="m-inner">
+    <div class="m-left">
+      <div class="map" id="map"></div>
+    </div>
+    <div class="m-right">
+      <select class="m-select" id="region-select" onchange="changeRegion()">
+        {% for region in regions %}
+          <option value="{{ region }}" {% if region == '서울' %}selected{% endif %}>{{ region }}</option>
+          {% endfor %}
+      </select>
+      <ul id="data-list"></ul>
+    </div>
+  </div>
+</div>
 
-  <select id="region-select" onchange="changeRegion()">
-    {% for region in regions %}
-      <option value="{{ region }}" {% if region == '서울' %}selected{% endif %}>{{ region }}</option>
-    {% endfor %}
-  </select>
-
-  <div class="map" id="map" style="width:640px; height:640px;"></div>
 
 {% endblock content %}
 
 {% block script %}
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_script_key }}&libraries=services"></script>
   <script>
+    /* 카카오 지도 생성 */
     const API_KEY = "{{ kakao_key }}";
     const mapContainer = document.getElementById('map');
     const mapOption = {
@@ -36,7 +54,7 @@
     function setCenter(coords) {
       map.setCenter(new kakao.maps.LatLng(coords.latitude, coords.longitude));
     }
-    
+    /* 장소 바꿀 때 */
     function changeRegion() {
       axios.get('/posts/get_zeros/', {
         params: {
@@ -48,7 +66,37 @@
       }).then((response) => {
         const { addresses, zeros } = response.data;
         const coordsList = [];
-  
+        
+        /* 장소 바꿔 데이터 출력하기 */
+        const dataList = document.getElementById('data-list');
+        dataList.innerHTML = '';
+        zeros.forEach((zero) => {
+          const name = zero.name;
+          const address = zero.address;
+          const phoneNumber = zero.phone_number;
+          console.log(zero)
+        
+          const listItem = document.createElement('li');
+          listItem.classList.add('m-list');
+
+          const nameItem = document.createElement('p');
+          nameItem.innerText = name;
+          nameItem.classList.add('m-name');
+          listItem.appendChild(nameItem);
+        
+          const addressItem = document.createElement('p');
+          addressItem.innerText = address;
+          addressItem.classList.add('m-address');
+          listItem.appendChild(addressItem);
+        
+          const phoneNumberItem = document.createElement('p');
+          phoneNumberItem.innerText = phoneNumber;
+          addressItem.classList.add('m-phonenumber');
+          listItem.appendChild(phoneNumberItem);
+        
+          dataList.appendChild(listItem);
+        });
+
         zeros.forEach((zero, index) => {
           geocoder.addressSearch(zero.address, (result, status) => {
             if (status === kakao.maps.services.Status.OK) {
@@ -63,7 +111,7 @@
                 map: map,
                 title: zero.name,
               });
-
+              /* 업체 길찾기 링크 연결 */
               kakao.maps.event.addListener(marker, 'click', function() {
                 const apiUrl = "https://dapi.kakao.com/v2/local/geo/transcoord.json?x=127.423084&y=37.078956&input_coord=WGS84&output_coord=TM";
                 
@@ -85,9 +133,8 @@
                 .catch(error => {
                   console.log(error);
                 });
-              });
+              });              
               
-
               if (coordsList.length === zeros.length) {
                 const center = getCenterCoordinate(coordsList);
                 map.setCenter(center);
@@ -96,7 +143,8 @@
           });
         });
       });
-    
+
+      /* 장소들의 중심 계산 */
       function getCenterCoordinate(coordinates) {
         let totalLat = 0;
         let totalLng = 0;
@@ -107,6 +155,15 @@
         const averageLat = totalLat / coordinates.length;
         const averageLng = totalLng / coordinates.length;
         return new kakao.maps.LatLng(averageLat, averageLng);
+      }
+      /* 지도 기본 위치 조절 */
+      function resizeMap() {
+        var mapContainer = document.getElementById('map');
+        mapContainer.style.width = '700px';
+        mapContainer.style.height = '700px'; 
+      }    
+      function relayout() {    
+        map.relayout();
       }
     }
     
