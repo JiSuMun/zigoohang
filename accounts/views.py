@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import CustomAutentication, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm
+from .forms import CustomAuthentication, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.urls import reverse_lazy, reverse
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -73,7 +73,7 @@ def login(request):
     # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', request.body)
     if request.method == 'POST':
         # jsonObj = 
-        form = CustomAutentication(request, request.POST)
+        form = CustomAuthentication(request, request.POST)
         if form.is_valid():
             user = form.get_user()
             if not user.is_active:
