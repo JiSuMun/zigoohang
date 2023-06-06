@@ -6,13 +6,22 @@
 {% endblock head %}
 
 {% block content %}
-
 {{ room_name|json_script:"room-name" }}
   <div id="chat-room">
     {% for message in messages %}
       <div class="message">
-        <p>{{ message.sender.username }}: {{ message.content }}</p>
-        <p>{{ message.formatted_timestamp }}</p>
+        {% if message.sender == request.user %}
+          <div class="my-message">
+            <p>{{ message.content }}</p>
+            <p>{{ message.formatted_timestamp }}</p>
+          </div>
+        {% else %}
+          <div class="other-message">
+            <p>{{ message.sender.username }}</p>
+            <p>{{ message.content }}</p>
+            <p>{{ message.formatted_timestamp }}</p>
+          </div>
+        {% endif %}
       </div>
     {% empty %}
       <p>No messages yet.</p>
@@ -40,7 +49,7 @@
     const chatSocket = new WebSocket(
       wsStart + window.location.host + '/ws/chat/' + roomName + '/'
     );
-  
+
     chatSocket.onopen = function (event) {
       console.log('WebSocket connection established.');
     };
@@ -83,15 +92,25 @@
       const chatRoom = document.getElementById('chat-room');
       const messageElement = document.createElement('div');
       messageElement.classList.add('message');
-      
+  
+      if (message.sender === '{{ request.user.username }}') {
+        messageElement.classList.add('my-message');
+      } else {
+        messageElement.classList.add('other-message');
+  
+        const username = document.createElement('p');
+        username.textContent = message.sender;
+        messageElement.appendChild(username);
+      }
+  
       const content = document.createElement('p');
-      content.textContent = `${message.sender}: ${message.content}`;
+      content.textContent = message.content;
       messageElement.appendChild(content);
-
+  
       const timestamp = document.createElement('p');
       timestamp.textContent = message.formatted_timestamp;
       messageElement.appendChild(timestamp);
-
+  
       chatRoom.appendChild(messageElement);
     }
   });
