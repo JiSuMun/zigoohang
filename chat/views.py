@@ -41,8 +41,6 @@ def room(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
     messages = chat_room.messages.all()
     user = request.user
-
-    # 알림 읽음 처리
     unread_notifications = chat_room.notifications.filter(user=user, is_read=False)
     for notification in unread_notifications:
         notification.mark_as_read()
@@ -58,10 +56,8 @@ def room(request, room_name):
 
 def delete_chat(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
-
     if request.user in chat_room.participants.all():
         chat_room.participants.remove(request.user)
-
     if chat_room.participants.count() == 0:
         chat_room.delete()
 
