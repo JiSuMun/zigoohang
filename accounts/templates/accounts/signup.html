@@ -556,13 +556,21 @@
          {% if field.name == 'username' %}
             <div class="signup-page-form-check">
                {{ field }}
-               <button class="form-check-id" type="button" id="id_check">중복확인</button>
+               <button class="form-check-id" id="check-username" type="button">중복확인</button>
+               <span id="username-result"></span>
             </div>   
+        {% elif field.name == 'first_name' %}
+            <div class="signup-page-form-check">
+               {{ field }}
+               <button class="form-check-id" id="check-first-name" type="button">중복확인</button>
+               <span id="first-name-result"></span>
+            </div>  
          {% elif field.name == 'email' %}
             <div class="signup-page-form-check">
                {{ field }}
-               <button class="form-check-email" type="button" id="email_check">중복확인</button>
-            </div>  
+               <button class="form-check-id" id="check-email" type="button">중복확인</button>
+               <span id="email-result"></span>
+            </div>
          {% else %}
             {{ field }}
          {% endif %}
@@ -643,7 +651,7 @@
               step2.style.display = "none";
               step3.style.display = "block";
             } else {
-              alert(data.msg);
+              alert("회원가입 불가");
             }
           })
           .catch((error) => {
@@ -653,7 +661,60 @@
     });
   });
 
+// 중복확인
 
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('check-username').addEventListener('click', checkUsername);
+    document.getElementById('check-email').addEventListener('click', checkEmail);
+    document.getElementById('check-first-name').addEventListener('click', checkFirstName); 
+
+    function checkUsername() {
+      const username = document.querySelector('[name="username"]').value;
+      if (!username) {
+        alert('아이디를 입력하세요.');
+      } else {
+        checkDuplicate('/accounts/check_username/', 'username', username, 'username-result');
+      }
+    }
+
+    function checkFirstName() {
+        const firstName = document.querySelector('[name="first_name"]').value;
+        if (!firstName) {
+          alert('이름을 입력하세요.');
+        } else {
+          checkDuplicate('/accounts/check_first_name/', 'first_name', firstName, 'first-name-result');
+        }
+      }
+
+    function checkEmail() {
+      const email = document.querySelector('[name="email"]').value;
+      if (!email) {
+        alert('이메일을 입력하세요.');
+      } else {
+        checkDuplicate('/accounts/check_email/', 'email', email, 'email-result');
+      }
+    }
+
+    function checkDuplicate(url, type, value, resultElementId) {
+      const data = new FormData();
+      data.append(type, value);
+
+      fetch(url, {
+        method: 'POST',
+        body: data,
+        headers: {
+          'X-CSRFToken': document.querySelector('[name="signup-csrfmiddlewaretoken"]').value,
+        },
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.is_available) {
+          document.getElementById(resultElementId).textContent = '사용 가능합니다.';
+        } else {
+          document.getElementById(resultElementId).textContent = '이미 사용중입니다.';
+        }
+      });
+    }
+  });
 </script>
-
 {% endblock script %}
