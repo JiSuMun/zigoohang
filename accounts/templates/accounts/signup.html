@@ -557,12 +557,12 @@
          {% if field.name == 'username' %}
             <div class="signup-page-form-check">
                {{ field }}
-               <input class="form-check-id" type="button" id="id_check" value="중복확인" onclick=""></input>
+               <button class="form-check-id" type="button" id="id_check">중복확인</button>
             </div>   
          {% elif field.name == 'email' %}
             <div class="signup-page-form-check">
                {{ field }}
-               <input class="form-check-email" type="button" id="email_check" value="중복확인" onclick=""></input>
+               <button class="form-check-email" type="button" id="email_check">중복확인</button>
             </div>  
          {% else %}
             {{ field }}
