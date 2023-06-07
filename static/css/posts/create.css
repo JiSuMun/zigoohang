@@ -35,7 +35,7 @@ margin-bottom: 2rem;
   display: block;
 }
 
-.c-form-control {
+.form-control {
   width: calc(100% - 0.8rem); 
   margin-bottom: 1rem;
   border-radius: 5px;
@@ -43,7 +43,7 @@ margin-bottom: 2rem;
   border: 1px  solid #00000033;
 }
 
-.c-form-image {
+.form-image {
   width: 100%; 
   margin-bottom: 1rem;
   border-radius: 5px;
@@ -62,9 +62,11 @@ margin-bottom: 2rem;
   margin-left: 3px;
   margin-bottom: 10px;
 }
+
 input:focus {
   outline:1px solid #297821;
 }
+
 textarea:focus {
   outline:1px solid #297821;
 }
@@ -98,11 +100,13 @@ input::file-selector-button {
   margin-right: 5px;
   border-radius: 5px;
 }
+
 .c-button-cancel:hover {
   border: 1px solid #333333;
   background-color: white;
   color: #333333;
 }
+
 .c-button {
   padding: 0.5rem 1rem;;
   border: 1px solid #297821;
@@ -112,6 +116,7 @@ input::file-selector-button {
   cursor: pointer;
   border-radius: 5px;
 }
+
 .c-button:hover {
   background-color: #297821;
   color: white;
@@ -122,10 +127,13 @@ input::file-selector-button {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+
   .create-title-text {
     font-size: 15px;
   }
+
   .c-wrapper {
     padding: 2rem;
   }
+  
 }

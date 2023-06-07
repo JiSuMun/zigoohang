@@ -10,13 +10,15 @@
 <link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
 {% endblock head %}
 {% block content %}
-
 <div class="login-wrapper">
   <div class="login-page">
+    <div class="login-page-top">
+      <img src="{% static 'img/accounts/login.jpg' %}" alt="로그인 상단 사진">
+    </div>
     <div class="login-page-title">
       <h1>LOGIN</h1>
     </div>
-    <form class="login-page-form" id="login-form" action="{% url 'accounts:login' %}" method="POST">
+    <form class="login-page-form" id="login-form" action="{% url 'accounts:login' %}" method="POST" autocomplete="off">
       {% csrf_token %}
       {% for field in form %}
         {{ field }}

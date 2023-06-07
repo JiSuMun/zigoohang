@@ -1,11 +1,52 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Secondhands{% endblock title %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/secondhands/index.css' %}">
+{% endblock head %}
 
 {% block content %}
+  <div class="secondhands-page">
 
-{% for product in products %}
-  {{ product }}
-{% endfor %}
+    {% comment %} 중고거래 타이틀 {% endcomment %}
+    <div class="secondhands-page-title-wrapper">
+      <div class="secondhands-page-title">
+        <h1 class="">중고거래</h1>
+        <p>지구행은 지속 가능한 소비와 재활용을 장려하기 위해 중고 제품 거래를 지원합니다.</p>
+      </div>
+    </div>
 
-{% endblock content %}
+    {% comment %} 중고거래 메인 {% endcomment %}
+    <div class="secondhands-page-content">
+
+      {% comment %} 중고거래 필터 {% endcomment %}
+      <div class="secondhands-page-content-filter">
+        <p>카테고리 / 최신등록순 / 가격낮은순 / 가격높은순</p>      
+        <a href="{% url 'secondhands:create' %}">
+          <button class="secondhands_add_button" type="button">중고거래상품추가</button>
+        </a>
+      </div>
+
+      {% comment %} 중고거래 상품 목록 {% endcomment %}
+      <div class="secondhands-page-content-product">
+        {% for product in products %}
+          <div class="product-card">
+            <div class="product-card-photo"> 
+              {% for image in product.s_productimage_set.all %}
+              <img src="{{ image.image.url }}" alt="상품이미지">
+            </div>
+            <div class="product-card-detail"></div>
+              <p class="detail-product_name">{{ product.product }}</p>
+              <p>{{ product.price }}원</p>
+              <p>{{ product.address }}</p>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endblock content %}
+
+

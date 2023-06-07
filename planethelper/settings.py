@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     # Application
     'accounts',
-    'donations',
+    'challenges',
     'posts',
     'stores',
     'secondhands',

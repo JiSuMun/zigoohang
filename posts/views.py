@@ -7,9 +7,11 @@ from django.http import JsonResponse, HttpResponse
 from utils.news import search_naver_news
 from utils.zero import import_zero_data
 from utils.map import get_latlng_from_address
+from django.urls import reverse
 import json
 import os
 from django.conf import settings
+from django.core.paginator import Paginator
 
 
 # @receiver(post_save, sender=Post)
@@ -28,8 +30,11 @@ def main(request):
 
 def index(request):
     posts = Post.objects.all().order_by('-created_at')
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'posts' : posts,
+        'page_obj' : page_obj,
     }
     return render(request, 'posts/index.html', context)
 
@@ -67,11 +72,15 @@ def create(request):
 
 def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
-    reviews = post.reviews.all().order_by('-created_at')
+    reviews = post.reviews.all()
     image_form = ReviewImageForm()
     review_form = ReviewForm()
     u_review_forms = []
 
+    # 이전글 버튼
+    previous_post = Post.objects.filter(created_at__lt=post.created_at).order_by('-created_at').first()
+    previous_post_url = reverse('posts:detail', args=[previous_post.id]) if previous_post else ''
+    
     for review in reviews:
         u_review_form = (
             review,
@@ -87,6 +96,8 @@ def detail(request, post_pk):
         'image_form': image_form,
         'review_form': review_form,
         'u_review_forms': u_review_forms,
+        'previous_post_url': previous_post_url,
+        'likes_count': post.like_users.count(),
     }
     return render(request, 'posts/detail.html', context)
 
@@ -305,7 +316,7 @@ def zero_map(request):
 
 def get_zeros(request):
     region = request.GET.get('region', '서울')
-    zeros = Zero.objects.filter(region=region).values('name', 'address')
+    zeros = Zero.objects.filter(region=region).values('name', 'address', 'phone_number')
     addresses = [zero['address'] for zero in zeros]
     kakao_key = os.getenv('KAKAO_KEY')
     return JsonResponse({

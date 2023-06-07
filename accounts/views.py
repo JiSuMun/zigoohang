@@ -1,41 +1,34 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render,redirect, get_object_or_404
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
-from django.contrib.auth.decorators import login_required
-from .forms import CustomAutentication, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm
-from django.contrib.auth import get_user_model
-from django.contrib.auth import update_session_auth_hash
-from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .forms import CustomAuthentication, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm
+from django.contrib.auth import get_user_model, update_session_auth_hash
+from django.urls import reverse_lazy, reverse
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
 from posts.models import Post
 from stores.models import Product
 from carts.models import Order, OrderItem
 from secondhands.models import S_Purchase, S_Product
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.urls import reverse
 from django.conf import settings
-from django.template.loader import render_to_string
 from .forms import FindUserIDForm, PasswordResetRequestForm
 from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth.forms import SetPasswordForm
 from django.views.generic import View
-
+from django.core.exceptions import ValidationError
+from django.db import transaction
 from django.contrib.auth.views import LoginView
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, JsonResponse
 from carts.models import Cart, CartItem
-
 import json
+
 
 class CustomLoginView(LoginView):    
     def form_invalid(self, form):
@@ -55,7 +48,7 @@ class CustomLoginView(LoginView):
             
             # cart_data를 CartItem에 저장, 이미 존재하는 경우 quantity 업데이트
             for item in cart_items:
-                # product 인스턴스를 가져옵니다 (id로 조회).
+                # product 인스턴스를 가져오기 (id로 조회).
                 product_instance = get_object_or_404(Product, id=item['id'])
 
                 # 기존 cart_item이 있는지 확인함
@@ -81,17 +74,45 @@ def login(request):
     # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', request.body)
     if request.method == 'POST':
         # jsonObj = 
-        form = CustomAutentication(request, request.POST)
+        form = CustomAuthentication(request, request.POST)
         if form.is_valid():
-            auth_login(request, form.get_user())
-            return redirect('main')
+            user = form.get_user()
+            if not user.is_active:
+                User = get_user_model()
+                inactive_user = User.objects.filter(username=user.username, is_active=False).first()
+                if inactive_user:
+                    messages.warning(request, '이전에 가입한 미활성화 된 계정이 있습니다. 계정을 재등록하려면 사용자 이름과 이메일을 사용해 회원 가입을 다시 시도하십시오.')
+                    return redirect(reverse('accounts:signup'))
+                else:
+                    messages.error(request, '이메일 확인이 필요합니다.')
+                    return HttpResponseRedirect(reverse('accounts:login'))
+            else:
+                auth_login(request, user)
+                return redirect('main')
     else:
-        form = CustomAutentication()
-    
+        form = CustomAuthentication()
+
     context = {
         'form': form,
     }
     return render(request, 'accounts/login.html', context)
+
+
+# def login(request):
+#     if request.user.is_authenticated:
+#         return redirect('main')
+#     if request.method == 'POST':
+#         form = CustomAutentication(request, request.POST)
+#         if form.is_valid():
+#             auth_login(request, form.get_user())
+#             return redirect('main')
+#     else:
+#         form = CustomAutentication()
+    
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'accounts/login.html', context)
 
 
 @login_required
@@ -172,7 +193,39 @@ class SignupView(View):
             return redirect('main')
         
         form = CustomUserCreationForm(request.POST, request.FILES)
+        
         if form.is_valid():
+            inactive_user = User.objects.filter(username=form.cleaned_data.get('username'),
+                                                email=form.cleaned_data.get('email'),
+                                                is_active=False).first()
+
+            if inactive_user:
+                try:
+                    with transaction.atomic():
+                        inactive_user.set_password(form.cleaned_data.get('password1'))
+                        inactive_user.address = request.POST.get('address')
+                        inactive_user.full_clean()
+                        inactive_user.save()
+
+                    domain = request.get_host()
+                    mail_subject = '재활성화 이메일 인증'
+                    message = render_to_string('accounts/reactivate_email.html', {
+                        'user': inactive_user,
+                        'domain': domain,
+                        'uidb64': urlsafe_base64_encode(force_bytes(inactive_user.pk)),
+                        'token': default_token_generator.make_token(inactive_user),
+                    })
+
+                    to_email = form.cleaned_data.get('email')
+                    email = EmailMessage(mail_subject, message, to=[to_email])
+                    email.send()
+
+                    return render(request, 'accounts/wait_for_email.html')
+
+                except ValidationError as ex:
+                    messages.error(request, str(ex))
+                    return redirect(reverse('accounts:signup'))
+            
             user = form.save(commit=False)
             user.address = request.POST.get('address')
             user.is_active = False  # Deactivate user until email confirmation
@@ -198,6 +251,43 @@ class SignupView(View):
             'form': form,
         }
         return render(request, 'accounts/signup.html', context)
+
+
+
+# def signup(request):
+#     if request.user.is_authenticated:
+#         return redirect('main')
+    
+#     form = CustomUserCreationForm()
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.address = request.POST.get('address')
+#             user.is_active = False  # 이메일 인증 전까지 비활성화
+#             user.save()
+
+#             # 이메일 인증 메시지 작성
+#             domain = request.get_host()
+#             mail_subject = '계정 활성화'
+#             message = render_to_string('accounts/activate_email.html', {
+#             'user': user,
+#             'domain': domain,
+#             'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
+#             'token': default_token_generator.make_token(user),
+#         })
+
+#             # 이메일 발송
+#             to_email = form.cleaned_data.get('email')
+#             email = EmailMessage(mail_subject, message, to=[to_email])
+#             email.send()
+
+#             return render(request, 'accounts/wait_for_email.html')
+
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'accounts/signup.html', context)
 
 
 def activate(request, uidb64, token):
@@ -268,33 +358,6 @@ def change_password(request):
     }
     return render(request, 'accounts/change_password.html', context)
 
-
-@login_required
-def profile(request, username):
-    q = request.GET.get('q')
-    User = get_user_model()
-    person = User.objects.get(username=username)
-    posts = Post.objects.filter(user=person)
-    interests = request.user.like_products.all()
-    orders = Order.objects.filter(customer=person, shipping_status=1)
-    purchases = S_Purchase.objects.filter(customer=person).select_related('product')
-    purchase_details = []
-    for order in orders:
-        items = OrderItem.objects.filter(order=order)
-        purchase_details.append({
-            'order': order,
-            'items': items 
-        })
-    context = {
-        'q':q,
-        'person':person,
-        'posts':posts,
-        'interests':interests,
-        'purchase_details': purchase_details,
-        # 'purchases': purchases,
-    }
-    return render(request, 'accounts/profile.html', context)
-    
 
 User = get_user_model()
 
@@ -374,3 +437,73 @@ def password_reset_confirm(request, uidb64, token):
     else:
         messages.error(request, '비밀번호 재설정 링크가 유효하지 않습니다.')
         return redirect('accounts:password_reset_request')
+    
+
+@login_required
+def profile(request, username):
+    q = request.GET.get('q')
+    User = get_user_model()
+    person = User.objects.get(username=username)
+    posts = Post.objects.filter(user=person)
+    interests = request.user.like_products.all()
+    orders = Order.objects.filter(customer=person, shipping_status=1)
+    purchases = S_Purchase.objects.filter(customer=person).select_related('product')
+    purchase_details = []
+    for order in orders:
+        items = OrderItem.objects.filter(order=order)
+        purchase_details.append({
+            'order': order,
+            'items': items 
+        })
+    context = {
+        'q':q,
+        'person':person,
+        'posts':posts,
+        'interests':interests,
+        'purchase_details': purchase_details,
+        # 'purchases': purchases,
+    }
+    return render(request, 'accounts/profile.html', context)
+
+
+@login_required
+def follow(request, user_pk):
+    User = get_user_model()
+    person = User.objects.get(pk=user_pk)
+
+    if person != request.user:
+        if request.user in person.followers.all():
+            person.followers.remove(request.user)
+            is_followed = False
+        else:
+            person.followers.add(request.user)
+            is_followed = True
+        context = {
+            'is_followed': is_followed,
+            'followings_count': person.followings.count(),
+            'followers_count': person.followers.count(),
+        }
+        return JsonResponse(context)
+    return redirect('accounts:profile', person.username)
+
+
+@login_required
+def following_list(request, username):
+    User = get_user_model()
+    person = User.objects.get(username=username)
+    followings = person.followings.all()
+    context = {
+        'followings': followings,
+        }
+    return render(request, 'accounts/following_list.html', context)
+
+
+@login_required
+def followers_list(request, username):
+    User = get_user_model()
+    person = User.objects.get(username=username)
+    followers = person.followers.all()
+    context = {
+        'followers': followers,
+        }
+    return render(request, 'accounts/followers_list.html', context)

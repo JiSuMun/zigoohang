@@ -23,7 +23,7 @@ class PasswordResetRequestForm(forms.Form):
         if not User.objects.filter(email=email).exists():
             raise forms.ValidationError("입력한 이메일이 존재하지 않습니다.")
         
-class CustomAutentication(AuthenticationForm):
+class CustomAuthentication(AuthenticationForm):
     username = forms.CharField(
         label = False,
         widget = forms.TextInput(attrs = {
@@ -53,6 +53,7 @@ class CustomUserCreationForm(UserCreationForm):
             attrs = {
                 "class": "form-control",
                 "placeholder": "아이디",
+                'autocomplete': 'off',
             }),
     )
 
@@ -62,6 +63,7 @@ class CustomUserCreationForm(UserCreationForm):
             attrs = {
                 "class": "form-control",
                 "placeholder": "닉네임",
+                'autocomplete': 'off',
             }),
     )
 
@@ -71,6 +73,7 @@ class CustomUserCreationForm(UserCreationForm):
             attrs={
                 "class": "form-control",
                 "placeholder": "홍길동",
+                'autocomplete': 'off',
             }),
     )
 
@@ -81,6 +84,7 @@ class CustomUserCreationForm(UserCreationForm):
             attrs = {
                 "class": "form-control",
                 "placeholder": "******",
+                'autocomplete': 'off',
             }),
     )
     password2 = forms.CharField(
@@ -89,6 +93,7 @@ class CustomUserCreationForm(UserCreationForm):
             attrs = {
                 "class": "form-control",
                 "placeholder": "******",
+                'autocomplete': 'off',
             }),
     )
 
@@ -109,6 +114,7 @@ class CustomUserCreationForm(UserCreationForm):
             attrs={
                 "class": "form-control",
                 "placeholder": "이메일",
+                'autocomplete': 'off',
             }),
     )
 

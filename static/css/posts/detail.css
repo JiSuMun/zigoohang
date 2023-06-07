@@ -1,0 +1,319 @@
+.detail-title-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.detail-title-title {
+  text-align: center;
+  font-size: 50px;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+.detail-title-text {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.d-wrapper {
+  max-width: 1080px;
+  /* padding: 2rem; */
+  background-color: white;
+  /* border: 1px solid #e3e3e3; */
+  border-radius: 7px;
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.d-title-wrapper {
+  padding:1.5rem;
+  background-color: #fafafa;
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.d-title {
+  color: #333333;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+
+.d-created_at {
+  color: #999999;
+  font-size: 13px;
+}
+
+.d-image {
+  max-width: 100%;
+  margin-bottom: 1rem;
+}
+.d-content-wrapper {
+  display: block;
+  padding:1.5rem;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+
+.d-username {
+  font-size: 13px;
+  margin-bottom: 1.5rem;
+}
+
+.d-content {
+  line-height: 1.4;
+}
+.d-button-wrapper {
+  margin-top: 1.5rem;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+
+.d-button-cancel {
+  padding: 0.4rem 1rem;
+  border: 1px solid #999999;
+  font-size: 13px;
+  color: #999999;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.d-button-cancel:hover {
+  border: 1px solid #333333;
+  background-color: white;
+  color: #333333;
+}
+
+.d-button {
+  padding: 0.4rem 1rem;
+  border: 1px solid #297821;
+  font-size: 13px;
+  color: #297821;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.d-button:hover {
+  background-color: #297821;
+  color: white;
+}
+
+.review-box {
+  padding: 1.5rem;
+  max-width: 100%;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.review-name {
+  font-size: 13px;
+}
+
+.review-date {
+  color: #a6a6a6;
+}
+.review-title {
+  margin: 1rem 0rem;
+  font-weight: 600;
+}
+
+.review-content {
+  font-size: 14px;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+input:focus {
+  outline:1px solid #297821;
+}
+
+textarea:focus {
+  outline:1px solid #297821;
+}
+
+.form_label {
+  display: flex;
+  vertical-align: middle;
+  font-size: 15px;
+  max-width: 100%;
+  margin-left: 3px;
+  margin-bottom: 0.5rem;
+}
+
+#reviewUpdateForm2 {
+  margin-top: 0.5rem;
+}
+
+.form-control {
+  width: calc(100% - 0.8rem); 
+  margin-bottom: 0.4rem;
+  border-radius: 5px;
+  padding: 0.5rem 0.4rem;
+  border: 1px  solid #00000033;
+}
+
+.form-image {
+  width: 100%; 
+  margin-bottom: 0.4rem;
+  border-radius: 5px;
+  border: 1px  solid #00000033;
+}
+.required_star {
+  margin-left: 0.3em;
+  color: #ca0114;
+}
+
+#u-image input::file-selector-button {
+  color: black;
+  height: 33px;
+  padding: 0 10px;
+  overflow: hidden;
+  background-color: transparent;
+  border: 0;
+  border-right: 1px  solid #00000033;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.u-button {
+  padding: 0.5rem 1rem;;
+  border: 1px solid #297821;
+  font-size: 13px;
+  color: #297821;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.u-button:hover {
+  background-color: #297821;
+  color: white;
+}
+
+.review-image {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 1rem;
+}
+
+.review-btn {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  border: 0;
+  cursor: pointer;
+  background-color: transparent;
+}
+.review-none {
+  display: flex;
+  padding:3rem 1.5rem;
+  border-bottom: 1px solid #e6e6e6;
+  justify-content: center;
+  font-size: 14px;
+  color: #333333;
+}
+.r-create {
+  display: block;
+  padding:1.5rem 0;
+  border-bottom: 1px solid #e6e6e6;
+  display: none;
+}
+
+#create-review {
+  padding: 0.5rem 1rem;
+  border: 1px solid #297821;
+  font-size: 13px;
+  color: #297821;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#create-review:hover {
+  background-color: #297821;
+  color: white;
+}
+
+.button-wrapper-left {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.login-required {
+  display: flex;
+  padding:3rem 1.5rem;
+  border-bottom: 1px solid #e6e6e6;
+  justify-content: center;
+  font-size: 14px;
+  color: #333333;
+}
+
+.login-required a {
+  color: #297821;
+}
+
+.like {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+.like-forms {
+  gap: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.like-color {
+  font-size: 25px;
+  color: red;
+  border: none;
+  background-color: transparent;
+}
+.r-like-color {
+  color: #297821;
+}
+.r-like-color-gray {
+  color: #999999;
+}
+
+.review-like-btn {
+  border: none;
+  background-color: transparent;
+}
+
+.r-like-wrapper{
+  display: flex;
+  gap: 10px
+}
+
+.review-like {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-dislike {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.r-count {
+  font-size: 13px;
+  color: #333333;
+}
