@@ -2,7 +2,7 @@ const addItemBtn = document.getElementById('addItem')
 
 addItemBtn.addEventListener('click', () => {
   const productId = Number(addItemBtn.dataset.productId)
-  const newQuantity = Number(addItemBtn.dataset.itemQuantity)
+  const newQuantity = count
   if (isAuthenticated) {
     user_add_item_cart(productId, newQuantity)
   } else {

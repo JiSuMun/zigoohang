@@ -14,7 +14,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib import messages
 from posts.models import Post
-from stores.models import Product, Order, OrderItem
+from stores.models import Product
+from carts.models import Order, OrderItem
 from secondhands.models import S_Purchase, S_Product
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -445,7 +446,7 @@ def profile(request, username):
     person = User.objects.get(username=username)
     posts = Post.objects.filter(user=person)
     interests = request.user.like_products.all()
-    orders = Order.objects.filter(customer=person)
+    orders = Order.objects.filter(customer=person, shipping_status=1)
     purchases = S_Purchase.objects.filter(customer=person).select_related('product')
     purchase_details = []
     for order in orders:

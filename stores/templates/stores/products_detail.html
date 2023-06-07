@@ -1,7 +1,93 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'stores/css/products_detail.css' %}">
+{% endblock head %}
+
 {% block content %}
+<div class="product_container">
+  <!-- 상품 정보 시작 -->
+  <section class="product_info">
+    <!-- 상품 이미지 시작-->
+    <div class="product_info_img_area">
+      <div class="product_main_img_container">
+        <img src="{{ product.images.first.image.url }}" alt="">
+      </div>
+      <div class="product_sub_imgs">
+        {% for image in product.images.all %}
+          <img src="{{ image.image.url }}" alt="" style="width: 100px;">
+        {% endfor %}
+      </div>
+    </div>
+    <!-- 상품 이미지 끝-->
+    <!-- 상품 정보 텍스트 시작-->
+    <div class="product_info_area">
+      <h3>{{ product.name }}</h3>
+      <div class="product_quantity_box">
+        <div class="product_quantity_container">
+          <button class="product_quantity_button" id="decrement_btn">-</button>
+          <div class="product_quantity" id="product_count" data-product-price="{{ product.price }}">1</div>
+          <button class="product_quantity_button" id="increment_btn">+</button>
+        </div>
+        <div>
+          <span id="sub_total_price">{{ product.price }}</span> 원
+        </div>
+      </div>
+      <div><span id="total_price">{{ product.price }}</span> 원</div>
+      <form action="{% url 'carts:order_page' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="product_check" value="{{ product.pk }}">
+        <input type="hidden" name="input_quantity" value="1">
+        <input type="submit" value="바로 구매">
+      </form>
+      <form id="product_likes_form" data-product-id="{{ product.pk }}" data-store-id="{{ product.store.pk}}">
+        {% csrf_token %}
+        <input type="submit" value="좋아요">
+      </form>
+      <input type="hidden" id="quantity" value="1">
+      <button id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">카트 추가</button>
+    </div>
+    <!-- 상품 정보 텍스트 끝-->
+  </section>
+  <!-- 상품 정보 끝-->
+
+  <!-- 리뷰 시작 -->
+  <section>
+    <hr>
+    <a href="{% url 'stores:reviews_create' store.pk product.pk %}">[리뷰작성]</a>
+    <hr>
+    {% for review in reviews %}
+      <p>{{ review.title }}</p>
+      <p>{{ review.content|safe }}</p>
+      <p>{{ review.rating }}</p>
+      {% for review_image in review.review_images %}
+        {% if review_image %}
+          <img src="{{ review_image.url }}" alt="" style="width: 100px;">
+        {% endif %}
+      {% endfor %}
+      <form action="{% url 'stores:reviews_likes' store.pk product.pk review.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="좋아요">
+      </form>
+      <form action="{% url 'stores:reviews_dislikes' store.pk product.pk review.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="싫어요">
+      </form>
+      <a href="{% url 'stores:reviews_update' store.pk product.pk review.pk %}">[리뷰 수정]</a>
+      <form action="{% url 'stores:reviews_delete' store.pk product.pk review.pk %}">
+        <input type="submit" value="리뷰삭제">
+      </form>
+      <hr>
+    {% endfor %}
+  </section>
+  <!-- 리뷰 끝 -->
+</div>
+
+
+
+
+{% comment %} 수정전 {% endcomment %}
 <h1>products_detail</h1>
 <h2>{{ product.store.name }}</h2>
 <h3>{{ product.name }} {{ product.rating }}</h3>
@@ -19,10 +105,6 @@
 <a href="#">[바로구매]</a>
 <input type="hidden" id="quantity" value="1">
 <button id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">카트 추가</button>
-{% comment %} <form action="#" method="POST">
-  {% csrf_token %}
-  <input type="submit" value="카트 추가">
-</form> {% endcomment %}
 <form action="{% url 'stores:products_likes' store.pk product.pk %}" method="POST">
   {% csrf_token %}
   <input type="submit" value="좋아요">
@@ -55,7 +137,11 @@
 {% endfor %}
 {% endblock content %}
 
+
+
 {% block script %}
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="{% static 'stores/js/product_count.js' %}"></script>
+  <script src="{% static 'stores/js/product_like.js' %}"></script>
   <script src="{% static 'carts/js/add_items_cart.js' %}"></script>
 {% endblock script %}

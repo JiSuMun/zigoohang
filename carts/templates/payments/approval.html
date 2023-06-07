@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>결제가 정상적으로 완료되었습니다.</p>
+
+
+<p>주문 번호 : {{ order.pk }}</p>
+<p>주문자 : {{ order.customer.last_name }}</p>
+<p>받는 사람 : {{ order.receiver }}</p>
+<p>연락처 : {{ order.phone }}</p>
+<p>상품 가격 : {{ order.total_price }}</p>
+<p>사용 포인트 : {{ order.use_points }}</p>
+<p>결제 금액 : {{ order.total_amount }}</p>
+{% endblock content %}
