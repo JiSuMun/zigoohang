@@ -16,10 +16,12 @@ POINT_PER_PRICE = 0.01
 class Store(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
+    content = models.CharField(max_length=255, null=True)
 
     def store_image_path(instance, filename):
         return f'stores/{instance.name}/{filename}'
     image = ProcessedImageField(upload_to=store_image_path, blank=True, null=True)
+    main_image = ProcessedImageField(upload_to=store_image_path, blank=True, null=True)
 
 
     # delivery_fee = models.IntegerField()
