@@ -38,7 +38,7 @@ FORUM
       </tr>
     </thead>
     <tbody>
-    {% for post in posts %}
+    {% for post in page_obj %}
       <tr>
         <td class="p-td p-center">{{ post.id }}</td>
         <td class="p-td">
@@ -57,6 +57,40 @@ FORUM
     <a class="p-write" href="{% url 'posts:create' %}">글쓰기</a>
   </div>
 </div>
+<div class="pagination">
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+      <a href="?page=1" class="{% if page_obj.number == 1 %}disabled{% endif %}">«</a>
+    {% else %}
+      <span class="disabled">«</span>
+    {% endif %}
+
+    {% if page_obj.number > 2 %}
+      <span class="ellipsis">...</span>
+    {% endif %}
+
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i or i|add:"-1" == page_obj.number or i|add:"1" == page_obj.number %}
+        {% if page_obj.number == i %}
+          <span class="current-page">{{ i }}</span>
+        {% else %}
+          <a href="?page={{ i }}">{{ i }}</a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.number < page_obj.paginator.num_pages|add:"-1" %}
+      <span class="ellipsis">...</span>
+    {% endif %}
+    
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.paginator.num_pages }}" class="{% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">»</a>
+    {% else %}
+      <span class="disabled">»</span>
+    {% endif %}
+  </span>
+</div>
+
 
 
 
