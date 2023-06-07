@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import CustomAutentication, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm
+from .forms import CustomAuthentication, CustomUserCreationForm, CustomUserChangeForm, CustomPasswordChangeForm
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.urls import reverse_lazy, reverse
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -14,7 +14,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib import messages
 from posts.models import Post
-from stores.models import Product, Order, OrderItem
+from stores.models import Product
+from carts.models import Order, OrderItem
 from secondhands.models import S_Purchase, S_Product
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -73,7 +74,7 @@ def login(request):
     # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', request.body)
     if request.method == 'POST':
         # jsonObj = 
-        form = CustomAutentication(request, request.POST)
+        form = CustomAuthentication(request, request.POST)
         if form.is_valid():
             user = form.get_user()
             if not user.is_active:
@@ -447,7 +448,7 @@ def profile(request, username):
     person = User.objects.get(username=username)
     posts = Post.objects.filter(user=person)
     interests = request.user.like_products.all()
-    orders = Order.objects.filter(customer=person)
+    orders = Order.objects.filter(customer=person, shipping_status=1)
     purchases = S_Purchase.objects.filter(customer=person).select_related('product')
     purchase_details = []
     for order in orders:

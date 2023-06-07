@@ -1,8 +1,40 @@
-<h1>Store Index</h1>
-{% for store in stores %}
-<div>
-  <img src="{{ store.image.url }}" alt="" style="width: 100px;">
-  <a href="{% url 'stores:detail' store.pk %}">{{ store.name }}</a>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+행성상점
+{% endblock title %}
+
+{% block head %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/stores/index.css' %}">
+{% endblock head %}
+
+{% block content %}
+<!--index 타이틀-->
+<div class="index-title-wrap">
+  <div class="index-title-box">
+    <p class="index-title-title">행성상점</p>
+    <p class="index-title-text">지구를 사랑하는 친환경 제품들을 한 곳에서 만나보세요.</p>
+  </div>
 </div>
-{% endfor %}
-<a href="{% url 'stores:create' %}">[상점 생성]</a>
+
+<div class="index-wrapper">
+  <div class="index-inner">
+    {% for store in stores %}
+      <div class="item">
+        <a href="{% url 'stores:detail' store.pk %}">
+          <img class="image"src="{{ store.image.url }}" alt="">
+          <p class="store-name">{{ store.name }}</p>
+          <p class="store-content">{{ store.content }}</p>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="button-wrapper">
+    <a class="c-button" href="{% url 'stores:create' %}">상점 생성</a>
+  </div>
+</div>
+
+{% endblock content %}

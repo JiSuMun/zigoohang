@@ -19,8 +19,7 @@
     <input type="submit" value="채팅방 만들기">
   </form>
 </section>
-
-<section>
+<section id="chat-rooms-section">
   {% if chat_rooms %}
     {% for chat_room, last_message, unread_notifications in chat_rooms %}
       <div class="chat_room" id="{{ chat_room.name }}">
@@ -29,10 +28,11 @@
           <p class="notification" style="color: red">!</p>
         {% endif %}
         {% if last_message %}
-          <p>{{ last_message.content }}</p>
-          <p>{{ last_message.formatted_timestamp }}</p>
+          <p class="last-message">{{ last_message.content }}</p>
+          <p class="last-message">{{ last_message.formatted_timestamp }}</p>
         {% else %}
-          <p>메시지 없음</p>
+          <p class="last-message">메시지 없음</p>
+          <p class="timestamp"></p>
         {% endif %}
         <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
           {% csrf_token %}
@@ -44,5 +44,79 @@
     <p>채팅방이 없습니다.</p>
   {% endif %}
 </section>
-
 {% endblock content %}
+
+{% block script %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let loc = window.location;
+    let wsStart = 'ws://';
+    if (loc.protocol == 'https:') {
+      wsStart = 'wss://';
+    }
+
+    const notificationSocket = new WebSocket(
+      wsStart + window.location.host + '/ws/chat/notifications/'
+    );
+    console.log(notificationSocket)
+
+    notificationSocket.onopen = function (event) {
+      console.log('WebSocket connection established.');
+    };
+
+    notificationSocket.onmessage = function (event) {
+      console.log(event.data)
+      const messageData = JSON.parse(event.data);
+      console.log('Received notification:', messageData);
+      updateNotificationCount(messageData.room_name);
+      updateChatRooms(messageData);
+    };
+
+    notificationSocket.onclose = function (event) {
+      console.log('WebSocket connection closed.');
+    };
+
+    notificationSocket.onerror = function (event) {
+      console.error('WebSocket error:', event);
+    };
+
+    function updateNotificationCount(room_name) {
+      const chatRoomElement = document.getElementById(room_name);
+      const notificationElement = chatRoomElement.querySelector('.notification');
+      
+      if (notificationElement) {
+        notificationElement.style.display = 'block';
+      }
+    }
+
+    function updateChatRooms(messageData) {
+      const chatRoomElement = document.getElementById(messageData.room_name);
+  
+      if (chatRoomElement) {
+        const lastMessageElement = chatRoomElement.querySelector('.last-message');
+        const timestampElement = chatRoomElement.querySelector('.timestamp');
+  
+        if (lastMessageElement && timestampElement) {
+          lastMessageElement.textContent = messageData.message;
+          timestampElement.textContent = messageData.formatted_timestamp;
+        }
+      } else {
+        const chatRoomsSection = document.getElementById('chat-rooms-section');
+        const newChatRoom = document.createElement('div');
+        newChatRoom.classList.add('chat_room');
+        newChatRoom.id = messageData.room_name;
+        newChatRoom.innerHTML = `
+          <a href="/chat/room/${messageData.room_name}/" style="margin-right: 0.5rem;">${messageData.room_name}</a>
+          <p class="last-message">${messageData.message}</p>
+          <p class="timestamp">${messageData.formatted_timestamp}</p>
+          <form action="/chat/delete/${messageData.room_name}/" method="post">
+            {% csrf_token %}
+            <input type="submit" value="삭제">
+          </form>
+        `;
+        chatRoomsSection.appendChild(newChatRoom);
+      }
+    }
+  });
+</script>
+{% endblock script %}

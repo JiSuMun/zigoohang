@@ -11,6 +11,7 @@ from django.urls import reverse
 import json
 import os
 from django.conf import settings
+from django.core.paginator import Paginator
 
 
 # @receiver(post_save, sender=Post)
@@ -29,8 +30,11 @@ def main(request):
 
 def index(request):
     posts = Post.objects.all().order_by('-created_at')
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'posts' : posts,
+        'page_obj' : page_obj,
     }
     return render(request, 'posts/index.html', context)
 
