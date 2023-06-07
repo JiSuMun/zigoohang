@@ -197,6 +197,7 @@ class SignupView(View):
             inactive_user = User.objects.filter(username=form.cleaned_data.get('username'),
                                                 email=form.cleaned_data.get('email'),
                                                 is_active=False).first()
+            is_seller = request.POST.get('is_seller')
 
             if inactive_user:
                 try:
@@ -224,9 +225,10 @@ class SignupView(View):
                 except ValidationError as ex:
                     messages.error(request, str(ex))
                     return redirect(reverse('accounts:signup'))
-            
+              
             user = form.save(commit=False)
             user.address = request.POST.get('address')
+            user.is_seller = is_seller
             user.is_active = False  # Deactivate user until email confirmation
             user.save()
 

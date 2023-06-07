@@ -104,7 +104,6 @@
         <div class="profile-page-info-header">
           <div class="header-info">
             <div class="header-img">
-<<<<<<< HEAD
               {% if request.user.image %}
               <img src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image">
             {% else %}
@@ -122,21 +121,7 @@
               <p class="not_seller">일반회원</p>
             {% else %}
               <p class="seller">판매자</p>
-=======
-              {% if person.image %}
-                <img src="{{ person.image.url }}" alt="{{ person.username }}'s Profile Image">
-              {% else %}
-                <img src="#" alt="noimage">
-              {% endif %}
-            </div>
-            <div class="header-text">
-              <h2>{{ person.username }} 님</h2>
-              {% if user.is_seller == False %}
-                <p class="not_seller">일반회원</p>
-              {% else %}
-                <p class="seller">판매자</p>
->>>>>>> develop
-              {% endif %}
+            {% endif %}
             </div>
           </div>
           <div class="header-update">

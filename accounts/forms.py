@@ -97,16 +97,6 @@ class CustomUserCreationForm(UserCreationForm):
             }),
     )
 
-    is_seller = forms.BooleanField(
-        required=False,
-        label="판매자",
-        widget=forms.CheckboxInput(
-            attrs={
-                "type":"checkbox",
-                "class": "form-check-input",
-            }
-        ),
-    )
 
     email = forms.EmailField(
         label = "이메일",
@@ -120,12 +110,23 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ('username', 'first_name', 'last_name', 'password1', 'password2', 'image', 'is_seller', 'email',)
+        fields = ('username', 'first_name', 'last_name', 'password1', 'password2', 'image', 'email',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields['image'].widget.attrs['class'] = 'form-control'
+        
+    # is_seller = forms.BooleanField(
+    #     required=False,
+    #     label="판매자",
+    #     widget=forms.CheckboxInput(
+    #         attrs={
+    #             "type":"checkbox",
+    #             "class": "form-check-input",
+    #         }
+    #     ),
+    # )
 
 class CustomUserChangeForm(UserChangeForm):
     first_name = forms.CharField(
