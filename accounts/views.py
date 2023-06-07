@@ -28,6 +28,7 @@ from django.db import transaction
 from django.contrib.auth.views import LoginView
 from carts.models import Cart, CartItem
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 
 class CustomLoginView(LoginView):    
@@ -509,3 +510,25 @@ def followers_list(request, username):
         'followers': followers,
         }
     return render(request, 'accounts/followers_list.html', context)
+
+
+@csrf_exempt
+def check_username(request):
+    username = request.POST.get('username')
+    if User.objects.filter(username=username).exists():
+        return JsonResponse({'is_available': False})
+    return JsonResponse({'is_available': True})
+
+@csrf_exempt
+def check_first_name(request):
+    first_name = request.POST.get('first_name')
+    if User.objects.filter(first_name=first_name).exists():
+        return JsonResponse({'is_available': False})
+    return JsonResponse({'is_available': True})
+
+@csrf_exempt
+def check_email(request):
+    email = request.POST.get('email')
+    if User.objects.filter(email=email).exists():
+        return JsonResponse({'is_available': False})
+    return JsonResponse({'is_available': True})
