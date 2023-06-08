@@ -80,5 +80,14 @@ document.addEventListener('DOMContentLoaded', () => {
     messageElement.appendChild(timestamp);
 
     chatRoom.appendChild(messageElement);
+    chatRoom.scrollTop = chatRoom.scrollHeight;
+    scrollToBottom();
   }
+
+  function scrollToBottom() {
+    const chatRoom = document.getElementById('chat-room');
+    chatRoom.scrollTop = chatRoom.scrollHeight;
+    }
+    
+    scrollToBottom();
 });

@@ -71,8 +71,8 @@ def update(request, product_pk):
     return render(request, 'secondhands/update.html', context)  
 
 
-def delete(request, post_pk):
-    product = S_Product.objects.get(pk=post_pk)
+def delete(request, product_pk):
+    product = S_Product.objects.get(pk=product_pk)
     if request.user == product.user:
         product.delete()
     return redirect('secondhands:index')

@@ -2,41 +2,54 @@
 {% load static %}
 {% block title %}Create{% endblock title %}
 
-{% block style %}
-<style>
-  .form--box {
-    display: flex;
-    flex-direction: column;
-  }
-</style>
-{% endblock style %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/secondhands/create.css' %}">
+{% endblock head %}
 
 {% block content %}
-<form action="{% url 'secondhands:create' %}" method='POST' enctype='multipart/form-data'>
-  {% csrf_token %}
-  <div class="form--box">
-    {{ product_form.product }}
-    {{ product_form.price }}
-    {{ product_form.category }}
-    {{ product_form.content }}
-    {{ image_form.as_p }}
+  <div class="create-page">
+    <div class="create-page-title-wrapper">
+      <h1>중고 물품 등록하기</h1>
+    </div>
+    <div class="create-page-content-wrapper">
+      <form class="create-page-content-form" action="{% url 'secondhands:create' %}" method='POST' enctype='multipart/form-data'>
+        {% csrf_token %}
+        {% comment %} <div class="form--box"> {% endcomment %}
+        <div class="form-info-box">
+          {{ product_form.product }}
+          {{ product_form.price }}
+          {{ product_form.category }}
+        </div>
+        <div class="form-content-box">
+          {{ product_form.content }}
+        </div>
+        <div class="form-content-img">
+          {{ image_form.as_p }}
+        </div>
+
+        <div class="form-address-box">
+          <input type="text" id="address" placeholder="주소" name="address" class="form-address" autocomplete="off">
+          {{ product_form.extra_address }}
+          <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
+        </div>
+        <div class="form-button">
+          <input class="form-button-back" type="submit" value="뒤로가기" onclick=window.history.back()>
+          <input class="form-button-submit" type="submit" value="등록">
+        </div>
+      </form>
+    </div>
   </div>
-  <input type="text" id="address" placeholder="주소" name="address" class="form-address">
-  <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
-  {{ product_form.extra_address }}
-  <input type="submit" value="등록">
-  <input type="submit" value="뒤로가기" onclick=window.history.back()>
-</form>
+
 {% endblock content %}
 
 {% block script %}
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+{% comment %} <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
 <script>
   ClassicEditor.create(document.querySelector('#id_content'), {
     language: "ko"
   } );
-</script>
+</script> {% endcomment %}
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
   function search_address() {
