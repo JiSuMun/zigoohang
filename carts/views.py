@@ -16,7 +16,7 @@ KAKAO_AK = os.getenv('KAKAO_AK')
 def cart_detail(request):
 
     if request.user.is_authenticated:
-        cart = Cart.objects.get(user=request.user)
+        cart, _ = Cart.objects.get_or_create(user=request.user)
         context = {'cart': cart}
     else:
         context = { }
@@ -49,6 +49,48 @@ def add_item(request):
     return JsonResponse({'success': 'Item added to cart'})
 
 
+def modify_quantity(request):
+    jsonObject = json.loads(request.body)
+    product_pk = jsonObject['productId']
+    quantityValue = int(jsonObject['quantityValue'])
+
+    product = Product.objects.get(pk=product_pk)
+    user_cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_item, created = CartItem.objects.get_or_create(cart=user_cart, product=product)
+    print(product)
+    if quantityValue == 1:
+        cart_item.quantity += 1
+    elif quantityValue == -1 and cart_item.quantity > 1:
+        cart_item.quantity -= 1
+
+    cart_item.save()
+    context = {
+        # 'product_pk': product_pk,
+        # 'price': product.price,
+        'quantity': cart_item.quantity,
+        'subTotal': cart_item.sub_total(),
+        'total': user_cart.total(),
+        # 'user_cart': user_cart,
+    }
+    return JsonResponse(context)
+
+
+def remove_item(request):
+    jsonObject = json.loads(request.body)
+    product_ids = jsonObject['productIds']
+    # print(product_ids)
+    user_cart, created = Cart.objects.get_or_create(user=request.user)
+    for i in product_ids:
+        product = Product.objects.get(pk=i)
+        cart_item = CartItem.objects.get(cart=user_cart, product=product)
+        cart_item.delete()
+        print(cart_item)
+    data = {}
+    return JsonResponse(data)
+    # return redirect('carts:cart_detail')
+
+
+# localstorage
 def product_info(request, product_id):
     product = Product.objects.get(pk=product_id)
     image = product.images.first()
@@ -62,9 +104,10 @@ def product_info(request, product_id):
     }
     return JsonResponse(data)
 
+
 @login_required
 def order_page(request):
-    products = request.POST.getlist('product_check')
+    products = request.POST.getlist('item_check')
     quantities = request.POST.getlist('input_quantity')
     order = Order()
     order.customer = request.user
