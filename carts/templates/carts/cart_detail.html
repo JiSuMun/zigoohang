@@ -47,16 +47,16 @@
               </div>
               <div class="cart_quantity_col">
                 <div class="cart_quantity_container">
-                  <button class="cart_quantity_button" sytle="background-color: white;">-</button>
-                  <div class="cart_quantity">{{ cart_item.quantity }}</div>
-                  <button class="cart_quantity_button">+</button>
+                  <button class="cart_quantity_button" name="quantity_btn" data-quantity-value="-1" data-product-id="{{ cart_item.product.pk }}">-</button>
+                  <div class="cart_quantity" id="product_count-{{ cart_item.product.pk }}">{{ cart_item.quantity }}</div>
+                  <button class="cart_quantity_button" name="quantity_btn" data-quantity-value="1" data-product-id="{{ cart_item.product.pk }}">+</button>
                 </div>
               </div>
-              <div class="cart_subtotal">{{ cart_item.sub_total }}</div>
+              <div class="cart_subtotal"><span id="sub_total-{{ cart_item.product.pk }}">{{ cart_item.sub_total }}</span> 원</div>
             </div>
           {% endfor %}
           <div class="cart_total">
-            합계 : {{ cart.total }}
+            합계 : <span id="total">{{ cart.total }}</span> 원
           </div>
         {% else %}
           <div>
@@ -77,5 +77,7 @@
 
 {% block script %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="{% static 'carts/js/cart_detail.js' %}"></script>
+<script src="{% static 'carts/js/cart_quantity.js' %}"></script>
 {% endblock script %}
