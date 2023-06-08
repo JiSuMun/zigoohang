@@ -16,7 +16,7 @@
       </div>
       <div class="cart_list_header">
         <div class="cart_checkbox_col">
-          <input type="checkbox">
+          <input type="checkbox" id="check_all">
         </div>
         <div class="cart_product">
           상품 정보
@@ -33,7 +33,7 @@
           {% for cart_item in cart.cartitems.all %}
             <div class="cart_list_content">
               <div class="cart_checkbox_col">
-                <input type="checkbox" name="product_check" value="{{ cart_item.product.pk }}">
+                <input type="checkbox" name="item_check" value="{{ cart_item.product.pk }}">
                 <input type="hidden" name="input_quantity" value="{{ cart_item.quantity }}">
               </div>
               <div class="cart_product">
@@ -79,5 +79,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="{% static 'carts/js/cart_detail.js' %}"></script>
+<script src="{% static 'carts/js/cart_check.js' %}"></script>
 <script src="{% static 'carts/js/cart_quantity.js' %}"></script>
 {% endblock script %}
