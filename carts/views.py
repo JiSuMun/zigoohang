@@ -16,7 +16,7 @@ KAKAO_AK = os.getenv('KAKAO_AK')
 def cart_detail(request):
 
     if request.user.is_authenticated:
-        cart = Cart.objects.get(user=request.user)
+        cart, _ = Cart.objects.get_or_create(user=request.user)
         context = {'cart': cart}
     else:
         context = { }
