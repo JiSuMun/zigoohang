@@ -1,43 +1,73 @@
-<h1>products_update</h1>
-<form action="#" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {% comment %} {{ product_form.as_p }} {% endcomment %}
-  {% comment %} {{ image_form.as_p }} {% endcomment %}
-  
-  <p>
-    <label for="{{ product_form.name.auto_id }}">{{ product_form.name.label }}</label>
-    {{ product_form.name }}
-  </p>
-  <p>
-    <label for="{{ product_form.price.auto_id }}">{{ product_form.price.label }}</label>
-    {{ product_form.price }}
-  </p>
-  <p>
-    <label for="{{ product_form.category.auto_id }}">{{ product_form.category.label }}</label>
-    {{ product_form.category}}
-  </p>
-  <p>
-    <label for="{{ product_form.content.auto_id }}">{{ product_form.content.label }}</label>
-    {{ product_form.content }}
-  </p>
+{% extends 'base.html' %}
 
+{% load static %}
 
-  <p>
-    <label for="{{ image_form.image.auto_id }}">추가할 {{ image_form.image.label }}</label>
-    {{ image_form.image }}
-  </p>
-  <p>기존 이미지 삭제하기</p>
-  <ul>
-    {% for image in images %}
-    <li>
-      <label for="delete_images-{{ image.id }}">
-        <img src="{{ image.image.url }}" alt="{{ image.image }}" class="item-img" style="width: 100px;">
-        <input type="checkbox" name="delete_image" value="{{ image.id }}" id="delete_images-{{ image.id }}">
-        {{ image.image }}
-      </label>
-    </li>
-    {% endfor %}
-  </ul>
-  <input type="submit">
-</form>
-<a href="{% url 'stores:detail' store.pk %}">[back]</a>
+{% block title %}
+상품 수정
+{% endblock title %}
+
+{% block head %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/stores/products_update.css' %}">
+{% endblock head %}
+
+{% block content %}
+<!--update 타이틀-->
+<div class="update-title-wrap">
+  <div class="update-title-box">
+    <p class="update-title-title">상품 수정</p>
+    <p class="update-title-text">상품 수정 페이지입니다.</p>
+  </div>
+</div>
+
+<div class="u-wrapper">
+  <form action="#" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="u-form-wrap">
+      <div>
+        <p class="form_label">상품 이름<span class="required_star">*</span></p>
+        {{ product_form.name }}
+      </div>
+      <div>
+        <p class="form_label">상품 가격<span class="required_star">*</span></p>
+        {{ product_form.price }}
+      </div>
+      <div>
+        <p class="form_label">카테고리<span class="required_star">*</span></p>
+        {{ product_form.category}}
+      </div>
+      <div>
+        <p class="form_label">상품 설명<span class="required_star">*</span></p>
+        {{ product_form.content }}
+      </div>
+      <div>
+        <p class="form_label">상품 이미지 추가&nbsp;<span class="image-text">(선택)</span></p>
+        {{ image_form.image }}
+      </div>
+      <div>
+        <p class="form_label">상품 상세 이미지 추가&nbsp;<span class="image-text">(선택)</span></p>
+        {{ product_form.detail_image }}
+      </div>
+      <div>
+        <p class="form_label">기존 이미지 삭제&nbsp;<span class="image-text">(선택)</span></p>
+        <ul>
+          {% for image in images %}
+          <li>
+            <label for="delete_images-{{ image.id }}">
+              <img src="{{ image.image.url }}" alt="{{ image.image }}" class="item-img" style="width: 100px;">
+              <input type="checkbox" name="delete_image" value="{{ image.id }}" id="delete_images-{{ image.id }}">
+              {{ image.image }}
+            </label>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <!--버튼-->
+    <div class="button-wrapper">
+      <input class="u-button-cancel" type="submit" value="취소" onclick=window.history.back()>
+      <input class="u-button" type="submit" value="등록하기">
+    </div>
+  </form>
+</div>
+{% endblock content %}

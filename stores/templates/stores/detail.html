@@ -32,8 +32,16 @@
   <div class="detail-inner">
     {% for product in products %}
       <div class="item">
-        <a href="{% url 'stores:products_detail' product.store.pk product.pk %}">
-          <img class="image" src="{{ product.images.first.image.url }}" alt="">
+        <a class="a-hover"href="{% url 'stores:products_detail' product.store.pk product.pk %}">
+          <div class="hover-box">
+            <img class="image" src="{{ product.images.first.image.url }}" alt="">
+            <div class="hover-content">
+              <p class="hover-store">{{ store.name }}</p>
+              <p class="hover-name">{{ product.name }}</p>
+              <p>￦ {{ product.price|intcomma }}</p>
+              <button class="hover-button">View Product</button>
+            </div>
+          </div>
           <div class="item-box">
             <p class="detail-name">[{{ store.name }}] {{ product.name }}</p>
             <p class="detail-price">￦ {{ product.price|intcomma }}</p>
