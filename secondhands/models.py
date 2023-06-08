@@ -19,6 +19,8 @@ class S_Product(models.Model):
     extra_address = models.CharField(max_length=100)
     CATEGORY_CHOICES = [('잡화', '잡화'), ('전자제품', '전자제품'), ('의류', '의류'), ('도서', '도서'), ('기타', '기타')]
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
+    STATUS_CHOICES = [('1', ''), ('2', '예약중'), ('3', '거래완료')]
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='')
 
 
 class S_ProductImage(models.Model):

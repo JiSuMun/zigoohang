@@ -9,4 +9,6 @@ urlpatterns = [
     path('<int:product_pk>/', views.detail, name='detail'),
     path('<int:product_pk>/delete/', views.delete, name='delete'),
     path('<int:product_pk>/likes/', views.likes, name='likes'),
+    # 거래상태 변경
+    path('change_status/<int:product_id>/<str:new_status>/', views.change_status, name='change_status'),
 ]

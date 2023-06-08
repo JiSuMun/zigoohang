@@ -29,6 +29,7 @@ from django.contrib.auth.views import LoginView
 from carts.models import Cart, CartItem
 import json
 from django.views.decorators.csrf import csrf_exempt
+from secondhands.models import S_Product
 
 
 class CustomLoginView(LoginView):    
@@ -451,6 +452,7 @@ def profile(request, username):
     interests = request.user.like_products.all()
     orders = Order.objects.filter(customer=person, shipping_status=1)
     purchases = S_Purchase.objects.filter(customer=person).select_related('product')
+    completed_products = S_Product.objects.filter(status='3')
     purchase_details = []
     for order in orders:
         items = OrderItem.objects.filter(order=order)
@@ -464,6 +466,7 @@ def profile(request, username):
         'posts':posts,
         'interests':interests,
         'purchase_details': purchase_details,
+        'completed_products': completed_products
         # 'purchases': purchases,
     }
     return render(request, 'accounts/profile.html', context)

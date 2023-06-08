@@ -1,12 +1,19 @@
-{% if purchases %}
-        {% for purchase in purchases %}
-            <p>상품명 {{ purchase.product.product }}</p>
-            <p>카테고리 {{ purchase.product.get_category_display }}</p>
-            <p>가격 {{ purchase.product.price }}</p>
-            <p>수량 {{ purchase.quantity }}</p>
-            <p>합계{{ purchase.amount }}</p>
-            <p>거래일{{ purchase.date }}</p>
+{% if request.user == person %}
+    {% if completed_products %}
+        {% for product in completed_products %}
+        <h3>(거래완료)</h3>
+        {% for image in product.s_productimage_set.all %}
+            <a href="{% url 'secondhands:detail' product.pk %}">
+            <img style="width:300px;" src="{{ image.image.url }}" alt="이미지"/>
+            </a>
+        {% empty %}
+            <p>이미지가 없습니다.</p>
         {% endfor %}
-{% else %}
-    <p>중고거래 내역이 없습니다.</p>
+        <p>제목: {{ product.product }}</p>
+        <p>가격: {{ product.price }}원</p>
+        <p>주소: {{.address }}</p>
+        {% endfor %}
+    {% else %}
+        <p>중고거래 내역이 없습니다.</p>
+    {% endif %}
 {% endif %}

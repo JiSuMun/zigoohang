@@ -39,16 +39,23 @@
       {% comment %} 중고거래 상품 목록 {% endcomment %}
       <div class="secondhands-page-content-product">
         {% for product in products %}
+
         <a href="{% url 'secondhands:detail' product.pk %}">
           <div class="product-card">
             <div class="product-card-photo"> 
               {% for image in product.s_productimage_set.all %}
-              <img src="{{ image.image.url }}" alt="상품이미지">
+              
+                <img src="{{ image.image.url }}" alt="상품이미지">
             </div>
             <div class="product-card-detail"></div>
               <p class="detail-product_name">{{ product.product }}</p>
               <p>{{ product.price }}원</p>
+              <p>{{ product.address }}</p>
+              <p><span id="product-status">{{ product.get_status_display }}</span></p>
+              </a>
+
             {% endfor %}
+            
           </div>
         </a>
         {% endfor %}
