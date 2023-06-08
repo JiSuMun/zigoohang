@@ -8,7 +8,7 @@
 {% block content %}
 <div class="cart_container">
   <h1>cart</h1>
-  <form action="{% url 'carts:order_page' %}" method="POST">
+  <form action="{% url 'carts:order_page' %}" method="POST" id="order_form">
     {% csrf_token %}
     <div class="cart_div">
       <div class="cart_check">
@@ -65,8 +65,14 @@
         {% endif %}
       {% endif %}
     </div>
-    <button>
-      주문하기
+    <button id="del_btn">
+      선택 삭제
+    </button>
+    <button id="order_check">
+      선택 주문
+    </button>
+    <button id="order_all">
+      전체 주문
     </button>
   </form>
 </div>
@@ -81,4 +87,5 @@
 <script src="{% static 'carts/js/cart_detail.js' %}"></script>
 <script src="{% static 'carts/js/cart_check.js' %}"></script>
 <script src="{% static 'carts/js/cart_quantity.js' %}"></script>
+<script src="{% static 'carts/js/cart_order.js' %}"></script>
 {% endblock script %}

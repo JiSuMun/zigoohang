@@ -75,6 +75,21 @@ def modify_quantity(request):
     return JsonResponse(context)
 
 
+def remove_item(request):
+    jsonObject = json.loads(request.body)
+    product_ids = jsonObject['productIds']
+    # print(product_ids)
+    user_cart, created = Cart.objects.get_or_create(user=request.user)
+    for i in product_ids:
+        product = Product.objects.get(pk=i)
+        cart_item = CartItem.objects.get(cart=user_cart, product=product)
+        cart_item.delete()
+        print(cart_item)
+    data = {}
+    return JsonResponse(data)
+    # return redirect('carts:cart_detail')
+
+
 # localstorage
 def product_info(request, product_id):
     product = Product.objects.get(pk=product_id)
@@ -92,7 +107,7 @@ def product_info(request, product_id):
 
 @login_required
 def order_page(request):
-    products = request.POST.getlist('product_check')
+    products = request.POST.getlist('item_check')
     quantities = request.POST.getlist('input_quantity')
     order = Order()
     order.customer = request.user
