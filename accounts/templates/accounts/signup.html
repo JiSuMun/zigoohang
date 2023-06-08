@@ -530,12 +530,14 @@
       </label>
       <br>
       <div class="agreement-submit">
-          <button type="submit">판매자로 가입하기</button>
-          <button type="submit">일반회원으로 가입하기</button>
+        <button type="submit">약관동의하기</button>
+          {% comment %} <button type="submit">판매자로 가입하기</button>
+          <button type="submit">일반회원으로 가입하기</button> {% endcomment %}
       </div>
       <div class="agreement-submit-media">
-        <button type="submit">판매자로 <br>가입하기</button>
-        <button type="submit">일반회원으로 <br>가입하기</button>
+        <button type="submit">약관동의하기</button>
+        {% comment %} <button type="submit">판매자로 <br>가입하기</button>
+        <button type="submit">일반회원으로 <br>가입하기</button> {% endcomment %}
     </div>
       {% comment %} 버튼 2개만들기 -> 판매자 or 일반회원으로 가입하기 {% endcomment %}
     </form>
@@ -551,25 +553,34 @@
       {% csrf_token %}
       <input type="hidden" name="signup-csrfmiddlewaretoken" value="{{ csrf_token }}">
       {% for field in form %}
-        {{ field }}
-      {% endfor %}
-      {% for field in form %}
          {% if field.name == 'username' %}
             <div class="signup-page-form-check">
                {{ field }}
-               <button class="form-check-id" type="button" id="id_check">중복확인</button>
+               <button class="form-check-id" id="check-username" type="button">중복확인</button>
+               <span id="username-result"></span>
             </div>   
+        {% elif field.name == 'first_name' %}
+            <div class="signup-page-form-check">
+               {{ field }}
+               <button class="form-check-id" id="check-first-name" type="button">중복확인</button>
+               <span id="first-name-result"></span>
+            </div>  
          {% elif field.name == 'email' %}
             <div class="signup-page-form-check">
                {{ field }}
-               <button class="form-check-email" type="button" id="email_check">중복확인</button>
-            </div>  
+               <button class="form-check-id" id="check-email" type="button">중복확인</button>
+               <span id="email-result"></span>
+            </div>
          {% else %}
             {{ field }}
          {% endif %}
       {% endfor %}
       <input class="form-address" type="text" id="address" placeholder="주소" name="address">
       <input class="address--btn" type="button" onclick="search_address()" value="주소 검색">
+        <button type="button" onclick="setIsSellerValue(1)">판매자</button>
+        <button type="button" onclick="setIsSellerValue(0)">일반회원</button>
+        <input type="hidden" id="is_seller" name="is_seller" value="">
+
       <button type="submit">회원가입</button>
     </form>
   </div>
@@ -592,6 +603,14 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="{% static 'js/accounts_address.js' %}" type="text/javascript"></script>
 <script>
+
+    function setIsSellerValue(value) {
+    document.getElementById("is_seller").value = value;
+    console.log(document.getElementById("is_seller").value)
+    }
+
+    setIsSellerValue();
+
   document.addEventListener("DOMContentLoaded", function () {
     const agreementForm = document.getElementById("agreement-form");
     const signupForm = document.getElementById("signup-form");
@@ -607,14 +626,15 @@
         step2.style.display = "block";
       }
     });
-  
+
     signupForm.addEventListener("submit", function (event) {
       event.preventDefault();
+      
       let formValid = true;
       const addressInput = document.getElementById("address");
       const signupCsrfToken = document.getElementsByName("signup-csrfmiddlewaretoken")[0].value;
-    
-      if (!addressInput.value) {
+      
+      if (!addressInput.value ) {
         formValid = false;
       }
     
@@ -631,7 +651,7 @@
               step2.style.display = "none";
               step3.style.display = "block";
             } else {
-              alert(data.msg);
+              alert("회원가입 불가");
             }
           })
           .catch((error) => {
@@ -640,40 +660,61 @@
       }
     });
   });
-</script>
 
-{% endblock script %}
-{% comment %} <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const agreementForm = document.getElementById("agreement-form");
-    const signupForm = document.getElementById("signup-form");
-    const step1 = document.getElementById("step-1");
-    const step2 = document.getElementById("step-2");
-    const step3 = document.getElementById("step-3");
-  
-    agreementForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-  
-      if (this.checkValidity()) {
-        step1.style.display = "none";
-        step2.style.display = "block";
+// 중복확인
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('check-username').addEventListener('click', checkUsername);
+    document.getElementById('check-email').addEventListener('click', checkEmail);
+    document.getElementById('check-first-name').addEventListener('click', checkFirstName); 
+
+    function checkUsername() {
+      const username = document.querySelector('[name="username"]').value;
+      if (!username) {
+        alert('아이디를 입력하세요.');
+      } else {
+        checkDuplicate('/accounts/check_username/', 'username', username, 'username-result');
       }
-    });
-  
-    signupForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      let formValid = true;
-      const addressInput = document.getElementById("address");
-  
-      if (!addressInput.value) {
-        formValid = false;
+    }
+
+    function checkFirstName() {
+        const firstName = document.querySelector('[name="first_name"]').value;
+        if (!firstName) {
+          alert('이름을 입력하세요.');
+        } else {
+          checkDuplicate('/accounts/check_first_name/', 'first_name', firstName, 'first-name-result');
+        }
       }
-  
-      if (formValid) {
-        step2.style.display = "none";
-        step3.style.display = "block";
-        this.submit();
+
+    function checkEmail() {
+      const email = document.querySelector('[name="email"]').value;
+      if (!email) {
+        alert('이메일을 입력하세요.');
+      } else {
+        checkDuplicate('/accounts/check_email/', 'email', email, 'email-result');
       }
-    });
+    }
+
+    function checkDuplicate(url, type, value, resultElementId) {
+      const data = new FormData();
+      data.append(type, value);
+
+      fetch(url, {
+        method: 'POST',
+        body: data,
+        headers: {
+          'X-CSRFToken': document.querySelector('[name="signup-csrfmiddlewaretoken"]').value,
+        },
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.is_available) {
+          document.getElementById(resultElementId).textContent = '사용 가능합니다.';
+        } else {
+          document.getElementById(resultElementId).textContent = '이미 사용중입니다.';
+        }
+      });
+    }
   });
-</script> {% endcomment %}
+</script>
+{% endblock script %}

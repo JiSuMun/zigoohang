@@ -1,17 +1,52 @@
-<h1>create</h1>
-<form action="#" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
+{% extends 'base.html' %}
 
-  {% comment %} {{ store_form.as_p }} {% endcomment %}
-  <p>
-    <label for="{{ store_form.name.auto_id }}">{{ store_form.name.label }}</label>
-    {{ store_form.name }}
-  </p>
-  
-  <p>
-    <label for="{{ store_form.image.auto_id }}">{{ store_form.image.label }}</label>
-    {{ store_form.image }}
-  </p>
-  <input type="submit">
-</form>
-<a href="{% url 'stores:index' %}">[back]</a>
+{% load static %}
+
+{% block title %}
+CREATE
+{% endblock title %}
+
+{% block head %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/stores/create.css' %}">
+{% endblock head %}
+
+{% block content %}
+<!--create 타이틀-->
+<div class="create-title-wrap">
+  <div class="create-title-box">
+    <p class="create-title-title">상점 생성</p>
+    <p class="create-title-text">상점 생성 페이지입니다.</p>
+  </div>
+</div>
+
+<div class="c-wrapper">
+  <form action="#" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="c-form-wrap">
+      <div>
+        <p class="form_label">상점 이름<span class="required_star">*</span></p>
+        {{ store_form.name }}
+      </div>
+      
+      <div>
+        <p class="form_label">상점 설명<span class="required_star">*</span></p>
+        {{ store_form.content }}
+      </div>
+      <div>
+        <p class="form_label">상점 이미지<span class="required_star">*</span>&nbsp;<span class="image-text">4/3.3의 비율로 작성됩니다.</span></p>
+        {{ store_form.image }}
+      </div>
+      <div>
+        <p class="form_label">상점 상세페이지 이미지<span class="required_star">*</span>&nbsp;<span class="image-text">1300X390 크기로 작성됩니다.</span></p>
+        {{ store_form.main_image }}
+      </div>
+    </div>
+    <!--버튼-->
+    <div class="button-wrapper">
+      <input class="c-button-cancel" type="submit" value="취소" onclick=window.history.back()>
+      <input class="c-button" type="submit" value="등록하기">
+    </div>
+  </form>
+</div>
+{% endblock content %}

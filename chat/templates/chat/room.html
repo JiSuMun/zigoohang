@@ -6,9 +6,11 @@
 {% endblock head %}
 
 {% block content %}
+<a href="{% url 'chat:inbox' %}">inbox로 이동</a>
 {{ room_name|json_script:"room-name" }}
 <input type="hidden" id="username" value="{{ request.user.username }}">
-  <div id="chat-room">
+<section class="room">
+  <div id="chat-room" class="chat-room">
     {% for message in messages %}
       <div class="message">
         {% if message.sender == request.user %}
@@ -28,11 +30,12 @@
       <p>No messages yet.</p>
     {% endfor %}
   </div>
-
   <form id="text_form" class="text-form">
     <input type="text" id="message_input" name="message" placeholder="Type your message">
     <button type="submit">Send</button>
   </form>
+</section>
+
 {% endblock %}
 
 {% block script %}

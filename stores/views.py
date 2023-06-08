@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Store, Product, ProductReview
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from .forms import *
 
 
@@ -162,8 +163,14 @@ def products_likes(request, store_pk, product_pk):
     product = Product.objects.get(pk=product_pk)
     if product.like_users.filter(pk=request.user.pk).exists():
         product.like_users.remove(request.user)
+        is_liked = False
     else:
         product.like_users.add(request.user)
+        is_liked = True
+    context = {
+        'is_liked': is_liked,
+    }
+    return JsonResponse(context)
     return redirect('stores:products_detail', store_pk, product_pk)
 
 

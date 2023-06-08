@@ -7,5 +7,5 @@ admin.site.register(Product)
 admin.site.register(ProductReview)
 
 # admin.site.register(Cart)
-admin.site.register(Order)
-admin.site.register(OrderItem)
+# admin.site.register(Order)
+# admin.site.register(OrderItem)

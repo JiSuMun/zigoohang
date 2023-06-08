@@ -14,7 +14,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib import messages
 from posts.models import Post
-from stores.models import Product, Order, OrderItem
+from stores.models import Product
+from carts.models import Order, OrderItem
 from secondhands.models import S_Purchase, S_Product
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -27,6 +28,7 @@ from django.db import transaction
 from django.contrib.auth.views import LoginView
 from carts.models import Cart, CartItem
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 
 class CustomLoginView(LoginView):    
@@ -197,6 +199,7 @@ class SignupView(View):
             inactive_user = User.objects.filter(username=form.cleaned_data.get('username'),
                                                 email=form.cleaned_data.get('email'),
                                                 is_active=False).first()
+            is_seller = request.POST.get('is_seller')
 
             if inactive_user:
                 try:
@@ -224,9 +227,10 @@ class SignupView(View):
                 except ValidationError as ex:
                     messages.error(request, str(ex))
                     return redirect(reverse('accounts:signup'))
-            
+              
             user = form.save(commit=False)
             user.address = request.POST.get('address')
+            user.is_seller = is_seller
             user.is_active = False  # Deactivate user until email confirmation
             user.save()
 
@@ -445,7 +449,7 @@ def profile(request, username):
     person = User.objects.get(username=username)
     posts = Post.objects.filter(user=person)
     interests = request.user.like_products.all()
-    orders = Order.objects.filter(customer=person)
+    orders = Order.objects.filter(customer=person, shipping_status=1)
     purchases = S_Purchase.objects.filter(customer=person).select_related('product')
     purchase_details = []
     for order in orders:
@@ -506,3 +510,25 @@ def followers_list(request, username):
         'followers': followers,
         }
     return render(request, 'accounts/followers_list.html', context)
+
+
+@csrf_exempt
+def check_username(request):
+    username = request.POST.get('username')
+    if User.objects.filter(username=username).exists():
+        return JsonResponse({'is_available': False})
+    return JsonResponse({'is_available': True})
+
+@csrf_exempt
+def check_first_name(request):
+    first_name = request.POST.get('first_name')
+    if User.objects.filter(first_name=first_name).exists():
+        return JsonResponse({'is_available': False})
+    return JsonResponse({'is_available': True})
+
+@csrf_exempt
+def check_email(request):
+    email = request.POST.get('email')
+    if User.objects.filter(email=email).exists():
+        return JsonResponse({'is_available': False})
+    return JsonResponse({'is_available': True})

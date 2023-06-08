@@ -58,3 +58,27 @@ class Notification(models.Model):
         if not self.is_read:
             self.is_read = True
             self.save()
+
+    def formatted_timestamp(self):
+        local_timestamp = timezone.localtime(self.timestamp)
+        am_pm = "오전" if local_timestamp.strftime('%p') == "AM" else "오후"
+        return f"{local_timestamp.strftime('%Y.%m.%d')} {am_pm} {local_timestamp.strftime('%I:%M')}"
+    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user': self.user.username,
+            'chat_room_name': self.chat_room.name,
+            'message': self.message.content,
+            'formatted_timestamp': self.message.formatted_timestamp(),
+        }
+    
+    @classmethod
+    def delete_old_notifications(cls):
+        one_week_ago = timezone.now() - timezone.timedelta(days=7)
+        cls.objects.filter(timestamp__lt=one_week_ago).delete()
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.delete_old_notifications()

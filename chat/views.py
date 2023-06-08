@@ -16,6 +16,7 @@ def inbox(request):
     context = {
         'chat_rooms': chat_rooms_with_last_message,
         'all_users': all_users,
+        'user_username': request.user.username,
     }
     return render(request, 'chat/inbox.html', context)
 
@@ -56,16 +57,14 @@ def room(request, room_name):
 
 def delete_chat(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
-    if request.user in chat_room.participants.all():
-        chat_room.participants.remove(request.user)
-    if chat_room.participants.count() == 0:
-        chat_room.delete()
-
+    chat_room.delete()
     return redirect('chat:inbox')
-
-
 
 # def delete_chat(request, room_name):
 #     chat_room = ChatRoom.objects.get(name=room_name)
-#     chat_room.delete()
+#     if request.user in chat_room.participants.all():
+#         chat_room.participants.remove(request.user)
+#     if chat_room.participants.count() == 0:
+#         chat_room.delete()
+
 #     return redirect('chat:inbox')

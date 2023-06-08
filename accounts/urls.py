@@ -27,4 +27,8 @@ urlpatterns = [
     path('find_user_id/', views.find_user_id, name='find_user_id'),
     path('password_reset_request/', views.password_reset_request, name='password_reset_request'),
     path('password_reset_confirm/<uidb64>/<token>/', views.password_reset_confirm, name='password_reset_confirm'),
+    # 중복검사
+    path('check_username/', views.check_username, name='check_username'),
+    path('check_email/', views.check_email, name='check_email'),
+    path('check_first_name/', views.check_first_name, name='check_first_name'), 
 ]

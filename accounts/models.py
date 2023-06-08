@@ -12,7 +12,8 @@ from datetime import datetime, timedelta
 class User(AbstractUser):
     followings = models.ManyToManyField('self', related_name='followers', symmetrical=False)
     address = models.CharField(max_length=100)
-
+    first_name = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(unique=True)
     def profile_image_path(instance, filename):
         return f'profile/{instance.username}/{filename}'
     image = ProcessedImageField(upload_to=profile_image_path, blank=True, null=True)
