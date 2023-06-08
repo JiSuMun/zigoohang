@@ -86,7 +86,7 @@ def products_create(request, store_pk):
     if not(request.user.is_seller or request.user.is_superuser) or request.user != store.user:
         return redirect('stores:index')
     if request.method == 'POST':
-        product_form = ProductForm(request.POST)
+        product_form = ProductForm(request.POST, request.FILES)
         if product_form.is_valid():
             product = product_form.save(commit=False)
             product.store = store

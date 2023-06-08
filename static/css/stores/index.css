@@ -57,6 +57,8 @@
 .button-wrapper {
   text-align: right;
   margin-bottom: 1rem;
+  display: flex;
+  justify-content: end;
 }
 
 .c-button {
