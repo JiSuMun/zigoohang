@@ -4,12 +4,23 @@ from .forms import S_ProductForm, S_ProductImageForm, S_DeleteImageForm
 from utils.map import get_latlng_from_address
 import os
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import S_Product
 
 
 def index(request):
     products = S_Product.objects.all()
+    no_status_products = S_Product.objects.filter(status='')
+    reserved_products = S_Product.objects.filter(status='예약중')
+    in_progress_products = S_Product.objects.filter(status='거래중')
+    completed_products = S_Product.objects.filter(status='거래완료')
+
     context = {
         'products' : products,
+        'no_status_products': no_status_products,
+        'reserved_products': reserved_products,
+        'in_progress_products': in_progress_products,
+        'completed_products': completed_products,
     }
     return render(request, 'secondhands/index.html', context)
 
@@ -71,8 +82,8 @@ def update(request, product_pk):
     return render(request, 'secondhands/update.html', context)  
 
 
-def delete(request, post_pk):
-    product = S_Product.objects.get(pk=post_pk)
+def delete(request, product_pk):
+    product = S_Product.objects.get(pk=product_pk)
     if request.user == product.user:
         product.delete()
     return redirect('secondhands:index')
@@ -112,3 +123,16 @@ def likes(request, product_pk):
         'likes_count': product.like_users.count(),
     }
     return JsonResponse(context)
+
+
+@login_required
+def change_status(request, product_id, new_status):
+    product = S_Product.objects.get(id=product_id)
+
+    if request.user != product.user:
+        return JsonResponse({'message': '권한이 없습니다.'}, status=403)
+
+    product.status = new_status
+    product.save()
+
+    return JsonResponse({'result': 'success'})

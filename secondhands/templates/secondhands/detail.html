@@ -14,7 +14,7 @@
   {{ s_address }}
 
   {% for image in product.s_productimage_set.all %}
-    <img src="{{ image.image.url }}" alt="">
+    <img style="width:500px;" src="{{ image.image.url }}" alt="">
   {% endfor %}
 </div>
 
@@ -37,6 +37,12 @@
       <i class="bi bi-suit-heart" id="product-heart"></i>
     </button>
   {% endif %}
+  {% if request.user == product.user %}
+    <button id="btn-sale" onclick="changeStatus(2,'예약중');" type="button">예약중으로 변경</button>
+    <button id="btn-complete" onclick="changeStatus(3,'거래완료');" type="button">거래완료로 변경</button>
+    {% csrf_token %}
+  {% endif %}
+  <p><span id="product-status">{{ product.get_status_display }}</span></p>
 </div>
 
 <div class="map" id="map" style="width: 400px; height: 400px;" data-longitude="{{ longitude }}" data-latitude="{{ latitude }}">
@@ -86,5 +92,33 @@
 
       })
   })
+
+// 거래 상태 변경
+function changeStatus(newStatus, statusText) {
+  let productId = "{{ product.id }}";
+  let url = `/secondhands/change_status/${productId}/${newStatus}/`;
+
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+  fetch(url, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrftoken
+      },
+      credentials: "same-origin"
+  })
+      .then((response) => {
+          if (response.ok) {
+              // 상품 상태 업데이트
+              document.getElementById('product-status').innerHTML = `상품 상태: ${statusText}`;
+          } else {
+              alert("오류가 발생했습니다. 다시 시도해주세요.");
+          }
+ })
+      .catch((error) => {
+          console.error("Error:", error);
+      });
+}
 </script>
 {% endblock script %}
