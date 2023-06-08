@@ -1,55 +1,91 @@
 {% extends 'base.html' %}
+
 {% load static %}
+{% load humanize %}
+
+{% block title %}
+[{{ store.name }}] {{ product.name }}
+{% endblock title %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'stores/css/products_detail.css' %}">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+/>
+<link rel="stylesheet" href="{% static 'css/stores/products_detail.css' %}">
 {% endblock head %}
 
 {% block content %}
 <div class="product_container">
   <!-- 상품 정보 시작 -->
-  <section class="product_info">
+  <div class="product_info">
     <!-- 상품 이미지 시작-->
-    <div class="product_info_img_area">
-      <div class="product_main_img_container">
-        <img src="{{ product.images.first.image.url }}" alt="">
+    <div class="product-info-left">
+      <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+        <div class="swiper-wrapper">
+          {% for image in product.images.all %}
+          <div class="swiper-slide">
+            <img src="{{ image.image.url }}" alt="">
+          </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
       </div>
-      <div class="product_sub_imgs">
-        {% for image in product.images.all %}
-          <img src="{{ image.image.url }}" alt="" style="width: 100px;">
-        {% endfor %}
+      <div thumbsSlider="" class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          {% for image in product.images.all %}
+          <div class="swiper-slide">
+            <img src="{{ image.image.url }}" alt="">
+          </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
     <!-- 상품 이미지 끝-->
+    
     <!-- 상품 정보 텍스트 시작-->
-    <div class="product_info_area">
-      <h3>{{ product.name }}</h3>
-      <div class="product_quantity_box">
-        <div class="product_quantity_container">
-          <button class="product_quantity_button" id="decrement_btn">-</button>
-          <div class="product_quantity" id="product_count" data-product-price="{{ product.price }}">1</div>
-          <button class="product_quantity_button" id="increment_btn">+</button>
+    <div class="product-info-right">
+      <div class="product-inner">
+        <p class="store-name">{{ store.name }}</p>
+        <p class="product-title"> {{ product.name }}</p>
+        <p class="product-price">{{ product.price|intcomma }} 원</p>
+        <div class="delivery-info">
+          <p class="delivery-title">배송비</p>
+          <p>3,000원 (50,000원 이상 구매 시 무료)</p>
+          <p>제주 3,000원, 제주 외 도서 산간 6,000원 추가</p>
+          <p class="delivery-title">배송 정보</p>
+          <p>결제완료 후 평균 1일 이내 출고(주말 및 공휴일 제외)</p>
         </div>
-        <div>
-          <span id="sub_total_price">{{ product.price }}</span> 원
+        <div class="product_quantity_box">
+          <div class="product_quantity_container">
+            <button class="product_quantity_button" id="decrement_btn">-</button>
+            <div class="product_quantity" id="product_count" data-product-price="{{ product.price }}">1</div>
+            <button class="product_quantity_button" id="increment_btn">+</button>
+          </div>
+          <div>
+            <span id="sub_total_price">{{ product.price }}</span> 원
+          </div>
         </div>
+        <div><span id="total_price">{{ product.price }}</span> 원</div>
+
+        <form action="{% url 'carts:order_page' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="product_check" value="{{ product.pk }}">
+          <input type="hidden" name="input_quantity" value="1">
+          <input type="submit" value="바로 구매">
+        </form>
+
+        <form id="product_likes_form" data-product-id="{{ product.pk }}" data-store-id="{{ product.store.pk}}">
+          {% csrf_token %}
+          <input type="submit" value="좋아요">
+        </form>
+        <input type="hidden" id="quantity" value="1">
+        <button id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">카트 추가</button>
       </div>
-      <div><span id="total_price">{{ product.price }}</span> 원</div>
-      <form action="{% url 'carts:order_page' %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="product_check" value="{{ product.pk }}">
-        <input type="hidden" name="input_quantity" value="1">
-        <input type="submit" value="바로 구매">
-      </form>
-      <form id="product_likes_form" data-product-id="{{ product.pk }}" data-store-id="{{ product.store.pk}}">
-        {% csrf_token %}
-        <input type="submit" value="좋아요">
-      </form>
-      <input type="hidden" id="quantity" value="1">
-      <button id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">카트 추가</button>
     </div>
     <!-- 상품 정보 텍스트 끝-->
-  </section>
+  </div>
   <!-- 상품 정보 끝-->
 
   <!-- 리뷰 시작 -->
@@ -94,7 +130,7 @@
 {% for image in product.images.all %}
   <img src="{{ image.image.url }}" alt="" style="width: 100px;">
 {% endfor %}
-
+<img src="{{product.detail_image.url}}" alt="">
 <a href="{% url 'stores:detail' store.pk %}">[상품 목록으로]</a>
 <a href="{% url 'stores:products_update' store.pk product.pk %}">[상품 수정]</a>
 <form action="{% url 'stores:products_delete' store.pk product.pk %}">
@@ -102,6 +138,7 @@
   <input type="submit" value="상품 삭제">
 </form>
 {{ product.price }} 원
+
 <a href="#">[바로구매]</a>
 <input type="hidden" id="quantity" value="1">
 <button id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">카트 추가</button>
@@ -140,8 +177,10 @@
 
 
 {% block script %}
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="{% static 'stores/js/product_count.js' %}"></script>
-  <script src="{% static 'stores/js/product_like.js' %}"></script>
+  <script src="{% static 'js/stores/product_detail.js' %}"></script>
+  <script src="{% static 'js/stores/product_like.js' %}"></script>
   <script src="{% static 'carts/js/add_items_cart.js' %}"></script>
 {% endblock script %}

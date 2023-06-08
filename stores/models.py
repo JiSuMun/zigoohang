@@ -39,6 +39,9 @@ class Product(models.Model):
     rating = models.DecimalField(default=0, max_digits=5, decimal_places=1)
     CATEGORY_CHOICES = [('미용', '미용'), ('의류', '의류'), ('잡화', '잡화'), ('기타', '기타')]
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
+    def p_product_image_path(instance, filename):
+        return f'stores/{instance.store.name}/{instance.name}/{filename}'
+    detail_image = ProcessedImageField(upload_to=p_product_image_path, blank=True, null=True)
 
     def __str__(self):
         return f'{self.store.name} 상점의 {self.name}'
@@ -50,6 +53,7 @@ class ProductImage(models.Model):
     def product_image_path(instance, filename):
         return f'stores/{instance.product.store.name}/{instance.product.name}/{filename}'
     image = ProcessedImageField(upload_to=product_image_path, blank=True, null=True)
+
 
 
 class ProductReview(models.Model):

@@ -22,10 +22,11 @@
 <section id="chat-rooms-section">
   {% if chat_rooms %}
     {% for chat_room, last_message, unread_notifications in chat_rooms %}
-      <div class="chat_room" id="{{ chat_room.name }}">
-        <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;">{{ chat_room }}</a>
+      <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.name }}">
+        <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
         {% if unread_notifications > 0 %}
           <p class="notification" style="color: red">!</p>
+          <p class="unread_count">{{ unread_notifications }}</p>
         {% endif %}
         {% if last_message %}
           <p class="last-message">{{ last_message.content }}</p>
@@ -48,7 +49,9 @@
 
 {% block script %}
 <script>
+
   document.addEventListener('DOMContentLoaded', () => {
+
     let loc = window.location;
     let wsStart = 'ws://';
     if (loc.protocol == 'https:') {
@@ -62,15 +65,21 @@
 
     notificationSocket.onopen = function (event) {
       console.log('WebSocket connection established.');
+      console.log(event)
     };
 
     notificationSocket.onmessage = function (event) {
-      console.log(event.data)
-      const messageData = JSON.parse(event.data);
-      console.log('Received notification:', messageData);
-      updateNotificationCount(messageData.room_name);
-      updateChatRooms(messageData);
+      console.log(event)
+      const data = JSON.parse(event.data);
+      console.log(data)
+      const notification = data['notification'];
+
+      updateInbox(notificationData);
     };
+
+    function updateInbox(notificationData) {
+
+    }
 
     notificationSocket.onclose = function (event) {
       console.log('WebSocket connection closed.');
@@ -80,43 +89,6 @@
       console.error('WebSocket error:', event);
     };
 
-    function updateNotificationCount(room_name) {
-      const chatRoomElement = document.getElementById(room_name);
-      const notificationElement = chatRoomElement.querySelector('.notification');
-      
-      if (notificationElement) {
-        notificationElement.style.display = 'block';
-      }
-    }
-
-    function updateChatRooms(messageData) {
-      const chatRoomElement = document.getElementById(messageData.room_name);
-  
-      if (chatRoomElement) {
-        const lastMessageElement = chatRoomElement.querySelector('.last-message');
-        const timestampElement = chatRoomElement.querySelector('.timestamp');
-  
-        if (lastMessageElement && timestampElement) {
-          lastMessageElement.textContent = messageData.message;
-          timestampElement.textContent = messageData.formatted_timestamp;
-        }
-      } else {
-        const chatRoomsSection = document.getElementById('chat-rooms-section');
-        const newChatRoom = document.createElement('div');
-        newChatRoom.classList.add('chat_room');
-        newChatRoom.id = messageData.room_name;
-        newChatRoom.innerHTML = `
-          <a href="/chat/room/${messageData.room_name}/" style="margin-right: 0.5rem;">${messageData.room_name}</a>
-          <p class="last-message">${messageData.message}</p>
-          <p class="timestamp">${messageData.formatted_timestamp}</p>
-          <form action="/chat/delete/${messageData.room_name}/" method="post">
-            {% csrf_token %}
-            <input type="submit" value="삭제">
-          </form>
-        `;
-        chatRoomsSection.appendChild(newChatRoom);
-      }
-    }
   });
 </script>
 {% endblock script %}

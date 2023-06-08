@@ -2,23 +2,79 @@
 {% load static %}
 {% block title %}Detail{% endblock title %}
 
-{% block content %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/secondhands/detail.css' %}">
+{% endblock head %}
 
-<a href="{% url 'secondhands:update' product.pk %}">수정하기</a>
-<a href="{% url 'secondhands:delete' product.pk %}" onclick="return confirm('삭제하시겠습니까?')"> 삭제 </a>
+{% block content %}
+  <div class="detail-page">
+    <div class="detail-page-product">
+      <div class="detail-page-product-img">
+        {% for image in product.s_productimage_set.all %}
+          <img src="{{ image.image.url }}" alt="">
+        {% endfor %}
+      </div>
+      <div class="detail-page-product-info">
+        <div class="product-info-head">
+          <h2 class="product-info-head-name">{{ product.product }}</h2>
+          <div class="product-info-head-like">
+            {% if request.user.is_authenticated %}
+            <form id="likes-form" data-product-id="{{ product.pk }}">
+              {% csrf_token %}
+              {% if request.user in product.like_users.all %}
+                <button type="submit">
+                  <i class="bi bi-suit-heart-fill" id="product-heart"></i>
+                </button>
+              {% else %}
+                <button type="submit">
+                  <i class="bi bi-suit-heart" id="product-heart"></i>
+                </button>
+              {% endif %}
+            </form>
+            {% else %}
+              <button disabled>
+                <i class="bi bi-suit-heart" id="product-heart"></i>
+              </button>
+            {% endif %}
+          </div>
+        </div>
+        <p class="product-info-head-price">{{ product.price }}원</p>
+        <p class="product-info-head-p">상세정보</p>
+        <div class="product-info-head-content">
+          <p>{{ product.content|safe }}</p>
+        </div>
+        <div class="product-info-user">
+          <a href="{% url 'accounts:profile' product.user%}">판매자에게 연락하기</a>
+        </div>
+        <div class="product-info-ud">
+          {% if request.user == product.user %}
+            <a href="{% url 'secondhands:update' product.pk %}">수정하기</a>
+            <a href="{% url 'secondhands:delete' product.pk %}" onclick="return confirm('삭제하시겠습니까?')"> 삭제 </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-page-map">
+      <div class="detail-page-map-title">
+        <h2>거래 가능 장소</h2>
+      </div>
+      <div class="detail-page-map-map">
+        {% comment %} 지도 {% endcomment %}
+        <p>{{ s_address }}</p>
+        <div class="map" id="map" data-longitude="{{ longitude }}" data-latitude="{{ latitude }}">
+        </div>
+    </div>
+  </div>
 
 <div>
-  {{ product.product }}
-  {{ product.price }}
-  {{ product.content|safe }}
-  {{ s_address }}
 
-  {% for image in product.s_productimage_set.all %}
+<!--   {% for image in product.s_productimage_set.all %}
     <img style="width:500px;" src="{{ image.image.url }}" alt="">
   {% endfor %}
-</div>
+</div> -->
 
-<div>
+<!-- <div>
   {% if request.user.is_authenticated %}
   <form id="likes-form" data-product-id="{{ product.pk }}">
     {% csrf_token %}
@@ -43,9 +99,11 @@
     {% csrf_token %}
   {% endif %}
   <p><span id="product-status">{{ product.get_status_display }}</span></p>
-</div>
 
-<div class="map" id="map" style="width: 400px; height: 400px;" data-longitude="{{ longitude }}" data-latitude="{{ latitude }}">
+</div> -->
+
+
+
 
 {% endblock content %}
 

@@ -29,7 +29,7 @@ class CustomAuthentication(AuthenticationForm):
         widget = forms.TextInput(attrs = {
             'class':'form-control',
             "placeholder": "아이디",
-            "autocomplete": "username",
+            "autocomplete": "username off",
             }),
     )
     password = forms.CharField(

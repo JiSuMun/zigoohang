@@ -46,34 +46,50 @@ class StoreForm(forms.ModelForm):
 
 class ProductForm(forms.ModelForm):
     name = forms.CharField(
-        label='상품명',
         widget=forms.TextInput(
             attrs={
-                'placeholder': '상품명',
+                'placeholder': '상품명을 입력해 주세요',
+                'class': 'form-control',
             }
         )
     )
     price = forms.IntegerField(
-        label='가격',
         widget=forms.NumberInput(
             attrs={
-                'placeholder': '가격',
+                'placeholder': '가격을 입력해 주세요',
+                'class': 'form-control',
             }
         )
     )
     category = forms.CharField(
-        label = '카테고리',
         widget=forms.Select(
             attrs={
-
+                'class': 'select-control',
             },
         choices=[('미용', '미용'), ('의류', '의류'), ('잡화', '잡화'), ('기타', '기타')],
         )
     )
+    content = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': '내용을 입력해 주세요',
+                'class': 'form-control text-form',
+            }
+        )
+    )
+    detail_image = forms.ImageField(
+        label = '상품 상세 이미지',
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class': 'form-image', 
+            }
+        ),
+        required=False,
+    )
 
     class Meta:
         model = Product
-        fields = ('name', 'price', 'category', 'content',)
+        fields = ('name', 'price', 'category', 'content','detail_image')
 
 
 class ProductImageForm(forms.ModelForm):
@@ -82,6 +98,7 @@ class ProductImageForm(forms.ModelForm):
         widget=forms.ClearableFileInput(
             attrs={
                 'multiple': True,
+                'class': 'form-image', 
             }
         ),
         required=False,

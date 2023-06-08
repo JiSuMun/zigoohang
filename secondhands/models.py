@@ -5,14 +5,14 @@ from imagekit.processors import ResizeToFill
 from datetime import datetime, timedelta
 from django.db.models import Sum
 import os
-from ckeditor.fields import RichTextField
+# from ckeditor.fields import RichTextField
 
 
 class S_Product(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.CharField(max_length=255)
     price = models.IntegerField()
-    content = RichTextField(blank=True, null=True)
+    content = models.TextField()
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_s_products', blank=True)
     city = models.CharField(max_length=10)
     address = models.CharField(max_length=100)
