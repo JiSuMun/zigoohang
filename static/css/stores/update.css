@@ -20,7 +20,7 @@
 .u-wrapper {
   max-width: 1080px;
   padding: 5rem;
-  background-color: white;
+  background-color: var(--bg-color1);
   border: 1px solid #e3e3e3;
   border-radius: 7px;
   display: flex;

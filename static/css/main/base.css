@@ -52,6 +52,25 @@ a {
 	color: black;
 }
 
+@media (prefers-color-scheme: light) {
+	:root {
+		--bg-color1: white;
+		/* color:darkred */
+		/* --test-color1: darkred; */
+	}
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		/* color: */
+		--bg-color1: #1E1F21;
+		/* --test-color1: fuchsia; */
+	}
+	* {
+		color: #CBCBCB;
+		background-color: #1E1F21;
+	}
+}
+
 :root {
 	--planet-color1: #EDF1F4;
 	--planet-color2: #ADCBC9;
