@@ -35,7 +35,7 @@ forms.forEach((form) => {
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     const postId = event.target.dataset.postId;
-       
+
     axios({
       method: "POST",
       url: `/posts/${postId}/likes/`,
@@ -62,14 +62,15 @@ forms.forEach((form) => {
 });
 
 // 댓글 좋아요 비동기
-const reviewForms = document.querySelectorAll('.review-like-form');
+const reviewForms = document.querySelectorAll('[id^="review-likes-form-"]');
 
 reviewForms.forEach((form) => {
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     const postId = event.target.dataset.postId;
-    const reviewId = event.target.dataset.reviewId
-       
+    const reviewId = event.target.dataset.reviewId;
+    console.log(postId, reviewId)
+
     axios({
       method: "POST",
       url: `/posts/${postId}/${reviewId}/likes/`,
@@ -77,18 +78,24 @@ reviewForms.forEach((form) => {
     })
       .then((response) => {
         const risLiked = response.data.r_is_liked;
-        const rlikeBtn = document.querySelector(`#review-like-${reviewId}`)
-        const rlikeCount = document.querySelector(`#review_likes_count-${reviewId}`)
+        console.log(risLiked)
+        const rlikeBtn = form.querySelector('#review-like');
+        console.log(rlikeBtn)
+        const rlikeCount = form.nextElementSibling;
+        console.log(rlikeCount)
+        const dreviewForms = document.querySelector(`#review-dislikes-form-${postId}-${reviewId}`);
+        console.log(dreviewForms)
         
-        if (risLiked === true) {
-          rlikeBtn.classList.add('r-like-color')
+        if (risLiked) {
           rlikeBtn.classList.remove('r-like-color-gray')
+          rlikeBtn.classList.add('r-like-color')
+          dreviewForms.querySelector('button').disabled = true;
         } else {
-          rlikeBtn.classList.add('r-like-color-gray')
           rlikeBtn.classList.remove('r-like-color')
-
+          rlikeBtn.classList.add('r-like-color-gray')
+          dreviewForms.querySelector('button').disabled = false;
         }
-        rlikeCount.innerText = response.data.review_likes_count;
+        rlikeCount.textContent = response.data.review_likes_count;
       })
       .catch((error) => {
         console.log(error.response);
@@ -97,33 +104,40 @@ reviewForms.forEach((form) => {
 });
 
 // 댓글 싫어요 비동기
-const dreviewForms = document.querySelectorAll('.review-dislike-form');
+const dreviewForms = document.querySelectorAll('[id^="review-dislikes-form-"]');
 
 dreviewForms.forEach((form) => {
   form.addEventListener('submit', function (event) {
     event.preventDefault();
-    const postId = event.target.dataset.postId;
-    const dreviewId = event.target.dataset.dreviewId
-       
+    const dpostId = event.target.dataset.postId;
+    const dreviewId = event.target.dataset.dreviewId;
+    console.log(dpostId, dreviewId)
+
     axios({
       method: "POST",
-      url: `/posts/${postId}/${dreviewId}/dislikes/`,
+      url: `/posts/${dpostId}/${dreviewId}/dislikes/`,
       headers: {'X-CSRFToken': csrftoken},
     })
       .then((response) => {
         const rdisLiked = response.data.r_is_disliked;
-        const rdlikeBtn = document.querySelector(`#review-dislike-${dreviewId}`)
-        const rdlikeCount = document.querySelector(`#review_dislikes_count-${dreviewId}`)
+        console.log(rdisLiked)
+        const rdlikeBtn = form.querySelector('#review-dislike');
+        console.log(rdlikeBtn)
+        const rdlikeCount = form.nextElementSibling;
+        console.log(rdlikeCount)
+        const reviewForms = document.querySelector(`#review-likes-form-${dpostId}-${dreviewId}`);
+        console.log(reviewForms)
         
-        if (rdisLiked === true) {
-          rdlikeBtn.classList.add('r-like-color')
+        if (rdisLiked) {
           rdlikeBtn.classList.remove('r-like-color-gray')
+          rdlikeBtn.classList.add('r-like-color')
+          reviewForms.querySelector('button').disabled = true;
         } else {
-          rdlikeBtn.classList.add('r-like-color-gray')
           rdlikeBtn.classList.remove('r-like-color')
-
+          rdlikeBtn.classList.add('r-like-color-gray')
+          reviewForms.querySelector('button').disabled = false;
         }
-        rdlikeCount.innerText = response.data.review_dislikes_count;
+        rdlikeCount.textContent = response.data.review_dislikes_count;
       })
       .catch((error) => {
         console.log(error.response);
