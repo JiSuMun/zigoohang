@@ -1,36 +1,36 @@
-.create-title-wrap {
+.update-title-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 300px;
 }
 
-.create-title-title {
+.update-title-title {
   text-align: center;
   font-size: 50px;
   margin-bottom: 40px;
   font-weight: bold;
 }
 
-.create-title-text {
+.update-title-text {
   text-align: center;
   margin-bottom: 10px;
 }
 
-.c-wrapper {
-max-width: 1080px;
-padding: 5rem;
-background-color: white;
-border: 1px solid #e3e3e3;
-border-radius: 7px;
-display: flex;
-margin: auto;
-flex-direction: column;
-margin-top: 2rem;
-margin-bottom: 2rem;
-}
+.u-wrapper {
+  max-width: 1080px;
+  padding: 5rem;
+  background-color: white;
+  border: 1px solid #e3e3e3;
+  border-radius: 7px;
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  }
 
-.c-form-wrap {
+.u-form-wrap {
   width: 100%;
   display: block;
 }
@@ -50,10 +50,6 @@ margin-bottom: 2rem;
   border: 1px  solid #00000033;
 }
 
-.text-form {
-  height: 400px;
-}
-
 .form_label {
   display: flex;
   vertical-align: middle;
@@ -63,17 +59,18 @@ margin-bottom: 2rem;
   margin-bottom: 10px;
 }
 
-input:focus {
-  outline:1px solid #297821;
-}
-
-textarea:focus {
-  outline:1px solid #297821;
-}
-
 .required_star {
   margin-left: 0.3em;
   color: #ca0114;
+}
+
+.image-text {
+  font-size: 14px;
+  color: #999999;
+}
+
+input:focus {
+  outline:1px solid #297821;
 }
 
 input::file-selector-button {
@@ -90,7 +87,7 @@ input::file-selector-button {
   text-align: right;
 }
 
-.c-button-cancel {
+.u-button-cancel {
   padding: 0.5rem 1rem;;
   border: 1px solid #999999;
   font-size: 16px;
@@ -101,13 +98,13 @@ input::file-selector-button {
   border-radius: 5px;
 }
 
-.c-button-cancel:hover {
+.u-button-cancel:hover {
   border: 1px solid #333333;
   background-color: white;
   color: #333333;
 }
 
-.c-button {
+.u-button {
   padding: 0.5rem 1rem;;
   border: 1px solid #297821;
   font-size: 16px;
@@ -117,22 +114,35 @@ input::file-selector-button {
   border-radius: 5px;
 }
 
-.c-button:hover {
+.u-button:hover {
   background-color: #297821;
   color: white;
 }
 
+.starRating { 
+  display:flex;
+  align-items: center;
+  padding-bottom:1.5rem;
+  letter-spacing:3px;
+ }
+
+.starRating i {
+  cursor:pointer;
+  color:#ffc107;
+  font-size:1.3rem;
+ }
+
 @media (max-width: 1079.9px) {
-  .create-title-wrap {
+  .update-title-wrap {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  .create-title-text {
+  .update-title-text {
     font-size: 15px;
   }
 
-  .c-wrapper {
+  .u-wrapper {
     padding: 2rem;
   }
   

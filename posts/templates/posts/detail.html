@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-Detail
+FORUM
 {% endblock title %}
 
 {% block head %}
@@ -100,7 +100,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           <!--리뷰 내용-->
           <p class="review-title">{{ review.title }}<p>
           {% for image in review.reviewimage_set.all %}
-            <img class="review-image"src="{{ image.image.url }}" alt="Review Image">
+            <img class="review-image" src="{{ image.image.url }}" alt="Review Image">
           {% endfor %}
           <p class="review-content">{{ review.content|linebreaksbr }}</p>
 
