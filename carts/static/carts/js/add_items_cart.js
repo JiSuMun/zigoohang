@@ -24,6 +24,12 @@ function user_add_item_cart(product, quantity) {
       quantity,
     }),
   })
+    .then((response) => {
+      console.log(response.data.cart_count)
+      const countBadge = document.getElementById('count_badge')
+
+      countBadge.textContent = response.data.cart_count
+    })
     // .then((response) => response.json())
     // .then((data) => {
     //   if (data.success) {
