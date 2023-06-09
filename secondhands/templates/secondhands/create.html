@@ -14,7 +14,6 @@
     <div class="create-page-content-wrapper">
       <form class="create-page-content-form" action="{% url 'secondhands:create' %}" method='POST' enctype='multipart/form-data'>
         {% csrf_token %}
-        {% comment %} <div class="form--box"> {% endcomment %}
         <div class="form-info-box">
           {{ product_form.product }}
           {{ product_form.price }}
