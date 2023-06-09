@@ -35,7 +35,12 @@ def create(request):
             product = product_form.save(commit=False)
             product.user = request.user
             address = request.POST.get('address')
+            road_address = request.POST.get('road_address')
+            split_address = address.split(' ')
+            d_address = ' '.join(split_address[:3])
             product.address = address
+            product.road_address = road_address
+            product.d_address = d_address
             product.save()
             for i in files:
                 S_ProductImage.objects.create(image=i, product=product)
