@@ -48,6 +48,12 @@
         <div class="product-info-head-content">
           <p>{{ product.content|safe }}</p>
         </div>
+        {% if request.user == product.user %}
+            <button id="btn-sale" onclick="changeStatus(2,'예약중');" type="button">예약중으로 변경</button>
+            <button id="btn-complete" onclick="changeStatus(3,'거래완료');" type="button">거래완료로 변경</button>
+            {% csrf_token %}
+        {% endif %}
+        <p><span id="product-status">{{ product.get_status_display }}</span></p>
         <div class="product-info-user">
           <a href="{% url 'accounts:profile' product.user%}">판매자에게 연락하기</a>
         </div>
@@ -79,6 +85,7 @@
         </div>
     </div>
   </div>
+
 {% endblock content %}
 
 {% block script %}
@@ -143,7 +150,7 @@ function changeStatus(newStatus, statusText) {
       .then((response) => {
           if (response.ok) {
               // 상품 상태 업데이트
-              document.getElementById('product-status').innerHTML = `상품 상태: ${statusText}`;
+              document.getElementById('product-status').innerHTML = `${statusText}`;
           } else {
               alert("오류가 발생했습니다. 다시 시도해주세요.");
           }
@@ -152,5 +159,7 @@ function changeStatus(newStatus, statusText) {
           console.error("Error:", error);
       });
 }
+
+
 </script>
 {% endblock script %}

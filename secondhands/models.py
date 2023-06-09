@@ -16,6 +16,8 @@ class S_Product(models.Model):
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_s_products', blank=True)
     city = models.CharField(max_length=10)
     address = models.CharField(max_length=100)
+    road_address = models.CharField(max_length=100)
+    d_address = models.CharField(max_length=100)
     extra_address = models.CharField(max_length=100)
     CATEGORY_CHOICES = [('잡화', '잡화'), ('전자제품', '전자제품'), ('의류', '의류'), ('도서', '도서'), ('기타', '기타')]
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)

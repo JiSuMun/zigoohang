@@ -35,7 +35,12 @@ def create(request):
             product = product_form.save(commit=False)
             product.user = request.user
             address = request.POST.get('address')
+            road_address = request.POST.get('road_address')
+            split_address = address.split(' ')
+            d_address = ' '.join(split_address[:3])
             product.address = address
+            product.road_address = road_address
+            product.d_address = d_address
             product.save()
             for i in files:
                 S_ProductImage.objects.create(image=i, product=product)
@@ -135,4 +140,5 @@ def change_status(request, product_id, new_status):
     product.status = new_status
     product.save()
 
-    return JsonResponse({'result': 'success'})
+    response_data = {'result': 'success', 'newStatus': product.get_status_display()}
+    return JsonResponse(response_data)

@@ -1,17 +1,21 @@
 {% load static %}
 
-{% if interests %}
-    {% for interest_item in interests %}
-        {% if interest_item.images %}
-            <p><img src="{{ interest_item.images.first.image.url }}" style="width: 100px; height: 100px; "alt="관심상품 이미지"></p>
-        {% else %}
-            <p>이미지가 없습니다.</p>
-        {% endif %}
-          <p>상점명: {{ interest_item.store.name }}</p>
-          <p>상품명: {{ interest_item.name }}</p>
-          <p>가격: {{ interest_item.price }}원</p>
-          <hr>
-    {% endfor %}
-{% else %}
-    <p>관심상품이 없습니다.</p>
+{% if request.user == person %}
+    {% if interests %}
+        {% for interest_item in interests %}
+            {% if interest_item.images %}
+                <a href="{% url 'stores:products_detail' interest_item.store.pk interest_item.pk %}">
+                    <p><img src="{{ interest_item.images.first.image.url }}" style="width: 100px; height: 100px; "alt="관심상품 이미지"></p>
+                </a>
+            {% else %}
+                <p>이미지가 없습니다.</p>
+            {% endif %}
+            <p>상점명: {{ interest_item.store.name }}</p>
+            <p>상품명: {{ interest_item.name }}</p>
+            <p>가격: {{ interest_item.price }}원</p>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>관심상품이 없습니다.</p>
+    {% endif %}
 {% endif %}

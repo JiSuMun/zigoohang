@@ -44,9 +44,10 @@ def add_item(request):
         cart_item.quantity = quantity
     else:
         cart_item.quantity += quantity
-
     cart_item.save()
-    return JsonResponse({'success': 'Item added to cart'})
+
+    cart_count = user_cart.cartitems.count()
+    return JsonResponse({'success': 'Item added to cart', 'cart_count': cart_count})
 
 
 def modify_quantity(request):

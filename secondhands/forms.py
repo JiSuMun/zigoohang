@@ -23,6 +23,7 @@ class S_ProductForm(forms.ModelForm):
                 'class': 'form-control', 
                 'placeholder': '가격',
                 'autocomplete': 'off',
+                'step': 100,
             }
         )
     )
@@ -42,7 +43,7 @@ class S_ProductForm(forms.ModelForm):
     required=False,
     widget=forms.TextInput(
         attrs={
-            'placeholder': '상세주소',
+            'placeholder': '참고장소',
             'class': 'form-control',
             'autocomplete': 'off', 
             }
