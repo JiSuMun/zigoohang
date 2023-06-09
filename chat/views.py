@@ -1,7 +1,10 @@
-from django.shortcuts import render, redirect
-from .models import ChatRoom, Message
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import ChatRoom, Message, Notification
 from django.contrib.auth import get_user_model
-
+from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 def inbox(request):
     chat_rooms = request.user.chat_rooms.all()
@@ -18,6 +21,7 @@ def inbox(request):
         'all_users': all_users,
         'user_username': request.user.username,
     }
+
     return render(request, 'chat/inbox.html', context)
 
 
@@ -40,6 +44,7 @@ def start_group_chat(request):
 
 def room(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
+    # chat_room = get_object_or_404(ChatRoom, name=room_name)
     messages = chat_room.messages.all()
     user = request.user
     unread_notifications = chat_room.notifications.filter(user=user, is_read=False)
@@ -59,6 +64,26 @@ def delete_chat(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
     chat_room.delete()
     return redirect('chat:inbox')
+
+def get_notifications(request):
+    chat_rooms = request.user.notifications.all()
+    notifications = []
+    last_messages = []
+
+    for chat_room in chat_rooms:
+        unread_notifications = chat_room.notifications.filter(user=request.user, is_read=False).count()
+        last_message = chat_room.messages.order_by('-timestamp').first()
+
+        notifications.append({'chat_room_id': chat_room.id, 'unread_notifications': unread_notifications})
+        last_messages.append({'chat_room_id': chat_room.id, 'last_message': last_message.content if last_message else '', 'timestamp': last_message.formatted_timestamp() if last_message else ''})
+
+    data = {
+        'notifications': notifications,
+        'last_messages': last_messages,
+    }
+
+    return JsonResponse(data)
+
 
 # def delete_chat(request, room_name):
 #     chat_room = ChatRoom.objects.get(name=room_name)
