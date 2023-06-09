@@ -22,15 +22,15 @@
 <section id="chat-rooms-section">
   {% if chat_rooms %}
     {% for chat_room, last_message, unread_notifications in chat_rooms %}
-      <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.name }}">
+      <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
         <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
         {% if unread_notifications > 0 %}
-          <p class="notification" style="color: red">!</p>
+          <p class="notification notification--color noti">!</p>
           <p class="unread_count">{{ unread_notifications }}</p>
         {% endif %}
         {% if last_message %}
           <p class="last-message">{{ last_message.content }}</p>
-          <p class="last-message">{{ last_message.formatted_timestamp }}</p>
+          <p class="timestamp">{{ last_message.formatted_timestamp }}</p>
         {% else %}
           <p class="last-message">메시지 없음</p>
           <p class="timestamp"></p>
@@ -48,52 +48,37 @@
 {% endblock content %}
 
 {% block script %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-  function updateNotificationsAndLastMessages() {
-    $.ajax({
-      url: "{% url 'chat:get_notifications' %}",
-      type: "GET",
-      dataType: "json",
-      success: function (data) {
-        data.notifications.forEach(function (notification) {
-          var chatRoomId = notification.chat_room_id;
-          var unreadNotifications = notification.unread_notifications;
-          var chatRoomElement = $("#" + chatRoomId);
-          var notificationElement = chatRoomElement.find(".notification");
-          var unreadCountElement = chatRoomElement.find(".unread_count");
+  function updateNotificationData() {
+    fetch("{% url 'chat:api_unread_notifications' %}")
+      .then(response => response.json())
+      .then(data => {
+        data.data.forEach(chat_room_data => {
+          console.log(chat_room_data)
+          let chat_room_div = document.getElementById(chat_room_data.room_name);
+          console.log(chat_room_div)
+          let notification = chat_room_div.querySelector(".notification");
+          console.log(notification)
+          let unread_count = chat_room_div.querySelector(".unread_count");
+          console.log(unread_count)
+          let last_message = chat_room_div.querySelector(".last-message");
+          console.log(last_message)
+          let timestamp = chat_room_div.querySelector(".timestamp");
+          console.log(timestamp)
 
-          if (unreadNotifications > 0) {
-            notificationElement.show();
-            unreadCountElement.text(unreadNotifications);
-          } else {
-            notificationElement.hide();
-            unreadCountElement.text("");
+          if (chat_room_data.unread_notifications > 0) {
+            notification.classList.remove("noti")
+            unread_count.textContent = chat_room_data.unread_notifications;
           }
-        });
 
-        data.last_messages.forEach(function (lastMessage) {
-          var chatRoomId = lastMessage.chat_room_id;
-          var lastMessageContent = lastMessage.last_message;
-          var timestamp = lastMessage.timestamp;
-          var chatRoomElement = $("#" + chatRoomId);
-          var lastMessageElement = chatRoomElement.find(".last-message");
-          var timestampElement = chatRoomElement.find(".timestamp");
-
-          lastMessageElement.text(lastMessageContent);
-          timestampElement.text(timestamp);
+          last_message.textContent = chat_room_data.last_message;
+          timestamp.textContent = chat_room_data.last_message_timestamp;
         });
-      },
-      error: function (xhr, status, error) {
-        console.log(error);
-      }
-    });
+      });
   }
-
-  // Update notifications and last messages every 5 seconds
-  {% comment %} setInterval(updateNotificationsAndLastMessages, 5000); {% endcomment %}
-
-  // Initial update
-  updateNotificationsAndLastMessages();
+  updateNotificationData();
 </script>
 {% endblock script %}
+
+{% comment %} 5초마다 정보 받아옴 {% endcomment %}
+{% comment %} setInterval(updateNotificationData, 5000); {% endcomment %}
