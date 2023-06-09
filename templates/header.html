@@ -10,15 +10,8 @@
       </div>
       <!--메뉴-->
       <ul class="nav-ul">
-        <li class="nav-hover">
-          <div class="nav-drop">
-            <a class="nav-link" href="{% url 'stores:index' %}">행성상점</a>
-          </div>
-          <ul class="nav-hover-title">
-            <li><a class="nav-hover-list" href="#">링크1</a></li>
-            <li><a class="nav-hover-list" href="#">링크2</a></li>
-            <li><a class="nav-hover-list" href="#">링크3</a></li>
-          </ul>
+        <li>
+          <a class="nav-link" href="{% url 'stores:index' %}">행성상점</a>
         </li>
         <li>
           <a class="nav-link" href="{% url 'secondhands:index' %}">중고거래</a>

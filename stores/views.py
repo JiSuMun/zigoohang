@@ -228,11 +228,14 @@ def reviews_likes(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
     if review.like_users.filter(pk=request.user.pk).exists():
         review.like_users.remove(request.user)
+        r_is_liked = False
     else:
         review.like_users.add(request.user)
-        if review.dislike_users.filter(pk=request.user.pk).exists():
-            review.dislike_users.remove(request.user)
-    return redirect('stores:products_detail', store_pk, product_pk)
+        r_is_liked = True
+    context = {
+        'r_is_liked': r_is_liked,
+    }
+    return JsonResponse(context)
 
 
 @login_required
@@ -240,11 +243,14 @@ def reviews_dislikes(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
     if review.dislike_users.filter(pk=request.user.pk).exists():
         review.dislike_users.remove(request.user)
+        r_is_disliked = False
     else:
         review.dislike_users.add(request.user)
-        if review.like_users.filter(pk=request.user.pk).exists():
-            review.like_users.remove(request.user)
-    return redirect('stores:products_detail', store_pk, product_pk)
+        r_is_disliked = True
+    context = {
+        'r_is_disliked': r_is_disliked,
+    }
+    return JsonResponse(context)
 
 
 ##### cart
