@@ -20,13 +20,9 @@
   height: 500px;
   padding: 50px;
 }
-/* .form--box {
-  display: flex;
-  flex-direction: column;
-} */
 
 /* 상품이름, 가격, 카테고리 */
-.form-info-box {
+/* .form-info-box {
   display: flex;
 }
 input[type=text] {
@@ -42,7 +38,7 @@ input[type=number] {
 .form-info-box select {
   flex: 2;
   height: 35px;
-}
+} */
 
 /* 내용 */
 .form-content-box {
@@ -96,4 +92,65 @@ input[type=number] {
   background-color: #297821;
   color: white;
   font-weight: bold;
+}
+
+
+/* 반응형 미디어쿼리 */
+@media (min-width: 1080px) {
+
+}
+
+@media (max-width: 1079.9px) {
+
+}
+
+/* 핸드폰 크기*/
+@media (min-width: 478.9px) {
+  .form-info-box {
+    display: flex;
+  }
+  input[type=text] {
+    flex: 8;
+    height: 30px;
+    margin-right: 10px;
+  }
+  input[type=number] {
+    flex: 2;
+    height: 30px;
+    margin-right: 10px;
+  }
+  .form-info-box select {
+    flex: 2;
+    height: 35px;
+  }
+}
+@media (max-width: 479px) {
+  .create-page-title-wrapper h1 {
+    font-size: 30px;
+    text-align: center;
+  }
+  .create-page-content-wrapper {
+    border: 1px solid grey;
+    border-radius: 10px;
+    width: 100%;
+    height: 700px;
+    padding: 20px;
+  }
+  .form-info-box {
+    display: block;
+  }
+  input[type=text],
+  input[type=number],
+  .form-info-box select {
+    flex: none;
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+  .form-info-box select {
+    height: 35px;
+  }
+  .form-address-box {
+    display: block;
+  }
 }
