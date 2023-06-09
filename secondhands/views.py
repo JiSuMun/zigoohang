@@ -135,4 +135,5 @@ def change_status(request, product_id, new_status):
     product.status = new_status
     product.save()
 
-    return JsonResponse({'result': 'success'})
+    response_data = {'result': 'success', 'newStatus': product.get_status_display()}
+    return JsonResponse(response_data)

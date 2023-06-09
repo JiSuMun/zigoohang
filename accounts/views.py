@@ -452,7 +452,7 @@ def profile(request, username):
     interests = request.user.like_products.all()
     orders = Order.objects.filter(customer=person, shipping_status=1)
     purchases = S_Purchase.objects.filter(customer=person).select_related('product')
-    completed_products = S_Product.objects.filter(status='3')
+    completed_products = S_Product.objects.filter(user=person, status='3')
     purchase_details = []
     for order in orders:
         items = OrderItem.objects.filter(order=order)
