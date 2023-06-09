@@ -48,47 +48,52 @@
 {% endblock content %}
 
 {% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+  function updateNotificationsAndLastMessages() {
+    $.ajax({
+      url: "{% url 'chat:get_notifications' %}",
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        data.notifications.forEach(function (notification) {
+          var chatRoomId = notification.chat_room_id;
+          var unreadNotifications = notification.unread_notifications;
+          var chatRoomElement = $("#" + chatRoomId);
+          var notificationElement = chatRoomElement.find(".notification");
+          var unreadCountElement = chatRoomElement.find(".unread_count");
 
-  document.addEventListener('DOMContentLoaded', () => {
+          if (unreadNotifications > 0) {
+            notificationElement.show();
+            unreadCountElement.text(unreadNotifications);
+          } else {
+            notificationElement.hide();
+            unreadCountElement.text("");
+          }
+        });
 
-    let loc = window.location;
-    let wsStart = 'ws://';
-    if (loc.protocol == 'https:') {
-      wsStart = 'wss://';
-    }
+        data.last_messages.forEach(function (lastMessage) {
+          var chatRoomId = lastMessage.chat_room_id;
+          var lastMessageContent = lastMessage.last_message;
+          var timestamp = lastMessage.timestamp;
+          var chatRoomElement = $("#" + chatRoomId);
+          var lastMessageElement = chatRoomElement.find(".last-message");
+          var timestampElement = chatRoomElement.find(".timestamp");
 
-    const notificationSocket = new WebSocket(
-      wsStart + window.location.host + '/ws/chat/notifications/'
-    );
-    console.log(notificationSocket)
+          lastMessageElement.text(lastMessageContent);
+          timestampElement.text(timestamp);
+        });
+      },
+      error: function (xhr, status, error) {
+        console.log(error);
+      }
+    });
+  }
 
-    notificationSocket.onopen = function (event) {
-      console.log('WebSocket connection established.');
-      console.log(event)
-    };
+  // Update notifications and last messages every 5 seconds
+  {% comment %} setInterval(updateNotificationsAndLastMessages, 5000); {% endcomment %}
 
-    notificationSocket.onmessage = function (event) {
-      console.log(event)
-      const data = JSON.parse(event.data);
-      console.log(data)
-      const notification = data['notification'];
-
-      updateInbox(notificationData);
-    };
-
-    function updateInbox(notificationData) {
-
-    }
-
-    notificationSocket.onclose = function (event) {
-      console.log('WebSocket connection closed.');
-    };
-
-    notificationSocket.onerror = function (event) {
-      console.error('WebSocket error:', event);
-    };
-
-  });
+  // Initial update
+  updateNotificationsAndLastMessages();
 </script>
 {% endblock script %}

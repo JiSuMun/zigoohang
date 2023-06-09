@@ -3,6 +3,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import Q, Count, Max
 from django.utils import timezone
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 class ChatRoom(models.Model):
@@ -63,17 +65,7 @@ class Notification(models.Model):
         local_timestamp = timezone.localtime(self.timestamp)
         am_pm = "오전" if local_timestamp.strftime('%p') == "AM" else "오후"
         return f"{local_timestamp.strftime('%Y.%m.%d')} {am_pm} {local_timestamp.strftime('%I:%M')}"
-    
 
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'user': self.user.username,
-            'chat_room_name': self.chat_room.name,
-            'message': self.message.content,
-            'formatted_timestamp': self.message.formatted_timestamp(),
-        }
-    
     @classmethod
     def delete_old_notifications(cls):
         one_week_ago = timezone.now() - timezone.timedelta(days=7)
