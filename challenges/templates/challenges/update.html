@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Create{% endblock title %}
+
+{% block content %}
+<form action="{% url 'challenges:update' challenge.pk %}" method='POST' enctype='multipart/form-data'>
+    {% csrf_token %}
+    {{ challenge_form.as_p }}
+    {{ image_form.as_p }}
+    {{ delete_image_form }}
+    <input type="submit" value="수정하기">
+</form>
+{% endblock content %}

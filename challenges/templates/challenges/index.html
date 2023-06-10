@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}게시글 목록{% endblock title %}
+
+{% block content %}
+    <h1>게시글 목록</h1>
+    <div>
+        {% for challenge in challenges %}
+            <div>
+                <h3>{{ challenge.title }}</h3>
+                <p>{{ challenge.content }}</p>
+                <a href="{% url 'challenges:detail' challenge.pk %}">자세히 보기</a>
+            </div>
+        {% empty %}
+            <p>게시글이 없습니다.</p>
+        {% endfor %}
+    </div>
+{% endblock content %}
