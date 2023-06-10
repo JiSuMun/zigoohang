@@ -27,7 +27,7 @@ def inbox(request):
     return render(request, 'chat/inbox.html', context)
 
 
-def api_unread_notifications(request):
+def unread_notifications(request):
     user = request.user
     chat_rooms = user.chat_rooms.all()
     chat_rooms_data = []

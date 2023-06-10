@@ -24,10 +24,10 @@
     {% for chat_room, last_message, unread_notifications in chat_rooms %}
       <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
         <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
-        {% if unread_notifications > 0 %}
+        {% comment %} {% if unread_notifications > 0 %} {% endcomment %}
           <p class="notification notification--color noti">!</p>
-          <p class="unread_count">{{ unread_notifications }}</p>
-        {% endif %}
+          <p class="unread_count noti">{{ unread_notifications }}</p>
+        {% comment %} {% endif %} {% endcomment %}
         {% if last_message %}
           <p class="last-message">{{ last_message.content }}</p>
           <p class="timestamp">{{ last_message.formatted_timestamp }}</p>
@@ -50,7 +50,7 @@
 {% block script %}
 <script>
   function updateNotificationData() {
-    fetch("{% url 'chat:api_unread_notifications' %}")
+    fetch("{% url 'chat:unread_notifications' %}")
       .then(response => response.json())
       .then(data => {
         data.data.forEach(chat_room_data => {
@@ -68,6 +68,7 @@
 
           if (chat_room_data.unread_notifications > 0) {
             notification.classList.remove("noti")
+            unread_count.classList.remove("noti")
             unread_count.textContent = chat_room_data.unread_notifications;
           }
 
@@ -77,6 +78,7 @@
       });
   }
   updateNotificationData();
+  setInterval(updateNotificationData, 5000);
 </script>
 {% endblock script %}
 
