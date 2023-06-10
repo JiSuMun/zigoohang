@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ challenge.title }}</h1>
+    <p>{{ challenge.description }}</p>
+    
+    <div>
+        {% for image in challenge_images %}
+            <img src="{{ image.image.url }}" alt="">
+        {% empty %}
+            <p>이미지가 없습니다.</p>
+        {% endfor %}
+    </div>
+    {% if request.user == challenge.creator %}
+        <form action="{% url 'challenges:delete' challenge.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="삭제">
+        </form>
+        <form action="{% url 'challenges:update' challenge.pk %}" method="GET">
+            {% csrf_token %}
+            <input type="submit" value="수정">
+        </form>
+    {% endif %}
+{% endblock %}
