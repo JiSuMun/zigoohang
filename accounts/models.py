@@ -21,7 +21,8 @@ class User(AbstractUser):
     is_seller = models.BooleanField(default=False)
     phoneNumberRegex = RegexValidator(regex=r'^0[1-9]\d{0,2}-\d{3,4}-\d{4}$')
     phone = models.CharField(validators=[phoneNumberRegex], max_length=14)
-    points = models.IntegerField(default=0)
+    points = models.IntegerField(default=0) # 현재 포인트
+    total_points = models.IntegerField(default=0) # 누적 포인트
 
     # 포인트 1년마다 초기화
     def reset_points_if_needed(self):
@@ -50,3 +51,10 @@ class User(AbstractUser):
                 if old_user.image:
                     os.remove(os.path.join(settings.MEDIA_ROOT, old_user.image.path))
         super(User, self).save(*args, **kwargs)
+
+
+class PointLog(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='point_logs')
+    type = models.BooleanField(default=False)
+    amount = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)

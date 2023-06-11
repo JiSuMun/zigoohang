@@ -5,9 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Cart, CartItem, Order, OrderItem
 from stores.models import Product
 from django.http import JsonResponse, HttpResponseNotFound
-import json
-import requests
-import os
+import os, requests, json
 from dotenv import load_dotenv
 load_dotenv()
 KAKAO_AK = os.getenv('KAKAO_AK')
@@ -212,13 +210,22 @@ def approval(request):
     order.address = jsonObject['orderAddress']
     order.phone = jsonObject['orderPhone']
     # order.email = jsonObject['orderEmail']
+    order.memo = jsonObject['orderMsg']
     order.receiver = jsonObject['receiver']
     order.total_price = int(jsonObject['totalAmount'])
     order.use_points = int(jsonObject['usePoints'])
     order.total_amount = int(jsonObject['totalAmount']) - int(jsonObject['usePoints'])
 
-    order.shipping_status=1
+    order.shipping_status='배송준비중'
     order.save()
+
+    if request.user.is_authenticated:
+        user = request.user
+        user.total_points += int(jsonObject['usePoints'])
+        user.points += int((int(jsonObject['totalAmount']) - int(jsonObject['usePoints'])) * 0.01)
+        user.points -= int(jsonObject['usePoints'])
+        user.save()
+
     request.session['payment'] = {
         'order_id': order_id,
         'total_amount': order.total_amount

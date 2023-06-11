@@ -35,17 +35,17 @@ class Order(models.Model):
     # amount = models.IntegerField()
     # quantity = models.IntegerField()
     STATUS_CHOICES = (
-        (0, '결제전'),
-        (1, '배송준비중'),
-        (2, '배송중'),
-        (3, '배송완료'),
-        (4, '취소됨'),
-        (5, '반송중'),
+        ('결제전', '결제전'),
+        ('배송준비중', '배송준비중'),
+        ('배송중', '배송중'),
+        ('배송완료', '배송완료'),
+        ('취소됨', '취소됨'),
+        ('반송중', '반송중'),
     )
     shipping_status = models.CharField(
         max_length=15,
         choices=STATUS_CHOICES,
-        default=0
+        default='결제전'
     ) # 배송 상태
     tracking_number = models.CharField(max_length=20, blank=True, null=True) # 운송장 번호 # 배송중상태가 되면 값 입력(ex. order.pk)
     
@@ -53,6 +53,7 @@ class Order(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True)
     # email = models.EmailField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
+    memo = models.CharField(max_length=200, blank=True, null=True)
     receiver = models.CharField(max_length=100, blank=True, null=True)
     total_price = models.IntegerField(blank=True, null=True)
     total_amount = models.IntegerField(blank=True, null=True)

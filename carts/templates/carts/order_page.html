@@ -60,7 +60,7 @@
     <div class="orderBox">
       <div>
         <label for="use_points" class="form_label">포인트 적용</label>
-        <input type="number" id="use_points" class="form-control" value="{{ request.user.points }}">
+        <input type="number" id="use_points" class="form-control" value=0>
         {% comment %} <p class="point_label">사용가능한 포인트</p> {% endcomment %}
       </div>
     </div>
@@ -88,7 +88,6 @@
           </div>
         </div>
         <div class="input_box">
-          <!-- 메모 -->
           <label for="order_msg" class="form_label">배송 메세지</label>
           <textarea id="order_msg" class="form-control order_msg" name="msg"></textarea>
         </div>
@@ -108,7 +107,7 @@
       <ul class="pay_method">
         <li>
           <label for="inicis">
-            <input type="radio" name="pg_btn" id="inicis" onclick="pay_type('html5_inicis.INIBillTst')">
+            <input type="radio" name="pg_btn" id="inicis" onclick="pay_type('html5_inicis.INIBillTst')" checked>
             신용카드
           </label>
         </li>

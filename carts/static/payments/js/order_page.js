@@ -42,6 +42,8 @@ function requestPay() {
   const orderPhone = document.getElementById('order_phone').value;
   // const orderEmail = document.getElementById('order_email').value;
   const usePoints = parseInt(document.getElementById('use_points').value);
+  const orderMsg = document.getElementById('order_msg').value;
+  
   console.log(orderPhone);
   IMP.request_pay({
     pg: pg,
@@ -77,6 +79,7 @@ function requestPay() {
           // orderEmail,
           usePoints,
           orderPhone,
+          orderMsg,
         }),
       })
         .then(function(response) {
