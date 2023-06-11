@@ -1,43 +1,81 @@
-<h1>reviews_create</h1>
+{% extends 'base.html' %}
 
-<form action="#" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {% comment %} {{ review_form.as_p }} {% endcomment %}
+{% load static %}
 
-  <p>
-    <label for="{{ review_form.title.auto_id }}">{{ review_form.title.label }}</label>
-    {{ review_form.title }}
-  </p>
-  <p>
-    <label for="{{ review_form.content.auto_id }}">{{ review_form.content.label }}</label>
-    {{ review_form.content }}
-  </p>
-  <p>
-    <label for="{{ review_form.rating.auto_id }}">{{ review_form.rating.label }}</label>
-    {{ review_form.rating }}
-  </p>
+{% block title %}
+리뷰 작성
+{% endblock title %}
 
-  <p>
-    <label for="{{ review_form.image1.auto_id }}">{{ review_form.image1.label }}</label>
-    {{ review_form.image1 }}
-  </p>
-  <p>
-    <label for="{{ review_form.image2.auto_id }}">{{ review_form.image2.label }}</label>
-    {{ review_form.image2 }}
-  </p>
-  <p>
-    <label for="{{ review_form.image3.auto_id }}">{{ review_form.image3.label }}</label>
-    {{ review_form.image3 }}
-  </p>
-  <p>
-    <label for="{{ review_form.image4.auto_id }}">{{ review_form.image4.label }}</label>
-    {{ review_form.image4 }}
-  </p>
-  <p>
-    <label for="{{ review_form.image5.auto_id }}">{{ review_form.image5.label }}</label>
-    {{ review_form.image5 }}
-  </p>
+{% block head %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/stores/reviews_create.css' %}">
+  <link rel="stylesheet" 
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock head %}
 
-  <input type="submit">
-</form>
-<a href="{% url 'stores:products_detail' product.store.pk product.pk %}">[back]</a>
+{% block content %}
+<!--create 타이틀-->
+<div class="create-title-wrap">
+  <div class="create-title-box">
+    <p class="create-title-title">리뷰 작성</p>
+    <p class="create-title-text">상품에 대한 리뷰를 남겨주세요.</p>
+  </div>
+</div>
+
+<div class="c-wrapper">
+  <form action="#" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="c-form-wrap">
+      <div>
+        <p class="form_label">제목<span class="required_star">*</span></p>
+        {{ review_form.title }}
+      </div>
+      
+      <div>
+        <p class="form_label">내용<span class="required_star">*</span></p>
+        {{ review_form.content }}
+      </div>
+      <div>
+        <p class="form_label">평점<span class="required_star">*</span></p>
+        <div class="starRating">
+          <i class="far fa-star" data-rating="1"></i>
+          <i class="far fa-star" data-rating="2"></i>
+          <i class="far fa-star" data-rating="3"></i>
+          <i class="far fa-star" data-rating="4"></i>
+          <i class="far fa-star" data-rating="5"></i>
+          <input type="hidden" id="rating_input" name="rating" value="{{ review_form.rating.value }}">
+        </div>
+      </div>
+      <div>
+        <p class="form_label">리뷰 이미지 1&nbsp;<span class="image-text">(선택)</span></p>
+        {{ review_form.image1 }}
+      </div>
+      <div>
+        <p class="form_label">리뷰 이미지 2</p>
+        {{ review_form.image2 }}
+      </div>
+      <div>
+        <p class="form_label">리뷰 이미지 3</p>
+        {{ review_form.image3 }}
+      </div>
+      <div>
+        <p class="form_label">리뷰 이미지 4</p>
+        {{ review_form.image4 }}
+      </div>
+      <div>
+        <p class="form_label">리뷰 이미지 5</p>
+        {{ review_form.image5 }}
+      </div>
+    </div>
+    <!--버튼-->
+    <div class="button-wrapper">
+      <input class="c-button-cancel" type="submit" value="취소" onclick=window.history.back()>
+      <input class="c-button" type="submit" value="등록하기">
+    </div>
+  </form>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'js/stores/reviews_create.js' %}"></script>
+{% endblock script %}

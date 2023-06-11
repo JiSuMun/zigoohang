@@ -68,3 +68,7 @@ a {
   height: auto;
   min-height: 100vh;
 }
+
+input, button, textarea {
+	font-family: 'SUITE-Regular',sans-serif;
+}

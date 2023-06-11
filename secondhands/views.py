@@ -5,7 +5,7 @@ from utils.map import get_latlng_from_address
 import os
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from .models import S_Product
+import math
 
 
 def index(request):
@@ -35,7 +35,14 @@ def create(request):
             product = product_form.save(commit=False)
             product.user = request.user
             address = request.POST.get('address')
+            road_address = request.POST.get('road_address')
+            split_address = address.split(' ')
+            city = split_address[0]
+            d_address = ' '.join(split_address[:3])
             product.address = address
+            product.road_address = road_address
+            product.d_address = d_address
+            product.city = city
             product.save()
             for i in files:
                 S_ProductImage.objects.create(image=i, product=product)
@@ -58,7 +65,14 @@ def update(request, product_pk):
             product = product_form.save(commit=False)
             product.user = request.user
             address = request.POST.get('address')
+            road_address = request.POST.get('road_address')
+            split_address = address.split(' ')
+            city = split_address[0]
+            d_address = ' '.join(split_address[:3])
             product.address = address
+            product.road_address = road_address
+            product.d_address = d_address
+            product.city = city
             product.save()
             for delete_id in delete_ids:
                 product.s_productimage_set.filter(pk=delete_id).delete()
@@ -89,14 +103,36 @@ def delete(request, product_pk):
     return redirect('secondhands:index')
 
 
+def calculate_distance(lat1, lon1, lat2, lon2):
+    R = 6371 
+    lat1, lon1, lat2, lon2 = float(lat1), float(lon1), float(lat2), float(lon2)
+    lat1_rad = math.radians(lat1)
+    lon1_rad = math.radians(lon1)
+    lat2_rad = math.radians(lat2)
+    lon2_rad = math.radians(lon2)
+
+    dlon = lon2_rad - lon1_rad
+    dlat = lat2_rad - lat1_rad
+    a = math.sin(dlat/2) ** 2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon/2) ** 2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    distance = R * c
+
+    return round(distance)
+
+
 def detail(request, product_pk):
     product = S_Product.objects.get(pk=product_pk)
+    d_address = product.d_address
     address = product.address
+    road_address = product.road_address
     extra_address = product.extra_address
-    latitude, longitude = get_latlng_from_address(address)
+    latitude, longitude = get_latlng_from_address(road_address)
+    u_address = request.user.address
     kakao_script_key = os.getenv('kakao_script_key')
+    u_latitude, u_longitude = get_latlng_from_address(u_address)
+    distance = calculate_distance(latitude, longitude, u_latitude, u_longitude)
     kakao_key = os.getenv('kakao_key')
-    s_address = address + extra_address
+    s_address = address + ' ' + extra_address
     context = {
         'kakao_script_key': kakao_script_key,
         'kakao_key': kakao_key,
@@ -106,6 +142,10 @@ def detail(request, product_pk):
         'address': address,
         'extra_address': extra_address,
         's_address': s_address,
+        'u_latitude': u_latitude,
+        'u_longitude': u_longitude,
+        'distance': distance,
+        'd_address': d_address,
     }
     return render(request, 'secondhands/detail.html', context)
 
@@ -135,4 +175,5 @@ def change_status(request, product_id, new_status):
     product.status = new_status
     product.save()
 
-    return JsonResponse({'result': 'success'})
+    response_data = {'result': 'success', 'newStatus': product.get_status_display()}
+    return JsonResponse(response_data)

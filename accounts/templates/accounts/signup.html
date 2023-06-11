@@ -530,12 +530,12 @@
       </label>
       <br>
       <div class="agreement-submit">
-        <button type="submit">약관동의하기</button>
+        <button type="submit">약관 동의하기</button>
           {% comment %} <button type="submit">판매자로 가입하기</button>
           <button type="submit">일반회원으로 가입하기</button> {% endcomment %}
       </div>
       <div class="agreement-submit-media">
-        <button type="submit">약관동의하기</button>
+        <button type="submit">약관 동의하기</button>
         {% comment %} <button type="submit">판매자로 <br>가입하기</button>
         <button type="submit">일반회원으로 <br>가입하기</button> {% endcomment %}
     </div>
@@ -552,35 +552,32 @@
     <form id="signup-form" class="signup-page-form" action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <input type="hidden" name="signup-csrfmiddlewaretoken" value="{{ csrf_token }}">
-      {% for field in form %}
-         {% if field.name == 'username' %}
-            <div class="signup-page-form-check">
-               {{ field }}
-               <button class="form-check-id" id="check-username" type="button">중복확인</button>
-               <span id="username-result"></span>
-            </div>   
-        {% elif field.name == 'first_name' %}
-            <div class="signup-page-form-check">
-               {{ field }}
-               <button class="form-check-id" id="check-first-name" type="button">중복확인</button>
-               <span id="first-name-result"></span>
-            </div>  
-         {% elif field.name == 'email' %}
-            <div class="signup-page-form-check">
-               {{ field }}
-               <button class="form-check-id" id="check-email" type="button">중복확인</button>
-               <span id="email-result"></span>
-            </div>
-         {% else %}
-            {{ field }}
-         {% endif %}
-      {% endfor %}
-      <input class="form-address" type="text" id="address" placeholder="주소" name="address">
-      <input class="address--btn" type="button" onclick="search_address()" value="주소 검색">
-        <button type="button" onclick="setIsSellerValue(1)">판매자</button>
-        <button type="button" onclick="setIsSellerValue(0)">일반회원</button>
+      <div class="signup-page-form-check">
+        {{ form.username }}
+        <button class="form-check-id" id="check-username" type="button">중복확인</button>
+      </div>   
+      <span id="username-result"></span>
+      <div class="signup-page-form-check">
+        {{ form.first_name }}
+        <button class="form-check-id" id="check-first-name" type="button">중복확인</button>
+      </div>   
+        <span id="first-name-result"></span>
+      <p>{{ form.last_name }}</p>
+      <p>{{ form.password1 }}</p>
+      <p>{{ form.password2 }}</p>
+      <div class="signup-page-form-check">
+        {{ form.email }}
+        <button class="form-check-id" id="check-email" type="button">중복확인</button>
+      </div> 
+      <span id="email-result"></span>
+      <p>{{ form.image }}</p>
+      <div class="signup-page-form-check">
+        <input class="form-address form-control" type="text" id="address" placeholder="주소" name="address" readonly>
+        <input class="address--btn form-check-id" type="button" onclick="search_address()" value="주소 검색">
+      </div>
+        <button class="user-button" type="button" id="sellerBtn" onclick="setIsSellerValue(1)">판매자</button>
+        <button class="user-button" type="button" id="memberBtn" onclick="setIsSellerValue(0)">일반회원</button>
         <input type="hidden" id="is_seller" name="is_seller" value="">
-
       <button type="submit">회원가입</button>
     </form>
   </div>
@@ -605,6 +602,21 @@
 <script>
 
     function setIsSellerValue(value) {
+        const sellerButton = document.getElementById("sellerBtn");
+        const memberButton = document.getElementById("memberBtn");
+      
+        
+        if (value === 1) {
+            sellerButton.classList.remove("user-button");
+            sellerButton.classList.add("active");
+            memberButton.classList.remove("active");
+            memberButton.classList.add("user-button");
+        } else {
+            sellerButton.classList.add("user-button");
+            sellerButton.classList.remove("active");
+            memberButton.classList.remove("user-button");
+            memberButton.classList.add("active");
+        }
     document.getElementById("is_seller").value = value;
     console.log(document.getElementById("is_seller").value)
     }
@@ -708,11 +720,32 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .then(response => response.json())
       .then(result => {
-        if (result.is_available) {
-          document.getElementById(resultElementId).textContent = '사용 가능합니다.';
-        } else {
-          document.getElementById(resultElementId).textContent = '이미 사용중입니다.';
+        const resultElement = document.getElementById(resultElementId);
+        if (type === 'username') {
+          if (result.is_available) {
+            resultElement.textContent = '사용 가능한 아이디입니다.';
+          } else {
+            resultElement.textContent = '이미 사용중인 아이디입니다.';
+          }
+        } else if (type === 'email') {
+          if (result.is_available) {
+            resultElement.textContent = '사용 가능한 이메일입니다.';
+          } else {
+            resultElement.textContent = '이미 사용중인 이메일입니다.';
+          }
+        } else if (type === 'first_name') {
+          if (result.is_available) {
+            resultElement.textContent = '사용 가능한 이름입니다.';
+          } else {
+            resultElement.textContent = '이미 사용중인 이름입니다.';
+          }
         }
+        if (result.is_available) {
+            alert(resultElement.textContent);
+        } else {
+            alert(resultElement.textContent);
+        }
+        resultElement.style.display = 'none';
       });
     }
   });

@@ -3,19 +3,20 @@
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/chat/inbox.css' %}">
 {% endblock head %}
+{% if request.user == person %}
+  {% if chat_rooms %}
+    {% for chat_room in chat_rooms %}
+      <div class="chat_room">
+        <a href="{% url 'chat:room' chat_room.name %}">{{ chat_room }}</a>
+        <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
+          {% csrf_token %}
+          <input type="submit" value="삭제">
+        </form>
+      </div>
 
-{% if chat_rooms %}
-  {% for chat_room in chat_rooms %}
-    <div class="chat_room">
-      <a href="{% url 'chat:room' chat_room.name %}">{{ chat_room }}</a>
-      <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
-        {% csrf_token %}
-        <input type="submit" value="삭제">
-      </form>
-    </div>
+    {% endfor %}
 
-  {% endfor %}
-
-{% else %}
-  <p>채팅방이 없습니다.</p>
+  {% else %}
+    <p>채팅방이 없습니다.</p>
+  {% endif %}
 {% endif %}

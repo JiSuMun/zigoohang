@@ -341,10 +341,10 @@
 }
 @media (max-width: 1079.9px) {
   .nav-inner {
-    height: 50px;
+    height: 70px;
   }
   .logo {
-    font-size: 22px;
+    font-size: 27px;
     padding-left: 10px;
   }
   .logo-image {

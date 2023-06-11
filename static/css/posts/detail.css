@@ -81,7 +81,7 @@
 .d-button-cancel {
   padding: 0.4rem 1rem;
   border: 1px solid #999999;
-  font-size: 13px;
+  font-size: 16px;
   color: #999999;
   background-color: #fff;
   cursor: pointer;
@@ -97,7 +97,7 @@
 .d-button {
   padding: 0.4rem 1rem;
   border: 1px solid #297821;
-  font-size: 13px;
+  font-size: 16px;
   color: #297821;
   background-color: #fff;
   cursor: pointer;
@@ -192,7 +192,7 @@ textarea:focus {
 .u-button {
   padding: 0.5rem 1rem;;
   border: 1px solid #297821;
-  font-size: 13px;
+  font-size: 16px;
   color: #297821;
   background-color: #fff;
   cursor: pointer;
@@ -235,7 +235,7 @@ textarea:focus {
 #create-review {
   padding: 0.5rem 1rem;
   border: 1px solid #297821;
-  font-size: 13px;
+  font-size: 16px;
   color: #297821;
   background-color: #fff;
   cursor: pointer;
@@ -284,9 +284,11 @@ textarea:focus {
   border: none;
   background-color: transparent;
 }
+
 .r-like-color {
   color: #297821;
 }
+
 .r-like-color-gray {
   color: #999999;
 }

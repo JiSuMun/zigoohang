@@ -33,6 +33,7 @@ urlpatterns = [
     path('carts/', include('carts.urls')),
     path('secondhands/', include('secondhands.urls')),
     path('chat/', include('chat.urls')),
+    path('challenges/', include('challenges.urls')),
 
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path(r'^upload/', login_required(views_ckeditor.upload), name='ckeditor_upload'),
