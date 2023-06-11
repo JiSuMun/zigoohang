@@ -211,7 +211,7 @@ def approval(request):
     order = Order.objects.get(pk=order_id)
     order.address = jsonObject['orderAddress']
     order.phone = jsonObject['orderPhone']
-    order.email = jsonObject['orderEmail']
+    # order.email = jsonObject['orderEmail']
     order.receiver = jsonObject['receiver']
     order.total_price = int(jsonObject['totalAmount'])
     order.use_points = int(jsonObject['usePoints'])
