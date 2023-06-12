@@ -3,16 +3,75 @@
 {% block title %}게시글 목록{% endblock title %}
 
 {% block content %}
-    <h1>게시글 목록</h1>
-    <div>
-        {% for challenge in challenges %}
-            <div>
-                <h3>{{ challenge.title }}</h3>
-                <p>{{ challenge.content }}</p>
-                <a href="{% url 'challenges:detail' challenge.pk %}">자세히 보기</a>
-            </div>
-        {% empty %}
-            <p>게시글이 없습니다.</p>
-        {% endfor %}
+<!--게시글 목록-->
+<div class="p-wrapper">
+    <table class="p-table">
+      <!--테이블 비율-->
+      <colgroup>
+        <col width="11%"/>
+        <col width="50%"/>
+        <col width="13%"/>
+        <col width="13%"/>
+        <col width="13%"/>
+      </colgroup>
+      <thead>
+        <tr class="p-tr">
+          <th>번호</th>
+          <th>제목</th>
+          <th>작성자</th>
+          <th>날짜</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for challenge in page_obj %}
+        <tr>
+          <td class="p-td p-center">{{ challenge.id }}</td>
+          <td class="p-td">
+            <a class="p-td-title" href="{% url 'challenges:detail' challenge.id %}">
+              {{ challenge.title }}
+            </a>
+          </td>
+          <td class="p-td p-center">{{ challenge.creator.username  }}</td>
+          <td class="p-td p-center">{{ challenge.created|date:'m-d' }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <div class="p-write-wrapper">
+      <a class="p-write" href="{% url 'challenges:create' %}">글쓰기</a>
     </div>
+  </div>
+  <div class="pagination">
+    <span class="step-links">
+      {% if page_obj.has_previous %}
+        <a href="?page=1" class="{% if page_obj.number == 1 %}disabled{% endif %}">«</a>
+      {% else %}
+        <span class="disabled">«</span>
+      {% endif %}
+  
+      {% if page_obj.number > 2 %}
+        <span class="ellipsis">...</span>
+      {% endif %}
+  
+      {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i or i|add:"-1" == page_obj.number or i|add:"1" == page_obj.number %}
+          {% if page_obj.number == i %}
+            <span class="current-page">{{ i }}</span>
+          {% else %}
+            <a href="?page={{ i }}">{{ i }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+  
+      {% if page_obj.number < page_obj.paginator.num_pages|add:"-1" %}
+        <span class="ellipsis">...</span>
+      {% endif %}
+      
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="{% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">»</a>
+      {% else %}
+        <span class="disabled">»</span>
+      {% endif %}
+    </span>
+  </div>
 {% endblock content %}

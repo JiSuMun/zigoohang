@@ -1,5 +1,5 @@
 from django import forms
-from .models import Challenge, ChallengeImage
+from .models import Challenge, ChallengeImage, Certification
 from django.conf import settings
 import os
 from django.forms.widgets import ClearableFileInput
@@ -70,3 +70,35 @@ class ChallengeImage_DeleteImageForm(forms.Form):
             for image in images:
                 os.remove(os.path.join(settings.MEDIA_ROOT, image.image.path))
             images.delete()
+
+
+class CertificationForm(forms.ModelForm):
+    title = forms.CharField(
+        label = False,
+        widget = forms.TextInput(
+            attrs = {
+                'placeholder':'인증제목',
+                'class': 'form-control',
+            }
+        )
+    )
+    content = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': '내용을 입력해 주세요',
+                'class': 'form-control text-form',
+            }
+        )
+    )
+    
+    image = forms.ImageField(
+    required=False,
+    widget=forms.ClearableFileInput(
+        attrs={
+            'class': 'form-control',
+            }
+        )
+    )
+    class Meta:
+        model = Certification
+        fields = ('title', 'content', 'image',)
