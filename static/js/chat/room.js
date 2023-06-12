@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sender: message.sender,
       content: message.message,
       formatted_timestamp: message.formatted_timestamp,
+      sender_image_url: message.sender_image_url
     });
   };
 
@@ -68,6 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const username = document.createElement('p');
       username.textContent = message.sender;
       messageElement.appendChild(username);
+
+      const img_div = document.createElement('div')
+      const img = document.createElement('img');
+      img.src = message.sender_image_url;
+      console.log(img.src)
+      img.classList.add('sender-image');
+      img_div.appendChild(img)
+      messageElement.appendChild(img_div);
+
     }
 
     const content = document.createElement('p');
