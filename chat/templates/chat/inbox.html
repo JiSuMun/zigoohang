@@ -59,7 +59,6 @@
     fetch("{% url 'chat:new_chat_rooms' %}")
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         const chatRoomSection = document.getElementById("chat-rooms-section");
         const fetchedChatRoomNames = new Set();
 
@@ -74,7 +73,6 @@
   
             const chatRoomLink = document.createElement("a");
             chatRoomLink.href = `{% url 'chat:room' 'PLACEHOLDER' %}`.replace('PLACEHOLDER', chat_room.name);
-            console.log(chatRoomLink.href)
             chatRoomLink.textContent = chat_room.name;
             chatRoomLink.id = "room_name";
             newChatRoom.appendChild(chatRoomLink);
@@ -131,13 +129,9 @@
       .then(data => {
         data.data.forEach(chat_room_data => {
           let chat_room_div = document.getElementById(chat_room_data.room_name);
-          console.log(chat_room_div)
           let unread_count = chat_room_div.querySelector(".unread_count");
-          console.log(unread_count)
           let last_message = chat_room_div.querySelector(".last-message");
-          console.log(last_message)
           let timestamp = chat_room_div.querySelector(".timestamp");
-          console.log(timestamp)
 
           if (chat_room_data.unread_notifications > 0) {
             unread_count.classList.remove("noti")
