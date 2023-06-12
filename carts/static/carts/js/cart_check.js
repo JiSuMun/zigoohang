@@ -39,6 +39,11 @@ delBtn.addEventListener('click', function(e) {
       let cart = JSON.parse(localStorage.getItem('cart'));
 
       cart = cart.filter((item) => !productIds.includes(item.id));
+
+      const countBadge = document.getElementById('count_badge')
+
+      countBadge.textContent = cart.length
+      
       localStorage.setItem('cart', JSON.stringify(cart));
 
       window.location.href = '/carts/'

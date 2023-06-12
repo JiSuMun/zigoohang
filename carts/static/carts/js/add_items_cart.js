@@ -56,4 +56,8 @@ function guest_add_item_cart(product, quantity) {
   }
 
   localStorage.setItem('cart', JSON.stringify(cart))
+
+  const countBadge = document.getElementById('count_badge')
+
+  countBadge.textContent = cart.length
 }

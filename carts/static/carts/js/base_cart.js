@@ -14,5 +14,7 @@ window.onload = function() {
       // localStorage에 cart key 값이 있는 경우, JSON 문자열을 객체로 변환
       cart = JSON.parse(cart)
   }
-  // 추가 작업 코드 작성
+  const countBadge = document.getElementById('count_badge')
+
+  countBadge.textContent = cart.length
 }
