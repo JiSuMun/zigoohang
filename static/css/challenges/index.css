@@ -1,0 +1,15 @@
+.challenge-tap-container {
+    display: flex;
+    margin-right: 20px;
+}
+
+.challenge-tap-container div {
+    margin-right: 20px;
+    background-color: green;
+    padding: 10px;
+}
+
+.challenge-tap-container a {
+    text-decoration: none;
+    color: white;
+}

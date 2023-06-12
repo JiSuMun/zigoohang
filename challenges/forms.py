@@ -24,9 +24,30 @@ class ChallengeForm(forms.ModelForm):
         )
     )
 
+    start_date = forms.DateField(
+        label="시작 날짜",
+        widget=forms.DateInput(
+            format='%Y-%m-%d',
+            attrs={
+                'type': 'date',
+                'class': 'form-control',
+            }
+        )
+    )
+    end_date = forms.DateField(
+        label="종료 날짜",
+        widget=forms.DateInput(
+            format='%Y-%m-%d',
+            attrs={
+                'type': 'date',
+                'class': 'form-control',
+            }
+        )
+    )
+
     class Meta:
         model = Challenge
-        fields = ('title', 'description',)
+        fields = ('title', 'description', 'start_date', 'end_date')
 
 
 class CustomClearableFileInput(ClearableFileInput):
