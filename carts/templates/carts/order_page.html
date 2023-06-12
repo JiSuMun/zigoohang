@@ -60,7 +60,7 @@
     <div class="orderBox">
       <div>
         <label for="use_points" class="form_label">포인트 적용</label>
-        <input type="number" id="use_points" class="form-control" value=0>
+        <input type="number" id="use_points" class="form-control" value=0 placeholder="사용할 포인트">
         {% comment %} <p class="point_label">사용가능한 포인트</p> {% endcomment %}
       </div>
     </div>
@@ -70,32 +70,32 @@
       <div class="input_wrap">
         <div class="input_box">
           <label for="receiver" class="form_label">받으시는 분</label>
-          <input type="text" id="receiver" class="form-control" value="{{ request.user.last_name }}">
+          <input type="text" id="receiver" class="form-control" value="{{ request.user.last_name }}" placeholder="이름을 입력하세요.">
         </div>
         <div class="input_box">
           <label for="order_phone" class="form_label">연락처</label>
-          <input type="text" id="order_phone" class="form-control" value="{{ request.user.phone }}" name="phone">
+          <input type="text" id="order_phone" class="form-control" value="{{ request.user.phone }}" name="phone" placeholder="-없이 입력하세요.">
         </div>
       </div>
       <div class="input_wrap">
         <div class="input_box">
           <label class="form_label">주소</label>
           <div class="postcode_box">
-            <input type="text" id="order_address_postcode" class="form-control" value="">
-            <button class="address_btn">
+            <input type="text" id="order_address_postcode" class="form-control" value="" placeholder="우편번호" readonly>
+            <button class="address_btn" onclick="execDaumPostcode()">
               주소찾기
             </button>
           </div>
           <div>
-            <input type="text" id="order_address" class="form-control" value="{{ request.user.address }}">
+            <input type="text" id="order_address" class="form-control" value="{{ request.user.address }}" placeholder="주소" readonly>
           </div>
           <div>
-            <input type="text" id="order_address_detail" class="form-control" value="">
+            <input type="text" id="order_address_detail" class="form-control" value="" placeholder="상세주소">
           </div>
         </div>
         <div class="input_box">
           <label for="order_msg" class="form_label">배송 메세지</label>
-          <textarea id="order_msg" class="form-control order_msg" name="msg"></textarea>
+          <textarea id="order_msg" class="form-control order_msg" name="msg" placeholder="배송 메모"></textarea>
         </div>
       </div>
       {% comment %} <div>
@@ -189,5 +189,7 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="{% static 'payments/js/order_page.js' %}"></script>
+<script src="{% static 'payments/js/order_payment.js' %}"></script>
 {% endblock script %}

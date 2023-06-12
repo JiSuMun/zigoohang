@@ -49,6 +49,8 @@ class Order(models.Model):
     ) # 배송 상태
     tracking_number = models.CharField(max_length=20, blank=True, null=True) # 운송장 번호 # 배송중상태가 되면 값 입력(ex. order.pk)
     
+    pay_type = models.CharField(max_length=20, blank=True, null=True)
+    postcode = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     # email = models.EmailField(max_length=100, blank=True, null=True)

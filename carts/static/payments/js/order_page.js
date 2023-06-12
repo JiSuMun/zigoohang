@@ -1,100 +1,54 @@
+function execDaumPostcode() {
+  new daum.Postcode({
+    oncomplete: function(data) {
+      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+      // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+      var roadAddr = data.roadAddress; // 도로명 주소 변수
+      // var extraRoadAddr = ''; // 참고 항목 변수
 
-// console.log(totalAmount);
-// console.log(orderId);
-// console.log(orderItem);
-// console.log(new Date().getTime());
+      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+      // if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+      //   extraRoadAddr += data.bname;
+      // }
+      // 건물명이 있고, 공동주택일 경우 추가한다.
+      // if(data.buildingName !== '' && data.apartment === 'Y'){
+      //   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+      // }
+      // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+      // if(extraRoadAddr !== ''){
+      //   extraRoadAddr = ' (' + extraRoadAddr + ')';
+      // }
 
-function pay_type(pg) {
-  $("#pg").val(pg);
-  // console.log(pg);
+      // 우편번호와 주소 정보를 해당 필드에 넣는다.
+      document.getElementById('order_address_postcode').value = data.zonecode;
+      document.getElementById("order_address").value = roadAddr;
+      // document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+      
+      // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+      // if(roadAddr !== ''){
+      //   document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+      // } else {
+      //   document.getElementById("sample4_extraAddress").value = '';
+      // }
 
-  // $("#method").val(method);
-}
+      // var guideTextBox = document.getElementById("guide");
+      // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+      // if(data.autoRoadAddress) {
+      //   var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+      //   guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+      //   guideTextBox.style.display = 'block';
 
-function test() {
-  // const pgTest = document.getElementById('pg')
-  console.log(pg);
-  console.log($("#pg").val());
-  // console.log(pgTest);
-  // console.log($("#pg").val());
-  // console.log(method);
-}
-
-const IMP = window.IMP; 
-IMP.init("imp21474003");  // 가맹점 식별코드
-
-function requestPay() {
-
-  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-  
-  const pg = $("#pg").val()
-  console.log(pg);
-  const paymentsData = document.getElementById('payments_data')
-  const totalAmount = paymentsData.dataset.totalAmount
-  const orderId = paymentsData.dataset.orderId
-  const orderItem = paymentsData.dataset.orderItem
-  const userName = paymentsData.dataset.userName
-
-  const receiver = document.getElementById('receiver').value;
-  const orderAddress = document.getElementById('order_address').value;
-  const orderPhone = document.getElementById('order_phone').value;
-  // const orderEmail = document.getElementById('order_email').value;
-  const usePoints = parseInt(document.getElementById('use_points').value);
-  const orderMsg = document.getElementById('order_msg').value;
-  
-  console.log(orderPhone);
-  IMP.request_pay({
-    pg: pg,
-    // pay_method: "card",
-    // merchant_uid: "merchant_" + new Date().getTime(),   // 주문번호
-    name: orderItem,
-    amount: totalAmount - usePoints,                         // 숫자 타입
-    // buyer_email: orderEmail,
-    buyer_name: receiver,
-    buyer_tel: orderPhone,
-    buyer_addr: orderAddress,
-    // buyer_postcode: "01181"
-  }, function (rsp) { // callback
-    if ( rsp.success ) {
-      var msg = '결제가 완료되었습니다.';
-      // msg += '고유ID : ' + rsp.imp_uid;
-      // msg += '상점 거래ID : ' + rsp.merchant_uid;
-      // msg += '\n결제 금액 : ' + rsp.paid_amount;
-      msg += '\n결제 금액 : ' + rsp.paid_amount;
-      console.log(rsp);
-      // msg += '카드 승인번호 : ' + rsp.apply_num;
-      axios({
-        method: 'POST',
-        url: '/carts/payments/approval/',
-        headers: {
-          'X-CSRFToken': csrftoken, 
-        },
-        data: JSON.stringify({
-          orderId,
-          totalAmount,
-          receiver,
-          orderAddress,
-          // orderEmail,
-          usePoints,
-          orderPhone,
-          orderMsg,
-        }),
-      })
-        .then(function(response) {
-          if (response.data.result === 'success') {
-            window.location.href = "/carts/payments/show_approval/";
-          }
-        })
-      // .catch((error) => {
-      //   console.error('Error:', error)
-      // })
+      // } else if(data.autoJibunAddress) {
+      //   var expJibunAddr = data.autoJibunAddress;
+      //   guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+      //   guideTextBox.style.display = 'block';
+      // } else {
+      //   guideTextBox.innerHTML = '';
+      //   guideTextBox.style.display = 'none';
+      // }
     }
-    else {
-        var msg = '결제에 실패하였습니다.\n에러내용 : ' + rsp.error_msg
-    }
-  alert(msg);
-  // location.href = '/'
-  });
+  }).open();
 }
