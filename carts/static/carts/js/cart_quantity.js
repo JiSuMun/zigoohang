@@ -44,5 +44,5 @@ function user_modify_quantity(productId, quantityValue) {
 
 
 function guest_modify_quantity() {
-
+  
 }
