@@ -6,58 +6,90 @@ from django.conf import settings
 
 class StoreForm(forms.ModelForm):
     name = forms.CharField(
-        label='상점 이름',
         widget=forms.TextInput(
             attrs={
-                'placeholder': '상점 이름',
+                'placeholder': '상점 이름을 입력해 주세요',
+                'class': 'form-control',
+            },
+        )
+    )
+
+    content = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': '상점을 설명해 주세요',
+                'class': 'form-control',
             },
         )
     )
     image = forms.ImageField(
-        label = '대표이미지(필수)',
         widget=forms.FileInput(
             attrs={
-
+                'class': 'form-image', 
             }
         ),
         required=True,
     )
+    main_image = forms.ImageField(
+        widget=forms.FileInput(
+            attrs={
+                'class': 'form-image', 
+            }
+        ),
+        required=True,
+    )    
 
     class Meta:
         model = Store
-        fields = ('name','image',)
+        fields = ('name','image','content', 'main_image')
 
 
 class ProductForm(forms.ModelForm):
     name = forms.CharField(
-        label='상품명',
         widget=forms.TextInput(
             attrs={
-                'placeholder': '상품명',
+                'placeholder': '상품명을 입력해 주세요',
+                'class': 'form-control',
             }
         )
     )
     price = forms.IntegerField(
-        label='가격',
         widget=forms.NumberInput(
             attrs={
-                'placeholder': '가격',
+                'placeholder': '가격을 입력해 주세요',
+                'class': 'form-control',
             }
         )
     )
     category = forms.CharField(
-        label = '카테고리',
         widget=forms.Select(
             attrs={
-
+                'class': 'select-control',
             },
         choices=[('미용', '미용'), ('의류', '의류'), ('잡화', '잡화'), ('기타', '기타')],
         )
     )
+    content = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': '내용을 입력해 주세요',
+                'class': 'form-control text-form',
+            }
+        )
+    )
+    detail_image = forms.ImageField(
+        label = '상품 상세 이미지',
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class': 'form-image', 
+            }
+        ),
+        required=False,
+    )
 
     class Meta:
         model = Product
-        fields = ('name', 'price', 'category', 'content',)
+        fields = ('name', 'price', 'category', 'content','detail_image')
 
 
 class ProductImageForm(forms.ModelForm):
@@ -66,6 +98,7 @@ class ProductImageForm(forms.ModelForm):
         widget=forms.ClearableFileInput(
             attrs={
                 'multiple': True,
+                'class': 'form-image', 
             }
         ),
         required=False,
@@ -81,19 +114,22 @@ class ProductReviewForm(forms.ModelForm):
         label = '제목',
         widget=forms.TextInput(
             attrs={
-                'placeholder': '리뷰 제목',
+                'placeholder': '제목을 입력해 주세요',
+                'class': 'form-control',
             },
         ),
         required=True,
     )
-    # content = forms.CharField(
-    #     label = False,
-    #     widget = forms.Textarea(
-    #         attrs = {
-    #             'placeholder': '리뷰를 입력해주세요.',
-    #         }
-    #     )
-    # )
+    content = forms.CharField(
+        label = False,
+        widget = forms.Textarea(
+            attrs = {
+                'placeholder': '내용을 입력해 주세요',
+                'class': 'form-control',
+            }
+        ),
+        required=True,
+    )
     rating = forms.IntegerField(
         label = False,
         widget=forms.NumberInput(
@@ -102,6 +138,7 @@ class ProductReviewForm(forms.ModelForm):
             }
         )
     )
+
     class Meta:
         model = ProductReview
         fields = ('title', 'content', 'rating', 'image1', 'image2', 'image3', 'image4', 'image5',)
@@ -109,7 +146,7 @@ class ProductReviewForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in ['image1', 'image2', 'image3', 'image4', 'image5']:
-            self.fields[field_name].widget.attrs.update({'class': ''})
+            self.fields[field_name].widget.attrs.update({'class': 'form-image'})
             self.fields[field_name].label = field_name
 
 

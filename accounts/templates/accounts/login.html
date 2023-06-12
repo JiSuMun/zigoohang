@@ -1,40 +1,55 @@
 {% extends 'base.html' %}
 {% load socialaccount %}
 {% load static %}
+
+{% block title %}
+  Login
+{% endblock title %}
+
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
 {% endblock head %}
 {% block content %}
-
 <div class="login-wrapper">
-  <form class="account-login-form" action="{% url 'accounts:login' %}" method="POST">
-    {% csrf_token %}
-    {% if form.errors %}
-    <div class="alert alert-danger" role="alert">
-      로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.
+  <div class="login-page">
+    <div class="login-page-top">
+      <img src="{% static 'img/accounts/login.jpg' %}" alt="로그인 상단 사진">
     </div>
-    {% endif %}
-    {% for field in form %}
-      <div class="mb-3">
+    <div class="login-page-title">
+      <h1>LOGIN</h1>
+    </div>
+    <form class="login-page-form" id="login-form" action="{% url 'accounts:login' %}" method="POST" autocomplete="off">
+      {% csrf_token %}
+      {% for field in form %}
         {{ field }}
+      {% endfor %} 
+    <div>
+      <button class type="submit">로그인</button>
+      <div class='kakao-button'>
+        <a href="{% provider_login_url 'kakao' method='oauth2' %}">
+          <img class='kakao-button-img' src="{% static 'img/accounts/login-kakao.png' %}" alt="카카오_로그인">
+          <span class="kakao-text">카카오 로그인</span>
+        </a>
       </div>
-    {% endfor %} 
-    <div class="d-grid">
-      <button class="btn btn-primary" type="submit">로그인</button>
     </div>
+     {% if form.errors %}
+        <script>
+          window.onload = function() {
+            alert("로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.");
+          }
+        </script>
+     {% endif %}
   </form>
+  <div class="login-page-search">
+    <a href="{% url 'accounts:find_user_id' %}">아이디 찾기</a> /
+    <a href="{% url 'accounts:password_reset_request' %}">비밀번호 찾기</a> 
+  </div>
 </div>
 
-  <h1>간편 로그인</h1>
-  <hr>
-  <div class='kakao-button'>
-  <a href="{% provider_login_url 'kakao' method='oauth2' %}">
-    <img class='kakao-button-img' src="{% static 'img/accounts/kakao_login_large_wide.png' %}" alt="카카오_로그인">
-  </a>
-</div>
-  
+ 
 {% endblock content %}
 
-
-
-
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{% static 'carts/js/cart_login.js' %}"></script>
+{% endblock script %}

@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}
-Index
+FORUM
 {% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/posts/index.css' %}">
+{% endblock head %}
 
 {% block content %}
 <!--포럼 타이틀-->
@@ -14,14 +19,80 @@ Index
 </div>
 
 <!--게시글 목록-->
-<div>
+<div class="p-wrapper">
+  <table class="p-table">
+    <!--테이블 비율-->
+    <colgroup>
+      <col width="11%"/>
+      <col width="50%"/>
+      <col width="13%"/>
+      <col width="13%"/>
+      <col width="13%"/>
+    </colgroup>
+    <thead>
+      <tr class="p-tr">
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>날짜</th>
+        <th>추천</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for post in page_obj %}
+      <tr>
+        <td class="p-td p-center">{{ post.id }}</td>
+        <td class="p-td">
+          <a class="p-td-title" href="{% url 'posts:detail' post.id %}">
+            {{ post.title }}
+          </a>
+        </td>
+        <td class="p-td p-center">{{ post.user.username  }}</td>
+        <td class="p-td p-center">{{ post.created_at|date:'m-d' }}</td>
+        <td class="p-td p-center">{{ post.like_users.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <div class="p-write-wrapper">
+    <a class="p-write" href="{% url 'posts:create' %}">글쓰기</a>
+  </div>
+</div>
+<div class="pagination">
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+      <a href="?page=1" class="{% if page_obj.number == 1 %}disabled{% endif %}">«</a>
+    {% else %}
+      <span class="disabled">«</span>
+    {% endif %}
 
+    {% if page_obj.number > 2 %}
+      <span class="ellipsis">...</span>
+    {% endif %}
+
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i or i|add:"-1" == page_obj.number or i|add:"1" == page_obj.number %}
+        {% if page_obj.number == i %}
+          <span class="current-page">{{ i }}</span>
+        {% else %}
+          <a href="?page={{ i }}">{{ i }}</a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.number < page_obj.paginator.num_pages|add:"-1" %}
+      <span class="ellipsis">...</span>
+    {% endif %}
+    
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.paginator.num_pages }}" class="{% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">»</a>
+    {% else %}
+      <span class="disabled">»</span>
+    {% endif %}
+  </span>
 </div>
 
-{% for post in posts %}
-  {{ post.title }}
-  {{ post.content }}
-  {{ post.user.username }}
-{% endfor %}
+
+
 
 {% endblock content %}

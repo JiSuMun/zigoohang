@@ -11,18 +11,25 @@ class PostForm(forms.ModelForm):
         label = False,
         widget = forms.TextInput(
             attrs = {
-                'placeholder':'글제목',
+                'placeholder':'제목을 입력해 주세요',
                 'class': 'form-control',
             }
         )
     )
-
+    content = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': '내용을 입력해 주세요',
+                'class': 'form-control text-form',
+            }
+        )
+    )
+    
     class Meta:
         model = Post
         fields = ('title', 'content', 'tags',)
         widgets = {
             'tags': TagWidget(attrs={
-                'style' : 'width: 400px;',
                 'class': 'form-control',
                 'placeholder': "태그는 콤마(,)로 구분해주세요.",
                 }),
@@ -39,14 +46,14 @@ class CustomClearableFileInput(ClearableFileInput):
 
 class PostImageForm(forms.ModelForm):
     image = forms.ImageField(
-        label='관련 이미지(필수)',
+        label='이미지',
         widget=CustomClearableFileInput(
             attrs={
                 'multiple': True, 
-                'class': 'form-control', 
-                'style': 'width: 400px;',
+                'class': 'form-image', 
             }
         ),
+        required=False
     )
 
     class Meta:
@@ -88,7 +95,14 @@ class ReviewForm(forms.ModelForm):
             }
         )
     )
-
+    content = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': '내용을 입력해 주세요',
+                'class': 'form-control text-form',
+            }
+        )
+    )
     
     class Meta:
         model = Review
@@ -102,8 +116,7 @@ class ReviewImageForm(forms.ModelForm):
         widget=CustomClearableFileInput(
             attrs={
                 'multiple': True, 
-                'class': 'form-control', 
-                'style' : 'width: 400px;'
+                'class': 'form-image', 
             }
         ),
     )
@@ -112,9 +125,6 @@ class ReviewImageForm(forms.ModelForm):
         model = ReviewImage
         fields = ('image',)
 
-    def clean(self):
-        cleaned_data = super().clean()
-        images = self.files.getlist('image')
 
 
 class DeleteReviewImageForm(forms.Form):

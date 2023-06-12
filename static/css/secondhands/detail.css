@@ -1,0 +1,175 @@
+.detail-page {
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 100px;
+}
+
+/* 상품 설명 틀*/
+.detail-page-product {
+  display: flex;
+  margin-top: 100px;
+}
+.detail-page-product-img img {
+  width: 400px;
+  height: 400px;
+  position: relative;
+}
+.detail-page-product-img {
+  flex: 6;
+  
+}
+.detail-page-product-info {
+  flex: 6;
+}
+
+/* 상품설명 디테일 */
+.product-info-head {
+  display: flex;
+  justify-content: space-between;
+  border-top: 3px solid #ADCBC9;
+  padding-top: 25px;
+}
+.product-info-head-name {
+  font-size: 30px;
+}
+.product-info-head-price {
+  margin-top: 20px;
+  font-size: 40px;
+}
+.product-info-head-p {
+  margin-top: 20px;
+  color: #ADCBC9;
+}
+.product-info-head-content {
+  margin-top: 10px;
+  overflow-y: scroll;
+  height: 150px;
+}
+
+/* 판매자에게 연락하기 */
+.product-info-user {
+  width: 150px;
+  height: 30px;
+  margin: 20px 0px 20px 0px;
+  background-color: #ADCBC9;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.product-info-user a {
+  font-weight: bold;
+  color: white;
+}
+
+/* 판매상태 */
+.product-info-status p {
+  margin-top: 10px;
+}
+.img-cover-status {
+  width: 400px;
+  height: 400px;
+  background-color: grey;
+  opacity: 50%;
+  position: absolute;
+}
+
+/* 좋아요 */
+.product-info-head-like button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.product-info-head-like button i {
+  color: #8BBE86;
+  font-size: 20px; 
+}
+
+/* 스크롤바 */
+.product-info-head-content::-webkit-scrollbar {
+  width: 20px;
+}
+.product-info-head-content::-webkit-scrollbar-thumb {
+  background-color: #ADCBC9;
+  border-radius: 10px;
+  height: 10%;
+}
+.product-info-head-content::-webkit-scrollbar-track {
+  background-color: #EDF1F4;
+  border-radius: 10px;
+}
+
+/* 수정, 삭제 */
+.product-info-ud {
+  text-align: end;
+  margin-top: 50px;
+  padding-right: 20px;
+  gap: 20px;
+}
+.product-info-ud a {
+  margin-right: 15px;
+}
+
+/* 지도 */
+.detail-page-map {
+  border-top: 1px solid grey;
+  margin-top: 50px;
+}
+.detail-page-map-title {
+  margin-top: 50px;
+}
+.detail-page-map-title h2 {
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+.detail-page-map-map p {
+  margin-bottom: 20px;
+}
+.map {
+  width: 100%;
+  height: 400px;
+}
+
+/* 반응형 미디어쿼리 */
+/* 핸드폰 크기*/
+@media (min-width: 478.9px) {
+
+}
+@media (max-width: 479px) {
+  .detail-page-product-img img {
+    width: 300px;
+    height: 300px;
+    text-align: center;
+  }
+}
+@media screen and (max-width: 900px) {
+  .detail-page {
+    width: 90%;
+  }
+  .detail-page-product {
+    flex-direction: column;
+    align-items: center;
+  }
+  .detail-page-product-info {
+    margin-top: 50px;
+  }
+  .product-info-head {
+    flex-direction: row;
+    align-items: center;
+    padding-top: 15px;
+  }
+  .product-info-head-price {
+    font-size: 30px;
+  }
+  .product-info-head-content {
+    height: 100px;
+  }
+  .detail-page-map-title h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  .map {
+    height: 300px;
+  }
+}
+

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/chat/room.css' %}">
+{% endblock head %}
+
+{% block content %}
+<a href="{% url 'chat:inbox' %}">inbox로 이동</a>
+{{ room_name|json_script:"room-name" }}
+<input type="hidden" id="username" value="{{ request.user.username }}">
+<section class="room">
+  <div id="chat-room" class="chat-room">
+    {% for message in messages %}
+      <div class="message">
+        {% if message.sender == request.user %}
+          <div class="my-message">
+            <p>{{ message.content }}</p>
+            <p>{{ message.formatted_timestamp }}</p>
+          </div>
+        {% else %}
+          <div class="other-message">
+            <p>{{ message.sender.username }}</p>
+            <p>{{ message.content }}</p>
+            <p>{{ message.formatted_timestamp }}</p>
+          </div>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>No messages yet.</p>
+    {% endfor %}
+  </div>
+  <form id="text_form" class="text-form">
+    <input type="text" id="message_input" name="message" placeholder="Type your message">
+    <button type="submit">Send</button>
+  </form>
+</section>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/chat/room.js' %}" type="text/javascript"></script>
+{% endblock script %}

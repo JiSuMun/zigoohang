@@ -1,5 +1,160 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Detail{% endblock title %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/secondhands/detail.css' %}">
+{% endblock head %}
 
 {% block content %}
+  <div class="detail-page">
+    <div class="detail-page-product">
+      <div class="detail-page-product-img">
+        {% for image in product.s_productimage_set.all %}
+          <img src="{{ image.image.url }}" alt="">
+        {% endfor %}
+        {% comment %} {% if product.get_status_display == '예약중' %}
+          <div class="img-cover-status">
+            {{ product.get_status_display }}
+          </div>
+        {% endif %} {% endcomment %}
+      </div>
+      <div class="detail-page-product-info">
+        <div class="product-info-head">
+          <h2 class="product-info-head-name">{{ product.product }}</h2>
+          <div class="product-info-head-like">
+            {% if request.user.is_authenticated %}
+            <form id="likes-form" data-product-id="{{ product.pk }}">
+              {% csrf_token %}
+              {% if request.user in product.like_users.all %}
+                <button type="submit">
+                  <i class="bi bi-suit-heart-fill" id="product-heart"></i>
+                </button>
+              {% else %}
+                <button type="submit">
+                  <i class="bi bi-suit-heart" id="product-heart"></i>
+                </button>
+              {% endif %}
+            </form>
+            {% else %}
+              <button disabled>
+                <i class="bi bi-suit-heart" id="product-heart"></i>
+              </button>
+            {% endif %}
+          </div>
+        </div>
+        <p class="product-info-head-price">{{ product.price|intcomma }}원</p>
+        <p class="product-info-head-p">상세정보</p>
+        <div class="product-info-head-content">
+          <p>{{ product.content|safe }}</p>
+        </div>
+        <div class="product-info-user">
+          <a href="{% url 'accounts:profile' product.user%}">판매자에게 연락하기</a>
+        </div>
+        <div class="product-info-status">
+          {% if request.user == product.user %}
+            <button id="btn-sale" onclick="changeStatus(2,'예약중');" type="button">예약중으로 변경</button>
+            <button id="btn-complete" onclick="changeStatus(3,'거래완료');" type="button">거래완료로 변경</button>
+            {% csrf_token %}
+          {% endif %}
+          <p><span id="product-status">{{ product.get_status_display }}</span></p>
+        </div>
+        <div class="product-info-ud">
+          {% if request.user == product.user %}
+            <a href="{% url 'secondhands:update' product.pk %}">수정하기</a>
+            <a href="{% url 'secondhands:delete' product.pk %}" onclick="return confirm('삭제하시겠습니까?')"> 삭제 </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
 
+    <div class="detail-page-map">
+      <div class="detail-page-map-title">
+        <h2>거래 가능 장소 ({{ distance }} km)</h2>
+      </div>
+      <div class="detail-page-map-map">
+        {% comment %} 지도 {% endcomment %}
+        <p>{{ s_address }}</p>
+        <div class="map" id="map" data-longitude="{{ longitude }}" data-latitude="{{ latitude }}">
+        </div>
+    </div>
+  </div>
 {% endblock content %}
+
+{% block script %}
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_script_key }}&libraries=services"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const longitude = document.getElementById('map').dataset.longitude;
+  const latitude = document.getElementById('map').dataset.latitude;
+  const container = document.getElementById('map');
+  const options = {
+    center: new kakao.maps.LatLng(latitude, longitude),
+    level: 3
+  };
+  const map = new kakao.maps.Map(container, options);
+  const markerPosition = new kakao.maps.LatLng(latitude, longitude);
+  const marker = new kakao.maps.Marker({
+    position: markerPosition
+  });
+  marker.setMap(map);
+</script>
+<script>
+  const form = document.querySelector('#likes-form')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  form.addEventListener('submit', function (event) {
+    event.preventDefault()
+    const productId = event.target.dataset.productId
+    axios({
+      method: 'post',
+      url: `/secondhands/${productId}/likes/`,
+      headers: {'X-CSRFToken': csrftoken},
+    })
+      .then((response) => {
+        const isLiked = response.data.is_liked
+        const likeBtn = document.querySelector('#product-heart')
+        
+        if (isLiked === true) {
+          likeBtn.classList.remove('bi-suit-heart');
+          likeBtn.classList.add('bi-suit-heart-fill');
+        } else {
+          likeBtn.classList.remove('bi-suit-heart-fill');
+          likeBtn.classList.add('bi-suit-heart');
+        }
+
+      })
+  })
+
+// 거래 상태 변경
+function changeStatus(newStatus, statusText) {
+  let productId = "{{ product.id }}";
+  let url = `/secondhands/change_status/${productId}/${newStatus}/`;
+
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+  fetch(url, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrftoken
+      },
+      credentials: "same-origin"
+  })
+      .then((response) => {
+          if (response.ok) {
+              // 상품 상태 업데이트
+              document.getElementById('product-status').innerHTML = `${statusText}`;
+          } else {
+              alert("오류가 발생했습니다. 다시 시도해주세요.");
+          }
+ })
+      .catch((error) => {
+          console.error("Error:", error);
+      });
+}
+
+
+</script>
+{% endblock script %}

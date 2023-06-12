@@ -1,17 +1,18 @@
+.swiper {
+  max-height: 830px;
+}
+
 .main-image {
   width: 100%;
   aspect-ratio: 5184 / 3456;
 }
 
-.carousel-item {
-  max-height: 860px ;
+.swiper-button-next, .swiper-button-prev {
+  color: #ffffff;
 }
 
-.carousel-indicators [data-bs-target] {
-  width: 10px;
-  height: 10px;
-  border: 0;
-  border-radius: 5px;
+.swiper-pagination-bullet-active {
+  background-color: #ffffff;
 }
 
 .main-product {
@@ -71,7 +72,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 12px;
+  font-size: 16px;
   color: #00a95c;
 }
 
@@ -83,11 +84,12 @@
 .main-button_title {
   font-size: 50px;
   color: #969696;
+  font-weight: 500;
 }
 
 .main-button_text {
   margin-top: 0.5rem;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.4;
   color: #969696;
 }

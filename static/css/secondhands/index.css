@@ -1,0 +1,128 @@
+.secondhands-page {
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 100px;
+}
+
+/* 페이지 제목 */
+.secondhands-page-title-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+.secondhands-page-title h1 {
+  font-size: 50px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.secondhands-page-content-head {
+  display: flex;
+  gap: 10px;
+}
+
+/* 정렬 */
+.secondhands-page-content-filter {
+  flex: 9;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid grey;
+  border-radius: 10px;
+  height: 50px;
+}
+.secondhands-page-content-create {
+  flex: 1;
+  margin-right: 0;
+}
+.secondhands-page-content-filter button {
+  background-color: white;
+  border: 0;
+}
+
+/* 상품 등록하기 */
+.secondhands_create_button {
+  background-color: #ADCBC9;
+  border-radius: 10px;
+  border: 0;
+  height: 49.9px;
+  width: 100%;
+  font-weight: bold;
+}
+
+/* 상품 목록 */
+.secondhands-page-content-product {
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+  margin-top: 30px; */
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+.product-card {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.product-card img {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+}
+.detail-product_name{
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.material-symbols-outlined {
+  color: white;
+}
+.detail-product-id {
+  display: none;
+}
+/* .detail-product_id, .detail-product_distance {
+  display: none;
+} */
+
+/* 버튼 호버 */
+button:not([data-filter="all"]) {
+  color: grey;
+}
+button:not([data-filter="all"]):hover {
+  color: black;
+}
+
+/* 반응형 미디어쿼리 */
+/* 핸드폰 크기*/
+@media (min-width: 478.9px) {
+  .secondhands-page-content-filter select {
+    display: none;
+  }
+}
+@media (max-width: 479px) {
+  .secondhands-page-content-filter {
+    position: relative;
+    display: inline-block;
+  }
+  .secondhands-page-content-filter button {
+    display: none;
+  }
+  .secondhands-page-content-filter select {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url("../../img/secondhands/dropdown.png") no-repeat right center; /* 드롭다운 화살표 이미지 경로 */
+    background-size: 12px;
+    background-position-x: 95%;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}

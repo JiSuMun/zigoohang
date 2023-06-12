@@ -1,27 +1,293 @@
-<h1>products_detail</h1>
-<h2>{{ product.store }}-{{ product.name }} {{ product.rating }}</h2>
-{% for image in product.images.all %}
-  <img src="{{ image.image.url }}" alt="" style="width: 100px;">
-{% endfor %}
+{% extends 'base.html' %}
 
-<a href="{% url 'stores:detail' store.pk %}">[상품 목록으로]</a>
-<a href="{% url 'stores:products_update' store.pk product.pk %}">[상품 수정]</a>
-<form action="{% url 'stores:products_delete' store.pk product.pk %}">
-  {% csrf_token %}
-  <input type="submit" value="상품 삭제">
-</form>
-<a href="{% url 'stores:reviews_create' store.pk product.pk %}">[리뷰작성]</a>
-{% for review in reviews %}
-  <p>{{ review.title }}</p>
-  <p>{{ review.content|safe }}</p>
-  <p>{{ review.rating }}</p>
-  {% for review_image in review.review_images %}
-    {% if review_image %}
-      <img src="{{ review_image.url }}" alt="" style="width: 100px;">
-    {% endif %}
-  {% endfor %}
-  <a href="{% url 'stores:reviews_update' store.pk product.pk review.pk %}">[리뷰 수정]</a>
-  <form action="{% url 'stores:reviews_delete' store.pk product.pk review.pk %}">
-    <input type="submit" value="리뷰삭제">
-  </form>
-{% endfor %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+[{{ store.name }}] {{ product.name }}
+{% endblock title %}
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+/>
+<link rel="stylesheet" 
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/stores/products_detail.css' %}">
+{% endblock head %}
+
+{% block content %}
+<div class="product_container">
+  <!-- 상품 정보 시작 -->
+  <div class="product_info">
+    <!-- 상품 이미지 시작-->
+    <div class="product-info-left">
+      <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+        <div class="swiper-wrapper">
+          {% for image in product.images.all %}
+          <div class="swiper-slide">
+            <img src="{{ image.image.url }}" alt="">
+          </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+      </div>
+      <div thumbsSlider="" class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          {% for image in product.images.all %}
+          <div class="swiper-slide">
+            <img src="{{ image.image.url }}" alt="">
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- 상품 이미지 끝-->
+    
+    <!-- 상품 정보 텍스트 시작-->
+    <div class="product-info-right">
+      <div class="product-inner">
+        <p class="store-name">{{ store.name }}</p>
+        <p class="product-title"> {{ product.name }}</p>
+        <p class="product-price">{{ product.price|intcomma }} 원</p>
+        <div class="delivery-info">
+          <p class="delivery-title">배송비</p>
+          <p>3,000원 (50,000원 이상 구매 시 무료)</p>
+          <p>제주 3,000원, 제주 외 도서 산간 6,000원 추가</p>
+          <p class="delivery-title">배송 정보</p>
+          <p>결제완료 후 평균 1일 이내 출고(주말 및 공휴일 제외)</p>
+        </div>
+        <div class="product_quantity_box">
+          <div class="product_quantity_container">
+            <button class="product_quantity_button" id="decrement_btn">-</button>
+            <div class="product_quantity" id="product_count" data-product-price="{{ product.price }}">1</div>
+            <button class="product_quantity_button" id="increment_btn">+</button>
+          </div>
+          <div>
+            <span id="sub_total_price">{{ product.price|intcomma }}</span> 원
+          </div>
+        </div>
+        <div class="order-count">
+          <p class="order-title">주문 수량</p>
+          <p><span class="order-content" id="total_count">1</span> 개</p>
+        </div>
+        <div class="order-price">
+          <p class="order-title">총 상품금액</p>
+          <p><span class="order-content" id="total_price">{{ product.price|intcomma }}</span> 원</p>
+        </div>
+        <!--버튼-->
+        <form action="{% url 'carts:order_page' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="product_check" value="{{ product.pk }}">
+          <input type="hidden" name="input_quantity" value="1">
+          <input class="buy-button" type="submit" value="바로 구매하기">
+        </form>
+        <div class="btn-wrapper">
+          <div class="btn-inner">
+            <form id="product_likes_form" data-product-id="{{ product.pk }}" data-store-id="{{ product.store.pk}}">
+              {% csrf_token %}
+              <input class="sub-button" type="submit" value="관심상품 등록">
+            </form>
+          </div>
+          <div class="btn-inner">
+            <input type="hidden" id="quantity" value="1">
+          <button class="sub-button" id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">장바구니에 담기</button>
+          </div>
+        </div>        
+      </div>
+    </div>
+  </div>
+  <!-- 상품 정보 텍스트 끝-->
+  <!--상품상세 navbar-->
+  <ul class="products-navbar">
+    <li>
+      <a id="nav-img" class="nav-box"href="#nav-img">상품상세정보</a>
+    </li>
+    <li>
+      <a class="nav-box"href="#nav-review">상품 리뷰 ({{reviews.count}})</a>
+    </li>
+    <li>
+      <a class="nav-box"href="#nav-info">상품구매안내</a>
+    </li>
+  </ul>
+  <!--상품 상세이미지-->
+  <div class="image-wrapper">
+    <img class="detail-image"src="{{ product.detail_image.url }}" alt="">
+  </div>
+  <!-- 상품 정보 끝-->
+  <!--상품리뷰 navbar-->
+  <ul class="products-navbar">
+    <li>
+      <a class="nav-box"href="#nav-img">상품상세정보</a>
+    </li>
+    <li>
+      <a id="nav-review" class="nav-box"href="#nav-review">상품 리뷰 ({{reviews.count}})</a>
+    </li>
+    <li>
+      <a class="nav-box"href="#nav-info">상품구매안내</a>
+    </li>
+  </ul>
+  <!-- 리뷰 시작 -->
+  <div>
+    {% for review in reviews %}
+    <div class="review-box">
+      <div class="review-name">
+        {{ review.user.username }}<span class="review-date">&nbsp; |&nbsp; {{ review.created_at|date:"Y.m.d H:i" }}</span>
+        {% if review.user.username == request.user.username %}
+        <a class="review-update"href="{% url 'stores:reviews_update' store.pk product.pk review.pk %}">수정</a>
+        <a class="review-delete"href="{% url 'stores:reviews_delete' store.pk product.pk review.pk %}" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+        {% endif %}
+      </div>
+      <!--리뷰 내용-->
+      <p class="rating-star">{{ review.rating }}</p>
+      <p class="review-title">{{ review.title }}<p>
+      {% for review_image in review.review_images %}
+        {% if review_image %}
+          <img class="review-image" src="{{ review_image.url }}" alt="">
+        {% endif %}
+      {% endfor %}
+      <p class="review-content">{{ review.content|linebreaksbr }}</p>
+      
+      <div class="r-like-wrapper">
+        <div class="review-like">
+          {% if request.user.is_authenticated %}
+          <!--리뷰 좋아요-->
+            <form class="review-like-form" action="{% url 'stores:reviews_likes' store.pk product.pk review.pk %}" data-store-id="{{ store.pk }}" data-product-id="{{ product.pk }}" data-review-id="{{ review.pk }}">
+              {% csrf_token %}
+              {% if request.user in review.like_users.all %}
+                <button class="review-like-btn" type="submit">
+                  <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color"></i>
+                </button>
+              {% else %}
+                <button class="review-like-btn" type="submit">
+                  <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
+                </button>
+              {% endif %}
+            </form>
+          {% else %}
+            <button class="review-like-btn" type="button" disabled>
+              <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
+            </button>    
+          {% endif %}        
+          <span class="r-count" id="review_likes_count-{{ review.pk }}">{{ review.like_users.all|length }}</span>
+        </div>
+        <!--리뷰 싫어요-->
+        <div class="review-dislike">
+          {% if request.user.is_authenticated %}
+            <form class="review-dislike-form" action="{% url 'stores:reviews_dislikes' store.pk product.pk review.pk %}" data-store-id="{{ store.pk }}" data-product-id="{{ product.pk }}" data-dreview-id="{{ review.pk }}">
+              {% csrf_token %}
+              {% if request.user in review.dislike_users.all %}
+                <button class="review-like-btn" type="submit">
+                  <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color"></i>
+                </button>
+              {% else %}
+                <button class="review-like-btn" type="submit">
+                  <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
+                </button>
+              {% endif %}
+            </form>
+          {% else %}
+            <button class="review-like-btn" type="button" disabled>
+              <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
+            </button>
+          {% endif %}
+          <span class="r-count" id="review_dislikes_count-{{ review.pk }}">{{ review.dislike_users.all|length }}</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="create-wrapper">
+      <a class="create-review"href="{% url 'stores:reviews_create' store.pk product.pk %}">리뷰 작성</a>
+    </div>
+  </div>
+  <!-- 리뷰 끝 -->
+  <!--상품구매안내 navbar-->
+  <ul class="products-navbar">
+    <li>
+      <a class="nav-box"href="#nav-img">상품상세정보</a>
+    </li>
+    <li>
+      <a id="nav-review" class="nav-box"href="#nav-review">상품 리뷰 ({{reviews.count}})</a>
+    </li>
+    <li>
+      <a id="nav-info" class="nav-box"href="#nav-info">상품구매안내</a>
+    </li>
+  </ul>
+  <div class="buy-info">
+    <p class="buy-title">교환/반품신청 기간</p>
+    <ul>
+      <li>
+        교환/반품 신청은 배송완료 후 7일 이내 가능합니다.
+      </li>
+    </ul>
+    <p class="buy-title">배송안내</p>
+    <ul>
+      <li>
+        기본 배송료는 구매 금액 30,000원 미만일 경우 3,000원이 발생하며, 구매 금액 30,000원 이상일 경우 무료 배송입니다. 
+      </li>
+      <li>본 상품의 평균 배송일은 입금 확인 후 3일~5일입니다. (단, 근무일 기준입니다.)
+      </li>
+      <li>
+        주소가 정확하지 않거나 연락이 되지 않아 반송되는 상품의 택배 비용은 고객님 부담이니 꼭 정확한 주소와 연락처를 남겨주시기 바랍니다. 
+      </li>
+      <li>
+        고객님의 단순변심 및 품목 변경에 의한 교환 및 반품 비용은 고객님께서 부담하셔야 합니다. (단, 상품의 불량으로 인한 회수 비용은 무료입니다.) 
+      </li>
+      <li>
+        주문하신 상품은 결제 확인 순으로 순차 배송됩니다.
+      </li>
+      <li>
+        도서산간지역 및 제주도는 기본 배송비 3,000원에 추가 운임비가 더해집니다.
+      </li>
+      <li>
+        보통 추가 운임비는 5,000원 ~ 7,000원 내에서 이루어지나 무게와 상세 주소에 따라 변동이 있으니, 자세한 사항은 Q&A에 남겨주시면 답변 드리겠습니다.
+      </li>
+    </ul>
+    <p class="buy-title">주문/반품안내</p>
+    <ul>
+      <li>
+        결재 후 상품 수령 전 결제 취소 신청은 Q&A에 남겨주시면 근무일 기준, 3일~5일 내로 처리되며 실제 환불 처리까지는 5일~7일 정도 소요됩니다.
+      </li>
+      <li>
+        상품 수령 후 반품 신청은 Q&A에 반품 신청서를 작성해주시면 근무일 기준, 3일~5일 내로 처리되며 실제 환불 처리까지는 상품 도착 후 5일~7일 정도 소요됩니다. 
+      </li>
+      <li>
+        대량/제작 구매의 경우, 원하시는 로고 및 회사명을 불박 or 먹박 등 인쇄를 추가로 진행하실 수 있습니다.  
+      </li>
+      <li>
+        대량/제작 구매를 원하시는 경우, Q&A에 자세한 내용을 남겨주시면 답변 드리겠습니다. 
+      </li>
+      <li>
+        반품 가능 기간은 상품 수령일로부터 7일 이내이며, 상품 택(Tag) 제거/사용 등으로 상품 가치 훼손시에는 기간과 상관없이 교환/반품이 불가능합니다. (단, 제작된 상품은 일반 반품 기준과는 달리, 제작과 함께 반품 및 교환이 불가능합니다. )
+      </li>
+    </ul>
+    <p class="buy-title">주문/반품안내</p>
+    <ul>
+      <li>
+        결제하신 후 변경/문의 사항은 Q&A에 남겨주시면 답변 드리겠습니다. 
+      </li>
+      <li>
+        정확한 환불 방법에 대한 안내 및 환불이 지연되는 경우에는 Q&A에 남겨주시면 답변 드리겠습니다. 
+      </li>
+      <li>
+        상품의 교환/반품 및 상품 결함 등의 보상은 소비자피해보상규정(재정경제부 고시)에 따라 보상 받으실 수 있습니다.
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="{% static 'js/stores/product_detail.js' %}"></script>
+  <script src="{% static 'js/stores/product_like.js' %}"></script>
+  <script src="{% static 'carts/js/add_items_cart.js' %}"></script>
+{% endblock script %}

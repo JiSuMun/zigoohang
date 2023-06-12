@@ -1,0 +1,15 @@
+.chat_room {
+  display: flex;
+}
+
+.chat_room p {
+  margin-left: 0.5rem;
+}
+
+.noti {
+  display: none;
+}
+
+.notification--color {
+  color: red;
+}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'carts/css/cart_detail.css' %}">
+{% endblock head %}
+
+{% block content %}
+<div class="cart_container">
+  <h1>cart</h1>
+  <form action="{% url 'carts:order_page' %}" method="POST" id="order_form">
+    {% csrf_token %}
+    <div class="cart_div">
+      <div class="cart_check">
+
+      </div>
+      <div class="cart_list_header">
+        <div class="cart_checkbox_col">
+          <input type="checkbox" id="check_all">
+        </div>
+        <div class="cart_product">
+          상품 정보
+        </div>
+        <div class="cart_quantity_col">
+          상품 수량
+        </div>
+        <div class="cart_subtotal">
+          상품 금액
+        </div>
+      </div>
+      {% if user.is_authenticated %}
+        {% if cart.cartitems.all %}
+          {% for cart_item in cart.cartitems.all %}
+            <div class="cart_list_content">
+              <div class="cart_checkbox_col">
+                <input type="checkbox" name="item_check" value="{{ cart_item.product.pk }}">
+                <input type="hidden" name="input_quantity" value="{{ cart_item.quantity }}">
+              </div>
+              <a href="{% url 'stores:products_detail' cart_item.product.store.pk cart_item.product.pk %}" class="cart_product">
+                <div class="cart_img_container">
+                  <img src="{{ cart_item.product.images.first.image.url }}" alt="">
+                </div>
+                <div class="cart_list_product_text">
+                  <div class="cart_list_name">{{ cart_item.product.name }}</div>
+                  <div class="cart_list_price">{{ cart_item.product.price }}</div>
+                </div>
+              </a>
+              <div class="cart_quantity_col">
+                <div class="cart_quantity_container">
+                  <button class="cart_quantity_button" name="quantity_btn" data-quantity-value="-1" data-product-id="{{ cart_item.product.pk }}">-</button>
+                  <div class="cart_quantity" id="product_count-{{ cart_item.product.pk }}">{{ cart_item.quantity }}</div>
+                  <button class="cart_quantity_button" name="quantity_btn" data-quantity-value="1" data-product-id="{{ cart_item.product.pk }}">+</button>
+                </div>
+              </div>
+              <div class="cart_subtotal"><span id="sub_total-{{ cart_item.product.pk }}">{{ cart_item.sub_total }}</span> 원</div>
+            </div>
+          {% endfor %}
+          <div class="cart_total">
+            합계 : <span id="total">{{ cart.total }}</span> 원
+          </div>
+        {% else %}
+          <div>
+            장바구니가 비어있습니다.
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+    <button id="del_btn">
+      선택 삭제
+    </button>
+    <button id="order_check">
+      선택 주문
+    </button>
+    <button id="order_all">
+      전체 주문
+    </button>
+  </form>
+</div>
+
+
+{% endblock content %}
+
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{% static 'carts/js/cart_detail.js' %}"></script>
+<script src="{% static 'carts/js/cart_check.js' %}"></script>
+<script src="{% static 'carts/js/cart_quantity.js' %}"></script>
+<script src="{% static 'carts/js/cart_order.js' %}"></script>
+{% endblock script %}

@@ -1,0 +1,23 @@
+.wait-wrapper {
+  position: relative;
+	width: 100%;
+	min-height: 100vh;
+  background-color: #EDF1F4;
+  background: url(../../img/base/signup_image.jpg) no-repeat;
+	background-size: 100%;
+  text-align: center;
+}
+.wait-page {
+  width: 500px;
+  z-index: 1;
+  position: absolute;
+	background-color: white;
+	top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	border-radius: 10px;
+	padding: 30px;
+}
+.wait-page h2 {
+  font-size: 24px;
+}

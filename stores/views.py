@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Store, Product, ProductReview
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from .forms import *
 
 
@@ -12,6 +13,7 @@ def index(request):
         'stores': stores,
     }
     return render(request, 'stores/index.html', context)
+
 
 @login_required
 def create(request):
@@ -31,6 +33,7 @@ def create(request):
         'store_form': store_form,
     }
     return render(request, 'stores/create.html', context)
+
 
 # 상품 나열
 def detail(request, store_pk):
@@ -76,7 +79,6 @@ def delete(request, store_pk):
     return redirect('stores:index')
 
 
-
 ##### products
 @login_required
 def products_create(request, store_pk):
@@ -84,7 +86,7 @@ def products_create(request, store_pk):
     if not(request.user.is_seller or request.user.is_superuser) or request.user != store.user:
         return redirect('stores:index')
     if request.method == 'POST':
-        product_form = ProductForm(request.POST)
+        product_form = ProductForm(request.POST, request.FILES)
         if product_form.is_valid():
             product = product_form.save(commit=False)
             product.store = store
@@ -156,6 +158,22 @@ def products_delete(request, store_pk, product_pk):
     return redirect('stores:detail', store_pk)
 
 
+@login_required
+def products_likes(request, store_pk, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    if product.like_users.filter(pk=request.user.pk).exists():
+        product.like_users.remove(request.user)
+        is_liked = False
+    else:
+        product.like_users.add(request.user)
+        is_liked = True
+    context = {
+        'is_liked': is_liked,
+    }
+    return JsonResponse(context)
+    return redirect('stores:products_detail', store_pk, product_pk)
+
+
 ##### reviews
 @login_required
 def reviews_create(request, store_pk, product_pk):
@@ -176,6 +194,7 @@ def reviews_create(request, store_pk, product_pk):
     }
     return render(request, 'stores/reviews_create.html', context)
 
+
 @login_required
 def reviews_update(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
@@ -195,12 +214,43 @@ def reviews_update(request, store_pk, product_pk, review_pk):
     }
     return render(request, 'stores/reviews_update.html', context)
 
+
 @login_required
 def reviews_delete(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
     if review.user == request.user:
         review.delete()
     return redirect('stores:products_detail', store_pk, product_pk )
+
+
+@login_required
+def reviews_likes(request, store_pk, product_pk, review_pk):
+    review = ProductReview.objects.get(pk=review_pk)
+    if review.like_users.filter(pk=request.user.pk).exists():
+        review.like_users.remove(request.user)
+        r_is_liked = False
+    else:
+        review.like_users.add(request.user)
+        r_is_liked = True
+    context = {
+        'r_is_liked': r_is_liked,
+    }
+    return JsonResponse(context)
+
+
+@login_required
+def reviews_dislikes(request, store_pk, product_pk, review_pk):
+    review = ProductReview.objects.get(pk=review_pk)
+    if review.dislike_users.filter(pk=request.user.pk).exists():
+        review.dislike_users.remove(request.user)
+        r_is_disliked = False
+    else:
+        review.dislike_users.add(request.user)
+        r_is_disliked = True
+    context = {
+        'r_is_disliked': r_is_disliked,
+    }
+    return JsonResponse(context)
 
 
 ##### cart

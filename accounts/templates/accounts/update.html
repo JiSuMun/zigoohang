@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}
   Update
 {% endblock title %}
+
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
 {% endblock head %}
@@ -10,20 +12,24 @@
 {% block content %}
 
 <div class="update-wrapper">
-  <form class="account-update-form" action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for field in form %}
-      <div class="mb-3">
-        {{ field }}
-      </div>
-    {% endfor %}
-    <input type="text" id="address" placeholder="주소" name="address" value="{{ user.address }}" class="form-address">
-    <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
-    <div class="d-grid">
-      <button class="btn btn-primary" type="submit">회원정보 수정</button>
+  <div class="update-page">
+    <div class="update-page-title">
+      <h1>UPDATE</h1>
     </div>
-  </form>
-
+    <form class="update-page-form" action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        {{ field }}
+      {% endfor %}
+      <input class="form-address" type="text" id="address" placeholder="주소" name="address" value="{{ user.address }}">
+      <input class="address--btn" type="button" onclick="search_address()" value="주소 검색">
+      <button type="submit">회원정보 수정</button>
+    </form>
+  <form action="{% url 'accounts:delete' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="회원탈퇴">
+    </form>
+  </div>
 </div>
 {% endblock content %}
 

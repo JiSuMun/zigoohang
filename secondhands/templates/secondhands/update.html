@@ -1,5 +1,59 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}Update{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/secondhands/update.css' %}">
+{% endblock head %}
 
 {% block content %}
+  <div class="update-page">
+    <div class="update-page-title-wrapper">
+      <h1>중고 물품 수정하기</h1>
+    </div>
+    <div class="update-page-content-wrapper">
+      <form action="{% url 'secondhands:update' product.pk %}" method='POST' enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class="form-info-box">
+          {{ product_form.product }}
+          {{ product_form.price }}
+          {{ product_form.category }}
+        </div>
+        <div class="form-content-box">
+          {{ product_form.content }}
+        </div>
+        <div class="form-content-img">
+          {{ image_form.as_p }}
+          {{ delete_form.as_p }}
+        </div>
 
+        <div class="form-address-box">
+          <input type="text" id="road_address" placeholder="도로명주소" name="road_address" class="form-address" autocomplete="off" value="{{ product.address }}" readonly>
+          <input type="text" id="address" placeholder="지번주소" name="address" class="form-address" autocomplete="off" value="{{ product.road_address }}" readonly>
+          {{ product_form.extra_address }}
+          <input type="button" onclick="search_address()" value="주소 검색" class="address--btn">
+        </div>
+        <div class="form-button">
+          <input class="form-button-back" type="button" value="뒤로가기" onclick=window.history.back()>
+          <input class="form-button-submit" type="submit" value="수정">
+        </div>
+      </form>
+    </div>
+  </div>
 {% endblock content %}
+
+{% block script %}
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  function search_address() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        const r_addr = data.roadAddress;
+        const addr = data.jibunAddress;
+        document.getElementById("road_address").value = r_addr;
+        document.getElementById("address").value = addr;
+      }
+    }).open();
+  }
+</script>
+{% endblock script %}

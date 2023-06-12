@@ -2,17 +2,83 @@
 .login-wrapper {
 	position: relative;
 	width: 100%;
-	min-height: 100vh;
+	min-height: calc(100vh - 101px);
 	background: url(../../img/base/login_image.jpg) no-repeat;
 	background-color: white;
 	background-size: 100%;
 }
-.account-login-form {
-  width: 20rem;
-  padding-top: 20%;
+.login-page {
+	width: 400px;
+  padding-top: 15%;
   z-index: 1;
   position: relative;
   margin: 0 auto;
+	text-align : center;
+}
+.login-page-title h1 {
+	font-weight: bold;
+	padding-bottom: 20px;
+}
+.login-page-form input{
+	padding: 0;
+	padding-left: 0.4rem;
+	display: block;
+	width: calc(100% - 0.4rem);
+	height: 45px;
+	margin-bottom: 10px;
+	border: none;
+	border-radius: 5px;
+}
+
+input:focus {
+  outline:1px solid #297821;
+}
+.login-page-form button {
+	height: 45px;
+	width: 100%;
+	padding: 10px;
+	margin-top: 20px;
+	background-color: green;
+	font-size: 21px;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.kakao-button {
+	height: 45px;
+	width: 100%;
+	padding: 10px;
+	margin-top: 10px;
+	background-color: #FEE500;
+	font-size: 21px;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+}
+
+.kakao-button a {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+}
+.kakao-button-img {
+	margin-left: 10px;
+	
+}
+.kakao-text {
+	position: absolute;
+	top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.login-page-search {
+	margin-top: 20px;
 }
 
 /* 회원가입 */
@@ -23,16 +89,159 @@
 	background: url(../../img/base/signup_image.jpg) no-repeat;
 	background-color: white;
 	background-size: 100%;
+	text-align: center;
 }
-.account-signup-form {
-  width: 20rem;
-  padding-top: 20%;
+.signup-page {
+	width: 500px;
+	padding-top: 6%;
   z-index: 1;
   position: relative;
   margin: 0 auto;
 }
+.signup-page-title h1 {
+	font-weight: bold;
+	padding-bottom: 20px;
+}
 
-/* 정보수정 */
+.signup-page-form button {
+	width: 100%;
+	height: 40px;
+	padding: 10px;
+	background-color: green;
+	font-size: 16px;
+	color: white;
+	margin-bottom: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	border: 1px  solid #00000033;
+}
+/* #id_is_seller {
+	display: none;
+} */
+input::file-selector-button {
+  color: black;
+  height: 40px;
+  padding: 0 10px;
+  overflow: hidden;
+  background-color: transparent;
+  border: 0;
+  border-right: 1px  solid #00000033;
+}
+
+.form-image {
+  width: 100%; 
+	background-color: white;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: 1px  solid #00000033;
+}
+
+.address--btn{
+	width: 100%;
+	height: 40px;
+	padding: 10px;
+	background-color: green;
+	color: white;
+	margin-bottom: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	border: 1px  solid #00000033;
+	font-size: 16px;
+}
+
+.user-button {
+	background-color: #fff !important;
+	color: green !important;
+}
+
+.active {
+	width: 100%;
+	height: 40px;
+	padding: 10px;
+	background-color: green;
+	color: white;
+	margin-bottom: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	border: 1px  solid #00000033;
+}
+/* 중복확인 */
+.signup-page-form-check {
+	display: flex;
+	gap: 5px;
+}
+.form-check-id {
+	margin-top: 0;
+}
+
+.form-control {
+	display: block;
+	width: calc(100% - 0.4rem);
+	height: 40px;
+	margin-bottom: 10px;
+	border: 0;
+	padding: 0;
+	padding-left: 0.4rem;
+	border-radius: 5px;
+	flex: 8;
+	border: 1px  solid #00000033;
+}
+.form-check-id {
+	flex: 2;
+}
+.form-check-email {
+	flex: 2;
+}
+
+/*약관 동의*/
+.agreement-page {
+	width: 500px;
+  z-index: 1;
+  position: absolute;
+	background-color: white;
+	top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	border-radius: 10px;
+	padding: 30px;
+}
+.agreement-page-title h1 {
+		font-weight: bold;
+		padding-bottom: 10px;
+	}
+#agreement-form input {
+	margin-bottom: 10px;
+}
+#agreement-form button {
+	width: 100%;
+	padding: 10px;
+	font-size: 16px;
+	margin-top: 30px;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+#agreement-form label {
+	margin-bottom: 30px;
+}
+#agreement1, #agreement2 {
+	margin-top: 30px;
+}
+.agreement_div ol {
+	padding-left: 0;
+}
+.agreement-submit {
+	display: flex;
+	gap: 10px;
+}
+
+
+/* 정보 수정 */
 .update-wrapper {
 	position: relative;
 	width: 100%;
@@ -41,15 +250,39 @@
 	background-color: white;
 	background-size: 100%;
 }
-.account-update-form {
-  width: 20rem;
-  padding-top: 20%;
+.update-page {
+  width: 500px;
+  padding-top: 10%;
   z-index: 1;
   position: relative;
   margin: 0 auto;
+	text-align: center;
+}
+.update-page-title h1 {
+	font-weight: bold;
+	padding-bottom: 20px;
+}
+.update-page-form input{
+	display: block;
+	width: 100%;
+	height: 40px;
+	margin-bottom: 10px;
+	border: 0.5px solid grey;
+	border-radius: 10px;
+}
+.update-page-form button {
+	width: 100%;
+	padding: 10px;
+	margin-top: 20px;
+	margin-bottom: 30px;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
-/* 정보수정 */
+/* 비밀번호 수정 */
 .password-wrapper {
 	position: relative;
 	width: 100%;
@@ -58,10 +291,104 @@
 	background-color: white;
 	background-size: 100%;
 }
-.account-password-form {
-  width: 20rem;
-  padding-top: 20%;
+.password-page {
+  width: 500px;
+  padding-top: 15%;
   z-index: 1;
   position: relative;
   margin: 0 auto;
+	text-align: center;
+}
+.password-page-title h1 {
+	font-weight: bold;
+	padding-bottom: 20px;
+}
+.password-page-form input{
+	display: block;
+	width: 100%;
+	height: 40px;
+	margin-bottom: 10px;
+	border: 0.5px solid grey;
+	border-radius: 10px;
+}
+.password-page-form button {
+	width: 100%;
+	padding: 10px;
+	margin-top: 20px;
+	margin-bottom: 30px;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/* 반응형 미디어쿼리 */
+@media (min-width: 1080px) {
+	/* 약관동의 */
+	.agreement-submit-media {
+		display: none;
+	}
+}
+
+@media (max-width: 1079.9px) {
+	/* 약관동의 */
+	.agreement-submit-media {
+		display: none;
+	}
+	.signup-wrapper {
+		background: none;
+  }
+	.agreement-page {
+		border: 0.5px solid grey;
+	}
+
+	/* 로그인 */
+	.login-wrapper {
+		background: none;
+	}
+}
+@media (min-width: 768px) {
+	.login-page-top {
+		display: none;
+	}
+}
+@media (max-width:767px) {
+	/* 로그인 */
+	.login-page-top {
+		width: 100%;
+		height: 100px;
+	}
+	.login-page-top img{
+		display: none;
+	}
+	.signup-page {
+		width: 450px;
+	}
+}
+
+@media (max-width: 479px) {
+	/* 약관동의 */
+	.agreement-page {
+		width: 80%;
+	}
+	.agreement-submit {
+		display: none;
+	}
+	.agreement-submit-media {
+		display: flex;
+		gap: 10px;
+	}
+
+	/* 회원가입 */
+	.signup-page {
+		width: 50%;
+	}
+/* 
+	로그인
+	.login-page {
+		width: 50%;
+		margin-top: 50%;
+	} */
+
 }

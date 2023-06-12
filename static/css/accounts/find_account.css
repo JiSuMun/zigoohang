@@ -1,0 +1,136 @@
+/* 아이디 찾기 */
+.find_id-wrapper {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background: url(../../img/base/find_id.jpg) no-repeat;
+	background-color: white;
+	background-size: 100%;
+  text-align: center;
+}
+.find_id-page {
+  width: 500px;
+  z-index: 1;
+  position: absolute;
+	background-color: white;
+	top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	border-radius: 10px;
+	padding: 30px;
+}
+.find_id-page h1 {
+  padding-bottom: 10px;
+}
+.find_id-page-form input {
+  display: block;
+	width: 100%;
+	height: 50px;
+	margin-bottom: 10px;
+	border: 0.5px solid grey;
+	border-radius: 10px;
+}
+.find_id-page-form label {
+  display: none;
+}
+.find_id-page-form button {
+  width: 100%;
+	padding: 10px;
+	margin-top: 20px;
+	margin-bottom: 30px;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/* 비밀번호 찾기 */
+.find_pw-wrapper {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background: url(../../img/base/find_pw.jpg) no-repeat;
+	background-color: white;
+	background-size: 100%;
+  text-align: center;
+}
+.find_pw-page {
+  width: 500px;
+  z-index: 1;
+  position: absolute;
+	background-color: white;
+	top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	border-radius: 10px;
+	padding: 30px;
+}
+.find_pw-page h1 {
+  padding-bottom: 10px;
+}
+.find_pw-page-form input {
+  display: block;
+	width: 100%;
+	height: 50px;
+	margin-bottom: 10px;
+	border: 0.5px solid grey;
+	border-radius: 10px;
+}
+.find_pw-page-form label {
+  display: none;
+}
+.find_pw-page-form button {
+  width: 100%;
+	padding: 10px;
+	margin-top: 20px;
+	margin-bottom: 30px;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/*비밀번호 재설정*/
+.reset_pw-form ul {
+	padding-left: 0;
+}
+.reset_pw-form li {
+	margin-bottom: 5px;
+	color: grey;
+}
+
+/* 반응형 미디어쿼리 */
+@media (min-width: 1080px) {
+
+}
+
+@media (max-width: 1079.9px) {
+	.find_id-wrapper {
+		background: none;
+	}
+	.find_id-page {
+		border: 0.5px solid grey;
+	}
+
+	/* 비밀번호 찾기 */
+	.find_pw-wrapper {
+		background: none;
+	}
+	.find_pw-page {
+		border: 0.5px solid grey;
+	}
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (max-width:767px) {
+
+}
+
+@media (max-width: 479px) {
+	
+}

@@ -1,11 +1,18 @@
 from django.shortcuts import render, redirect
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from .models import Post, Review, PostImage, ReviewImage
+from .models import Post, Review, PostImage, ReviewImage, Zero
 from .forms import PostForm, ReviewForm, PostImageForm, DeleteImageForm, ReviewImageForm, DeleteReviewImageForm
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from utils.news import search_naver_news
+from utils.zero import import_zero_data
+from utils.map import get_latlng_from_address
+from django.urls import reverse
 import json
+import os
+from django.conf import settings
+from django.core.paginator import Paginator
+
 
 # @receiver(post_save, sender=Post)
 # def add_points_on_post_creation(sender, instance, created, **kwargs):
@@ -22,9 +29,12 @@ def main(request):
     return render(request, 'posts/main.html')
 
 def index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-created_at')
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'posts' : posts,
+        'page_obj' : page_obj,
     }
     return render(request, 'posts/index.html', context)
 
@@ -62,11 +72,15 @@ def create(request):
 
 def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
-    reviews = post.reviews.all().order_by('-created_at')
+    reviews = post.reviews.all()
     image_form = ReviewImageForm()
     review_form = ReviewForm()
     u_review_forms = []
 
+    # 이전글 버튼
+    previous_post = Post.objects.filter(created_at__lt=post.created_at).order_by('-created_at').first()
+    previous_post_url = reverse('posts:detail', args=[previous_post.id]) if previous_post else ''
+    
     for review in reviews:
         u_review_form = (
             review,
@@ -82,6 +96,8 @@ def detail(request, post_pk):
         'image_form': image_form,
         'review_form': review_form,
         'u_review_forms': u_review_forms,
+        'previous_post_url': previous_post_url,
+        'likes_count': post.like_users.count(),
     }
     return render(request, 'posts/detail.html', context)
 
@@ -247,3 +263,64 @@ def review_dislikes(request, post_pk, review_pk):
         'review_likes_count': review.like_users.count(),
     }
     return JsonResponse(context)
+
+
+def import_zero(request):
+    file_path = os.path.join(settings.BASE_DIR, 'utils', 'zero.xlsx')
+    import_zero_data(file_path)
+    return HttpResponse("Data Imported Successfully")
+
+
+def zero_map(request):
+    region = request.GET.get('region', '서울')
+    all_zero = Zero.objects.all()
+    regions = {a_zero.region for a_zero in all_zero}
+    zeros = Zero.objects.filter(region=region).values()
+    kakao_script_key = os.getenv('kakao_script_key')
+    kakao_key = os.getenv('KAKAO_KEY')
+    
+    context = {
+        'all_zero': all_zero,
+        'zeros': list(zeros),
+        'regions': regions,
+        'kakao_script_key': kakao_script_key,
+        'kakao_key': kakao_key,
+    }
+    if request.is_ajax():
+        return JsonResponse(context)
+    return render(request, 'posts/zero_map.html', context)
+
+
+
+def zero_map(request):
+    region = request.GET.get('region', '서울')
+    all_zero = Zero.objects.all()
+    # regions = {a_zero.region for a_zero in all_zero}
+    regions = sorted({a_zero.region for a_zero in all_zero},
+        key=lambda x: ['서울', '경기', '인천', '강원', '충북', '충남', '대전', '경북', '경남', '대구', '전북', '전남', '부산', '울산', '제주특별자치도'].index(x))
+    zeros = Zero.objects.filter(region=region).values()
+    addresses = [zero['address'] for zero in zeros]
+    kakao_script_key = os.getenv('kakao_script_key')
+    kakao_key = os.getenv('KAKAO_KEY')
+    context = {
+        'all_zero': all_zero,
+        'zeros': list(zeros),
+        'regions': regions,
+        'kakao_script_key': kakao_script_key,
+        'kakao_key': kakao_key,
+        'addresses': json.dumps(addresses),
+    }
+
+    return render(request, 'posts/zero_map.html', context)
+
+
+def get_zeros(request):
+    region = request.GET.get('region', '서울')
+    zeros = Zero.objects.filter(region=region).values('name', 'address', 'phone_number')
+    addresses = [zero['address'] for zero in zeros]
+    kakao_key = os.getenv('KAKAO_KEY')
+    return JsonResponse({
+        'addresses': addresses,
+        'zeros': list(zeros),
+        'kakao_key': kakao_key,
+    })

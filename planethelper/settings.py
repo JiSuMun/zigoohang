@@ -30,29 +30,38 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost',]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'port-0-planethelper-dihik2mlirjcl7m.sel4.cloudtype.app',]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+
+    # Application
     'accounts',
-    'donations',
+    'challenges',
     'posts',
     'stores',
     'secondhands',
+    'carts',
+    'chat',
+
+    # third party
     'imagekit',
     'ckeditor',
     'ckeditor_uploader',
     'taggit.apps.TaggitAppConfig',
     'taggit_templatetags2', 
     
+    # django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     
     # 소셜 로그인
     'django.contrib.sites',
@@ -88,12 +97,20 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'carts.context_processors.cart_counter',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'planethelper.wsgi.application'
+ASGI_APPLICATION = 'planethelper.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 
 # Database
@@ -167,9 +184,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 # 서버 포트		 
 EMAIL_PORT = '587'
 # 우리가 사용할 Gmail	 
-EMAIL_HOST_USER = 'finalhot6@gmail.com' 
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') 
 # 우리가 사용할 Gmail pw
-EMAIL_HOST_PASSWORD = 'ulvryubufltftmtw'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') 
 # TLS 보안 설정
 EMAIL_USE_TLS = True
 # 응답 메일 관련 설정

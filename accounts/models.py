@@ -12,11 +12,11 @@ from datetime import datetime, timedelta
 class User(AbstractUser):
     followings = models.ManyToManyField('self', related_name='followers', symmetrical=False)
     address = models.CharField(max_length=100)
-
+    first_name = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(unique=True)
     def profile_image_path(instance, filename):
         return f'profile/{instance.username}/{filename}'
     image = ProcessedImageField(upload_to=profile_image_path, blank=True, null=True)
-
     
     is_seller = models.BooleanField(default=False)
     phoneNumberRegex = RegexValidator(regex=r'^0[1-9]\d{0,2}-\d{3,4}-\d{4}$')
@@ -49,7 +49,4 @@ class User(AbstractUser):
             if self.image != old_user.image:
                 if old_user.image:
                     os.remove(os.path.join(settings.MEDIA_ROOT, old_user.image.path))
-        super(User, self).save(*args, **kwargs)  
-
-
-
+        super(User, self).save(*args, **kwargs)

@@ -1,0 +1,16 @@
+.my-message {
+  text-align: right;
+}
+
+.other-message {
+  text-align: left;
+}
+
+.room {
+  height: 100%;
+}
+
+.chat-room {
+  overflow-y: scroll;
+  height: 50vh;
+}
