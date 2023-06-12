@@ -80,7 +80,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         <!--버튼-->
         <form action="{% url 'carts:order_page' %}" method="POST">
           {% csrf_token %}
-          <input type="hidden" name="product_check" value="{{ product.pk }}">
+          <input type="hidden" name="item_check" value="{{ product.pk }}">
           <input type="hidden" name="input_quantity" value="1">
           <input class="buy-button" type="submit" value="바로 구매하기">
         </form>
