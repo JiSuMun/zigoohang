@@ -35,8 +35,12 @@
     <div class="nav-inner-right">
       <!--검색-->
       <div class="search">
-        <input class="search-input" type="text" placeholder="검색">
-        <button class="search-button"><img class="search-button-size" src="{% static 'img/base/search.svg' %}" alt=""></button>
+        <form action="{% url 'search' %}">
+          {% csrf_token %}
+            <input class="search-input" type="text" placeholder="검색" name='q' autocomplete="off">
+            <button class="search-button" type="submit"><img class="search-button-size" src="{% static 'img/base/search.svg' %}" alt=""></button>
+        </form>
+
       </div>
       <!--로그인-->
       <ul class="nav-ul">
@@ -91,6 +95,7 @@
 </nav>
 
 
+{% if request.user.is_authenticated %}
 <script>
   function updateNotificationData() {
     fetch("{% url 'chat:unread_notifications' %}")
@@ -109,8 +114,9 @@
           document.getElementById("noti_badge").innerText = total_unread_notifications;
         }
       });
-  }
+}
 
 updateNotificationData()
-setInterval(updateNotificationData, 5000);
 </script>
+{% endif %}
+{% comment %} setInterval(updateNotificationData, 5000); {% endcomment %}
