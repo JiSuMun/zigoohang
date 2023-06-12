@@ -28,6 +28,7 @@
 	margin-bottom: 10px;
 	border: none;
 	border-radius: 5px;
+	border: 1px  solid #00000033;
 }
 
 input:focus {
@@ -264,17 +265,31 @@ input::file-selector-button {
 }
 .update-page-form input{
 	display: block;
-	width: 100%;
+	width: calc(100% - 0.4rem);
 	height: 40px;
 	margin-bottom: 10px;
-	border: 0.5px solid grey;
-	border-radius: 10px;
+	border: 1px  solid #00000033;
+	border-radius: 5px;
 }
 .update-page-form button {
 	width: 100%;
 	padding: 10px;
 	margin-top: 20px;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
+	height: 40px;
+	font-size: 16px;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.delete {
+	width: 100%;
+	padding: 10px;
+	height: 40px;
+	font-size: 16px;
 	background-color: green;
 	color: white;
 	border: none;
@@ -305,20 +320,22 @@ input::file-selector-button {
 }
 .password-page-form input{
 	display: block;
-	width: 100%;
+	width: calc(100% - 0.4rem);
 	height: 40px;
 	margin-bottom: 10px;
-	border: 0.5px solid grey;
-	border-radius: 10px;
+	border: 1px  solid #00000033;
+	border-radius: 5px;
 }
 .password-page-form button {
 	width: 100%;
 	padding: 10px;
+	height: 40px;
 	margin-top: 20px;
 	margin-bottom: 30px;
 	background-color: green;
 	color: white;
 	border: none;
+	font-size: 16px;
 	border-radius: 5px;
 	cursor: pointer;
 }

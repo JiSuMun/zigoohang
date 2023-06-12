@@ -24,17 +24,16 @@
     {% block content %}
     {% endblock content %}
   </div>
+  <button onclick="scrollToTop()" id="scrollBtn" title="위로 올라가기"><img src="{% static 'img/main/arrow.svg' %}" alt="">TOP</button>
 
   {% include 'footer.html' %}
 
   {% include 'carts/base_cart.html' %}
 
-  {% include 'script.html' %}
-
-  <script src="{% static 'js/main/header.js' %}"></script>
   {% block script %}
   {% endblock script %}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="{% static 'js/main/base.js' %}"></script>
+  <script src="{% static 'js/main/header.js' %}"></script>
 </body>
 </html>

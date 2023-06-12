@@ -111,6 +111,16 @@
                 map: map,
                 title: zero.name,
               });
+              /* 마커 위 인포윈도우 */
+              marker.setMap(map);
+              var iwContent = '<div class="marker">' + zero.name + '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+              iwPosition = new kakao.maps.LatLng(latitude, longitude);
+              var infowindow = new kakao.maps.InfoWindow({
+                position : iwPosition, 
+                content : iwContent 
+            });
+            infowindow.open(map, marker); 
+
               /* 업체 길찾기 링크 연결 */
               kakao.maps.event.addListener(marker, 'click', function() {
                 const apiUrl = "https://dapi.kakao.com/v2/local/geo/transcoord.json?x=127.423084&y=37.078956&input_coord=WGS84&output_coord=TM";

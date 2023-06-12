@@ -319,3 +319,7 @@ textarea:focus {
   font-size: 13px;
   color: #333333;
 }
+
+.tag-text {
+  color: #333333;
+}

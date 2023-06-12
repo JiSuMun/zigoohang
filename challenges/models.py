@@ -52,3 +52,7 @@ class Certification(models.Model):
             blank=True, 
             null=True)
     
+    def add_points_to_user(self, points_to_add):
+        self.user.reset_points_if_needed()  
+        self.user.points += points_to_add
+        self.user.points_save()

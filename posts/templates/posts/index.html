@@ -47,16 +47,18 @@ FORUM
             {{ post.title }}
           </a>
         </td>
-        <td class="p-td p-center">{{ post.user.username  }}</td>
+        <td class="p-td p-center">{{ post.user.username }}</td>
         <td class="p-td p-center">{{ post.created_at|date:'m-d' }}</td>
         <td class="p-td p-center">{{ post.like_users.count }}</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+  {% if user.is_authenticated %}
   <div class="p-write-wrapper">
     <a class="p-write" href="{% url 'posts:create' %}">글쓰기</a>
   </div>
+  {% endif %}
 </div>
 <div class="pagination">
   <span class="step-links">
