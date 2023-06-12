@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import ChatRoom
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from django.utils import timezone
+from datetime import datetime
 
 def inbox(request):
     chat_rooms = request.user.chat_rooms.all()
@@ -12,6 +14,8 @@ def inbox(request):
         unread_notifications = chat_room.notifications.filter(user=request.user, is_read=False).count()
         last_message = chat_room.messages.order_by('-timestamp').first()
         chat_rooms_with_last_message.append((chat_room, last_message, unread_notifications))
+    
+    chat_rooms_with_last_message.sort(key=lambda x: x[1].timestamp if x[1] else datetime.min, reverse=True)
 
     context = {
         'chat_rooms': chat_rooms_with_last_message,

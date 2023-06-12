@@ -51,6 +51,7 @@
 
 {% block script %}
 <script>
+
   function checkIfNoChatRooms() {
     const chatRoomSection = document.getElementById("chat-rooms-section");
     const chatRooms = chatRoomSection.getElementsByClassName("chat_room");
@@ -128,7 +129,7 @@
             checkIfNoChatRooms();
           }
         });
-      });
+      })
   }
 
   function updateNotificationData() {
@@ -156,6 +157,8 @@
 
   updateNewChatRooms();
   updateNotificationData();
+  setInterval(updateNewChatRooms, 5000);
+  setInterval(updateNotificationData, 5000);
 </script>
 {% endblock script %}
 {% comment %} setInterval(updateNewChatRooms, 5000);

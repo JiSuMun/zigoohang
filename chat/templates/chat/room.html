@@ -21,6 +21,11 @@
         {% else %}
           <div class="other-message">
             <p>{{ message.sender.username }}</p>
+            {% if message.sender.image %}
+              <div><img class="sender-image" src="{{ message.sender.image.url }}" alt=""></div>
+            {% else %}
+              <div><img class="sender-image" src="{% static 'img/accounts/no-image.png' %}" alt=""></div>
+            {% endif %}
             <p>{{ message.content }}</p>
             <p>{{ message.formatted_timestamp }}</p>
           </div>
