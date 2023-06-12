@@ -3,46 +3,54 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/chat/inbox.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 {% endblock head %}
 
 {% block content %}
-<section>
-  <a href="{% url 'chat:start_chat' user.id %}"><h2>나와의 채팅하기</h2></a>
-  <h2>사용자 목록</h2>
-  <form method="post" action="{% url 'chat:start_group_chat' %}">
-    {% csrf_token %}
-    {% for user in all_users %}
-      <input type="checkbox" name="user_ids" value="{{ user.id }}"> {{ user.username }}
-    {% empty %}
-      <p>다른 사용자가 없습니다.</p>
-    {% endfor %}
-    <input type="submit" value="채팅방 만들기">
-  </form>
-</section>
-<section id="chat-rooms-section">
-  {% if chat_rooms %}
-    {% for chat_room, last_message, unread_notifications in chat_rooms %}
-      <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
-        <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
-        <p class="unread_count notification--color noti">{% if unread_notifications %}{{ unread_notifications }}{% else %}0{% endif %}</p>
-        <p class="last-message">{{ last_message.content }}</p>
-        <p class="timestamp">{{ last_message.formatted_timestamp }}</p>
-        <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
-          {% csrf_token %}
-          <input type="submit" value="삭제">
-        </form>
+<article class="inbox--container">
+  <section class="inbox-user">
+    <div class="chat_with_me">
+      <a href="{% url 'chat:start_chat' user.id %}">나와의 채팅하기<span class="material-symbols-outlined" style="font-size: 20px;">forum</span></a>
+    </div>
+    <p class="users--title">사용자 목록</p>
+    <form method="post" action="{% url 'chat:start_group_chat' %}">
+      {% csrf_token %}
+      <div class="users">
+        {% for user in all_users %}
+          <div>
+            <input type="checkbox" name="user_ids" value="{{ user.id }}"> {{ user.username }}
+          </div>
+        {% empty %}
+          <p>다른 사용자가 없습니다.</p>
+        {% endfor %}
       </div>
-    {% endfor %}
-  {% endif %}
-  <p id="no-chat-rooms" {% if chat_rooms %}style="display:none"{% endif %}>채팅방이 없습니다.</p>
-  
-</section>
+      <div class="make_btn_wrap">
+        <input type="submit" value="채팅방 만들기" class="make_btn">
+      </div>
+    </form>
+  </section>
+  <section id="chat-rooms-section" class="inbox-room">
+    {% if chat_rooms %}
+      {% for chat_room, last_message, unread_notifications in chat_rooms %}
+        <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
+          <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
+          <p class="unread_count notification--color noti">{% if unread_notifications %}{{ unread_notifications }}{% else %}0{% endif %}</p>
+          <p class="last-message">{{ last_message.content }}</p>
+          <p class="timestamp">{{ last_message.formatted_timestamp }}</p>
+          <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="삭제">
+          </form>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <p id="no-chat-rooms" {% if chat_rooms %}style="display:none"{% endif %}>채팅방이 없습니다.</p>
+  </section>
+</article>
 {% endblock content %}
 
 {% block script %}
 <script>
-
-
   function checkIfNoChatRooms() {
     const chatRoomSection = document.getElementById("chat-rooms-section");
     const chatRooms = chatRoomSection.getElementsByClassName("chat_room");
@@ -146,10 +154,9 @@
       });
   }
 
-  
   updateNewChatRooms();
   updateNotificationData();
-  setInterval(updateNewChatRooms, 5000);
-  setInterval(updateNotificationData, 5000);
 </script>
 {% endblock script %}
+{% comment %} setInterval(updateNewChatRooms, 5000);
+setInterval(updateNotificationData, 5000); {% endcomment %}
