@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
   MYPAGE
@@ -132,9 +133,9 @@
         <div class="profile-box-text">
         <div class="profile-page-info-main">
           <div class="main-card">
-              <span class="main-card-title">나의 에코포인트🌱</span></span>
+              <span class="main-card-title">나의 에코포인트🌱</span>
               <div class="main-card-content">
-                <span>{{ user.points }}</span>
+                <span>{{ user.points|intcomma }}</span>
               </div>
           </div>
           <div class="main-card">
