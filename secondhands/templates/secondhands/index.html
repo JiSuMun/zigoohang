@@ -33,8 +33,8 @@
           {% comment %} 카테고리도 넣아야함 {% endcomment %}
 
           {% comment %} 반응형 {% endcomment %}
-          <select class="filter-select">
-            <option value="all" data-filter="all">전체</option>
+          <select class="filter-select" onchange="selectChange(this.value);">
+            <option value="all" data-filter="all" selected>전체</option>
             <option value="latest" data-filter="latest">최신등록순</option>
             <option value="lowcost">가격낮은순</option>
             <option value="highcost">가격높은순</option>
@@ -50,22 +50,20 @@
 
       {% comment %} 중고거래 상품 목록 {% endcomment %}
       <div class="secondhands-page-content-product">
-        {% for product in products %}
-          <a href="{% url 'secondhands:detail' product.pk %}">
+        {% for product in products_with_distance %}
+          <a href="{% url 'secondhands:detail' product.0.id %}">
             <div class="product-card">
               <div class="product-card-photo"> 
-                {% for image in product.s_productimage_set.all %}
+                {% for image in product.0.s_productimage_set.all %}
                   <img src="{{ image.image.url }}" alt="상품이미지">
                 {% endfor %}
               </div>
               <div class="product-card-detail">
-                <p class="detail-product_name">{{ product.product }}</p>
-                <p class="detail-product_id">{{ product.id }}</p>
-                <p class="detail-product_price">{{ product.price|intcomma }}원</p>
-                <p><span id="product-status">{{ product.get_status_display }}</span></p>
-                {% comment %} {% for distance in product.s_distance_set.all%}
-                <p class="detail-product_distance">{{ distance.distance }}km</p> 
-                {% endfor %} {% endcomment %}
+                <p class="detail-product_name">{{ product.0.product }}</p>
+                <p class="detail-product_id">{{ product.0.id }}</p>
+                <p class="detail-product_price">{{ product.0.price|intcomma }}원</p>
+                <p><span id="product-status">{{ product.0.get_status_display }}</span></p>
+                <p class="detail-product_distance">{{ product.1 }}km</p>
               </div>
             </div>
           </a>
@@ -78,4 +76,5 @@
   {% comment %} 페이지 네이션 기능도 넣어야 함! {% endcomment %}
 {% block script %}
   <script src="{% static 'js/secondhands/index.js' %}"></script>
+  <script src="{% static 'js/secondhands/responsiveIndex.js' %}"></script>
 {% endblock script %}
