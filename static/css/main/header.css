@@ -326,7 +326,24 @@
 .m-cart_icon {
   position: relative;
 }
+
 .m-count_badge {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  transform: translate(-50%,-50%);
+  padding: 0.2rem;
+  border-radius: 50rem;
+  background-color: var(--planet-color3);
+  color: var(--planet-color1);
+  font-size: 0.8rem;
+}
+
+.noti_icon {
+  position: relative;
+}
+
+.noti_badge {
   position: absolute;
   top: 0;
   left: 100%;
@@ -349,8 +366,10 @@
 }
 
 .m-nav-image:hover {
-  color: #297821;
+  color: var(--planet-color3);
+  font-size: 0.8rem;
 }
+
 /* 미디어쿼리 pc */
 @media (min-width: 1080px) {
   .drawer_icon {

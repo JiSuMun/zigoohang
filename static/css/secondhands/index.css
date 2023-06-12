@@ -16,7 +16,6 @@
   text-align: center;
   margin-bottom: 40px;
 }
-
 .secondhands-page-content-head {
   display: flex;
   gap: 10px;
@@ -80,6 +79,20 @@
 }
 .material-symbols-outlined {
   color: white;
+}
+.detail-product-id {
+  display: none;
+}
+/* .detail-product_id, .detail-product_distance {
+  display: none;
+} */
+
+/* 버튼 호버 */
+button:not([data-filter="all"]) {
+  color: grey;
+}
+button:not([data-filter="all"]):hover {
+  color: black;
 }
 
 /* 반응형 미디어쿼리 */

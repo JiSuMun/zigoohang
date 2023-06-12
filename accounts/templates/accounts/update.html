@@ -16,9 +16,6 @@
     <div class="update-page-title">
       <h1>UPDATE</h1>
     </div>
-
-
-
     <form class="update-page-form" action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
      <p>{{ form.first_name }}</p>
@@ -36,7 +33,6 @@
     <input class="delete" type="submit" value="회원탈퇴" onclick="return confirm('정말 탈퇴하시겠습니까?')">
     </form>
   </div>
-
 </div>
 {% endblock content %}
 

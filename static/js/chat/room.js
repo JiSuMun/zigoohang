@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   chatSocket.onmessage = function (event) {
     const message = JSON.parse(event.data);
-    console.log('Received message:', message);
     displayMessage({
       sender: message.sender,
       content: message.message,

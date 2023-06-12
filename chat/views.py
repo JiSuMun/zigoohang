@@ -1,12 +1,7 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import ChatRoom, Message, Notification
+from django.shortcuts import render, redirect
+from .models import ChatRoom
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse, HttpResponse
-import json
-from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
-from django.urls import reverse
-from django.middleware.csrf import get_token
+from django.http import JsonResponse
 
 def inbox(request):
     chat_rooms = request.user.chat_rooms.all()
@@ -40,7 +35,7 @@ def unread_notifications(request):
             last_message_content = last_message.content
             last_message_timestamp = last_message.formatted_timestamp()
         else:
-            last_message_content = None
+            last_message_content = '메세지없음'
             last_message_timestamp = None
 
         chat_rooms_data.append({
@@ -50,12 +45,21 @@ def unread_notifications(request):
             "last_message": last_message_content,
             "last_message_timestamp": last_message_timestamp,
         })
-        print(chat_rooms_data)
+        # print(chat_rooms_data)
 
     response_data = {
         "data": chat_rooms_data
     }
 
+    return JsonResponse(response_data)
+
+def get_new_chat_rooms(request):
+    response_data = {"chat_rooms": []}
+    for chat_room in request.user.chat_rooms.all():
+        response_data["chat_rooms"].append({
+            "name": chat_room.name,
+            "pk": chat_room.pk
+        })
     return JsonResponse(response_data)
 
 
@@ -78,7 +82,6 @@ def start_group_chat(request):
 
 def room(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
-    # chat_room = get_object_or_404(ChatRoom, name=room_name)
     messages = chat_room.messages.all()
     user = request.user
     unread_notifications = chat_room.notifications.filter(user=user, is_read=False)
@@ -99,26 +102,6 @@ def delete_chat(request, room_name):
     chat_room.delete()
     return redirect('chat:inbox')
 
-
-def get_notifications(request):
-    chat_rooms = request.user.chat_rooms.all()
-    print(chat_rooms)
-    unread_notifications = {}
-    last_messages = {}
-
-    for chat_room in chat_rooms:
-        unread_notifications[chat_room.id] = chat_room.notifications.filter(user=request.user, is_read=False).count()
-        last_message = chat_room.messages.order_by('-timestamp').first()
-        if last_message:
-            last_messages[chat_room.id] = {
-                'content': last_message.content,
-                'formatted_timestamp': last_message.formatted_timestamp(),
-            }
-
-    return JsonResponse({
-        'unread_notifications': unread_notifications,
-        'last_messages': last_messages
-    })
 
 # def delete_chat(request, room_name):
 #     chat_room = ChatRoom.objects.get(name=room_name)
