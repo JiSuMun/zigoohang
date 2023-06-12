@@ -98,6 +98,7 @@ def product_info(request, product_id):
     print(image.image.url)
     data = {
         'id': product.id,
+        'storeId': product.store.pk,
         'name': product.name,
         'price': product.price,
         'image': image.image.url,

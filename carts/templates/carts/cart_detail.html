@@ -13,7 +13,7 @@
   </header>
   <form action="{% url 'carts:order_page' %}" method="POST" id="order_form">
     {% csrf_token %}
-    <div class="cart_div">
+    <div class="cart_div" id="cart_div">
       <div class="cart_check">
 
       </div>
