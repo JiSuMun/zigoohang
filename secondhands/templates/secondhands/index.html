@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}Secondhands{% endblock title %}
 
@@ -10,7 +11,7 @@
 
 {% block content %}
   <div class="secondhands-page">
-
+  
     {% comment %} 중고거래 타이틀 {% endcomment %}
     <div class="secondhands-page-title-wrapper">
       <div class="secondhands-page-title">
@@ -24,18 +25,20 @@
       <div class="secondhands-page-content-head">
         {% comment %} 중고거래 필터 {% endcomment %}
         <div class="secondhands-page-content-filter">
-          <button class="filter-button1" data-filter="all">전체</button>
-          <button class="filter-button2" data-filter="latest">최신등록순</button>
-          <button class="filter-button3" data-filter="lowcost">가격낮은순</button>
-          <button class="filter-button4" data-filter="highcost">가격높은순</button>
+          <button class="filter-button" data-filter="all">전체</button>
+          <button class="filter-button" data-filter="latest">최신등록순</button>
+          <button class="filter-button" data-filter="lowcost">가격낮은순</button>
+          <button class="filter-button" data-filter="highcost">가격높은순</button>
+          <button class="filter-button" data-filter="shortdistance">가까운거리순</button>
           {% comment %} 카테고리도 넣아야함 {% endcomment %}
 
           {% comment %} 반응형 {% endcomment %}
           <select class="filter-select">
-            <option value="all">전체</option>
-            <option value="latest">최신등록순</option>
+            <option value="all" data-filter="all">전체</option>
+            <option value="latest" data-filter="latest">최신등록순</option>
             <option value="lowcost">가격낮은순</option>
             <option value="highcost">가격높은순</option>
+            <option value="shortdistance">가까운거리순</option>
           </select>
         </div>
         <div class="secondhands-page-content-create">
@@ -48,19 +51,24 @@
       {% comment %} 중고거래 상품 목록 {% endcomment %}
       <div class="secondhands-page-content-product">
         {% for product in products %}
-        <a href="{% url 'secondhands:detail' product.pk %}">
-          <div class="product-card">
-            <div class="product-card-photo"> 
-              {% for image in product.s_productimage_set.all %}
-                <img src="{{ image.image.url }}" alt="상품이미지">
+          <a href="{% url 'secondhands:detail' product.pk %}">
+            <div class="product-card">
+              <div class="product-card-photo"> 
+                {% for image in product.s_productimage_set.all %}
+                  <img src="{{ image.image.url }}" alt="상품이미지">
+                {% endfor %}
+              </div>
+              <div class="product-card-detail">
+                <p class="detail-product_name">{{ product.product }}</p>
+                <p class="detail-product_id">{{ product.id }}</p>
+                <p class="detail-product_price">{{ product.price|intcomma }}원</p>
+                <p><span id="product-status">{{ product.get_status_display }}</span></p>
+                {% comment %} {% for distance in product.s_distance_set.all%}
+                <p class="detail-product_distance">{{ distance.distance }}km</p> 
+                {% endfor %} {% endcomment %}
+              </div>
             </div>
-            <div class="product-card-detail"></div>
-              <p class="detail-product_name">{{ product.product }}</p>
-              <p>{{ product.price }}원</p>
-              <p><span id="product-status">{{ product.get_status_display }}</span></p>
-            {% endfor %}
-          </div>
-        </a>
+          </a>
         {% endfor %}
       </div>
     </div>
@@ -70,44 +78,4 @@
   {% comment %} 페이지 네이션 기능도 넣어야 함! {% endcomment %}
 {% block script %}
   <script src="{% static 'js/secondhands/index.js' %}"></script>
-{% comment %} 필터링 아직 덜 함 해야함 {% endcomment %}
-  {% comment %} <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 필터 버튼들 선택
-      var filterButtons = document.querySelectorAll('.filter-button');
-      
-      // 전체 버튼 클릭 이벤트 처리
-      var allButton = document.querySelector('[data-filter="all"]');
-      allButton.addEventListener('click', function() {
-        // 모든 게시글 보이게 설정
-        var productCards = document.querySelectorAll('.product-card');
-        productCards.forEach(function(card) {
-          card.style.display = 'block';
-        });
-      });
-      
-      // 최신순 버튼 클릭 이벤트 처리
-      var latestButton = document.querySelector('[data-filter="latest"]');
-      latestButton.addEventListener('click', function() {
-        // 게시글 카드들을 배열로 변환하여 역순으로 정렬
-        var productContainer = document.querySelector('.secondhands-page-content-product');
-        var productCards = Array.from(productContainer.querySelectorAll('.product-card'));
-        var reversedCards = productCards.reverse();
-        
-        // 기존 게시글 제거
-        productContainer.innerHTML = '';
-        
-        // 역순으로 정렬된 게시글 추가
-        reversedCards.forEach(function(card) {
-          productContainer.appendChild(card);
-        });
-      });
-      
-      // 전체 버튼 초기 활성화
-      allButton.click();
-    });
-
-    
-  </script> {% endcomment %}
-
 {% endblock script %}
