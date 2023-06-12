@@ -28,6 +28,7 @@ function user_modify_quantity(productId, quantityValue) {
   })
     .then((response) => {
       const productQuantityDiv = document.getElementById(`product_count-${productId}`)
+      const productQuantityInput = document.getElementById(`product_quantity-${productId}`)
       const subTotalSpan = document.getElementById(`sub_total-${productId}`)
       const totalSpan = document.getElementById('total')
       // console.log(response)
@@ -35,6 +36,7 @@ function user_modify_quantity(productId, quantityValue) {
       // console.log(response.data.total)
       // subTotalSpan.innerHTML = response.data.subTotal
       productQuantityDiv.textContent = response.data.quantity
+      productQuantityInput.value = response.data.quantity
       subTotalSpan.innerHTML = response.data.subTotal.toLocaleString()
       totalSpan.innerHTML = response.data.total.toLocaleString()
     })

@@ -81,10 +81,16 @@
         <div class="input_box">
           <label class="form_label">주소</label>
           <div class="postcode_box">
-            <input type="text" id="order_address" class="form-control" value="{{ request.user.address }}">
+            <input type="text" id="order_address_postcode" class="form-control" value="">
             <button class="address_btn">
               주소찾기
             </button>
+          </div>
+          <div>
+            <input type="text" id="order_address" class="form-control" value="{{ request.user.address }}">
+          </div>
+          <div>
+            <input type="text" id="order_address_detail" class="form-control" value="">
           </div>
         </div>
         <div class="input_box">

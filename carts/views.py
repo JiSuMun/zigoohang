@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 KAKAO_AK = os.getenv('KAKAO_AK')
 
+POINT_PER_PRICE = 0.01
 
 def cart_detail(request):
 
@@ -222,7 +223,7 @@ def approval(request):
     if request.user.is_authenticated:
         user = request.user
         user.total_points += int(jsonObject['usePoints'])
-        user.points += int((int(jsonObject['totalAmount']) - int(jsonObject['usePoints'])) * 0.01)
+        user.points += int((int(jsonObject['totalAmount']) - int(jsonObject['usePoints'])) * POINT_PER_PRICE)
         user.points -= int(jsonObject['usePoints'])
         user.save()
 

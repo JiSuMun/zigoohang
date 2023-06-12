@@ -403,5 +403,8 @@
   .input_wrap .input_box:last-child {
     padding-right: 0;
   }
+  .order_msg {
+    min-height: 150px;
+  }
   
 }

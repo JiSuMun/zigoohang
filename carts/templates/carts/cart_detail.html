@@ -37,7 +37,7 @@
             <div class="cart_list_content">
               <div class="cart_checkbox_col">
                 <input type="checkbox" name="item_check" value="{{ cart_item.product.pk }}">
-                <input type="hidden" name="input_quantity" value="{{ cart_item.quantity }}">
+                <input type="hidden" name="input_quantity" value="{{ cart_item.quantity }}" id="product_quantity-{{ cart_item.product.pk }}">
               </div>
               <a href="{% url 'stores:products_detail' cart_item.product.store.pk cart_item.product.pk %}" class="cart_product">
                 <div class="cart_img_container">

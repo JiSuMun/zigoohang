@@ -71,11 +71,12 @@ class Order(models.Model):
         return total
     
     # 구매를 하게 되면 구매금액의 일정비율이 포인트로 추가
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        points = self.total() * POINT_PER_PRICE
-        self.customer.points += points
-        self.customer.save()
+    # 배송상태를 바꿀 때 마다 save를 하기때문에 문제발생 > payment에서 처리
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     points = self.total() * POINT_PER_PRICE
+    #     self.customer.points += points
+    #     self.customer.save()
     
     @classmethod
     def get_total_sales_per_day(cls, seller, date):
