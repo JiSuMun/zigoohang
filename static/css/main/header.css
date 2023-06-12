@@ -323,6 +323,21 @@
   font-size: 0.8rem;
 }
 
+.noti_icon {
+  position: relative;
+}
+
+.noti_badge {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  transform: translate(-50%,-50%);
+  padding: 0.2rem;
+  border-radius: 50rem;
+  color: var(--planet-color3);
+  font-size: 0.8rem;
+}
+
 /* 미디어쿼리 pc */
 @media (min-width: 1080px) {
   .drawer_icon {
