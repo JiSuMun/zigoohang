@@ -25,6 +25,10 @@ if (!isAuthenticated) {
       // const cartDiv = document.createElement("div");
       // cartDiv.id = "cart_div";
 
+      const productDataDiv = document.createElement("div");
+      productDataDiv.id = `product_data-${data.id}`
+      productDataDiv.setAttribute("data-product-price", data.price);
+
 
       const content = document.createElement("div");
       content.className = "cart_list_content";
@@ -84,7 +88,9 @@ if (!isAuthenticated) {
 
       const minusButton = document.createElement("button");
       minusButton.className = "cart_quantity_button";
-      minusButton.name = "quantity_btn";
+      // minusButton.name = "quantity_btn";
+      minusButton.setAttribute("type", "button");
+      minusButton.setAttribute("onclick", `dicreaseItem(${data.id})`);
       minusButton.setAttribute("data-quantity-value", "-1");
       // minusButton.setAttribute("data-product-id", data.id);
       minusButton.textContent = "-";
@@ -96,7 +102,9 @@ if (!isAuthenticated) {
 
       const plusButton = document.createElement("button");
       plusButton.className = "cart_quantity_button";
-      plusButton.name = "quantity_btn";
+      // plusButton.name = "quantity_btn";
+      plusButton.setAttribute("type", "button");
+      plusButton.setAttribute("onclick", `increaseItem(${data.id})`);
       plusButton.setAttribute("data-quantity-value", "1");
       // plusButton.setAttribute("data-product-id", data.id);
       plusButton.textContent = "+";
@@ -111,6 +119,7 @@ if (!isAuthenticated) {
       subtotal.className = "cart_subtotal";
       subtotal.innerHTML = `<span id=\"sub_total-${data.id}\">${(data.price * quantity).toLocaleString()}</span> 원`;
 
+      content.appendChild(productDataDiv);
       content.appendChild(checkboxCol);
       content.appendChild(link);
       content.appendChild(quantityCol);
