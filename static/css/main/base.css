@@ -103,6 +103,7 @@ input, button, textarea {
 .j-btn-outline:hover {
   color: #fff;
   background-color: #00A95C;
+}
 #scrollBtn {
   display: none;
   position: fixed; 
