@@ -151,7 +151,7 @@ class CustomUserChangeForm(UserChangeForm):
     password = None
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'image', 'address')
+        fields = ('first_name', 'last_name', 'image',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -45,7 +45,7 @@ def unread_notifications(request):
             "last_message": last_message_content,
             "last_message_timestamp": last_message_timestamp,
         })
-        print(chat_rooms_data)
+        # print(chat_rooms_data)
 
     response_data = {
         "data": chat_rooms_data
