@@ -1,8 +1,27 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/challenges/index.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+{% endblock head %}
 {% block title %}게시글 목록{% endblock title %}
 
 {% block content %}
+
+{% comment %} 진행/마감탭 {% endcomment %}
+<div class="challenge-tap-container">
+  <a class="{% if not q or q != '진행중인챌린지' %} pass {% endif %}" href="{% url 'challenges:index' %}?q=진행중인챌린지">
+    <div>
+      <p>진행중인 챌린지</p>
+    </div>
+  </a>
+  <a class="{% if not q or q != '마감된챌린지' %} pass {% endif %}" href="{% url 'challenges:index' %}?q=마감된챌린지">
+    <div>
+      <p>마감된 챌린지</p>
+    </div>
+  </a>
+</div>
+
 <!--게시글 목록-->
 <div class="p-wrapper">
     <table class="p-table">
