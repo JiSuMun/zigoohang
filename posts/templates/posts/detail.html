@@ -54,6 +54,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         <span id="likes_count">{{ likes_count }}</span>
       </form>
     </div>
+    <!--태그-->
+    <div class="tag-wrapper">
+      {% for tag in post.tags.all %}
+      <span class="tag-text">#{{ tag.name }}</span>
+      {% endfor %}
+    </div>
+
   </div>
 
   <!--수정 삭제 버튼-->
@@ -98,11 +105,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           </div>
 
           <!--리뷰 내용-->
-          <p class="review-title">{{ review.title }}<p>
-          {% for image in review.reviewimage_set.all %}
-            <img class="review-image" src="{{ image.image.url }}" alt="Review Image">
-          {% endfor %}
-          <p class="review-content">{{ review.content|linebreaksbr }}</p>
+          <div class="review--box">
+            <p class="review-title">{{ review.title }}<p>
+              {% for image in review.reviewimage_set.all %}
+                <img class="review-image" src="{{ image.image.url }}" alt="Review Image">
+              {% endfor %}
+              <p class="review-content">{{ review.content|linebreaksbr }}</p>
+          </div>
+
 
           <div class="r-like-wrapper">
             <!--리뷰 좋아요-->
