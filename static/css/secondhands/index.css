@@ -23,8 +23,8 @@
 
 /* 정렬 */
 .secondhands-page-content-filter {
-  flex: 9;
   display: flex;
+  flex: 9;
   justify-content: space-around;
   align-items: center;
   border: 1px solid grey;
@@ -32,8 +32,8 @@
   height: 50px;
 }
 .secondhands-page-content-create {
-  flex: 1;
   margin-right: 0;
+  flex: 1;
 }
 .secondhands-page-content-filter button {
   background-color: white;
@@ -80,12 +80,9 @@
 .material-symbols-outlined {
   color: white;
 }
-.detail-product-id {
+.detail-product_id, .detail-product_distance {
   display: none;
 }
-/* .detail-product_id, .detail-product_distance {
-  display: none;
-} */
 
 /* 버튼 호버 */
 button:not([data-filter="all"]) {
@@ -106,6 +103,10 @@ button:not([data-filter="all"]):hover {
   .secondhands-page-content-filter {
     position: relative;
     display: inline-block;
+    flex: 6;
+  }
+  .secondhands-page-content-create {
+    flex: 4;
   }
   .secondhands-page-content-filter button {
     display: none;
@@ -124,5 +125,9 @@ button:not([data-filter="all"]):hover {
     background-position-x: 95%;
     font-size: 14px;
     cursor: pointer;
+    /* margin-left: 10px; */
+  }
+  .filter-select option {
+    width: 50%;
   }
 }
