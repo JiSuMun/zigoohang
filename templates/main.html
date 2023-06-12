@@ -27,7 +27,14 @@
 
 <!--플래닛마켓 제품3-4개 보여주고-->
 <div class="main-product">
-  <p>마켓 제품</p>
+  <div>
+    {% for product in products %}
+      <img src="{{ product.images.first.image.url }}" alt="" style="width: 100px;">
+      <p>{{ product.name }}</p>
+    {% empty %}
+      <p>마켓 제품(상품이 없어요. 상품을 등록해주세요.)</p>
+    {% endfor %}
+  </div>
 </div>
 <!--주요 링크-->
 <div class="main-link-wrap">
