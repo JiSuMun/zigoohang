@@ -25,7 +25,7 @@ function requestPay() {
   const orderPostcode = document.getElementById('order_address_postcode').value;
   const orderAddress = document.getElementById('order_address').value + ' ' + document.getElementById('order_address_detail').value
   const orderPhone = document.getElementById('order_phone').value;
-  // const orderEmail = document.getElementById('order_email').value;
+  const orderEmail = document.getElementById('order_email').value;
   const usePoints = parseInt(document.getElementById('use_points').value);
   const orderMsg = document.getElementById('order_msg').value;
   let finalAmount = totalAmount - usePoints
@@ -39,7 +39,7 @@ function requestPay() {
     // merchant_uid: "merchant_" + new Date().getTime(),   // 주문번호
     name: orderItem,
     amount: finalAmount,                         // 숫자 타입
-    // buyer_email: orderEmail,
+    buyer_email: orderEmail,
     buyer_name: receiver,
     buyer_tel: orderPhone,
     buyer_addr: orderAddress,
@@ -71,7 +71,7 @@ function requestPay() {
           receiver,
           orderAddress,
           orderPostcode,
-          // orderEmail,
+          orderEmail,
           usePoints,
           finalAmount,
           orderPhone,

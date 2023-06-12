@@ -1,0 +1,24 @@
+.approval_box {
+  margin: 100px auto 20px;
+  padding: 20px;
+  width: 500px;
+  border: 2px solid var(--j-color1);
+  border-radius: 5px;
+}
+
+.approval_box h2 {
+  margin-bottom: 40px;
+  font-size: 1.5rem;
+}
+
+.approval_box p {
+  margin-top: 15px;
+}
+
+.approval_btn_box {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  padding: 20px;
+  width: 500px;
+}

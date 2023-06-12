@@ -74,7 +74,7 @@
         </div>
         <div class="input_box">
           <label for="order_phone" class="form_label">연락처</label>
-          <input type="text" id="order_phone" class="form-control" value="{{ request.user.phone }}" name="phone" placeholder="-없이 입력하세요.">
+          <input type="text" id="order_phone" class="form-control" value="{{ request.user.phone }}" name="phone" placeholder="-를 포함하여 입력하세요.">
         </div>
       </div>
       <div class="input_wrap">
@@ -99,9 +99,9 @@
         </div>
       </div>
       {% comment %} <div>
-        <label for="order_email">이메일 : </label>
-        <input type="text" id="order_email" value="{{ request.user.email }}">
-      </div> {% endcomment %}
+        <label for="order_email">이메일 : </label> {% endcomment %}
+        <input type="hidden" id="order_email" value="{{ request.user.email }}">
+      {% comment %} </div> {% endcomment %}
     </div>
     <!-- 배송 정보 끝-->
     <!-- 결제 수단 시작-->

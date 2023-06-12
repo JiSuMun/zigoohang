@@ -57,6 +57,9 @@ a {
 	--planet-color2: #ADCBC9;
 	--planet-color3: #8BBE86;
 	--planet-color4: #363636;
+	--j-color1: #00A95C;
+	--j-color2: #297821;
+
 }
 
 .white-text{
@@ -71,4 +74,31 @@ a {
 
 input, button, textarea {
 	font-family: 'SUITE-Regular',sans-serif;
+}
+
+.j-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #fff;
+  font-size: 13px;
+  color: #fff;
+  background-color: #00A95C;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.j-btn:hover {
+  background-color: #297821;
+}
+
+.j-btn-outline {
+  padding: 0.5rem 1rem;
+  border: 1px solid #00A95C;
+  font-size: 13px;
+  color: #00A95C;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.j-btn-outline:hover {
+  color: #fff;
+  background-color: #00A95C;
 }

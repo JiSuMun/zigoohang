@@ -211,7 +211,7 @@ def approval(request):
     order.postcode = jsonObject['orderPostcode']
     order.address = jsonObject['orderAddress']
     order.phone = jsonObject['orderPhone']
-    # order.email = jsonObject['orderEmail']
+    order.email = jsonObject['orderEmail']
     order.memo = jsonObject['orderMsg']
     order.receiver = jsonObject['receiver']
     order.total_price = int(jsonObject['totalAmount'])
@@ -221,6 +221,14 @@ def approval(request):
     order.shipping_status='배송준비중'
     order.save()
 
+    user_cart, created = Cart.objects.get_or_create(user=request.user)
+    for order_item in order.order_items.all():
+        product_pk = order_item.product.pk
+        matching_cart_items = user_cart.cartitems.filter(product__pk=product_pk)
+    
+        for cart_item in matching_cart_items:
+            cart_item.delete()
+            
     if request.user.is_authenticated:
         user = request.user
         user.total_points += int(jsonObject['usePoints'])
