@@ -1,94 +1,162 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/chat/inbox.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 {% endblock head %}
 
 {% block content %}
-<section>
-  <a href="{% url 'chat:start_chat' user.id %}"><h2>나와의 채팅하기</h2></a>
-  <h2>사용자 목록</h2>
-  <form method="post" action="{% url 'chat:start_group_chat' %}">
-    {% csrf_token %}
-    {% for user in all_users %}
-      <input type="checkbox" name="user_ids" value="{{ user.id }}"> {{ user.username }}
-    {% empty %}
-      <p>다른 사용자가 없습니다.</p>
-    {% endfor %}
-    <input type="submit" value="채팅방 만들기">
-  </form>
-</section>
-<section id="chat-rooms-section">
-  {% if chat_rooms %}
-    {% for chat_room, last_message, unread_notifications in chat_rooms %}
-      <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.name }}">
-        <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
-        {% if unread_notifications > 0 %}
-          <p class="notification" style="color: red">!</p>
-          <p class="unread_count">{{ unread_notifications }}</p>
-        {% endif %}
-        {% if last_message %}
-          <p class="last-message">{{ last_message.content }}</p>
-          <p class="last-message">{{ last_message.formatted_timestamp }}</p>
-        {% else %}
-          <p class="last-message">메시지 없음</p>
-          <p class="timestamp"></p>
-        {% endif %}
-        <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
-          {% csrf_token %}
-          <input type="submit" value="삭제">
-        </form>
+<article class="inbox--container">
+  <section class="inbox-user">
+    <div class="chat_with_me">
+      <a href="{% url 'chat:start_chat' user.id %}">나와의 채팅하기<span class="material-symbols-outlined" style="font-size: 20px;">forum</span></a>
+    </div>
+    <p class="users--title">사용자 목록</p>
+    <form method="post" action="{% url 'chat:start_group_chat' %}">
+      {% csrf_token %}
+      <div class="users">
+        {% for user in all_users %}
+          <div>
+            <input type="checkbox" name="user_ids" value="{{ user.id }}"> {{ user.username }}
+          </div>
+        {% empty %}
+          <p>다른 사용자가 없습니다.</p>
+        {% endfor %}
       </div>
-    {% endfor %}
-  {% else %}
-    <p>채팅방이 없습니다.</p>
-  {% endif %}
-</section>
+      <div class="make_btn_wrap">
+        <input type="submit" value="채팅방 만들기" class="make_btn">
+      </div>
+    </form>
+  </section>
+  <section id="chat-rooms-section" class="inbox-room">
+    {% if chat_rooms %}
+      {% for chat_room, last_message, unread_notifications in chat_rooms %}
+        <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
+          <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
+          <p class="unread_count notification--color noti">{% if unread_notifications %}{{ unread_notifications }}{% else %}0{% endif %}</p>
+          <p class="last-message">{{ last_message.content }}</p>
+          <p class="timestamp">{{ last_message.formatted_timestamp }}</p>
+          <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="삭제">
+          </form>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <p id="no-chat-rooms" {% if chat_rooms %}style="display:none"{% endif %}>채팅방이 없습니다.</p>
+  </section>
+</article>
 {% endblock content %}
 
 {% block script %}
 <script>
+  function checkIfNoChatRooms() {
+    const chatRoomSection = document.getElementById("chat-rooms-section");
+    const chatRooms = chatRoomSection.getElementsByClassName("chat_room");
+    const noChatRooms = document.getElementById("no-chat-rooms");
 
-  document.addEventListener('DOMContentLoaded', () => {
-
-    let loc = window.location;
-    let wsStart = 'ws://';
-    if (loc.protocol == 'https:') {
-      wsStart = 'wss://';
+    if (chatRooms.length === 0) {
+        noChatRooms.style.display = "block";
+    } else {
+        noChatRooms.style.display = "none";
     }
+  }
 
-    const notificationSocket = new WebSocket(
-      wsStart + window.location.host + '/ws/chat/notifications/'
-    );
-    console.log(notificationSocket)
+  function updateNewChatRooms() {
+    fetch("{% url 'chat:new_chat_rooms' %}")
+      .then(response => response.json())
+      .then(data => {
+        const chatRoomSection = document.getElementById("chat-rooms-section");
+        const fetchedChatRoomNames = new Set();
 
-    notificationSocket.onopen = function (event) {
-      console.log('WebSocket connection established.');
-      console.log(event)
-    };
+        data.chat_rooms.forEach(chat_room => {
+          fetchedChatRoomNames.add(chat_room.name);
+          const existingChatRoom = document.getElementById(chat_room.name);
+          if (!existingChatRoom) {
+            const newChatRoom = document.createElement("div");
+            newChatRoom.id = chat_room.name;
+            newChatRoom.value = chat_room.pk;
+            newChatRoom.classList.add('chat_room');
+  
+            const chatRoomLink = document.createElement("a");
+            chatRoomLink.href = `{% url 'chat:room' 'PLACEHOLDER' %}`.replace('PLACEHOLDER', chat_room.name);
+            chatRoomLink.textContent = chat_room.name;
+            chatRoomLink.id = "room_name";
+            newChatRoom.appendChild(chatRoomLink);
+  
+            const unreadCountElement = document.createElement("p");
+            unreadCountElement.classList.add("unread_count", "notification--color", "noti");
+            unreadCountElement.textContent = "0";
+            newChatRoom.appendChild(unreadCountElement);
+  
+            const lastMessageElement = document.createElement("p");
+            lastMessageElement.classList.add("last-message");
+            lastMessageElement.textContent = "메시지 없음";
+            newChatRoom.appendChild(lastMessageElement);
+  
+            const timestampElement = document.createElement("p");
+            timestampElement.classList.add("timestamp");
+            timestampElement.textContent = "";
+            newChatRoom.appendChild(timestampElement);
+  
+            const deleteForm = document.createElement("form");
+            deleteForm.action = `{% url 'chat:delete_chat' room_name='${chat_room.name}' %}`;
+            deleteForm.method = "post";
 
-    notificationSocket.onmessage = function (event) {
-      console.log(event)
-      const data = JSON.parse(event.data);
-      console.log(data)
-      const notification = data['notification'];
+            const csrfToken = document.createElement("input");
+            csrfToken.type = "hidden";
+            csrfToken.name = "csrfmiddlewaretoken";
+            csrfToken.value = "{{ csrf_token }}";
+            deleteForm.appendChild(csrfToken);
+  
+            const deleteButton = document.createElement("input");
+            deleteButton.type = "submit";
+            deleteButton.value = "삭제";
+            deleteForm.appendChild(deleteButton);
+  
+            newChatRoom.appendChild(deleteForm);
 
-      updateInbox(notificationData);
-    };
+            chatRoomSection.appendChild(newChatRoom);
+            checkIfNoChatRooms();
+          }
+        });
+        const currentChatRooms = chatRoomSection.getElementsByClassName("chat_room");
+        Array.from(currentChatRooms).forEach(chatRoomDiv => {
+          if (!fetchedChatRoomNames.has(chatRoomDiv.id)) {
+            chatRoomDiv.remove();
+            checkIfNoChatRooms();
+          }
+        });
+      });
+  }
 
-    function updateInbox(notificationData) {
+  function updateNotificationData() {
+    fetch("{% url 'chat:unread_notifications' %}")
+      .then(response => response.json())
+      .then(data => {
+        data.data.forEach(chat_room_data => {
+          let chat_room_div = document.getElementById(chat_room_data.room_name);
+          let unread_count = chat_room_div.querySelector(".unread_count");
+          let last_message = chat_room_div.querySelector(".last-message");
+          let timestamp = chat_room_div.querySelector(".timestamp");
 
-    }
+          if (chat_room_data.unread_notifications > 0) {
+            unread_count.classList.remove("noti")
+            unread_count.textContent = chat_room_data.unread_notifications;
+          }  else {
+            unread_count.classList.add("noti");
+            unread_count.textContent = '';
+        }
+          last_message.textContent = chat_room_data.last_message;
+          timestamp.textContent = chat_room_data.last_message_timestamp;
+        });
+      });
+  }
 
-    notificationSocket.onclose = function (event) {
-      console.log('WebSocket connection closed.');
-    };
-
-    notificationSocket.onerror = function (event) {
-      console.error('WebSocket error:', event);
-    };
-
-  });
+  updateNewChatRooms();
+  updateNotificationData();
 </script>
 {% endblock script %}
+{% comment %} setInterval(updateNewChatRooms, 5000);
+setInterval(updateNotificationData, 5000); {% endcomment %}

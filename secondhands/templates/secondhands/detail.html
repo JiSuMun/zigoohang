@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}Detail{% endblock title %}
+
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/secondhands/detail.css' %}">
@@ -13,6 +15,11 @@
         {% for image in product.s_productimage_set.all %}
           <img src="{{ image.image.url }}" alt="">
         {% endfor %}
+        {% comment %} {% if product.get_status_display == '예약중' %}
+          <div class="img-cover-status">
+            {{ product.get_status_display }}
+          </div>
+        {% endif %} {% endcomment %}
       </div>
       <div class="detail-page-product-info">
         <div class="product-info-head">
@@ -38,13 +45,21 @@
             {% endif %}
           </div>
         </div>
-        <p class="product-info-head-price">{{ product.price }}원</p>
+        <p class="product-info-head-price">{{ product.price|intcomma }}원</p>
         <p class="product-info-head-p">상세정보</p>
         <div class="product-info-head-content">
           <p>{{ product.content|safe }}</p>
         </div>
         <div class="product-info-user">
           <a href="{% url 'accounts:profile' product.user%}">판매자에게 연락하기</a>
+        </div>
+        <div class="product-info-status">
+          {% if request.user == product.user %}
+            <button id="btn-sale" onclick="changeStatus(2,'예약중');" type="button">예약중으로 변경</button>
+            <button id="btn-complete" onclick="changeStatus(3,'거래완료');" type="button">거래완료로 변경</button>
+            {% csrf_token %}
+          {% endif %}
+          <p><span id="product-status">{{ product.get_status_display }}</span></p>
         </div>
         <div class="product-info-ud">
           {% if request.user == product.user %}
@@ -57,7 +72,7 @@
 
     <div class="detail-page-map">
       <div class="detail-page-map-title">
-        <h2>거래 가능 장소</h2>
+        <h2>거래 가능 장소 ({{ distance }} km)</h2>
       </div>
       <div class="detail-page-map-map">
         {% comment %} 지도 {% endcomment %}
@@ -66,45 +81,6 @@
         </div>
     </div>
   </div>
-
-<div>
-
-<!--   {% for image in product.s_productimage_set.all %}
-    <img style="width:500px;" src="{{ image.image.url }}" alt="">
-  {% endfor %}
-</div> -->
-
-<!-- <div>
-  {% if request.user.is_authenticated %}
-  <form id="likes-form" data-product-id="{{ product.pk }}">
-    {% csrf_token %}
-    {% if request.user in product.like_users.all %}
-      <button type="submit">
-        <i class="bi bi-suit-heart-fill" id="product-heart"></i>
-      </button>
-    {% else %}
-      <button type="submit">
-        <i class="bi bi-suit-heart" id="product-heart"></i>
-      </button>
-    {% endif %}
-  </form>
-  {% else %}
-    <button disabled>
-      <i class="bi bi-suit-heart" id="product-heart"></i>
-    </button>
-  {% endif %}
-  {% if request.user == product.user %}
-    <button id="btn-sale" onclick="changeStatus(2,'예약중');" type="button">예약중으로 변경</button>
-    <button id="btn-complete" onclick="changeStatus(3,'거래완료');" type="button">거래완료로 변경</button>
-    {% csrf_token %}
-  {% endif %}
-  <p><span id="product-status">{{ product.get_status_display }}</span></p>
-
-</div> -->
-
-
-
-
 {% endblock content %}
 
 {% block script %}
@@ -169,7 +145,7 @@ function changeStatus(newStatus, statusText) {
       .then((response) => {
           if (response.ok) {
               // 상품 상태 업데이트
-              document.getElementById('product-status').innerHTML = `상품 상태: ${statusText}`;
+              document.getElementById('product-status').innerHTML = `${statusText}`;
           } else {
               alert("오류가 발생했습니다. 다시 시도해주세요.");
           }
@@ -178,5 +154,7 @@ function changeStatus(newStatus, statusText) {
           console.error("Error:", error);
       });
 }
+
+
 </script>
 {% endblock script %}

@@ -1,5 +1,6 @@
 {% if request.user == person %}
     {% if completed_products %}
+    
         {% for product in completed_products %}
         <h3>(거래완료)</h3>
         {% for image in product.s_productimage_set.all %}

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
   MYPAGE
@@ -45,7 +46,7 @@
         <p>중고거래내역</p>
       </div>
     </a>
-    <a class="{% if q == 'chat_rooms' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=chat_rooms">            
+    <a href="{% url 'chat:inbox' %}">            
       <div class="profile-sidebar-item">
         <span class="material-symbols-outlined">forum</span>
         <p>채팅</p>
@@ -80,7 +81,7 @@
         <p>중고거래내역</p>
       </div>
     </a>
-    <a class="{% if q == 'chat_rooms' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=chat_rooms">            
+    <a href="{% url 'chat:inbox' %}">            
       <div class="profile-navbar-item">
         <p>채팅</p>
       </div>
@@ -97,8 +98,6 @@
       {% include 'accounts/purchase_detail.html' %}
     {% elif q == 'second_detail' %}
       {% include 'accounts/second_detail.html' %}
-    {% elif q == 'chat_rooms' %}
-      {% include 'accounts/chat.html' %}
     {% elif not q %}
       <div class="profile-page-info">
         <div class="profile-page-info-header">
@@ -121,9 +120,7 @@
               <p class="not_seller">일반회원</p>
             {% else %}
               <p class="seller">판매자</p>
-
-              {% endif %}
-
+            {% endif %}
             </div>
           </div>
           <div class="header-update">
@@ -134,9 +131,9 @@
         <div class="profile-box-text">
         <div class="profile-page-info-main">
           <div class="main-card">
-              <span class="main-card-title">나의 에코포인트🌱</span></span>
+              <span class="main-card-title">나의 에코포인트🌱</span>
               <div class="main-card-content">
-                <span>{{ user.points }}</span>
+                <span>{{ user.points|intcomma }}</span>
               </div>
           </div>
           <div class="main-card">
@@ -164,89 +161,89 @@
               {% endif %}
           {% comment %}모달창 {% endcomment %}
           
-<!-- 팔로워 Modal -->
-<div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content profile--modal--box">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5"  id="followersModalLabel">팔로워</h1>
-      </div>
-      <div class="modal-body row" id = "f_follower_list">
-        {% if request.user != person %}
-          <div id="follower-list">
-            <ul id="follower-ul"></ul>
-          </div>
-        {% else %}
-          <ul id="follower-ul">
-            {% for follower in person.followers.all %}
-            <li class="follow--modal">
-                <a href="{% url 'accounts:profile' follower.username %}">
-                  {% if follower.image %}
-                    <div class="profile--image rounded-circle">
-                      <img src="{{ follower.image.url }}" alt="follower image" class="object-fit-fill profile">
+          <!-- 팔로워 Modal -->
+          <div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content profile--modal--box">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5"  id="followersModalLabel">팔로워</h1>
+                </div>
+                <div class="modal-body row" id = "f_follower_list">
+                  {% if request.user != person %}
+                    <div id="follower-list">
+                      <ul id="follower-ul"></ul>
                     </div>
                   {% else %}
-                    <div class="profile--image rounded-circle">
-                      <img src="{% static 'image/profile-none.png' %}" alt="follower image" class="object-fit-fill profile">
-                    </div>
+                    <ul id="follower-ul">
+                      {% for follower in person.followers.all %}
+                      <li class="follow--modal">
+                          <a href="{% url 'accounts:profile' follower.username %}">
+                            {% if follower.image %}
+                              <div class="profile--image rounded-circle">
+                                <img src="{{ follower.image.url }}" alt="follower image" class="object-fit-fill profile">
+                              </div>
+                            {% else %}
+                              <div class="profile--image rounded-circle">
+                                <img src="{% static 'image/profile-none.png' %}" alt="follower image" class="object-fit-fill profile">
+                              </div>
+                            {% endif %}
+                            <span>{{ follower.username }}</span>
+                          </a>
+                      </li>
+                      {% empty %}
+                      <p class="ms-2">팔로워가 없습니다.</p>
+                      {% endfor %}
+                    </ul>
                   {% endif %}
-                  <span>{{ follower.username }}</span>
-                </a>
-            </li>
-            {% empty %}
-            <p class="ms-2">팔로워가 없습니다.</p>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
-      <div class="modal-footer">
-        <button type="button" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<!-- 팔로잉 Modal -->
-<div class="modal fade" id="followingsModal" tabindex="-1" aria-labelledby="followingsModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content profile--modal--box">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="followingsModalLabel">팔로잉</h1>
-      </div>
-      <div class="modal-body row">
-        {% if request.user != person %}
-          <div id="following-list">
-            <ul id="following-ul"></ul>
-          </div>
-        {% else %}
-          <ul id="following-ul">
-            {% for following in person.followings.all %}
-            <li class="follow--modal">
-                <a href="{% url 'accounts:profile' following.username %}">
-                  {% if following.image %}
-                    <div class="profile--image rounded-circle">
-                      <img src="{{ following.image.url }}" alt="following image" class="object-fit-fill profile">
+          <!-- 팔로잉 Modal -->
+          <div class="modal fade" id="followingsModal" tabindex="-1" aria-labelledby="followingsModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content profile--modal--box">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="followingsModalLabel">팔로잉</h1>
+                </div>
+                <div class="modal-body row">
+                  {% if request.user != person %}
+                    <div id="following-list">
+                      <ul id="following-ul"></ul>
                     </div>
                   {% else %}
-                    <div class="profile--image rounded-circle">
-                      <img src="{% static 'image/profile-none.png' %}" alt="following image" class="object-fit-fill profile">
-                    </div>
+                    <ul id="following-ul">
+                      {% for following in person.followings.all %}
+                      <li class="follow--modal">
+                          <a href="{% url 'accounts:profile' following.username %}">
+                            {% if following.image %}
+                              <div class="profile--image rounded-circle">
+                                <img src="{{ following.image.url }}" alt="following image" class="object-fit-fill profile">
+                              </div>
+                            {% else %}
+                              <div class="profile--image rounded-circle">
+                                <img src="{% static 'image/profile-none.png' %}" alt="following image" class="object-fit-fill profile">
+                              </div>
+                            {% endif %}
+                            <span>{{ following.username }}</span>
+                          </a>
+                      </li>
+                      {% empty %}
+                      <p class="ms-2">팔로잉이 없습니다.</p>
+                      {% endfor %}
+                    </ul>
                   {% endif %}
-                  <span>{{ following.username }}</span>
-                </a>
-            </li>
-            {% empty %}
-            <p class="ms-2">팔로잉이 없습니다.</p>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
-      <div class="modal-footer">
-        <button type="button" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
 

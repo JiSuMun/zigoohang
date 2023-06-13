@@ -72,7 +72,7 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.TextInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "홍길동",
+                "placeholder": "이름",
                 'autocomplete': 'off',
             }),
     )
@@ -83,7 +83,7 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.PasswordInput(
             attrs = {
                 "class": "form-control",
-                "placeholder": "******",
+                "placeholder": "비밀번호 8자리 이상 입력해 주세요",
                 'autocomplete': 'off',
             }),
     )
@@ -92,7 +92,7 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.PasswordInput(
             attrs = {
                 "class": "form-control",
-                "placeholder": "******",
+                "placeholder": "비밀번호 확인",
                 'autocomplete': 'off',
             }),
     )
@@ -115,7 +115,8 @@ class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['image'].widget.attrs['class'] = 'form-control'
+        self.fields['image'].widget.attrs['class'] = 'form-control form-image'
+
         
     # is_seller = forms.BooleanField(
     #     required=False,
@@ -150,12 +151,12 @@ class CustomUserChangeForm(UserChangeForm):
     password = None
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'image', 'address')
+        fields = ('first_name', 'last_name', 'image',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['image'].widget.attrs['class'] = 'form-control'
+        self.fields['image'].widget.attrs['class'] = 'form-control form-image'
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):

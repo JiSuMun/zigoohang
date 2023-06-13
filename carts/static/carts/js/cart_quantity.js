@@ -28,6 +28,7 @@ function user_modify_quantity(productId, quantityValue) {
   })
     .then((response) => {
       const productQuantityDiv = document.getElementById(`product_count-${productId}`)
+      const productQuantityInput = document.getElementById(`product_quantity-${productId}`)
       const subTotalSpan = document.getElementById(`sub_total-${productId}`)
       const totalSpan = document.getElementById('total')
       // console.log(response)
@@ -35,6 +36,7 @@ function user_modify_quantity(productId, quantityValue) {
       // console.log(response.data.total)
       // subTotalSpan.innerHTML = response.data.subTotal
       productQuantityDiv.textContent = response.data.quantity
+      productQuantityInput.value = response.data.quantity
       subTotalSpan.innerHTML = response.data.subTotal.toLocaleString()
       totalSpan.innerHTML = response.data.total.toLocaleString()
     })
@@ -43,4 +45,50 @@ function user_modify_quantity(productId, quantityValue) {
 
 function guest_modify_quantity() {
 
+}
+
+function dicreaseItem(id) {
+  let cart = JSON.parse(localStorage.getItem('cart'))
+  const existingItem = cart.find((item) => item.id === id);
+
+  if (existingItem) {
+    if (existingItem.quantity > 1) {
+      existingItem.quantity -= 1
+      const productCountDiv = document.getElementById(`product_count-${id}`)
+      const cartSubTotalSpan = document.getElementById(`sub_total-${id}`)
+      const cartTotalSpan = document.getElementById(`total`)
+      
+      const productDataDiv = document.getElementById(`product_data-${id}`)
+      const productPrice = productDataDiv.dataset.productPrice
+      cartTotalAmount -= productPrice
+
+      productCountDiv.textContent = existingItem.quantity
+      cartSubTotalSpan.textContent = (existingItem.quantity * productPrice).toLocaleString()
+      cartTotalSpan.textContent = cartTotalAmount.toLocaleString()
+    }
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart))
+}
+
+function increaseItem(id) {
+  let cart = JSON.parse(localStorage.getItem('cart'))
+  const existingItem = cart.find((item) => item.id === id);
+
+  if (existingItem) {
+    existingItem.quantity += 1
+    const productCountDiv = document.getElementById(`product_count-${id}`)
+    const cartSubTotalSpan = document.getElementById(`sub_total-${id}`)
+    const cartTotalSpan = document.getElementById(`total`)
+    
+    const productDataDiv = document.getElementById(`product_data-${id}`)
+    const productPrice = productDataDiv.dataset.productPrice
+    cartTotalAmount += parseInt(productPrice)
+
+    productCountDiv.textContent = existingItem.quantity
+    cartSubTotalSpan.textContent = (existingItem.quantity * productPrice).toLocaleString()
+    cartTotalSpan.textContent = cartTotalAmount.toLocaleString()
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart))
 }

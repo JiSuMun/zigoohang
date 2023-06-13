@@ -35,24 +35,27 @@ class Order(models.Model):
     # amount = models.IntegerField()
     # quantity = models.IntegerField()
     STATUS_CHOICES = (
-        (0, '결제전'),
-        (1, '배송준비중'),
-        (2, '배송중'),
-        (3, '배송완료'),
-        (4, '취소됨'),
-        (5, '반송중'),
+        ('결제전', '결제전'),
+        ('배송준비중', '배송준비중'),
+        ('배송중', '배송중'),
+        ('배송완료', '배송완료'),
+        ('취소됨', '취소됨'),
+        ('반송중', '반송중'),
     )
     shipping_status = models.CharField(
         max_length=15,
         choices=STATUS_CHOICES,
-        default=0
+        default='결제전'
     ) # 배송 상태
     tracking_number = models.CharField(max_length=20, blank=True, null=True) # 운송장 번호 # 배송중상태가 되면 값 입력(ex. order.pk)
     
+    pay_type = models.CharField(max_length=20, blank=True, null=True)
+    postcode = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     # email = models.EmailField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
+    memo = models.CharField(max_length=200, blank=True, null=True)
     receiver = models.CharField(max_length=100, blank=True, null=True)
     total_price = models.IntegerField(blank=True, null=True)
     total_amount = models.IntegerField(blank=True, null=True)
@@ -70,11 +73,12 @@ class Order(models.Model):
         return total
     
     # 구매를 하게 되면 구매금액의 일정비율이 포인트로 추가
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        points = self.total() * POINT_PER_PRICE
-        self.customer.points += points
-        self.customer.save()
+    # 배송상태를 바꿀 때 마다 save를 하기때문에 문제발생 > payment에서 처리
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     points = self.total() * POINT_PER_PRICE
+    #     self.customer.points += points
+    #     self.customer.save()
     
     @classmethod
     def get_total_sales_per_day(cls, seller, date):

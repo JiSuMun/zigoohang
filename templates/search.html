@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} {{ query }} 검색결과 {% endblock title %}
+
+{% block content %}
+<h2>FORUM: {{ query }} 검색결과 ({{posts|length}})</h2>
+
+{% if posts %}
+  {% for post, p_image in posts %}
+    <p>{{ post.title }}</p>
+    {% if p_image %}
+      <img src="{{ p_image.image.url }}" alt="">
+    {% else %}
+      <p>이미지 없음</p>
+    {% endif %}
+  {% endfor %}
+{% else %}
+  <p>검색결과 없음</p>
+{% endif %}
+
+<h2>CHALLENGE: {{ query }} 검색결과 ({{challenges|length}})</h2>
+
+{% if challenges %}
+  {% for challenge, c_image in challenges %}
+    <p>{{ challenge.title }}</p>
+    {% if c_image %}
+      <img src="{{ c_image.image.url }}" alt="">
+    {% else %}
+      <p>이미지 없음</p>
+    {% endif %}
+  {% endfor %}
+{% else %}
+  <p>검색결과 없음</p>
+{% endif %}
+
+
+<h2>PRODUCT: {{ query }} 검색결과 ({{products|length}})</h2>
+
+{% if products %}
+  {% for product, pro_image in products %}
+    <p>{{ product.title }}</p>
+    {% if pro_image %}
+      <img src="{{ pro_image.image.url }}" alt="">
+    {% else %}
+      <p>이미지 없음</p>
+    {% endif %}
+  {% endfor %}
+{% else %}
+  <p>검색결과 없음</p>
+{% endif %}
+
+{% endblock content %}

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-Detail
+FORUM
 {% endblock title %}
 
 {% block head %}
@@ -54,6 +54,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         <span id="likes_count">{{ likes_count }}</span>
       </form>
     </div>
+    <!--태그-->
+    <div class="tag-wrapper">
+      {% for tag in post.tags.all %}
+      <span class="tag-text">#{{ tag.name }}</span>
+      {% endfor %}
+    </div>
+
   </div>
 
   <!--수정 삭제 버튼-->
@@ -98,56 +105,59 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           </div>
 
           <!--리뷰 내용-->
-          <p class="review-title">{{ review.title }}<p>
-          {% for image in review.reviewimage_set.all %}
-            <img class="review-image"src="{{ image.image.url }}" alt="Review Image">
-          {% endfor %}
-          <p class="review-content">{{ review.content|linebreaksbr }}</p>
+          <div class="review--box">
+            <p class="review-title">{{ review.title }}<p>
+              {% for image in review.reviewimage_set.all %}
+                <img class="review-image" src="{{ image.image.url }}" alt="Review Image">
+              {% endfor %}
+              <p class="review-content">{{ review.content|linebreaksbr }}</p>
+          </div>
+
 
           <div class="r-like-wrapper">
             <!--리뷰 좋아요-->
             <div class="review-like">
               {% if request.user.is_authenticated %}
-                <form class="review-like-form" action="{% url 'posts:review_likes' post.pk review.pk %}" data-post-id="{{ post.pk }}" data-review-id="{{ review.pk }}">
+                <form class="review-like-form" action="{% url 'posts:review_likes' post.pk review.pk %}" data-post-id="{{ post.pk }}" data-review-id="{{ review.pk }}" id="review-likes-form-{{ post.pk }}-{{ review.pk }}">
                   {% csrf_token %}
                   {% if request.user in review.like_users.all %}
-                    <button class="review-like-btn" type="submit">
-                      <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color"></i>
+                    <button class="review-like-btn" type="submit" {% if user in review.dislike_users.all %} disabled {% endif %}>
+                      <i id="review-like" class="fa-regular fa-thumbs-up r-like-color"></i>
                     </button>
                   {% else %}
-                    <button class="review-like-btn" type="submit">
-                      <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
+                    <button class="review-like-btn" type="submit" {% if user in review.dislike_users.all %} disabled {% endif %}>
+                      <i id="review-like" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
                     </button>
                   {% endif %}
                 </form>
               {% else %}
                 <button class="review-like-btn" type="submit" disabled>
-                  <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
+                  <i id="review-like" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
                 </button>
               {% endif %}
-              <span class="r-count" id="review_likes_count-{{ review.pk }}">{{ review.like_users.all|length }}</span>
+              <span class="r-count" id="review_likes_count">{{ review.like_users.all|length }}</span>
             </div>
             <!--리뷰 싫어요-->
             <div class="review-dislike">
               {% if request.user.is_authenticated %}
-                <form class="review-dislike-form" action="{% url 'posts:review_dislikes' post.pk review.pk %}" data-post-id="{{ post.pk }}" data-dreview-id="{{ review.pk }}">
+                <form class="review-dislike-form" action="{% url 'posts:review_dislikes' post.pk review.pk %}" data-post-id="{{ post.pk }}" data-dreview-id="{{ review.pk }}" id="review-dislikes-form-{{ post.pk }}-{{ review.pk }}">
                   {% csrf_token %}
                   {% if request.user in review.dislike_users.all %}
-                    <button class="review-like-btn" type="submit">
-                      <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color"></i>
+                    <button class="review-like-btn" type="submit" {% if user in review.like_users.all %} disabled {% endif %}>
+                      <i id="review-dislike" class="fa-regular fa-thumbs-down r-like-color"></i>
                     </button>
                   {% else %}
-                    <button class="review-like-btn" type="submit">
-                      <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
+                    <button class="review-like-btn" type="submit" {% if user in review.like_users.all %} disabled {% endif %}>
+                      <i id="review-dislike" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
                     </button>
                   {% endif %}
                 </form>
               {% else %}
                 <button class="review-like-btn" type="submit" disabled>
-                  <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
+                  <i id="review-dislike" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
                 </button>
               {% endif %}
-              <span class="r-count" id="review_dislikes_count-{{ review.pk }}">{{ review.dislike_users.all|length }}</span>
+              <span class="r-count" id="review_dislikes_count">{{ review.dislike_users.all|length }}</span>
             </div>
           </div>
         </div>

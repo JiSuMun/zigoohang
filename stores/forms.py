@@ -114,19 +114,22 @@ class ProductReviewForm(forms.ModelForm):
         label = '제목',
         widget=forms.TextInput(
             attrs={
-                'placeholder': '리뷰 제목',
+                'placeholder': '제목을 입력해 주세요',
+                'class': 'form-control',
             },
         ),
         required=True,
     )
-    # content = forms.CharField(
-    #     label = False,
-    #     widget = forms.Textarea(
-    #         attrs = {
-    #             'placeholder': '리뷰를 입력해주세요.',
-    #         }
-    #     )
-    # )
+    content = forms.CharField(
+        label = False,
+        widget = forms.Textarea(
+            attrs = {
+                'placeholder': '내용을 입력해 주세요',
+                'class': 'form-control',
+            }
+        ),
+        required=True,
+    )
     rating = forms.IntegerField(
         label = False,
         widget=forms.NumberInput(
@@ -135,6 +138,7 @@ class ProductReviewForm(forms.ModelForm):
             }
         )
     )
+
     class Meta:
         model = ProductReview
         fields = ('title', 'content', 'rating', 'image1', 'image2', 'image3', 'image4', 'image5',)
@@ -142,7 +146,7 @@ class ProductReviewForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in ['image1', 'image2', 'image3', 'image4', 'image5']:
-            self.fields[field_name].widget.attrs.update({'class': ''})
+            self.fields[field_name].widget.attrs.update({'class': 'form-image'})
             self.fields[field_name].label = field_name
 
 
