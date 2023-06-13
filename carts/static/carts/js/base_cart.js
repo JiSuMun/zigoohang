@@ -20,6 +20,8 @@ if (!isAuthenticated) {
     countBadge.textContent = cart.length
     if (!cart.length) {
       countBadge.style.setProperty('display', 'none')
+    } else {
+      countBadge.style.setProperty('display', 'block')
     }
   }
 }
