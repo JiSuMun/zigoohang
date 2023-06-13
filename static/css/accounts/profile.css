@@ -110,6 +110,21 @@
   margin-top: 20px;
 }
 
+/* 에코 포인트 */
+.point_number {
+  color: var(--j-color1);
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.point_red {
+  color: var(--j-red);
+}
+.point_green {
+  color: var(--j-green);
+}
+
+
 /* 반응형 미디어쿼리 */
 @media (min-width: 1080px) {
   .profile-navbar {
