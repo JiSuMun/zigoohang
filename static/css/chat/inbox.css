@@ -1,10 +1,246 @@
-p {
-  margin: 0;
+/* inbox container */
+.inbox--container {
+  display: flex;
+  flex-wrap: wrap;
 }
-
-.chat_room {
+/* inbox 왼쪽 section */
+.inbox-user {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+.inbox__button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.inbox__button--big{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 35px;
+  border: 1px solid var(--planet-color3);
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: white;
+  color: var(--planet-color3);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.inbox__button--big:hover, .make_btn:hover {
+  background-color: var(--planet-color3);
+  color: white;
+}
+
+/* 왼쪽 section 내부 사용자 목록 */
+.user-list {
+  width: 80%;
+  padding: 1rem;
+  border: 1px solid var(--planet-color3);
+  border-radius: 5px;
+}
+.user-list__top {
+  display: flex;
+  height: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.make_btn {
+  padding: 3px 0.7rem;
+  border: 0.5px solid var(--planet-color3);
+  border-radius: 1.2rem;
+  background-color: white;
+  color: var(--planet-color3);
+  transition: all 0.3s ease-in-out;
+}
+.user-list__title {
+  display: flex;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--planet-color3);
+}
+.user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  color: var(--j-color2);
+}
+.user:hover {
+  background-color: var(--planet-color3);
+  color: white;
+}
+.user:hover .user__checkbox-container > input[type="checkbox"] {
+  background-color: white;
+}
+.user__left {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+.user__left__img {
+  width: 2rem;
+  height: 2rem;
+  overflow: hidden;
+  margin-right: 0.5rem;
+  border: 1px solid lightgrey;
+  border-radius: 50%;
+}
+.user__left__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.user__left__name {
+  flex-grow: 1;
+}
+.user__checkbox-container > input[type="checkbox"] {
+  position: relative;
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 1px solid var(--planet-color3);
+  cursor: pointer;
+}
+.user__checkbox-container > input[type="checkbox"]:checked::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  content: '\2713';
+  text-align: center;
+  font-size: 0.7rem;
+  background-color: var(--j-color2);
+  color: white;
+}
+
+/* inbox 오른쪽 section */
+.inbox-room {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.inbox-room__top {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0 2rem 0;
+}
+.inbox-rom__top__title {
+  line-height: 1.2;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--j-color2);
+  flex-grow: 1;
+}
+.inbox-room__top__btn button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--planet-color3);
+  border-radius: 5px;
+  font-size: 1.2rem;
+  background-color: white;
+  color: var(--planet-color3);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.inbox-room__top__btn button:hover {
+  background-color: var(--planet-color3);
+  color: white;
+}
+.chat-room__bottom {
+  width: 90%;
+  min-height: 500px;
+}
+.chat_room {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0.2rem;
+}
+.chat {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0.1rem;
+  padding: 1rem 0.5rem;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+.chat:hover {
+  background-color: var(--planet-color3);
+}
+.chat:hover .chat__left, .chat:hover .chat__right {
+  color: white;
+}
+.chat__left {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.chat__left__name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.chat__right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+.timestamp {
+  margin-bottom: 0.5rem;
+}
+.chat__right__unread {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: var(--j-color2);
+  color: white;
+}
+.chat__delete {
+  display: flex;
+  justify-content: flex-end;
+}
+.chat__delete form input[type="submit"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--planet-color5);
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: white;
+  color: var(--planet-color5);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.chat__delete form input[type="submit"]:hover {
+  background-color: var(--planet-color5);
+  color: white;
+}
+/* p {
+  margin: 0;
 }
 
 .chat_room p {
@@ -19,10 +255,7 @@ p {
   color: var(--planet-color5);
 }
 
-.inbox--container {
-  display: flex;
-  flex-wrap: wrap;
-}
+
 
 .chat_with_me {
   font-size: 20px;
@@ -42,9 +275,8 @@ p {
 .users--title {
   color: grey;
   font-size: 30px;
-}
-
-
+} 
+*/
 @media (min-width: 1080px) {
   .inbox-user {
     flex: 1;
@@ -65,22 +297,11 @@ p {
     flex-direction: column;
     overflow: auto;
   }
-
-  .make_btn {
-    margin-top: 0.5rem;
-    width: 80%;
-    height: 35px;
-    border: 1px solid var(--planet-color3);
-    border-radius: 5px;
-    font-size: 16px;
-    color: var(--planet-color3);
-  }
 }
 
 @media (max-width: 1079.9px) {
   .inbox-user {
     width: 100%;
-    max-height: 50vh;
     padding: 2rem;
     overflow: auto;
     box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.3);
@@ -88,7 +309,7 @@ p {
 
   .inbox-room {
     width: 100%;
-    max-height: 50vh;
+    min-height: 50vh;
     padding: 2rem;
     overflow: auto;
   }
@@ -99,21 +320,8 @@ p {
     overflow: auto;
     color: grey;
   }
-
-  .make_btn {
-    margin-top: 0.5rem;
-    width: 80%;
-    height: 35px;
-    border: 1px solid var(--planet-color3);
-    border-radius: 5px;
-    font-size: 16px;
-    color: var(--planet-color3);
-  }
-
 }
 
-.make_btn:hover {
-  color: var(--planet-color1);
-  background-color: var(--planet-color3);
-  cursor: pointer;
+.none {
+  display: none;
 }

@@ -1,26 +1,29 @@
 {% load humanize %}
-{% if purchase_details %}
+{% if purchase_details %} 
 
-    {% for purchase in purchase_details %}
+  {% for purchase in purchase_details %}
       <h3>주문 번호: {{ purchase.order.pk }}</h3>
-      <p>주문 날짜: {{ purchase.order.added_at }}</p>
+      <p>주문 날짜: {{ purchase.order.added_at }}</p> 
       {% comment %} <p>판매자: {{ purchase.order.seller.username }}</p> {% endcomment %}
       {% comment %} <p>배송 주소: {{ purchase.order.address }}</p> {% endcomment %}
-      <p>배송 상태: {{ purchase.order.shipping_status }}</p>
+      {% comment %} <p>배송 상태: {{ purchase.order.shipping_status }}</p> {% endcomment %}
 
-      {% if purchase.order.tracking_number %}
+   {% if purchase.order.tracking_number %}
         <p>운송장 번호: {{ purchase.order.tracking_number }}</p>
-      {% endif %}
+    {% else %}
+    <p>운송장 번호 그런거 없다.</p>
+    {% endif %} 
     
-      {% comment %} {% for item in purchase.items %}
+  {% comment %} {% for item in purchase.items %}
         <p>상품명 {{ item.product.name }}</p>
         <p>수량 {{ item.quantity }}</p>
         <p>가격 {{ item.product.price }}</p>
         <p>합계{{ item.sub_total }}</p>
-      {% endfor %} {% endcomment %}
-      <p>주문 총 금액: {{ purchase.order.total|intcomma }}</p>
-    {% endfor %}
+      {% endfor %}  {% endcomment %}
+    <p>주문 총 금액: {{ purchase.order.total|intcomma }}</p>
+    {% endfor %}  
 
 {% else %}
     <p>주문한 상품이 없습니다.</p>
-{% endif %}
+{% endif %} 
+

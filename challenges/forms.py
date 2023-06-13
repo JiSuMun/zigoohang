@@ -59,7 +59,7 @@ class ChallengeImageForm(forms.ModelForm):
         widget=CustomClearableFileInput(
             attrs={
                 'multiple': True, 
-                'class': 'form-control', 
+                'class': 'form-image', 
             }
         ),
     )

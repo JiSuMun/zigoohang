@@ -34,12 +34,21 @@
         <p>관심상품</p>
       </div>
     </a>
-    <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">           
-      <div class="profile-sidebar-item">
-        <span class="material-symbols-outlined">shopping_bag</span>
-        <p>구매내역</p> 
-      </div>
-    </a>
+    {% if user.is_seller == False %} 
+      <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">           
+        <div class="profile-sidebar-item">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          <p>구매내역</p> 
+        </div>
+      </a>
+    {% else %}
+      <a class="{% if q == 'sell_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=sell_detail">            
+        <div class="profile-sidebar-item">
+          <span class="material-symbols-outlined">storefront</span>
+          <p>판매내역</p>
+        </div>
+      </a>
+    {% endif %}
     <a class="{% if q == 'second_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=second_detail">            
       <div class="profile-sidebar-item">
         <span class="material-symbols-outlined">recycling</span>
@@ -104,10 +113,10 @@
           <div class="header-info">
             <div class="header-img">
               {% if request.user.image %}
-              <img src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image">
-            {% else %}
-              <img src="#" alt="noimage">
-            {% endif %}
+                <img src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image">
+              {% else %}
+                <img src="{% static 'img/accounts/no-image.png' %}" alt="noimage">
+              {% endif %}
           </div>
           <div class="header-text">
             <div class="header-text-name">
@@ -131,13 +140,24 @@
         <div class="profile-box-text">
         <div class="profile-page-info-main">
           <div class="main-card">
-              <span class="main-card-title">나의 에코포인트🌱</span>
+              <span class="main-card-title">나의 에코포인트</span>
+              <span class="point_number">{{ user.points|intcomma }}</span>
               <div class="main-card-content">
-                <span>{{ user.points|intcomma }}</span>
+                <!-- point log -->
+                <table>
+                  {% for log in point_log_items %}
+                    <tr>
+                      <td>{{ log.amount|intcomma }}</td>
+                      <td class="{% if log.type %}point_green{% else %}point_red{% endif %}">{{ log.type_detail }}</td>
+                      <td>{{ log.created_at }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+                <!-- //point log -->
               </div>
           </div>
           <div class="main-card">
-            <span class="main-card-title">나의 친구관리🧸</span>
+            <span class="main-card-title">나의 친구관리</span>
             <div class="main-card-content">
               
               {% comment %} 팔로잉테스트 {% endcomment %}
