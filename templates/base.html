@@ -30,10 +30,11 @@
 
   {% include 'carts/base_cart.html' %}
 
-  {% block script %}
-  {% endblock script %}
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="{% static 'js/main/base.js' %}"></script>
   <script src="{% static 'js/main/header.js' %}"></script>
+  <script src="{% static 'carts/js/base_cart.js' %}"></script>
+  {% block script %}
+  {% endblock script %}
 </body>
 </html>
