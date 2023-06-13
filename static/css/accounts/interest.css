@@ -1,0 +1,73 @@
+
+.interest-page {
+  padding: 10px;
+}
+header h2 {
+  font-size: 24px;
+  text-align: start;
+  padding: 3%;
+}
+
+.interest-page-content {
+  width: 80%;
+  margin-top: 30px;
+  border-collapse: collapse;
+}
+
+.interest-page-content th {
+  color: #333;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+
+.interest-page-content td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.main-checkbox input {
+  align-self: center;
+}
+
+.main-checkbox input[type="checkbox"] {
+  transform: scale(1.5);
+}
+
+.main-items-detail {
+  display: flex;
+  align-items: center;
+}
+
+.main-items-detail div:first-child {
+  margin-right: 10px;
+}
+
+.main-items-detail img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.main-items-product {
+  color: #333;
+  font-weight: bold;
+  margin: 0;
+}
+
+.main-items-price {
+  color: #666;
+}
+
+.main-items-store p {
+  color: #666;
+  margin: 0;
+}
+
+.interest-page-content-main tr:last-child td {
+  border-bottom: none;
+}
+

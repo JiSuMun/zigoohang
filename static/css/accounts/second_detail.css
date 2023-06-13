@@ -1,0 +1,47 @@
+.completed-page {
+  padding-inline: 20px;
+}
+.completed-page-title h2{
+  text-align: start;
+  padding: 3%;
+  font-size: 24px;
+ }
+ .card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 20px;
+ }
+ .card {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  gap: 20px;
+}
+.card-img {
+  width: 200px;
+  height: 200px;
+}
+.card-img img {
+  width: 100%;
+  height: 100%;
+}
+.card-info {
+  margin-top: 20px;
+}
+.card-info-product {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+.card-info-price {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.card-info-label {
+  color: grey;
+  margin-bottom: 5px;
+}
+.card-info-address {
+  width: 70%;
+  overflow-wrap: break-word;
+}
