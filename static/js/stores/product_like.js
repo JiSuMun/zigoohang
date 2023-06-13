@@ -13,10 +13,14 @@ likesForm.addEventListener('submit', function (event) {
   })
   .then((response) => {
     const isLiked = response.data.is_liked
+    const submitButton = event.target.querySelector('.sub-button');
+
     if (isLiked === true) {
-      alert('WISH LIST에 추가되었습니다.')
+      submitButton.value = '관심상품 삭제';
+      alert('WISH LIST에 추가되었습니다.');
     } else {
-      alert('WISH LIST에서 삭제되었습니다.')
+      submitButton.value = '관심상품 등록';
+      alert('WISH LIST에서 삭제되었습니다.');
     }
   })
 })
