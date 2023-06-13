@@ -1,12 +1,51 @@
 {% extends 'base.html' %}
 
-{% block title %}Update{% endblock title %}
+{% load static %}
+{% block title %}
+챌린지 생성
+{% endblock title %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/challenges/create.css' %}">
+{% endblock head %}
 
 {% block content %}
-<form action="{% url 'challenges:create' %}" method='POST' enctype='multipart/form-data'>
+<!--create 타이틀-->
+<div class="create-title-wrap">
+    <div class="create-title-box">
+      <p class="create-title-title">챌린지 생성</p>
+      <p class="create-title-text">챌린지 생성 페이지입니다.</p>
+    </div>
+  </div>
+
+<div class="c-wrapper">
+  <form action="{% url 'challenges:create' %}" method='POST' enctype='multipart/form-data'>
     {% csrf_token %}
-    {{ form.as_p }}
-    {{ image_form.as_p }}
-    <input type="submit" value="첼린지 만들기">
-</form>
+    <div class="c-form-wrap">
+      <div>
+        <p class="form_label">챌린지 제목<span class="required_star">*</span></p>
+        {{ form.title }}
+      </div>
+      <div>
+        <p class="form_label">챌린지 내용<span class="required_star">*</span></p>
+        {{ form.description }}
+      </div>
+      <div>
+        <p class="form_label">시작 날짜<span class="required_star">*</span></p>
+        {{ form.start_date }}
+      </div>
+      <div>
+        <p class="form_label">종료 날짜<span class="required_star">*</span></p>
+        {{ form.end_date }}
+      </div>
+      <div>
+        <p class="form_label">챌린지 이미지<span class="required_star">*</span></p>
+        {{ image_form.image }}
+      </div>      
+      <div class="button-wrapper">
+        <input class="c-button-cancel" type="submit" value="취소" onclick=window.history.back()>
+        <input class="c-button" type="submit" value="등록하기">
+      </div>
+  </form>
+</div>
 {% endblock content %}

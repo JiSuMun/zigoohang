@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}SignUp{% endblock title %}
+{% block title %}회원가입{% endblock title %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
@@ -531,15 +531,10 @@
       <br>
       <div class="agreement-submit">
         <button type="submit">약관 동의하기</button>
-          {% comment %} <button type="submit">판매자로 가입하기</button>
-          <button type="submit">일반회원으로 가입하기</button> {% endcomment %}
       </div>
       <div class="agreement-submit-media">
         <button type="submit">약관 동의하기</button>
-        {% comment %} <button type="submit">판매자로 <br>가입하기</button>
-        <button type="submit">일반회원으로 <br>가입하기</button> {% endcomment %}
     </div>
-      {% comment %} 버튼 2개만들기 -> 판매자 or 일반회원으로 가입하기 {% endcomment %}
     </form>
   </div>
 </div>
@@ -584,12 +579,13 @@
 </div>
 
 <div id="step-3" style="display: none;">
-  <div class="wait-wrapper">
-    <div class="wait-page">
-      <h2>이메일을 확인해주세요.</h2>
-      <h2>이메일에 있는 링크를 클릭하여 계정을 활성화하세요.</h2>
+    <div class="wait-title-wrap">
+        <div class="wait-title-box">
+          <p class="wait-title-title">이메일 확인</p>
+          <p class="wait-title-text">이메일을 확인해주세요.</p>
+          <p class="wait-title-text">이메일에 있는 링크를 클릭하여 계정을 활성화하세요.</p>
+        </div>
     </div>
-  </div>
 </div>
 
 {% endblock content %}
@@ -604,24 +600,24 @@
     function setIsSellerValue(value) {
         const sellerButton = document.getElementById("sellerBtn");
         const memberButton = document.getElementById("memberBtn");
-      
-        
+        const isSellerInput = document.getElementById("is_seller");
+    
         if (value === 1) {
-            sellerButton.classList.remove("user-button");
-            sellerButton.classList.add("active");
-            memberButton.classList.remove("active");
-            memberButton.classList.add("user-button");
+          sellerButton.classList.add("active");
+          sellerButton.classList.remove("user-button");
+          memberButton.classList.remove("active");
+          memberButton.classList.add("user-button");
         } else {
-            sellerButton.classList.add("user-button");
-            sellerButton.classList.remove("active");
-            memberButton.classList.remove("user-button");
-            memberButton.classList.add("active");
+          sellerButton.classList.remove("active");
+          sellerButton.classList.add("user-button");
+          memberButton.classList.add("active");
+          memberButton.classList.remove("user-button");
         }
-    document.getElementById("is_seller").value = value;
-    console.log(document.getElementById("is_seller").value)
-    }
+    
+        isSellerInput.value = value;
+      }
 
-    setIsSellerValue();
+    setIsSellerValue(0);
 
   document.addEventListener("DOMContentLoaded", function () {
     const agreementForm = document.getElementById("agreement-form");
