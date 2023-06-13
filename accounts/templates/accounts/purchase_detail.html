@@ -10,16 +10,18 @@
 
    {% if purchase.order.tracking_number %}
         <p>운송장 번호: {{ purchase.order.tracking_number }}</p>
-      {% endif %} 
+    {% else %}
+    <p>운송장 번호 그런거 없다.</p>
+    {% endif %} 
     
-  {% for item in purchase.items %}
+  {% comment %} {% for item in purchase.items %}
         <p>상품명 {{ item.product.name }}</p>
         <p>수량 {{ item.quantity }}</p>
         <p>가격 {{ item.product.price }}</p>
         <p>합계{{ item.sub_total }}</p>
-      {% endfor %} 
+      {% endfor %}  {% endcomment %}
     <p>주문 총 금액: {{ purchase.order.total|intcomma }}</p>
-    {% endfor %} 
+    {% endfor %}  
 
 {% else %}
     <p>주문한 상품이 없습니다.</p>
