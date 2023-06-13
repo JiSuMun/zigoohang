@@ -449,7 +449,7 @@ def profile(request, username):
     User = get_user_model()
     person = User.objects.get(username=username)
     posts = Post.objects.filter(user=person)
-    interests = request.user.like_products.all()
+    interests = request.user.like_products.all()  
     orders = Order.objects.filter(customer=person).exclude(shipping_status='결제전').order_by('-pk')
     purchases = S_Purchase.objects.filter(customer=person).select_related('product')
     completed_products = S_Product.objects.filter(user=person, status='3')

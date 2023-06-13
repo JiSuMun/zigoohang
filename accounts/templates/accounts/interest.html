@@ -21,31 +21,32 @@
 
       <tbody class="interest-page-content-main">
         {% for interest_item in interests %}
-          <tr>
-            <td class="main-checkbox">
-              <input type="checkbox" id="check_all">
-            </td> 
-            <td class="main-items-detail">
-              <div>
-                {% if interest_item.images %}
-                  <a href="{% url 'stores:products_detail' interest_item.store.pk interest_item.pk %}">
-                    <img src="{{ interest_item.images.first.image.url }}" style="width: 100px; height: 100px;" alt="관심상품 이미지">
-                  </a>
-                {% else %}
-                  <img src="{% static 'img/accounts/no-image.png' %}" style="width: 100px; height: 100px;" alt="기본이미지">
-                {% endif %}
-              </div>
-              <div>
-                <p class="main-items-product">{{ interest_item.name }}</p>
-              </div>
-            </td>
-            <td class="main-items-price">{{ interest_item.price }}원</td>
-            <td class="main-items-store">
-              <p>{{ interest_item.store.name }}</p>
-            </td>
-          </tr>
+        <tr>
+          <td class="main-checkbox">
+            <input type="checkbox" id="check_all">
+          </td> 
+          <td class="main-items-detail">
+            <div>
+                <a href="{% url 'stores:products_detail' interest_item.store.pk interest_item.pk %}">
+                  {% if interest_item.images %}
+                    <img src="{{ interest_item.images.first.image.url }}" alt="관심상품 이미지">
+                  {% else %}
+                    <img src="{% static 'img/accounts/no-image.png' %}" alt="기본이미지">
+                  {% endif %}
+                </a>
+                </div>
+                <div>
+                  <p class="main-items-product">{{ interest_item.name }}</p>
+                </div>
+              </td>
+              <td class="main-items-price">
+                <p>판매가</p>{{ interest_item.price|intcomma }}원
+              </td>
+              <td class="main-items-store">
+                <p>상점</p>{{ interest_item.store.name }}
+              </td>
+            </tr>
         {% endfor %}
       </tbody>
     </table>
-  </div>
 </div>
