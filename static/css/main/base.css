@@ -53,6 +53,7 @@ a {
 }
 
 :root {
+	--background-color: #fff;
 	--planet-color1: #EDF1F4;
 	--planet-color2: #ADCBC9;
 	--planet-color3: #8BBE86;
@@ -62,6 +63,7 @@ a {
 	--j-color2: #297821;
 	--j-green: #00A95C; /* 그냥 녹색 */
 	--j-red: red;
+	--j-white: white;
 
 }
 

@@ -273,6 +273,9 @@
   display: flex;
   padding: 0.7rem 0;
 }
+.m-nav-link:hover {
+  color: var(--j-color2);
+}
 
 .m-nav-icon {
   height: 16px;
@@ -311,48 +314,29 @@
   position: relative;
 }
 
-.count_badge {
+.count_badge,
+.m-count_badge,
+.noti_badge,
+.m-noti_badge {
   position: absolute;
   top: 0;
   left: 100%;
   transform: translate(-50%,-50%);
-  padding: 0.2rem;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--background-color);
   border-radius: 50rem;
-  background-color: var(--planet-color3);
-  color: var(--planet-color1);
+  background-color: var(--j-color2);
+  color: var(--j-white);
   font-size: 0.8rem;
+  font-weight: bold;
 }
 
-.m-cart_icon {
+.m-nav-item {
   position: relative;
-}
-
-.m-count_badge {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  transform: translate(-50%,-50%);
-  padding: 0.2rem;
-  border-radius: 50rem;
-  background-color: var(--planet-color3);
-  color: var(--planet-color1);
-  font-size: 0.8rem;
 }
 
 .noti_icon {
   position: relative;
-}
-
-.noti_badge {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  transform: translate(-50%,-50%);
-  padding: 0.2rem;
-  border-radius: 50rem;
-  background-color: var(--planet-color3);
-  color: var(--planet-color1);
-  font-size: 0.8rem;
 }
 
 .icons {
@@ -366,7 +350,7 @@
 }
 
 .m-nav-image:hover {
-  color: var(--planet-color3);
+  color: var(--j-color2);
   font-size: 0.8rem;
 }
 
