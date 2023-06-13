@@ -62,7 +62,8 @@ table {
 	--background-color: #fff;
 	color: #212529;
 	--text-color: #212529;
-	--point-color: violet;
+
+	--block-bg: #fafafa;
 	
 	--bg-color1: #fff;
 	--text-color1: #000;
@@ -75,6 +76,7 @@ table {
 	--j-color2: #297821;
 	--j-color3: #dddddd;
 	--j-color4: #444444;
+	--j-text-white: white;
 
 	--j-green: #00A95C; /* 그냥 녹색 */
 	--j-red: red;
@@ -85,10 +87,10 @@ table {
 	/* --background-color: #1E1E20; */
 	background-color: #222222;
 	--background-color: #222222;
-	color: #fff;
+	color: #adb5bd;
 	--text-color: #adb5bd;
-	--point-color: violet;
-	/* point-color: var(--point-color) */
+
+	--block-bg: #272829;
 
 	--bg-color1: #000;
 	--text-color1: #fff;
@@ -101,6 +103,7 @@ table {
 	--j-color2: #00A95C;
 	--j-color3: #444444;
 	--j-color4: #dddddd;
+	--j-text-white: #dddddd;
 
 
 	--j-green: #00A95C; /* 그냥 녹색 */
