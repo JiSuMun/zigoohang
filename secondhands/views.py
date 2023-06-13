@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 import math
 
+@login_required(login_url='accounts:login')
 
 def index(request):
     products = S_Product.objects.all()
