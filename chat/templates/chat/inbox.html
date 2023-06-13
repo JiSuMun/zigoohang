@@ -8,43 +8,79 @@
 
 {% block content %}
 <article class="inbox--container">
-  <section class="inbox-user">
-    <div class="chat_with_me">
-      <a href="{% url 'chat:start_chat' user.id %}">나와의 채팅하기<span class="material-symbols-outlined" style="font-size: 20px;">forum</span></a>
+  {% comment %} inbox 왼쪽 section - 채팅방 추가 {% endcomment %}
+  <section class="inbox-user inbox__left">
+    {% comment %} 나와의 채팅 생성 버튼 {% endcomment %}
+    <div class="chat_with_me inbox__button-container">
+      <a class="inbox__button--big" href="{% url 'chat:start_chat' user.id %}">나와의 채팅</a>
     </div>
-    <p class="users--title">사용자 목록</p>
-    <form method="post" action="{% url 'chat:start_group_chat' %}">
-      {% csrf_token %}
-      <div class="users">
-        {% for user in all_users %}
-          <div>
-            <input type="checkbox" name="user_ids" value="{{ user.id }}"> {{ user.username }}
-          </div>
-        {% empty %}
-          <p>다른 사용자가 없습니다.</p>
-        {% endfor %}
-      </div>
-      <div class="make_btn_wrap">
-        <input type="submit" value="채팅방 만들기" class="make_btn">
-      </div>
-    </form>
-  </section>
-  <section id="chat-rooms-section" class="inbox-room">
-    {% if chat_rooms %}
-      {% for chat_room, last_message, unread_notifications in chat_rooms %}
-        <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
-          <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
-          <p class="unread_count notification--color noti">{% if unread_notifications %}{{ unread_notifications }}{% else %}0{% endif %}</p>
-          <p class="last-message">{{ last_message.content }}</p>
-          <p class="timestamp">{{ last_message.formatted_timestamp }}</p>
-          <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="삭제">
-          </form>
+    {% comment %} 새 채팅방 만들기 버튼 & 만들기 취소 버튼 {% endcomment %}
+    <div class="inbox__button-container">
+      <button id="make-chat-btn" class="inbox__button--big">새 채팅방 만들기</button>
+      <button id="cancel-make-btn" class="inbox__button--big none">만들기 취소</button>
+    </div>
+    {% comment %} 사용자 목록 (새 채팅방 만들기하면 보이도록 함) {% endcomment %}
+    <div id="user-list" class="user-list none">
+      <form method="post" action="{% url 'chat:start_group_chat' %}">
+        <div class="user-list__top">
+          <span class="user-list__title">사용자 목록</span>
+          <input type="submit" value="만들기" class="make_btn none" id="create_chat_btn">
         </div>
-      {% endfor %}
-    {% endif %}
-    <p id="no-chat-rooms" {% if chat_rooms %}style="display:none"{% endif %}>채팅방이 없습니다.</p>
+        {% csrf_token %}
+        <div class="users">
+          {% for user in all_users %}
+            <label class="user" for="user__checkbox">
+              <div class="user__left">
+                <div class="user__left__img">
+                  {% if user.image %}
+                    <img src="{{ user.image.url }}" alt="">
+                  {% else %}
+                    <p>이미지 없음</p>
+                  {% endif %}
+                </div>
+                <div class="user__left__name">
+                  <span>{{ user.first_name }} ({{ user.username }})</span>
+                </div>
+              </div>
+              <div class="user__checkbox-container">
+                <input type="checkbox" name="user_ids" id="user__checkbox" value="{{ user.id }}">
+              </div>
+            </label>
+          {% comment %} 사용자 목록 없을 경우 보일 화면 {% endcomment %}
+          {% empty %}
+            <p>다른 사용자가 없습니다.</p>
+          {% endfor %}
+        </div>
+        {% comment %} 채팅장 만들기 (사용자 목록이 비어있지 않을때만 보임) {% endcomment %}
+      </form>
+    </div>
+  </section>
+  {% comment %} inbox 오른쪽 - 채팅 목록 {% endcomment %}
+  <section id="chat-rooms-section" class="inbox-room">
+    {% comment %} 채팅 목록 제목 및 편집 버튼 {% endcomment %}
+    <div>
+
+    </div>
+    {% comment %} 채팅 목록 공간 {% endcomment %}
+    <div>
+      {% comment %} chat_rooms가 있을 경우 보일 화면 {% endcomment %}
+      {% if chat_rooms %}
+        {% for chat_room, last_message, unread_notifications in chat_rooms %}
+          <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
+            <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
+            <p class="unread_count notification--color noti">{% if unread_notifications %}{{ unread_notifications }}{% else %}0{% endif %}</p>
+            <p class="last-message">{{ last_message.content }}</p>
+            <p class="timestamp">{{ last_message.formatted_timestamp }}</p>
+            <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
+              {% csrf_token %}
+              <input type="submit" value="삭제">
+            </form>
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% comment %} chat_rooms가 없을 경우 보일 화면 {% endcomment %}
+      <p id="no-chat-rooms" {% if chat_rooms %}style="display:none"{% endif %}>채팅방이 없습니다.</p>
+    </div>
   </section>
 </article>
 {% endblock content %}
@@ -156,6 +192,47 @@
 
   updateNewChatRooms();
   updateNotificationData();
+</script>
+{% comment %} 비동기 이외 click event {% endcomment %}
+<script>
+  {% comment %} 채팅창 만들기 버튼 관련 {% endcomment %}
+  const makeChatBtn = document.querySelector("#make-chat-btn")
+  const cancelMakeBtn = document.querySelector("#cancel-make-btn")
+  const userList = document.querySelector("#user-list")
+  const checkboxes = document.querySelectorAll(".user__checkbox-container > input[type='checkbox']")
+
+  function clickForMakeChat() {
+    makeChatBtn.classList.add("none")
+    cancelMakeBtn.classList.remove("none")
+    userList.classList.remove("none")
+  }
+  function cancelMakeChat() {
+    cancelMakeBtn.classList.add("none")
+    userList.classList.add("none")
+    makeChatBtn.classList.remove("none")
+    for (let i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].checked = false
+    }
+    createChatBtn.classList.add('none')
+  }
+  makeChatBtn.addEventListener("click", clickForMakeChat)
+  cancelMakeBtn.addEventListener("click", cancelMakeChat)
+
+  {% comment %} 사용자 목록 체크 후 버튼 보이게 - checkboxes는 위에서 선언한거 이용 {% endcomment %}
+  const createChatBtn = document.querySelector("#create_chat_btn")
+
+  function showcreateChatBtn() {
+    for (let i=0; i < checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        createChatBtn.classList.remove('none')
+        return
+      }
+    }
+    createChatBtn.classList.add('none')
+  }
+  for (let i = 0; i < checkboxes.length; i++) {
+    checkboxes[i].addEventListener('change', showcreateChatBtn);
+  }
 </script>
 {% endblock script %}
 {% comment %} setInterval(updateNewChatRooms, 5000);
