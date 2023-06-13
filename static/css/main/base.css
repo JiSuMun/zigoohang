@@ -47,31 +47,25 @@ table {
 	border-spacing: 0;
 }
 
-a {
+/* a {
 	text-decoration: none;
 	color: black;
-}
+} */
 
-@media (prefers-color-scheme: light) {
-	:root {
-		--bg-color1: white;
-		/* color:darkred */
-		/* --test-color1: darkred; */
-	}
-}
-@media (prefers-color-scheme: dark) {
-	:root {
-		/* color: */
-		--bg-color1: #1E1F21;
-		/* --test-color1: fuchsia; */
-	}
-	* {
-		color: #CBCBCB;
-		background-color: #1E1F21;
-	}
-}
+/* * {
+	background-color: #fff;
+} */
 
-:root {
+:root,
+[data-bs-theme=light] {
+	background-color: #fff;
+	--background-color: #fff;
+	color: #212529;
+	--text-color: #212529;
+	--point-color: violet;
+	
+	--bg-color1: #fff;
+	--text-color1: #000;
 	--planet-color1: #EDF1F4;
 	--planet-color2: #ADCBC9;
 	--planet-color3: #8BBE86;
@@ -79,10 +73,60 @@ a {
 	--planet-color5: rgb(201, 123, 123);
 	--j-color1: #00A95C; /* 테마 녹색 */
 	--j-color2: #297821;
+	--j-color3: #dddddd;
+	--j-color4: #444444;
+
 	--j-green: #00A95C; /* 그냥 녹색 */
 	--j-red: red;
-
+	--j-white: white;
 }
+
+[data-bs-theme=dark] {
+	/* --background-color: #1E1E20; */
+	background-color: #222222;
+	--background-color: #222222;
+	color: #fff;
+	--text-color: #adb5bd;
+	--point-color: violet;
+	/* point-color: var(--point-color) */
+
+	--bg-color1: #000;
+	--text-color1: #fff;
+	--planet-color1: #EDF1F4;
+	--planet-color2: #ADCBC9;
+	--planet-color3: #8BBE86;
+	--planet-color4: #363636;
+	--planet-color5: rgb(201, 123, 123);
+	--j-color1: #297821; /* 테마 녹색 */
+	--j-color2: #00A95C;
+	--j-color3: #444444;
+	--j-color4: #dddddd;
+
+
+	--j-green: #00A95C; /* 그냥 녹색 */
+	--j-red: red;
+	--j-white: white;
+}
+
+a {
+	text-decoration: none;
+	color: var(--text-color);
+}
+input {
+	background-color: var(--background-color);
+}
+
+/* :root {
+	--planet-color1: #EDF1F4;
+	--planet-color2: #ADCBC9;
+	--planet-color3: #8BBE86;
+	--planet-color4: #363636;
+	--planet-color5: rgb(201, 123, 123);
+	--j-color1: #00A95C; 테마 녹색
+	--j-color2: #297821;
+	--j-green: #00A95C; 그냥 녹색
+	--j-red: red;
+} */
 
 .white-text{
 	color: white;
@@ -155,7 +199,7 @@ input, button, textarea {
 
 @media (max-width: 1079.9px) {
 	#scrollBtn {
-  	height: 40px;
+		height: 40px;
 		width: 40px;
 		font-size: 12px;
 	}
