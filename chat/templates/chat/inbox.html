@@ -58,15 +58,18 @@
   {% comment %} inbox 오른쪽 - 채팅 목록 {% endcomment %}
   <section id="chat-rooms-section" class="inbox-room">
     {% comment %} 채팅 목록 제목 및 편집 버튼 {% endcomment %}
-    <div>
-
+    <div class="inbox-room__top">
+      <span class="inbox-rom__top__title">채팅 목록</span>
+      <div class="inbox-room__top__btn">
+        <button id="edit-chats-btn">편집</button>
+      </div>
     </div>
     {% comment %} 채팅 목록 공간 {% endcomment %}
-    <div>
+    <div class="chat-room__bottom">
       {% comment %} chat_rooms가 있을 경우 보일 화면 {% endcomment %}
       {% if chat_rooms %}
         {% for chat_room, last_message, unread_notifications in chat_rooms %}
-          <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
+          {% comment %} <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
             <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
             <p class="unread_count notification--color noti">{% if unread_notifications %}{{ unread_notifications }}{% else %}0{% endif %}</p>
             <p class="last-message">{{ last_message.content }}</p>
@@ -75,6 +78,33 @@
               {% csrf_token %}
               <input type="submit" value="삭제">
             </form>
+          </div> {% endcomment %}
+
+          <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
+            <a href="{% url 'chat:room' chat_room.name %}" id="room_name" class="chat">
+              {% comment %} 왼쪽 공간 - 채팅방 이름 및 최신 채팅 {% endcomment %}
+              <section class="chat__left">
+                {% comment %} 여러명의 채팅방일 경우 임의의 채팅창 이미지를, 한명과의 채팅일 경우 해당 인물의 프로필 화면을 {% endcomment %}
+                <span class="chat__left__name">{{ chat_room }}</span>
+                <span class="last-message">{{ last_message.content }}</span>
+              </section>
+              {% comment %} 오른쪽 공간 - 최신 채팅 시간, 안읽은 메시지 수 {% endcomment %}
+              <section class="chat__right">
+                <span class="timestamp">{{ last_message.formatted_timestamp }}</span>
+                <div class="unread_count notification--color noti chat__right__unread">
+                  {% if unread_notifications %}
+                    {{ unread_notifications }}
+                  {% endif %}
+                </div>
+              </section>
+            </a>
+            {% comment %} 편집 버튼 클릭시 가장 오른쪽에 위치하는 나가기 버튼 {% endcomment %}
+            <div class="chat__delete none">
+              <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="나가기">
+              </form>
+            </div>
           </div>
         {% endfor %}
       {% endif %}
@@ -192,6 +222,9 @@
 
   updateNewChatRooms();
   updateNotificationData();
+  
+  setInterval(updateNewChatRooms, 5000);
+  setInterval(updateNotificationData, 5000);
 </script>
 {% comment %} 비동기 이외 click event {% endcomment %}
 <script>
@@ -233,7 +266,21 @@
   for (let i = 0; i < checkboxes.length; i++) {
     checkboxes[i].addEventListener('change', showcreateChatBtn);
   }
+  {% comment %} 편집 버튼 클릭 시 나가기 버튼 보이게 {% endcomment %}
+  const editChatsBtn = document.querySelector("#edit-chats-btn")
+  const deleteChatBtns = document.querySelectorAll(".chat__delete")
+
+  function showdeleteChatBtn() {
+    if (editChatsBtn.innerText == "편집") {
+      editChatsBtn.innerText = "편집 취소"
+    } else {
+      editChatsBtn.innerText = "편집"
+    }
+    for (let i = 0; i < deleteChatBtns.length; i++) {
+      deleteChatBtns[i].classList.toggle('none')
+    }
+  }
+
+  editChatsBtn.addEventListener("click", showdeleteChatBtn)
 </script>
 {% endblock script %}
-{% comment %} setInterval(updateNewChatRooms, 5000);
-setInterval(updateNotificationData, 5000); {% endcomment %}
