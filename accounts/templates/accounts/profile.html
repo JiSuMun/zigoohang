@@ -141,8 +141,19 @@
         <div class="profile-page-info-main">
           <div class="main-card">
               <span class="main-card-title">나의 에코포인트</span>
+              <span class="point_number">{{ user.points|intcomma }}</span>
               <div class="main-card-content">
-                <span>{{ user.points|intcomma }}</span>
+                <!-- point log -->
+                <table>
+                  {% for log in point_log_items %}
+                    <tr>
+                      <td>{{ log.amount|intcomma }}</td>
+                      <td class="{% if log.type %}point_green{% else %}point_red{% endif %}">{{ log.type_detail }}</td>
+                      <td>{{ log.created_at }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+                <!-- //point log -->
               </div>
           </div>
           <div class="main-card">
