@@ -18,5 +18,10 @@ if (!isAuthenticated) {
     const countBadge = document.getElementById('count_badge')
 
     countBadge.textContent = cart.length
+    if (!cart.length) {
+      countBadge.style.setProperty('display', 'none')
+    } else {
+      countBadge.style.setProperty('display', 'block')
+    }
   }
 }
