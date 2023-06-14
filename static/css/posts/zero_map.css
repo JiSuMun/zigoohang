@@ -81,11 +81,11 @@
 }
 
 .marker {
+  border: none;
+  background-color: white;
   font-size: 12px;
   padding: 0.5rem 0.4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
 }
 
 @media (max-width: 1079.9px) {

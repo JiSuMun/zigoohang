@@ -66,13 +66,20 @@
 }
 
 input.form-control:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
+
 input.form-control:-webkit-autofill,
 input.form-control:-webkit-autofill:hover,
 input.form-control:-webkit-autofill:focus,
 input.form-control:-webkit-autofill:active {
   border: 1px solid #297821;
+}
+
+textarea.form-control:focus {
+  border:1px solid #297821;
+  outline: none;
 }
 
 input::file-selector-button {

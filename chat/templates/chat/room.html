@@ -31,7 +31,7 @@
                 {% else %}
                   <div><img class="sender-image" src="{% static 'img/accounts/no-image-icon-21.png' %}" alt=""></div>
                 {% endif %}
-                <p>{{ message.sender.username }}</p>
+                <p>{{ message.sender.first_name }}</p>
               </div>
               <p class="message-content">{{ message.content }}</p>
               <p class="time-stamp">{{ message.formatted_timestamp }}</p>

@@ -35,8 +35,15 @@
 }
 
 input:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
+
+textarea:focus {
+  border:1px solid #297821;
+  outline: none;
+}
+
 .login-page-form button {
 	height: 45px;
 	width: 100%;

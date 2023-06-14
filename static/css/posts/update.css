@@ -72,12 +72,15 @@ margin-bottom: 2rem;
   max-width: 100%;
   margin-left: 3px;
 }
+
 input:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
 
 textarea:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
 
 input::file-selector-button {

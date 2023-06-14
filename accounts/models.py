@@ -60,6 +60,11 @@ class User(AbstractUser):
         self.points -= points
         self.save()
 
+    def get_followings_and_followers(self):
+        followings_and_followers = set(self.followings.all()) | set(self.followers.all())
+        followings_and_followers.discard(self)
+        return followings_and_followers
+
 class PointLog(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='point_logs')
 

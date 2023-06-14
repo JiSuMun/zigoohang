@@ -12,11 +12,11 @@
 	--bg-color1: #000;
 	--text-color1: #fff;
   
-	/* --j-color1: #297821; 테마 녹색 */
-	--j-color1: #125d3b; /* 테마 녹색 */
+	--j-color1: #297821; /* 테마 녹색 */
 	--j-color2: #00A95C;
 	--j-color3: #444444;
 	--j-color4: #dddddd;
 	--j-text-white: #dddddd; /* 그냥 흰글씨*/
+	--j-btn-fill: #125d3b; /* 다크모드 버튼 */
   --j-required_star: #ea868f;
 }

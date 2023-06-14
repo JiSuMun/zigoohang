@@ -37,6 +37,38 @@
   <script src="{% static 'js/main/base.js' %}"></script>
   <script src="{% static 'js/main/header.js' %}"></script>
   <script src="{% static 'carts/js/base_cart.js' %}"></script>
+  
+  {% if request.user.is_authenticated %}
+  <script>
+    function updateNotificationData() {
+      fetch("{% url 'chat:unread_notifications' %}")
+        .then(response => response.json())
+        .then(data => {
+          let total_unread_notifications = 0;
+
+          data.data.forEach(chat_room_data => {
+            total_unread_notifications += chat_room_data.unread_notifications;
+          });
+
+          const noti_badges = document.querySelectorAll("#noti_badge, .m-noti_badge");
+
+          if (total_unread_notifications === 0) {
+            noti_badges.forEach(noti_badge => {
+              noti_badge.style.display = "none";
+            });
+          } else {
+            noti_badges.forEach(noti_badge => {
+              noti_badge.style.display = "inline";
+              noti_badge.innerText = total_unread_notifications;
+            });
+          }
+        });
+    }
+
+    updateNotificationData()
+    setInterval(updateNotificationData, 5000);
+  </script>
+  {% endif %}
   {% block script %}
   {% endblock script %}
 </body>
