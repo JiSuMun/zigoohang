@@ -147,7 +147,12 @@ def detail(request, product_pk):
     u_latitude, u_longitude = get_latlng_from_address(u_address)
     distance = calculate_distance(latitude, longitude, u_latitude, u_longitude)
     kakao_key = os.getenv('kakao_key')
-    s_address = address + ' ' + extra_address
+
+    if address:
+        s_address = address + ' ' + extra_address
+    else:
+        s_address = road_address + ' ' + extra_address
+
     context = {
         'kakao_script_key': kakao_script_key,
         'kakao_key': kakao_key,

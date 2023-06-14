@@ -452,9 +452,11 @@ def profile(request, username):
     posts = Post.objects.filter(user=person)
     interests = request.user.like_products.all()  
     orders = Order.objects.filter(customer=person).exclude(shipping_status='결제전').order_by('-pk')
+    sells = Order.objects.filter(seller=person, shipping_status='배송준비중').order_by('-pk')
     purchases = S_Purchase.objects.filter(customer=person).select_related('product')
     completed_products = S_Product.objects.filter(user=person, status='3')
     purchase_details = []
+
     for order in orders:
         items = OrderItem.objects.filter(order=order)
         purchase_details.append({
@@ -462,8 +464,16 @@ def profile(request, username):
             'items': items 
         })
 
+    selled_products = []
+    for sell in sells:
+        items = OrderItem.objects.filter(order=sell)
+        selled_products.append({
+            'sell': sell,
+            'items': items 
+        })
+
     point_log, _ = PointLog.objects.get_or_create(user=person)
-    point_log_items = point_log.point_log_itmes.all().order_by('-pk')[:4]
+    point_log_items = point_log.point_log_itmes.all().order_by('-pk')[:5]
     context = {
         'q':q,
         'person':person,
@@ -471,6 +481,7 @@ def profile(request, username):
         'interests':interests,
         'purchase_details': purchase_details,
         'completed_products': completed_products,
+        'selled_products' :selled_products,
         'point_log_items': point_log_items,
         # 'purchases': purchases,
     }
