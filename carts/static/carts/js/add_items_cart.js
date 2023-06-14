@@ -28,8 +28,10 @@ function user_add_item_cart(product, quantity) {
       console.log(response.data.cart_count)
       const countBadge = document.getElementById('count_badge')
 
-      countBadge.style.setProperty('display', 'block')
       countBadge.textContent = response.data.cart_count
+      countBadge.style.setProperty('display', 'block')
+
+      alert('장바구니에 추가되었습니다.')
     })
     // .then((response) => response.json())
     // .then((data) => {
@@ -61,4 +63,7 @@ function guest_add_item_cart(product, quantity) {
   const countBadge = document.getElementById('count_badge')
 
   countBadge.textContent = cart.length
+  countBadge.style.setProperty('display', 'block')
+
+  alert('장바구니에 추가되었습니다.')
 }
