@@ -8,8 +8,8 @@ from django.db.models import Q, Count
 
 def main(request):
     products = Product.objects.all()
-    if len(products) >= 4:
-        products = random.sample(list(products),4)
+    if len(products) >= 6:
+        products = random.sample(list(products),6)
     context = {
         'products': products,
     }

@@ -3,9 +3,12 @@
 	position: relative;
 	width: 100%;
 	min-height: calc(100vh - 101px);
+	/* height: 100%; */
 	background: url(../../img/base/login_image.jpg) no-repeat;
 	background-color: white;
-	background-size: 100%;
+	/* background-size: 100%; */
+	background-size: cover;
+	background-position: center;
 }
 .login-page {
 	width: 400px;
@@ -32,8 +35,15 @@
 }
 
 input:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
+
+textarea:focus {
+  border:1px solid #297821;
+  outline: none;
+}
+
 .login-page-form button {
 	height: 45px;
 	width: 100%;
@@ -89,8 +99,10 @@ input:focus {
 	min-height: 100vh;
 	background: url(../../img/base/signup_image.jpg) no-repeat;
 	background-color: white;
-	background-size: 100%;
+	/* background-size: 100%; */
 	text-align: center;
+	background-size: cover;
+	background-position: center;
 }
 .signup-page {
 	width: 500px;
@@ -268,7 +280,9 @@ input::file-selector-button {
 	min-height: 100vh;
 	background: url(../../img/base/update_image.jpg) no-repeat;
 	background-color: white;
-	background-size: 100%;
+	/* background-size: 100%; */
+	background-size: cover;
+	background-position: center;
 }
 .update-page {
   width: 500px;
@@ -323,7 +337,9 @@ input::file-selector-button {
 	min-height: 100vh;
 	background: url(../../img/base/password_image.jpg) no-repeat;
 	background-color: white;
-	background-size: 100%;
+	/* background-size: 100%; */
+	background-size: cover;
+	background-position: center;
 }
 .password-page {
   width: 500px;

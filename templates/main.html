@@ -8,6 +8,9 @@
   href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
 />
 <link rel="stylesheet" href="{% static 'css/main/main.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"> 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
+
 {% endblock head %}
 {% block content %}
 <!--carousel-->
@@ -25,9 +28,18 @@
   <div class="swiper-pagination"></div>
 </div>
 
+
+<!--지구행-->
+<div class="content-wrapper" data-aos="fade-up" data-aos-duration="1000">
+  <div class="content-inner">
+    <img src="{% static 'img/base/logo.png' %}" alt="">
+    <p class="content-text"><span style="font-weight:600;">"지구를 구하는 행동"</span> 이라는 의미를 가진 <span class="text-color">지구행</span>은</p>
+    <p class="content-text">환경 보호 및 지속 가능한 삶을 위한 정보를 제공하는 온라인 플랫폼입니다.</p>
+  </div>
+</div>
 <!--플래닛마켓-->
-<div class="main-product">
-  <div class="product-title">지구를 구하는 행동</div>
+<div class="main-product" data-aos="fade-up" data-aos-duration="1000">
+  {% comment %} <div class="product-title">행성상점</div> {% endcomment %}
   <div class="product-inner">
     {% for product in products|slice:6 %}
       <div class="item">
@@ -53,13 +65,12 @@
 <!--주요 링크-->
 <div class="main-link-wrap">
   <!--중고마켓 바로가기-->
-  <div class="m-reverse">
+  <div class="m-reverse" data-aos="fade-up" data-aos-duration="1000">
     <div class="main-wrap">
       <div class="main-box main-box-wrap">
         <p class="main-button_title">RECYCLE</p>
         <p class="main-button_text">지구행은 지속 가능한 소비와 재활용을 장려하기 위해 중고 제품 거래를 지원합니다.</p>
-        {% comment %} <a class="main-button" href="{% url 'secondhands:index' %}">View More</a> {% endcomment %}
-        <a class="main-button" href="#">View More</a>
+        <a class="main-button" href="{% url 'secondhands:index' %}">View More</a>
       </div>
       <div class="main-box">
         <img class="main-box-image" src="{% static 'img/main/recycle.jpg' %}" alt="">
@@ -68,20 +79,20 @@
   </div>
   <!--챌린지 바로가기-->
   <div>
-    <div class="main-wrap">
+    <div class="main-wrap" data-aos="fade-up" data-aos-duration="1000">
       <div class="main-box">
         <a href="#"><img class="main-box-image" src="{% static 'img/main/donation.jpg' %}" alt=""></a>
       </div>
       <div class="main-box main-box-wrap">
         <p class="main-button_title">CHALLENGE</p>
         <p class="main-button_text">지구행은 지구 환경 보호를 위한 다양한 챌린지를 진행하고 있습니다. 우리의 노력은 더 깨끗하고 지속 가능한 지구를 만들기 위한 것입니다.</p>
-        <a class="main-button" href="#">View More</a>
+        <a class="main-button" href="{% url 'challenges:index' %}">View More</a>
       </div>
     </div>
   </div>
 
   <!--환경 바로가기-->
-  <div class="m-reverse">
+  <div class="m-reverse" data-aos="fade-up" data-aos-duration="1000">
     <div class="main-wrap">
       <div class="main-box main-box-wrap">
         <p class="main-button_title">ECO</p>
@@ -94,7 +105,9 @@
     </div>
   </div>
 </div>
-
+<script> 
+  AOS.init();
+</script>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script src="{% static 'js/main/main.js' %}"></script>

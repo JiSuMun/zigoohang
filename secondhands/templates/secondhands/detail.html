@@ -78,6 +78,10 @@
           {% endif %}
         {% endif %}
 
+<!--         <div class="product-info-user">
+          <a href="{% url 'chat:start_chat' product.user.pk %}">판매자에게 연락하기</a>
+        </div> -->
+        
         <div class="product-info-status">
           {% if request.user == product.user %}
             {% if product.get_status_display != '거래완료' %}

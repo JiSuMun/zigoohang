@@ -2,30 +2,37 @@ from django.shortcuts import render, redirect
 from .models import ChatRoom
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from datetime import datetime, timedelta
 from django.utils import timezone
-from datetime import datetime
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def inbox(request):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
     chat_rooms = request.user.chat_rooms.all()
     chat_rooms_with_last_message = []
-    all_users = get_user_model().objects.exclude(id=request.user.id)
+    # all_users = get_user_model().objects.exclude(id=request.user.id)
+    all_users = request.user.get_followings_and_followers()
+    current_datetime = timezone.now()
 
     for chat_room in chat_rooms:
         unread_notifications = chat_room.notifications.filter(user=request.user, is_read=False).count()
         last_message = chat_room.messages.order_by('-timestamp').first()
         chat_rooms_with_last_message.append((chat_room, last_message, unread_notifications))
     
-    chat_rooms_with_last_message.sort(key=lambda x: x[1].timestamp if x[1] else datetime.min, reverse=True)
+    chat_rooms_with_last_message.sort(key=lambda x: x[1].timestamp if x[1] else current_datetime - timedelta(days=365), reverse=True)
 
     context = {
         'chat_rooms': chat_rooms_with_last_message,
         'all_users': all_users,
-        'user_username': request.user.username,
+        'user_username': request.user.first_name,
     }
 
     return render(request, 'chat/inbox.html', context)
 
-
+@login_required
 def unread_notifications(request):
     user = request.user
     chat_rooms = user.chat_rooms.all()
@@ -57,6 +64,7 @@ def unread_notifications(request):
 
     return JsonResponse(response_data)
 
+@login_required
 def get_new_chat_rooms(request):
     response_data = {"chat_rooms": []}
     for chat_room in request.user.chat_rooms.all():
@@ -66,13 +74,13 @@ def get_new_chat_rooms(request):
         })
     return JsonResponse(response_data)
 
-
+@login_required
 def start_chat(request, user_id):
     target_user = get_user_model().objects.get(id=user_id)
     chat_room = ChatRoom.get_or_create_chat_room([request.user, target_user])
     return redirect('chat:room', room_name=chat_room.name)
 
-
+@login_required
 def start_group_chat(request):
     if request.method == 'POST':
         selected_user_ids = request.POST.getlist('user_ids')
@@ -83,7 +91,7 @@ def start_group_chat(request):
             return redirect('chat:room', room_name=chat_room.name)
     return redirect('chat:inbox')
 
-
+@login_required
 def room(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
     messages = chat_room.messages.all()
@@ -100,7 +108,7 @@ def room(request, room_name):
     }
     return render(request, 'chat/room.html', context)
 
-
+@login_required
 def delete_chat(request, room_name):
     chat_room = ChatRoom.objects.get(name=room_name)
     chat_room.delete()

@@ -53,15 +53,19 @@ a {
 }
 
 :root {
+	--background-color: #fff;
 	--planet-color1: #EDF1F4;
 	--planet-color2: #ADCBC9;
 	--planet-color3: #8BBE86;
 	--planet-color4: #363636;
 	--planet-color5: rgb(201, 123, 123);
+	--planet-color6: rgba(163, 158, 158, 0.829);
+
 	--j-color1: #00A95C; /* 테마 녹색 */
 	--j-color2: #297821;
 	--j-green: #00A95C; /* 그냥 녹색 */
 	--j-red: red;
+	--j-white: white;
 
 }
 

@@ -29,7 +29,7 @@
         {% csrf_token %}
         <div class="users">
           {% for user in all_users %}
-            <label class="user" for="user__checkbox">
+            <label class="user" for="user__checkbox-{{ user.id }}">
               <div class="user__left">
                 <div class="user__left__img">
                   {% if user.image %}
@@ -43,7 +43,7 @@
                 </div>
               </div>
               <div class="user__checkbox-container">
-                <input type="checkbox" name="user_ids" id="user__checkbox" value="{{ user.id }}">
+                <input type="checkbox" name="user_ids" id="user__checkbox-{{ user.id }}" value="{{ user.id }}">
               </div>
             </label>
           {% comment %} 사용자 목록 없을 경우 보일 화면 {% endcomment %}
@@ -65,21 +65,10 @@
       </div>
     </div>
     {% comment %} 채팅 목록 공간 {% endcomment %}
-    <div class="chat-room__bottom">
+    <div class="chat-room__bottom" id="chat-room__bottom">
       {% comment %} chat_rooms가 있을 경우 보일 화면 {% endcomment %}
       {% if chat_rooms %}
         {% for chat_room, last_message, unread_notifications in chat_rooms %}
-          {% comment %} <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
-            <a href="{% url 'chat:room' chat_room.name %}" style="margin-right: 0.5rem;" id="room_name">{{ chat_room }}</a>
-            <p class="unread_count notification--color noti">{% if unread_notifications %}{{ unread_notifications }}{% else %}0{% endif %}</p>
-            <p class="last-message">{{ last_message.content }}</p>
-            <p class="timestamp">{{ last_message.formatted_timestamp }}</p>
-            <form action="{% url 'chat:delete_chat' room_name=chat_room.name %}" method="post">
-              {% csrf_token %}
-              <input type="submit" value="삭제">
-            </form>
-          </div> {% endcomment %}
-
           <div class="chat_room" id="{{ chat_room.name }}" value="{{ chat_room.pk }}">
             <a href="{% url 'chat:room' chat_room.name %}" id="room_name" class="chat">
               {% comment %} 왼쪽 공간 - 채팅방 이름 및 최신 채팅 {% endcomment %}
@@ -91,9 +80,11 @@
               {% comment %} 오른쪽 공간 - 최신 채팅 시간, 안읽은 메시지 수 {% endcomment %}
               <section class="chat__right">
                 <span class="timestamp">{{ last_message.formatted_timestamp }}</span>
-                <div class="unread_count notification--color noti chat__right__unread">
+                <div class="chat__right__unread unread_count notification--color noti ">
                   {% if unread_notifications %}
                     {{ unread_notifications }}
+                  {% else %}
+                    0
                   {% endif %}
                 </div>
               </section>
@@ -116,10 +107,33 @@
 {% endblock content %}
 
 {% block script %}
+{% comment %} 편집 버튼 클릭 시 나가기 버튼 보이게 {% endcomment %}
 <script>
+  const editChatsBtn = document.querySelector("#edit-chats-btn")
+  const deleteChatBtns = document.querySelectorAll(".chat__delete")
 
+  function showdeleteChatBtn() {
+    if (editChatsBtn.innerText == "편집") {
+      editChatsBtn.innerText = "편집 취소";
+    } else {
+      editChatsBtn.innerText = "편집";
+    }
+    deleteChatBtnsInit();
+  }
+  
+  function deleteChatBtnsInit() {
+    const deleteChatBtns = document.querySelectorAll(".chat__delete");
+    for (let i = 0; i < deleteChatBtns.length; i++) {
+      deleteChatBtns[i].classList.toggle('none');
+    }
+  }
+
+  editChatsBtn.addEventListener("click", showdeleteChatBtn)
+</script>
+
+<script>
   function checkIfNoChatRooms() {
-    const chatRoomSection = document.getElementById("chat-rooms-section");
+    const chatRoomSection = document.getElementById("chat-room__bottom");
     const chatRooms = chatRoomSection.getElementsByClassName("chat_room");
     const noChatRooms = document.getElementById("no-chat-rooms");
 
@@ -129,12 +143,13 @@
         noChatRooms.style.display = "none";
     }
   }
-
+</script>
+<script>
   function updateNewChatRooms() {
     fetch("{% url 'chat:new_chat_rooms' %}")
       .then(response => response.json())
       .then(data => {
-        const chatRoomSection = document.getElementById("chat-rooms-section");
+        const chatRoomSection = document.getElementById("chat-room__bottom");
         const fetchedChatRoomNames = new Set();
 
         data.chat_rooms.forEach(chat_room => {
@@ -148,28 +163,45 @@
   
             const chatRoomLink = document.createElement("a");
             chatRoomLink.href = `{% url 'chat:room' 'PLACEHOLDER' %}`.replace('PLACEHOLDER', chat_room.name);
-            chatRoomLink.textContent = chat_room.name;
             chatRoomLink.id = "room_name";
-            newChatRoom.appendChild(chatRoomLink);
-  
-            const unreadCountElement = document.createElement("p");
-            unreadCountElement.classList.add("unread_count", "notification--color", "noti");
-            unreadCountElement.textContent = "0";
-            newChatRoom.appendChild(unreadCountElement);
-  
-            const lastMessageElement = document.createElement("p");
+            chatRoomLink.classList.add("chat");
+            
+            const chat_left = document.createElement("section");
+            chat_left.classList.add('chat__left');
+            const chat_left_name = document.createElement("span");
+            chat_left_name.classList.add('chat__left__name');
+            chat_left_name.textContent = chat_room.name;
+            chat_left.appendChild(chat_left_name)
+            const lastMessageElement = document.createElement("span");
             lastMessageElement.classList.add("last-message");
             lastMessageElement.textContent = "메시지 없음";
-            newChatRoom.appendChild(lastMessageElement);
-  
-            const timestampElement = document.createElement("p");
+            chat_left.appendChild(lastMessageElement);
+            chatRoomLink.appendChild(chat_left);
+
+            const chat_right = document.createElement("section");
+            chat_right.classList.add('chat__right');
+            const timestampElement = document.createElement("span");
             timestampElement.classList.add("timestamp");
             timestampElement.textContent = "";
-            newChatRoom.appendChild(timestampElement);
-  
+            chat_right.appendChild(timestampElement);
+            const unreadCountElement = document.createElement("div");
+            unreadCountElement.classList.add("chat__right__unread", "unread_count", "notification--color", "noti");
+            unreadCountElement.textContent = "0";
+            chat_right.appendChild(unreadCountElement);
+            chatRoomLink.appendChild(chat_right);
+
+            newChatRoom.appendChild(chatRoomLink);
+
+            const deleteDiv = document.createElement("div");
+            deleteDiv.classList.add("chat__delete", "none");
+            console.log(deleteDiv)
+            deleteDiv.addEventListener('click', showdeleteChatBtn);
+            
+
             const deleteForm = document.createElement("form");
-            deleteForm.action = `{% url 'chat:delete_chat' room_name='${chat_room.name}' %}`;
+            deleteForm.action = `{% url 'chat:delete_chat' room_name='PLACEHOLDER' %}`.replace("PLACEHOLDER", chat_room.name);
             deleteForm.method = "post";
+            console.log(deleteForm)
 
             const csrfToken = document.createElement("input");
             csrfToken.type = "hidden";
@@ -179,10 +211,13 @@
   
             const deleteButton = document.createElement("input");
             deleteButton.type = "submit";
-            deleteButton.value = "삭제";
+            deleteButton.value = "나가기";
             deleteForm.appendChild(deleteButton);
-  
-            newChatRoom.appendChild(deleteForm);
+
+            deleteDiv.appendChild(deleteForm);
+
+            newChatRoom.appendChild(deleteDiv);
+            deleteChatBtnsInit();
 
             chatRoomSection.appendChild(newChatRoom);
             checkIfNoChatRooms();
@@ -204,6 +239,7 @@
       .then(data => {
         data.data.forEach(chat_room_data => {
           let chat_room_div = document.getElementById(chat_room_data.room_name);
+          console.log(chat_room_div)
           let unread_count = chat_room_div.querySelector(".unread_count");
           let last_message = chat_room_div.querySelector(".last-message");
           let timestamp = chat_room_div.querySelector(".timestamp");
@@ -226,9 +262,11 @@
   setInterval(updateNewChatRooms, 5000);
   setInterval(updateNotificationData, 5000);
 </script>
+
+
 {% comment %} 비동기 이외 click event {% endcomment %}
+{% comment %} 채팅창 만들기 버튼 관련 {% endcomment %}
 <script>
-  {% comment %} 채팅창 만들기 버튼 관련 {% endcomment %}
   const makeChatBtn = document.querySelector("#make-chat-btn")
   const cancelMakeBtn = document.querySelector("#cancel-make-btn")
   const userList = document.querySelector("#user-list")
@@ -266,22 +304,7 @@
   for (let i = 0; i < checkboxes.length; i++) {
     checkboxes[i].addEventListener('change', showcreateChatBtn);
   }
-  {% comment %} 편집 버튼 클릭 시 나가기 버튼 보이게 {% endcomment %}
-  const editChatsBtn = document.querySelector("#edit-chats-btn")
-  const deleteChatBtns = document.querySelectorAll(".chat__delete")
-
-  function showdeleteChatBtn() {
-    if (editChatsBtn.innerText == "편집") {
-      editChatsBtn.innerText = "편집 취소"
-    } else {
-      editChatsBtn.innerText = "편집"
-    }
-    for (let i = 0; i < deleteChatBtns.length; i++) {
-      deleteChatBtns[i].classList.toggle('none')
-    }
-  }
-
-  editChatsBtn.addEventListener("click", showdeleteChatBtn)
 
 </script>
+
 {% endblock script %}
