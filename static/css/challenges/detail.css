@@ -49,3 +49,7 @@
     .red-text {
     color: red;
     }
+
+.certification-none {
+    display: none;
+}

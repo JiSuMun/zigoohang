@@ -13,6 +13,6 @@ path('<int:challenge_pk>/create/', views.certification_create, name='certificati
 path('<int:challenge_pk>/<int:certification_pk>/update/', views.certification_update, name='certification_update'),
 path('<int:challenge_pk>/<int:certification_pk>/delete/', views.certification_delete, name='certification_delete'),
 path('<int:challenge_pk>/participation/', views.participation, name='participation'),
-# path('<int:challenge_pk>/join/', views.join_challenge, name='join'),
-# path('<int:challenge_pk>/leave/', views.leave_challenge, name='leave'),
+path('<int:challenge_pk>/join/', views.join_challenge, name='join'),
+path('<int:challenge_pk>/leave/', views.leave_challenge, name='leave'),
 ]

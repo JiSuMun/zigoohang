@@ -50,41 +50,35 @@
 </h5>
 {% comment %} 참가/미참가 {% endcomment %}
 <br>
-<form id="participation-form" action="{% url 'challenges:participation' challenge_pk=challenge.pk %}" method="POST">
-    {% csrf_token %}
-    <button id="participation-toggle" class="green-button" type="submit">
-        {% if request.user in challenge.participants.all %}
-            미참가
-        {% else %}
-            참가
-        {% endif %}
-    </button>
-    <div id="participants-count">참여인원: {{ challenge.participants.count }}명</div>
+<form class="participation-forms" action="{% url 'challenges:participation' challenge_pk=challenge.pk %}" method="POST" data-challenge-id="{{ challenge.pk }}">
+  {% csrf_token %}
+  <button id="participation-toggle-{{ challenge.pk }}" class="green-button" type="{% if days_remaining < 0 %}button{% else %}submit{% endif %}" {% if days_remaining < 0 %}onclick="showEndedMessage()"{% endif %}>
+    {% if request.user in challenge.participants.all %}
+      미참가
+    {% else %}
+      참가
+    {% endif %}
+  </button>
+  <div>참여인원: <span id="participants-count">{{ challenge.participants.count }}</span>명</div>
 </form>
+
 <br>
-<!--인증 작성-->
-{% if user.is_authenticated %}
-    <div>
+<div id="certification_form_container" class="certification-none">
     <form action="{% url 'challenges:certification_create' challenge.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ certification_form.as_p }}
         <div>
-        <input type="submit" value="작성하기">
+            <input type="submit" value="작성하기">
         </div>
     </form>
-    </div>
-{% else %}
-    <div>
-        <p>리뷰를 작성하려면&nbsp;<a href="{% url 'accounts:login' %}"> 로그인</a>이 필요합니다.</p>
-    </div>
-{% endif %}
- 
+    <p>챌린지에 참여하신 사용자만 인증이 가능합니다.</p>
+</div>
 
 <br>
 <!--인증 내용-->
 {% if u_certification_forms %}
     {% for certification, u_certification_form in u_certification_forms %}
-            <div class="d-wrapper">
+            <div class="d-wrapper certification--box">
                 <div class="d-title-wrapper">
                     <p class="d-title">{{ certification.title }}</p>
                     <!--내용-->
@@ -113,11 +107,6 @@
                     </div>
                 </form>
 
-
-
-
-
-
                 <!-- 삭제 버튼 -->
                 <form action="{% url 'challenges:certification_delete' challenge.pk certification.pk %}" method="POST">
                   {% csrf_token %}
@@ -125,16 +114,87 @@
                 </form>
             </div>
         {% endif %}
-
     {% empty %}
     <p>게시물이 없습니다.</p>
-
     {% endfor %}
-
-
-    
 {% endif %}
+
 <script>
+  const participationToggleButton = document.getElementById("participation-toggle-{{ challenge.pk }}");
+
+  participationToggleButton.addEventListener("click", function (e) {
+    {% if not request.user.is_authenticated %}
+      e.preventDefault(); 
+      alert("로그인이 필요한 기능입니다. 로그인 페이지로 이동합니다.");
+      location.href = "/accounts/login/";
+    {% endif %}
+  });
+
+  function showEndedMessage() {
+    alert("이미 종료된 챌린지입니다.");
+  }
+
+  function showCertification() {
+    alert("이미 인증을 완료하셨습니다. 추가 인증은 불가능합니다.");
+  }
+</script>
+<script>
+
+function disableParticipationForm() {
+  const participantBtn = document.querySelector(".green-button");
+  participantBtn.setAttribute("disabled", "disabled");
+  participantBtn.addEventListener("click", function () {
+    alert("이미 인증을 완료하셨습니다. 추가 인증은 불가능합니다.");
+  });
+}
+
+const userHasCertified = {{ user_has_certified|yesno:"true,false" }};
+
+if (userHasCertified) {
+  disableParticipationForm();
+}
+
+const participationForm = document.querySelectorAll(".participation-forms");
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+participationForm.forEach((form) => {
+  form.addEventListener('submit', function (e){
+    e.preventDefault();
+    const challengeId = e.target.dataset.challengeId;
+
+    axios({
+      method: "POST",
+      url: `/challenges/${challengeId}/participation/`,
+      headers: {'X-CSRFToken': csrftoken},
+    })
+    .then((response) => {
+      console.log(response.data)
+      const isParticipating = response.data.is_participating;
+      const participantBtn = document.querySelector(`#participation-toggle-${challengeId}`);
+      const participantCount = document.querySelector(`#participants-count`);
+      const certificationForm = document.querySelector(`#certification_form_container`)
+      const isCertified = response.data.is_certified;
+      console.log(isCertified)
+
+      if (isCertified) {
+        disableParticipationForm();
+      } else {
+        if (isParticipating) {
+          participantBtn.textContent = "미참가";
+          certificationForm.classList.remove('certification-none');
+        } else {
+          participantBtn.textContent = "참가";
+          certificationForm.classList.add('certification-none');
+        }
+        participantCount.innerText = response.data.participants_count;
+      }
+    })
+    .catch((error) => {
+      console.log(error.response);
+    });
+  })
+})
+
+
 function toggleCertificationUpdateForm(certification_id) {
   const form = document.getElementById("certificationUpdateForm" + certification_id);
   const box = document.querySelector(".certification--box");
@@ -151,35 +211,5 @@ function toggleCertificationUpdateForm(certification_id) {
   }
 }
 
-// 참가/미참가
-
-document.addEventListener('DOMContentLoaded', function() {
-    const participationForm = document.getElementById("participation-form");
-    const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-    const participationToggleBtn = document.getElementById("participation-toggle");
-    const participantsCountDiv = document.getElementById("participants-count");
-
-    participationForm.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        fetch(participationForm.action, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,
-            },
-            body: {},
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.is_participating) {
-                    participationToggleBtn.textContent = "미참가";
-                } else {
-                    participationToggleBtn.textContent = "참가";
-                }
-                participantsCountDiv.textContent = `참여인원: ${data.participants_count}명`;
-            });
-    });
-});
 </script>
 {% endblock content %}

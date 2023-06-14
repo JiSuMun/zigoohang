@@ -104,14 +104,14 @@
           <div class="header-info">
             <div class="header-img">
               {% if request.user.image %}
-              <img src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image">
+              <img src="{{ person.image.url }}" alt="{{ user.username }}'s Profile Image">
             {% else %}
               <img src="#" alt="noimage">
             {% endif %}
           </div>
           <div class="header-text">
             <div class="header-text-name">
-              <h2>{{ user.last_name }} 님</h2>
+              <h2>{{ person.last_name }} 님</h2>
               <a href="#">
                 <span class="material-symbols-outlined">forum</span>
               </a>
@@ -135,7 +135,7 @@
           <div class="main-card">
               <span class="main-card-title">나의 에코포인트🌱</span>
               <div class="main-card-content">
-                <span>{{ user.points|intcomma }}</span>
+                <span>{{ person.points|intcomma }}</span>
               </div>
           </div>
           <div class="main-card">
