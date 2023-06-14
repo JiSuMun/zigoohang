@@ -1,9 +1,9 @@
 .footer {
   border-top: 0.5px solid #dddddd;
-  background-color: white;
+  background-color: var(--background-color);
   height: 250px;
   z-index: 99;
-  color: var(--j-text-white);
+  color: var(--text-color);
   padding: 40px 0px 40px;
   display: flex;
   padding: 40px 20px;
@@ -24,7 +24,7 @@
 }
 
 .footer-text a {
-  color: var(--j-text-white);
+  color: var(--text-color);
   margin-top: 20px;
 }
 
@@ -71,7 +71,7 @@
 
 .info {
   font-size: 14px;
-  color: #191919;
+  color: var(--text-color);
   font-weight: bold;
   width: 50%;
 }
@@ -88,7 +88,7 @@
 }
 
 .copy {
-  color: #8d8d8d;
+  color: var(--j-sub-text);
   display: block !important;
   margin-top: 18px;
 }
@@ -122,7 +122,7 @@
   }
 
   .info {
-    color: #5c5c5c;
+    color: var(--text-color);
     font-size: 12px;
     line-height: 18px;
     font-weight: bold;
@@ -150,7 +150,7 @@
   
 .info .tit_field {
     display: block;
-    color: #191919;
+    color: var(--text-color);
     font-size: 12px;
     font-weight: 900;
   }
@@ -171,7 +171,7 @@
   }
   p.copy {
     font-size: 12px;
-    color: #5c5c5c;
+    color: var(--j-sub-text);
     margin-top: 30px;
     font-weight: normal;
     line-height: 17px;
