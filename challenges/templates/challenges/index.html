@@ -3,62 +3,47 @@
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/challenges/index.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<link rel="stylesheet" 
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock head %}
-{% block title %}게시글 목록{% endblock title %}
+
+{% block title %}
+챌린지
+{% endblock title %}
 
 {% block content %}
-
-{% comment %} 진행/마감탭 {% endcomment %}
-<div class="challenge-tap-container">
-  <a class="{% if not q or q != '진행중인챌린지' %} pass {% endif %}" href="{% url 'challenges:index' %}?q=진행중인챌린지">
-    <div>
-      <p>진행중인 챌린지</p>
-    </div>
-  </a>
-  <a class="{% if not q or q != '마감된챌린지' %} pass {% endif %}" href="{% url 'challenges:index' %}?q=마감된챌린지">
-    <div>
-      <p>마감된 챌린지</p>
-    </div>
-  </a>
+<div class="challenges-title-wrap">
+  <div class="challenges-title-box">
+    <p class="challenges-title-title">챌린지</p>
+    <p class="challenges-title-text">지구행은 지구 환경 보호를 위한 다양한 챌린지를 진행하고 있습니다.</p>
+    <p class="challenges-title-text">우리의 노력은 더 깨끗하고 지속 가능한 지구를 만들기 위한 것입니다.</p>
+  </div>
 </div>
 
-<!--게시글 목록-->
-<div class="p-wrapper">
-    <table class="p-table">
-      <!--테이블 비율-->
-      <colgroup>
-        <col width="11%"/>
-        <col width="50%"/>
-        <col width="13%"/>
-        <col width="13%"/>
-        <col width="13%"/>
-      </colgroup>
-      <thead>
-        <tr class="p-tr">
-          <th>번호</th>
-          <th>제목</th>
-          <th>작성자</th>
-          <th>날짜</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for challenge in page_obj %}
-        <tr>
-          <td class="p-td p-center">{{ challenge.id }}</td>
-          <td class="p-td">
-            <a class="p-td-title" href="{% url 'challenges:detail' challenge.id %}">
-              {{ challenge.title }}
-            </a>
-          </td>
-          <td class="p-td p-center">{{ challenge.creator.username  }}</td>
-          <td class="p-td p-center">{{ challenge.created|date:'m-d' }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-    <div class="p-write-wrapper">
-      <a class="p-write" href="{% url 'challenges:create' %}">글쓰기</a>
-    </div>
+<div class="challenge-wrapper">
+  <div class="challenge-inner">
+    {% for challenge in page_obj %}
+      <div class="item">
+        <a href="{% url 'challenges:detail' challenge.id %}">
+          <div class="image-wrapper">
+            {% for image in challenge.challengeimage_set.all %}
+            <img class="image"src="{{ image.image.url }}" alt="Challenge Image">
+            {% endfor %}
+          </div>
+          <div class="content-wrapper">
+            <p class="c-title">{{ challenge.title }}</p>
+            <p class="c-date">{{ challenge.start_date|date:"Y-m-d" }}~{{ challenge.end_date|date:"Y-m-d" }}</p>
+            <div class="icon-box">
+              <i class="fa-regular fa-user"></i>{{ challenge.participants.count }}
+              <i class="fa-regular fa-comment-dots"></i>{{ challenge.certifications.count }}
+            </div>  
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="c-write-wrapper">
+    <a class="c-write" href="{% url 'challenges:create' %}">글쓰기</a>
   </div>
   <div class="pagination">
     <span class="step-links">
@@ -93,4 +78,6 @@
       {% endif %}
     </span>
   </div>
+</div>
+
 {% endblock content %}

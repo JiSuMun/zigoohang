@@ -19,13 +19,12 @@ def index(request):
         challenges = Challenge.objects.filter(end_date__lte=date.today()).order_by('-created')
     else:
         challenges = Challenge.objects.all().order_by('-created')
-        
-    paginator = Paginator(challenges, 10)
+    paginator = Paginator(challenges, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
         'page_obj' : page_obj,
-        'q': q
+        'q': q,
     }
     return render(request, 'challenges/index.html', context)
 
