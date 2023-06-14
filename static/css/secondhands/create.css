@@ -115,8 +115,8 @@ input::file-selector-button {
 
 }
 
-/* 핸드폰 크기*/
-@media (min-width: 478.9px) {
+/* 태블릿 크기*/
+@media (min-width: 900.9px) {
   .form-info-box {
     display: flex;
   }
@@ -135,7 +135,7 @@ input::file-selector-button {
     height: 35px;
   }
 }
-@media (max-width: 479px) {
+@media (max-width: 900px) {
   .create-page-title-wrapper h1 {
     font-size: 30px;
     text-align: center;

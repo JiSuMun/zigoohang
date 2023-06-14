@@ -67,6 +67,9 @@
   font-size: 13px;
   margin-bottom: 1.5rem;
 }
+.d-username a:hover {
+  color: var(--planet-color3);
+}
 
 .d-content {
   line-height: 1.4;

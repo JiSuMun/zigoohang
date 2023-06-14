@@ -61,6 +61,20 @@ header h2 {
   border-bottom: none;
 }
 
+/* 삭제버튼 */
+.sub-button {
+  border: 0;
+  background-color: white;
+  margin-bottom: 0;
+}
+.sub-button span {
+  font-size: 17px;
+  color: lightgrey;
+}
+.material-symbols-outlined:hover {
+  color: var(--planet-color3);
+}
+
 /* 반응형 스타일 */
 @media (min-width: 768px) {
   .main-items-price p,
@@ -78,7 +92,10 @@ header h2 {
     display: none;
   }
   .interest-page-content-main tr {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    /* align-items: end; */
     position: relative;
     margin-bottom: 10px;
     padding: 10px 15px;

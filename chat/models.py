@@ -12,9 +12,9 @@ class ChatRoom(models.Model):
     def get_or_create_chat_room(cls, users):
         unique_users = set(users)
         if len(unique_users) == 1:
-            room_name = "ME_Chat_with_" + list(unique_users)[0].username
+            room_name = "나(" + list(unique_users)[0].first_name + ")"
         else:
-            room_name = "Chat_with_" + "_".join(sorted([user.username for user in users]))
+            room_name = ",".join(sorted([user.first_name for user in users]))
 
         chat_room = cls.objects.filter(name=room_name).first()
         if chat_room:

@@ -104,8 +104,8 @@ input[type=number] {
 
 }
 
-/* 핸드폰 크기*/
-@media (min-width: 478.9px) {
+/* 테블릿 크기*/
+@media (min-width:900.9px) {
   .form-info-box {
     display: flex;
   }
@@ -124,7 +124,7 @@ input[type=number] {
     height: 35px;
   }
 }
-@media (max-width: 479px) {
+@media (max-width:900px) {
   .update-page-title-wrapper h1 {
     font-size: 30px;
     text-align: center;
