@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from django.contrib.auth.views import LoginView
-from .views import SignupView, activate
+from .views import SignupView
 
 
 
@@ -18,7 +18,7 @@ urlpatterns = [
     path("profile/<str:username>/", views.profile, name="profile"),
     # path('agreement/', views.AgreementView.as_view(), name='agreement'),
     # 이메일 인증 
-    path('activate/<str:uidb64>/<str:token>/', activate, name='activate'),
+    path('activate/<str:uidb64>/<str:token>/', views.activate, name='activate'),
     # 팔로우
     path('<int:user_pk>/follow/', views.follow, name='follow'),
     path('profile/<str:username>/following-list/', views.following_list, name='following_list'),
