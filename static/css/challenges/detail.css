@@ -113,6 +113,7 @@
   border-radius: 5px;
 }
 
+
 .btn-delete:hover {
   border: 1px solid #333333;
   background-color: var(--j-dark-gray);
@@ -134,6 +135,20 @@
   color: white;
 }
 
+.c-button {
+  padding: 0.4rem 1rem;
+  border: none;
+  font-size: 16px;
+  color: #297821;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.c-button:hover {
+  background-color: #297821;
+  color: white;
+}
 
 .form-control {
   width: calc(100% - 1rem); 

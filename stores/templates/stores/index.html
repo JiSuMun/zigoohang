@@ -32,9 +32,11 @@
       </div>
     {% endfor %}
   </div>
+  {% if user.is_authenticated and user.is_seller %}
   <div class="button-wrapper">
     <a class="c-button" href="{% url 'stores:create' %}">상점 생성</a>
   </div>
+{% endif %}
 </div>
 
 {% endblock content %}
