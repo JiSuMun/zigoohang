@@ -44,18 +44,30 @@
     const mapContainer = document.getElementById('map');
     const mapOption = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 11,
+      level: 10,
     };
     
     const map = new kakao.maps.Map(mapContainer, mapOption);
     const geocoder = new kakao.maps.services.Geocoder();
     const regionSelect = document.getElementById('region-select');
-    
+
     function setCenter(coords) {
       map.setCenter(new kakao.maps.LatLng(coords.latitude, coords.longitude));
     }
     /* 장소 바꿀 때 */
+    const markers = [];
+    const overlays = [];
     function changeRegion() {
+      markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+      markers.length = 0;
+
+      overlays.forEach((overlay) => {
+        overlay.setMap(null);
+      });
+      overlays.length = 0;
+
       axios.get('/posts/get_zeros/', {
         params: {
           'region': regionSelect.value,
@@ -111,6 +123,18 @@
                 map: map,
                 title: zero.name,
               });
+              markers.push(marker);
+              /* 마커 위 커스텀오버레이 */
+              var iwContent = '<div class="marker">' + zero.name + '</div>'; // 커스텀오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+              iwPosition = new kakao.maps.LatLng(latitude, longitude);
+              var overlay = new kakao.maps.CustomOverlay({
+                position : iwPosition, 
+                content : iwContent,
+                yAnchor: 2.5
+            });
+            overlays.push(overlay);
+            overlay.setMap(map); 
+
               /* 업체 길찾기 링크 연결 */
               kakao.maps.event.addListener(marker, 'click', function() {
                 const apiUrl = "https://dapi.kakao.com/v2/local/geo/transcoord.json?x=127.423084&y=37.078956&input_coord=WGS84&output_coord=TM";
@@ -138,6 +162,7 @@
               if (coordsList.length === zeros.length) {
                 const center = getCenterCoordinate(coordsList);
                 map.setCenter(center);
+                map.setLevel(mapOption.level);
               }
             }
           });
@@ -164,6 +189,7 @@
       }    
       function relayout() {    
         map.relayout();
+        map.setLevel(mapOption.level);
       }
     }
     

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-  Update
+  정보수정
 {% endblock title %}
 
 {% block head %}
@@ -16,24 +16,23 @@
     <div class="update-page-title">
       <h1>UPDATE</h1>
     </div>
-
-
-
     <form class="update-page-form" action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      {% for field in form %}
-        {{ field }}
-      {% endfor %}
-      <input class="form-address" type="text" id="address" placeholder="주소" name="address" value="{{ user.address }}">
-      <input class="address--btn" type="button" onclick="search_address()" value="주소 검색">
+     <p>{{ form.first_name }}</p>
+     <p>{{ form.last_name }}</p>
+     <p>{{ form.image }}</p>
+     <p>{{ form.address }}</p>
+     <div class="signup-page-form-check">
+      <input class="form-address form-control" type="text" id="address" placeholder="{{ request.user.address }}" name="address" readonly>
+      <input class="address--btn form-check-id" type="button" onclick="search_address()" value="주소 검색">
+    </div>
       <button type="submit">회원정보 수정</button>
     </form>
   <form action="{% url 'accounts:delete' %}" method="post">
     {% csrf_token %}
-    <input type="submit" value="회원탈퇴">
+    <input class="delete" type="submit" value="회원탈퇴" onclick="return confirm('정말 탈퇴하시겠습니까?')">
     </form>
   </div>
-
 </div>
 {% endblock content %}
 

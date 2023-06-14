@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}Detail{% endblock title %}
+
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/secondhands/detail.css' %}">
@@ -43,19 +45,13 @@
             {% endif %}
           </div>
         </div>
-        <p class="product-info-head-price">{{ product.price }}원</p>
+        <p class="product-info-head-price">{{ product.price|intcomma }}원</p>
         <p class="product-info-head-p">상세정보</p>
         <div class="product-info-head-content">
           <p>{{ product.content|safe }}</p>
         </div>
-        {% if request.user == product.user %}
-            <button id="btn-sale" onclick="changeStatus(2,'예약중');" type="button">예약중으로 변경</button>
-            <button id="btn-complete" onclick="changeStatus(3,'거래완료');" type="button">거래완료로 변경</button>
-            {% csrf_token %}
-        {% endif %}
-        <p><span id="product-status">{{ product.get_status_display }}</span></p>
         <div class="product-info-user">
-          <a href="{% url 'accounts:profile' product.user%}">판매자에게 연락하기</a>
+          <a href="{% url 'chat:start_chat' product.user.pk %}">판매자에게 연락하기</a>
         </div>
         <div class="product-info-status">
           {% if request.user == product.user %}
@@ -85,7 +81,6 @@
         </div>
     </div>
   </div>
-
 {% endblock content %}
 
 {% block script %}

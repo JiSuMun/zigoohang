@@ -10,7 +10,7 @@ function toggleReviewUpdateForm(review_id) {
   } else {
     form.style.display = "none";
     box.style.display = "block";
-    button.innerHTML = "리뷰 수정";
+    button.innerHTML = "수정";
   }
 }
 

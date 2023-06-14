@@ -43,20 +43,24 @@
             </div>
           </div>
           <div class="item-box">
-            <p class="detail-name">[{{ store.name }}] {{ product.name }}</p>
+            <p class="detail-name">[ {{ store.name }} ] {{ product.name }}</p>
             <p class="detail-price">￦ {{ product.price|intcomma }}</p>
           </div>
         </a>
       </div>
     {% endfor %}
   </div>
-  <a href="{% url 'stores:products_create' store.pk %}">[상품 생성]</a>
-  <a href="{% url 'stores:index' %}">[목록]</a>
-  <a href="{% url 'stores:update' store.pk %}">[상점 수정]</a>
-  <form action="{% url 'stores:delete' store.pk %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="상점 삭제">
-</form>    
+  <div class="button-wrapper">
+    <a class="d-button" href="{% url 'stores:index' %}">목록</a>
+    {% if request.user == store.user %}
+    <a class="d-button" href="{% url 'stores:products_create' store.pk %}">상품 생성</a>
+    <a class="d-button" href="{% url 'stores:update' store.pk %}">상점 수정</a>
+    <form action="{% url 'stores:delete' store.pk %}" method="POST">
+      {% csrf_token %}
+      <input class="d-button" type="submit" value="상점 삭제">
+    </form>
+    {% endif %}
+  </div>
 </div>
 
 

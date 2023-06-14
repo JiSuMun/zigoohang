@@ -134,11 +134,13 @@
 }
 
 input:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
 
 textarea:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
 
 .form_label {
@@ -317,5 +319,9 @@ textarea:focus {
 
 .r-count {
   font-size: 13px;
+  color: #333333;
+}
+
+.tag-text {
   color: #333333;
 }

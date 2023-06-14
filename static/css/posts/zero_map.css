@@ -80,6 +80,14 @@
   margin-bottom: 0.5rem;
 }
 
+.marker {
+  border: none;
+  background-color: white;
+  font-size: 12px;
+  padding: 0.5rem 0.4rem;
+  text-align: center;
+}
+
 @media (max-width: 1079.9px) {
   .map-title-wrap {
     padding-left: 1rem;

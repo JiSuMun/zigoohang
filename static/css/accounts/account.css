@@ -3,9 +3,12 @@
 	position: relative;
 	width: 100%;
 	min-height: calc(100vh - 101px);
+	/* height: 100%; */
 	background: url(../../img/base/login_image.jpg) no-repeat;
 	background-color: white;
-	background-size: 100%;
+	/* background-size: 100%; */
+	background-size: cover;
+	background-position: center;
 }
 .login-page {
 	width: 400px;
@@ -28,11 +31,19 @@
 	margin-bottom: 10px;
 	border: none;
 	border-radius: 5px;
+	border: 1px  solid #00000033;
 }
 
 input:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
+
+textarea:focus {
+  border:1px solid #297821;
+  outline: none;
+}
+
 .login-page-form button {
 	height: 45px;
 	width: 100%;
@@ -88,8 +99,10 @@ input:focus {
 	min-height: 100vh;
 	background: url(../../img/base/signup_image.jpg) no-repeat;
 	background-color: white;
-	background-size: 100%;
+	/* background-size: 100%; */
 	text-align: center;
+	background-size: cover;
+	background-position: center;
 }
 .signup-page {
 	width: 500px;
@@ -240,6 +253,25 @@ input::file-selector-button {
 	gap: 10px;
 }
 
+.wait-title-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 550px;
+}
+
+.wait-title-title {
+  text-align: center;
+  font-size: 50px;
+  margin-bottom: 60px;
+  font-weight: bold;
+}
+
+.wait-title-text {
+  text-align: center;
+  margin-bottom: 10px;
+	font-size: 22px;
+}
 
 /* 정보 수정 */
 .update-wrapper {
@@ -248,7 +280,9 @@ input::file-selector-button {
 	min-height: 100vh;
 	background: url(../../img/base/update_image.jpg) no-repeat;
 	background-color: white;
-	background-size: 100%;
+	/* background-size: 100%; */
+	background-size: cover;
+	background-position: center;
 }
 .update-page {
   width: 500px;
@@ -264,17 +298,31 @@ input::file-selector-button {
 }
 .update-page-form input{
 	display: block;
-	width: 100%;
+	width: calc(100% - 0.4rem);
 	height: 40px;
 	margin-bottom: 10px;
-	border: 0.5px solid grey;
-	border-radius: 10px;
+	border: 1px  solid #00000033;
+	border-radius: 5px;
 }
 .update-page-form button {
 	width: 100%;
 	padding: 10px;
 	margin-top: 20px;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
+	height: 40px;
+	font-size: 16px;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.delete {
+	width: 100%;
+	padding: 10px;
+	height: 40px;
+	font-size: 16px;
 	background-color: green;
 	color: white;
 	border: none;
@@ -289,7 +337,9 @@ input::file-selector-button {
 	min-height: 100vh;
 	background: url(../../img/base/password_image.jpg) no-repeat;
 	background-color: white;
-	background-size: 100%;
+	/* background-size: 100%; */
+	background-size: cover;
+	background-position: center;
 }
 .password-page {
   width: 500px;
@@ -305,20 +355,22 @@ input::file-selector-button {
 }
 .password-page-form input{
 	display: block;
-	width: 100%;
+	width: calc(100% - 0.4rem);
 	height: 40px;
 	margin-bottom: 10px;
-	border: 0.5px solid grey;
-	border-radius: 10px;
+	border: 1px  solid #00000033;
+	border-radius: 5px;
 }
 .password-page-form button {
 	width: 100%;
 	padding: 10px;
+	height: 40px;
 	margin-top: 20px;
 	margin-bottom: 30px;
 	background-color: green;
 	color: white;
 	border: none;
+	font-size: 16px;
 	border-radius: 5px;
 	cursor: pointer;
 }

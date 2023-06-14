@@ -1,0 +1,144 @@
+.update-title-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.update-title-title {
+  text-align: center;
+  font-size: 50px;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+.update-title-text {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.u-wrapper {
+  max-width: 1080px;
+  padding: 5rem;
+  background-color: white;
+  border: 1px solid #e3e3e3;
+  border-radius: 7px;
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  }
+
+.u-form-wrap {
+  width: 100%;
+  display: block;
+}
+
+.form-control {
+  width: calc(100% - 0.8rem); 
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  padding: 0.5rem 0.4rem;
+  border: 1px  solid #00000033;
+}
+
+.form-image {
+  width: 100%; 
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: 1px  solid #00000033;
+}
+
+.form_label {
+  display: flex;
+  vertical-align: middle;
+  font-size: 15px;
+  max-width: 100%;
+  margin-left: 3px;
+  margin-bottom: 10px;
+}
+
+.required_star {
+  margin-left: 0.3em;
+  color: #ca0114;
+}
+
+.image-text {
+  font-size: 14px;
+  color: #999999;
+}
+
+input:focus {
+  border:1px solid #297821;
+  outline: none;
+}
+
+textarea:focus {
+  border:1px solid #297821;
+  outline: none;
+}
+
+input::file-selector-button {
+  color: black;
+  height: 33px;
+  padding: 0 10px;
+  overflow: hidden;
+  background-color: transparent;
+  border: 0;
+  border-right: 1px  solid #00000033;
+}
+
+.button-wrapper {
+  text-align: right;
+}
+
+.u-button-cancel {
+  padding: 0.5rem 1rem;;
+  border: 1px solid #999999;
+  font-size: 16px;
+  color: #999999;
+  background-color: #fff;
+  cursor: pointer;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+
+.u-button-cancel:hover {
+  border: 1px solid #333333;
+  background-color: white;
+  color: #333333;
+}
+
+.u-button {
+  padding: 0.5rem 1rem;;
+  border: 1px solid #297821;
+  font-size: 16px;
+  color: #297821;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.u-button:hover {
+  background-color: #297821;
+  color: white;
+}
+label {
+  font-size: 15px;
+}
+@media (max-width: 1079.9px) {
+  .update-title-wrap {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .update-title-text {
+    font-size: 15px;
+  }
+
+  .u-wrapper {
+    padding: 2rem;
+  }
+  
+}

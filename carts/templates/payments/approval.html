@@ -1,14 +1,27 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'payments/css/approval.css' %}">
+{% endblock head %}
 
 {% block content %}
-<p>결제가 정상적으로 완료되었습니다.</p>
+<div class="approval_box">
+  <h2>결제가 정상적으로 완료되었습니다.</h2>
 
 
-<p>주문 번호 : {{ order.pk }}</p>
-<p>주문자 : {{ order.customer.last_name }}</p>
-<p>받는 사람 : {{ order.receiver }}</p>
-<p>연락처 : {{ order.phone }}</p>
-<p>상품 가격 : {{ order.total_price }}</p>
-<p>사용 포인트 : {{ order.use_points }}</p>
-<p>결제 금액 : {{ order.total_amount }}</p>
+  <p>주문 번호 : {{ order.pk }}</p>
+  {% comment %} <p>상품 가격 : {{ order.total_price|intcomma }}</p> {% endcomment %}
+  {% comment %} <p>사용 포인트 : {{ order.use_points|intcomma }}</p> {% endcomment %}
+  <p>결제 금액 : {{ order.total_amount|intcomma }} {% if order.pay_type == 'eximbay' %}${% else %}원{% endif %}</p>
+  {% comment %} <p>주문자 : {{ order.customer.last_name }}</p> {% endcomment %}
+  <p>받는 사람 : {{ order.receiver }}</p>
+  <p>연락처 : {{ order.phone }}</p>
+  <p>주소 : {{ order.address }}</p>
+</div>
+<div class="approval_btn_box">
+  <a href="/" class="j-btn-outline">홈으로</a>
+  <a href="{% url 'accounts:profile' user.username %}?q=purchase_detail" class="j-btn">주문 내역으로</a>
+</div>
 {% endblock content %}

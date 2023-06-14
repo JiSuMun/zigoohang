@@ -44,14 +44,12 @@ class S_ProductImage(models.Model):
         super(S_ProductImage, self).delete(*args, **kargs)
 
 
-
 class S_Purchase(models.Model):
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='s_purchases')
     product = models.ForeignKey(S_Product, on_delete=models.CASCADE)
     amount = models.IntegerField()
     quantity = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
-
 
     # 6개월간의 구매내역만 저장
     @staticmethod
@@ -83,3 +81,7 @@ class S_Sales(models.Model):
     def get_total_sales_per_month(cls, year, month):
         total_sales = cls.objects.filter(date__year=year, date__month=month).aggregate(total_sales=Sum('amount'))
         return total_sales['total_sales'] or 0
+    
+
+
+

@@ -80,20 +80,20 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         <!--버튼-->
         <form action="{% url 'carts:order_page' %}" method="POST">
           {% csrf_token %}
-          <input type="hidden" name="product_check" value="{{ product.pk }}">
+          <input type="hidden" name="item_check" value="{{ product.pk }}">
           <input type="hidden" name="input_quantity" value="1">
-          <input class="buy-button" type="submit" value="바로 구매하기">
+          <input class="buy-button" value="바로 구매하기" {% if request.user.is_authenticated %}type="submit"{% else %}type="button" onclick="loginRequired(product_likes_form)"{% endif %}>
         </form>
         <div class="btn-wrapper">
           <div class="btn-inner">
             <form id="product_likes_form" data-product-id="{{ product.pk }}" data-store-id="{{ product.store.pk}}">
               {% csrf_token %}
-              <input class="sub-button" type="submit" value="관심상품 등록">
+              <input class="sub-button" value="관심상품 {% if user in product.like_users.all %}삭제{% else %}등록{% endif %}" {% if request.user.is_authenticated %}type="submit"{% else %}type="button" onclick="loginRequired(product_likes_form)"{% endif %}>
             </form>
           </div>
           <div class="btn-inner">
             <input type="hidden" id="quantity" value="1">
-          <button class="sub-button" id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">장바구니에 담기</button>
+            <button class="sub-button" id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">장바구니에 담기</button>
           </div>
         </div>        
       </div>
@@ -154,46 +154,46 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         <div class="review-like">
           {% if request.user.is_authenticated %}
           <!--리뷰 좋아요-->
-            <form class="review-like-form" action="{% url 'stores:reviews_likes' store.pk product.pk review.pk %}" data-store-id="{{ store.pk }}" data-product-id="{{ product.pk }}" data-review-id="{{ review.pk }}">
+            <form class="review-like-form" action="{% url 'stores:reviews_likes' store.pk product.pk review.pk %}" data-store-id="{{ store.pk }}" data-product-id="{{ product.pk }}" data-review-id="{{ review.pk }}" id="review-likes-form-{{ store.pk }}-{{ product.pk }}-{{ review.pk }}">
               {% csrf_token %}
               {% if request.user in review.like_users.all %}
-                <button class="review-like-btn" type="submit">
-                  <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color"></i>
+                <button class="review-like-btn" type="submit" {% if user in review.dislike_users.all %} disabled {% endif %}>
+                  <i id="review-like" class="fa-regular fa-thumbs-up r-like-color"></i>
                 </button>
               {% else %}
-                <button class="review-like-btn" type="submit">
-                  <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
+                <button class="review-like-btn" type="submit" {% if user in review.dislike_users.all %} disabled {% endif %}>
+                  <i id="review-like" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
                 </button>
               {% endif %}
             </form>
           {% else %}
-            <button class="review-like-btn" type="button" disabled>
-              <i id="review-like-{{ review.pk }}" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
+            <button class="review-like-btn" type="submit" disabled>
+              <i id="review-like" class="fa-regular fa-thumbs-up r-like-color-gray"></i>
             </button>    
           {% endif %}        
-          <span class="r-count" id="review_likes_count-{{ review.pk }}">{{ review.like_users.all|length }}</span>
+          <span class="r-count" id="review_likes_count">{{ review.like_users.all|length }}</span>
         </div>
         <!--리뷰 싫어요-->
         <div class="review-dislike">
           {% if request.user.is_authenticated %}
-            <form class="review-dislike-form" action="{% url 'stores:reviews_dislikes' store.pk product.pk review.pk %}" data-store-id="{{ store.pk }}" data-product-id="{{ product.pk }}" data-dreview-id="{{ review.pk }}">
+            <form class="review-dislike-form" action="{% url 'stores:reviews_dislikes' store.pk product.pk review.pk %}" data-store-id="{{ store.pk }}" data-product-id="{{ product.pk }}" data-dreview-id="{{ review.pk }}" id="review-dislikes-form-{{ store.pk }}-{{ product.pk }}-{{ review.pk }}">
               {% csrf_token %}
               {% if request.user in review.dislike_users.all %}
-                <button class="review-like-btn" type="submit">
-                  <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color"></i>
+                <button class="review-like-btn" type="submit" {% if user in review.like_users.all %} disabled {% endif %}>
+                  <i id="review-dislike" class="fa-regular fa-thumbs-down r-like-color"></i>
                 </button>
               {% else %}
-                <button class="review-like-btn" type="submit">
-                  <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
+                <button class="review-like-btn" type="submit" {% if user in review.like_users.all %} disabled {% endif %}>
+                  <i id="review-dislike" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
                 </button>
               {% endif %}
             </form>
           {% else %}
-            <button class="review-like-btn" type="button" disabled>
-              <i id="review-dislike-{{ review.pk }}" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
+            <button class="review-like-btn" type="submit" disabled>
+              <i id="review-dislike" class="fa-regular fa-thumbs-down r-like-color-gray"></i>
             </button>
           {% endif %}
-          <span class="r-count" id="review_dislikes_count-{{ review.pk }}">{{ review.dislike_users.all|length }}</span>
+          <span class="r-count" id="review_dislikes_count">{{ review.dislike_users.all|length }}</span>
         </div>
       </div>
     </div>
@@ -286,8 +286,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 {% block script %}
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="{% static 'js/stores/product_detail.js' %}"></script>
-  <script src="{% static 'js/stores/product_like.js' %}"></script>
-  <script src="{% static 'carts/js/add_items_cart.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{% static 'js/stores/product_like.js' %}"></script>
+<script src="{% static 'js/stores/product_detail.js' %}"></script>
+<script src="{% static 'carts/js/add_items_cart.js' %}"></script>
 {% endblock script %}

@@ -1,18 +1,40 @@
+{% load static %}
+{% load humanize %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/accounts/second_detail.css' %}">
+{% endblock head %}
+
 {% if request.user == person %}
     {% if completed_products %}
-        {% for product in completed_products %}
-        <h3>(거래완료)</h3>
-        {% for image in product.s_productimage_set.all %}
-            <a href="{% url 'secondhands:detail' product.pk %}">
-            <img style="width:300px;" src="{{ image.image.url }}" alt="이미지"/>
+      <div class="completed-page">
+        <div class="completed-page-title">
+          <h2>중고거래 완료 목록</h2>
+        </div>
+        
+        <div class="card-grid">
+          {% for product in completed_products %}
+          {% comment %} <h3>(거래완료)</h3> {% endcomment %}
+          <a href="{% url 'secondhands:detail' product.pk %}">
+            <div class="card">
+              <div class="card-img">
+                {% for image in product.s_productimage_set.all %}
+                  <img src="{{ image.image.url }}" alt="이미지"/>
+                  {% empty %}
+                  <p>이미지가 없습니다.</p>
+                  {% endfor %}
+                </div>
+                <div class="card-info">
+                  <p class="card-info-product">{{ product.product }}</p>
+                  <p class="card-info-price">{{ product.price|intcomma }}원</p>
+                  <p class="card-info-label">거래장소</p>
+                  <p class="card-info-address">{{ product.address }}</p>
+                </div>
+              </div>
             </a>
-        {% empty %}
-            <p>이미지가 없습니다.</p>
-        {% endfor %}
-        <p>제목: {{ product.product }}</p>
-        <p>가격: {{ product.price }}원</p>
-        <p>주소: {{.address }}</p>
-        {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
     {% else %}
         <p>중고거래 내역이 없습니다.</p>
     {% endif %}

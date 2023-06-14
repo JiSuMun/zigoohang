@@ -16,8 +16,15 @@
         <li>
           <a class="nav-link" href="{% url 'secondhands:index' %}">중고거래</a>
         </li>
-        <li>
-          <a class="nav-link" href="#">챌린지</a>
+        <li class="nav-hover">
+          <div class="nav-drop">
+            <a class="nav-link" href="{% url 'challenges:index' %}">챌린지</a>
+          </div>
+          <ul class="nav-hover-title">
+            <li><a class="nav-hover-list hide-pc" href="{% url 'challenges:index' %}">전체</a></li>
+            <li><a class="nav-hover-list {% if not q or q != '진행중인챌린지' %} pass {% endif %}"  href="{% url 'challenges:index' %}?q=진행중인챌린지">진행 중인 챌린지</a></li>
+            <li><a class="nav-hover-list {% if not q or q != '마감된챌린지' %} pass {% endif %}" href="{% url 'challenges:index' %}?q=마감된챌린지">마감된 챌린지</a></li>
+          </ul>
         </li>
         <li class="nav-hover">
           <div class="nav-drop">
@@ -34,28 +41,37 @@
     </div>
     <div class="nav-inner-right">
       <!--검색-->
-      <div class="search">
-        <input class="search-input" type="text" placeholder="검색">
-        <button class="search-button"><img class="search-button-size" src="{% static 'img/base/search.svg' %}" alt=""></button>
-      </div>
+      <form class="search"action="{% url 'search' %}">
+        {% csrf_token %}
+          <input class="search-input" type="text" placeholder="검색" name='q' autocomplete="off">
+          <button class="search-button" type="submit"><img class="search-button-size" src="{% static 'img/base/search.svg' %}" alt=""></button>
+      </form>
+
       <!--로그인-->
       <ul class="nav-ul">
-        <li class="nav-item">
-          <a class="nav-image" href="{% url 'carts:cart_detail' %}">
-            <span class="cart_icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-              </svg>
-              <span class="count_badge" id="count_badge">{{ cart_count }}</span>
-            </span>
-          </a>
-        </li>
-        {% if request.user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-image" href="{% url 'carts:cart_detail' %}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
-          </svg></a>
-        </li>
+        <div class="icons">
+          <li class="nav-item">
+            <a class="nav-image" href="{% url 'carts:cart_detail' %}">
+              <span class="cart_icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                  <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+                <span class="count_badge" id="count_badge" {% if not cart_count %}style="display: none;"{% endif %}>{{ cart_count }}</span>
+              </span>
+            </a>
+          </li>
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-image" href="{% url 'chat:inbox' %}">
+              <span class="noti_icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                  <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                </svg>
+                <span class="noti_badge" id="noti_badge" style="display:none;"></span>
+              </span>
+            </a>
+          </li>
+      </div>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'accounts:profile' request.user.username %}">프로필</a>
         </li>
@@ -63,6 +79,7 @@
           <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
         </li>
         {% else %}
+      </div>
         <li class="nav-item">
           <a class="nav-link " href="{% url 'accounts:signup' %}">회원가입</a>
         </li>
@@ -81,3 +98,4 @@
     
   </div>
 </nav>
+

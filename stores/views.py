@@ -107,8 +107,11 @@ def products_create(request, store_pk):
 
 def products_detail(request, store_pk, product_pk):
     store = Store.objects.get(pk=store_pk)
+    print(store)
     product = Product.objects.get(pk=product_pk)
+    print(product)
     reviews = ProductReview.objects.filter(product=product)
+    print(reviews)
     for review in reviews:
         review.review_images = [review.image1, review.image2, review.image3, review.image4, review.image5]
     context = {
@@ -226,7 +229,7 @@ def reviews_delete(request, store_pk, product_pk, review_pk):
 @login_required
 def reviews_likes(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
-    if review.like_users.filter(pk=request.user.pk).exists():
+    if request.user in review.like_users.all():
         review.like_users.remove(request.user)
         r_is_liked = False
     else:
@@ -234,6 +237,9 @@ def reviews_likes(request, store_pk, product_pk, review_pk):
         r_is_liked = True
     context = {
         'r_is_liked': r_is_liked,
+        'review_likes_count': review.like_users.count(),
+        'r_is_disliked': request.user in review.dislike_users.all(),
+        'review_dislikes_count': review.dislike_users.count(),
     }
     return JsonResponse(context)
 
@@ -241,7 +247,7 @@ def reviews_likes(request, store_pk, product_pk, review_pk):
 @login_required
 def reviews_dislikes(request, store_pk, product_pk, review_pk):
     review = ProductReview.objects.get(pk=review_pk)
-    if review.dislike_users.filter(pk=request.user.pk).exists():
+    if request.user in review.dislike_users.all():
         review.dislike_users.remove(request.user)
         r_is_disliked = False
     else:
@@ -249,6 +255,9 @@ def reviews_dislikes(request, store_pk, product_pk, review_pk):
         r_is_disliked = True
     context = {
         'r_is_disliked': r_is_disliked,
+        'review_dislikes_count': review.dislike_users.count(),
+        'r_is_liked': request.user in review.like_users.all(),
+        'review_likes_count': review.like_users.count(),
     }
     return JsonResponse(context)
 

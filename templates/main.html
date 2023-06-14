@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load humanize %}
 {% block title %}지구행{% endblock title %}
 {% block head %}
 <link
@@ -8,6 +8,9 @@
   href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
 />
 <link rel="stylesheet" href="{% static 'css/main/main.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"> 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
+
 {% endblock head %}
 {% block content %}
 <!--carousel-->
@@ -25,20 +28,49 @@
   <div class="swiper-pagination"></div>
 </div>
 
-<!--플래닛마켓 제품3-4개 보여주고-->
-<div class="main-product">
-  <p>마켓 제품</p>
+
+<!--지구행-->
+<div class="content-wrapper" data-aos="fade-up" data-aos-duration="1000">
+  <div class="content-inner">
+    <img src="{% static 'img/base/logo.png' %}" alt="">
+    <p class="content-text"><span style="font-weight:600;">"지구를 구하는 행동"</span> 이라는 의미를 가진 <span class="text-color">지구행</span>은</p>
+    <p class="content-text">환경 보호 및 지속 가능한 삶을 위한 정보를 제공하는 온라인 플랫폼입니다.</p>
+  </div>
+</div>
+<!--플래닛마켓-->
+<div class="main-product" data-aos="fade-up" data-aos-duration="1000">
+  {% comment %} <div class="product-title">행성상점</div> {% endcomment %}
+  <div class="product-inner">
+    {% for product in products|slice:6 %}
+      <div class="item">
+        <a class="a-hover"href="{% url 'stores:products_detail' product.store.pk product.pk %}">
+          <div class="hover-box">
+            <img class="image" src="{{ product.images.first.image.url }}" alt="">
+            <div class="hover-content">
+              <p class="hover-store">{{ product.store.name }}</p>
+              <p class="hover-name">{{ product.name }}</p>
+              <p>￦ {{ product.price|intcomma }}</p>
+              <button class="hover-button">View Product</button>
+            </div>
+          </div>
+          <div class="item-box">
+            <p class="product-name">[ {{ product.store.name }} ] {{ product.name }}</p>
+            <p class="product-price">￦ {{ product.price|intcomma }}</p>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
 </div>
 <!--주요 링크-->
 <div class="main-link-wrap">
   <!--중고마켓 바로가기-->
-  <div class="m-reverse">
+  <div class="m-reverse" data-aos="fade-up" data-aos-duration="1000">
     <div class="main-wrap">
       <div class="main-box main-box-wrap">
         <p class="main-button_title">RECYCLE</p>
-        <p class="main-button_text">Planet Helper는 지속 가능한 소비와 재활용을 장려하기 위해 중고 제품 거래를 지원합니다.</p>
-        {% comment %} <a class="main-button" href="{% url 'secondhands:index' %}">View More</a> {% endcomment %}
-        <a class="main-button" href="#">View More</a>
+        <p class="main-button_text">지구행은 지속 가능한 소비와 재활용을 장려하기 위해 중고 제품 거래를 지원합니다.</p>
+        <a class="main-button" href="{% url 'secondhands:index' %}">View More</a>
       </div>
       <div class="main-box">
         <img class="main-box-image" src="{% static 'img/main/recycle.jpg' %}" alt="">
@@ -47,24 +79,24 @@
   </div>
   <!--챌린지 바로가기-->
   <div>
-    <div class="main-wrap">
+    <div class="main-wrap" data-aos="fade-up" data-aos-duration="1000">
       <div class="main-box">
         <a href="#"><img class="main-box-image" src="{% static 'img/main/donation.jpg' %}" alt=""></a>
       </div>
       <div class="main-box main-box-wrap">
-        <p class="main-button_title">DONATION</p>
-        <p class="main-button_text">Planet Helper는 지구 환경 보호를 위한 다양한 프로젝트를 진행하고 있습니다. 우리의 노력은 더 깨끗하고 지속 가능한 지구를 만들기 위한 것입니다. 여러분의 포인트 기부는 우리의 미션을 지원하고, 환경 보호에 기여할 수 있는 중요한 역할을 합니다.</p>
-        <a class="main-button" href="#">View More</a>
+        <p class="main-button_title">CHALLENGE</p>
+        <p class="main-button_text">지구행은 지구 환경 보호를 위한 다양한 챌린지를 진행하고 있습니다. 우리의 노력은 더 깨끗하고 지속 가능한 지구를 만들기 위한 것입니다.</p>
+        <a class="main-button" href="{% url 'challenges:index' %}">View More</a>
       </div>
     </div>
   </div>
 
   <!--환경 바로가기-->
-  <div class="m-reverse">
+  <div class="m-reverse" data-aos="fade-up" data-aos-duration="1000">
     <div class="main-wrap">
       <div class="main-box main-box-wrap">
         <p class="main-button_title">ECO</p>
-        <p class="main-button_text">Planet Helper는 환경 보호와 관련된 다양한 정보와 팁을 제공합니다. 환경에 대한 인식을 높이고, 지속 가능한 삶을 촉진하는 데 도움을 줍니다.</p>
+        <p class="main-button_text">지구행은 환경 보호와 관련된 다양한 정보와 팁을 제공합니다. 환경에 대한 인식을 높이고, 지속 가능한 삶을 촉진하는 데 도움을 줍니다.</p>
         <a class="main-button" href="{% url 'posts:main' %}">View More</a>
       </div>
       <div class="main-box">
@@ -73,7 +105,9 @@
     </div>
   </div>
 </div>
-
+<script> 
+  AOS.init();
+</script>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script src="{% static 'js/main/main.js' %}"></script>
