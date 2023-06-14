@@ -41,9 +41,14 @@ class Message(models.Model):
             self.save()
 
     def formatted_timestamp(self):
-        local_timestamp = timezone.localtime(self.timestamp)
+        # self.timestamp에 대해 시간대 정보를 추가합니다.
+        if self.timestamp.tzinfo is None or self.timestamp.tzinfo.utcoffset(self.timestamp) is None:
+            local_timestamp = timezone.make_aware(self.timestamp, timezone.get_default_timezone())
+        else:
+            local_timestamp = self.timestamp
+
         am_pm = "오전" if local_timestamp.strftime('%p') == "AM" else "오후"
-        return f"{local_timestamp.strftime('%Y.%m.%d')} {am_pm} {local_timestamp.strftime('%I:%M')}"
+        return f"{am_pm} {local_timestamp.strftime('%I:%M')}"
     
 
 class Notification(models.Model):
