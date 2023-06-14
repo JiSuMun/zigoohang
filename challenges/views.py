@@ -158,7 +158,7 @@ def certification_create(request, challenge_pk):
             certification.user = request.user
             certification.challenge = challenge
             certification.save()
-            request.user.add_points(500)
+            request.user.add_points(500, '참여')
 
             return redirect('challenges:detail', challenge_pk)
         
@@ -201,7 +201,7 @@ def certification_delete(request, challenge_pk, certification_pk):
     certification = Certification.objects.filter(pk=certification_pk).first()
     if certification and request.user == certification.user:
         certification.delete()
-        request.user.subtract_points(500)
+        request.user.subtract_points(500, '참여취소')
         request.user.save()
 
     return redirect('challenges:detail', challenge_pk)
