@@ -7,6 +7,63 @@
   aspect-ratio: 5184 / 3456;
 }
 
+.swiper-slide {
+  position: relative;
+}
+
+.main-wrapper {
+
+}
+
+.main-inner {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+  margin-top: 16rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+.main-title {
+  font-size: 6rem;
+  margin: 3rem 0;
+  color: white;
+  font-weight: 600;
+}
+
+.main-content {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.swipper-inner {
+  position: absolute;
+  top: 0;
+  margin-left: 6rem;
+  color: white;
+  margin-top: 20rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+.swipper-title {
+  font-size: 10rem;
+  color: white;
+  font-weight: 600;
+}
+
+.swipper-content {
+  margin-top: 1rem;
+  font-size: 2rem;
+  color: white;
+}
+
 .swiper-button-next, .swiper-button-prev {
   color: #ffffff;
 }
@@ -216,7 +273,27 @@
 }
 /* 태블릿 */
 @media (min-width: 768px) and (max-width: 1279.9px) {
-
+  .main-inner {
+    margin-top: 11rem;
+  }
+  .main-title {
+    font-size: 4rem;
+    margin: 2rem 0;
+  }
+  .main-content {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+  .swipper-inner {
+    margin-top: 14rem;
+  }
+  .swipper-title {
+    font-size: 7rem;
+  }
+  
+  .swipper-content {
+    font-size: 1.8rem;
+  }
 }
 /* 모바일 */
 
@@ -224,26 +301,58 @@
   .main-box {
     width: 100%;
   }
+
   .main-wrap {
     flex-direction: column;
   }
+
   .main-button_title {
     font-size: 30px;
   }
+
   .main-button {
     width: 136px;
     height: 34px;
     margin-top: 1.5rem;
   }
+
   .main-button_text {
     font-size: 14px;
     line-height: 1.4;
   }
+
   .m-reverse .main-wrap {
     flex-flow: column-reverse;
   }
+
+  .main-inner {
+    margin-top: 5rem;
+  }
+
+  .main-title {
+    font-size: 3rem;
+    margin: 1rem 0;
+  }
+
+  .main-content {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
   .item {
     padding: 0.8rem;
     width: 100%;
+  }
+
+  .swipper-inner {
+    margin-top: 7rem;
+  }
+
+  .swipper-title {
+    font-size: 4rem;
+  }
+  
+  .swipper-content {
+    font-size: 1rem;
   }
 }
