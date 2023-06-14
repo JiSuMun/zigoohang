@@ -6,12 +6,12 @@
   <li class="follow--modal">
     <a href="{% url 'accounts:profile' follower.username %}">
       {% if follower.image %}
-        <div class="profile--image rounded-circle">
-          <img src="{{ follower.image.url }}" alt="follower image" class="object-fit-fill profile">
+        <div class="profile--image">
+          <img src="{{ follower.image.url }}" alt="follower image" class="profile">
         </div>
       {% else %}
-        <div class="profile--image rounded-circle">
-          <img src="{% static 'image/profile-none.png' %}" alt="follower image" class="object-fit-fill profile">
+        <div class="profile--image">
+          <img src="{% static 'img/accounts/no-image-icon-21.png' %}" alt="follower image" class="profile">
         </div>
       {% endif %}
       {{ follower.username }}

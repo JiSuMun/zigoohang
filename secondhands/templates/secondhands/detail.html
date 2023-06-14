@@ -11,16 +11,27 @@
 {% block content %}
   <div class="detail-page">
     <div class="detail-page-product">
-      <div class="detail-page-product-img">
-        {% for image in product.s_productimage_set.all %}
-          <img src="{{ image.image.url }}" alt="">
-        {% endfor %}
-        {% comment %} {% if product.get_status_display == '예약중' %}
-          <div class="img-cover-status">
-            {{ product.get_status_display }}
+
+      {% if product.get_status_display == '거래완료'%}
+        <div class="detail-page-product-img">
+          <div class="product-img">
+            {% for image in product.s_productimage_set.all %}
+              <img src="{{ image.image.url }}" alt="">
+            {% endfor %}
           </div>
-        {% endif %} {% endcomment %}
-      </div>
+          <div class="sold-out">
+            <p>거래완료</p>
+          </div>
+        </div>
+      {% else %}
+        <div class="detail-page-product-img">
+          {% for image in product.s_productimage_set.all %}
+            <img src="{{ image.image.url }}" alt="">
+          {% endfor %}
+        </div>
+      {% endif %}
+
+
       <div class="detail-page-product-info">
         <div class="product-info-head">
           <h2 class="product-info-head-name">{{ product.product }}</h2>
@@ -48,50 +59,27 @@
         <p class="product-info-head-price">{{ product.price|intcomma }}원</p>
         <p class="product-info-head-p">상세정보</p>
         <div class="product-info-head-content">
-          <p>{{ product.content|safe }}</p>
+          {% comment %} <p>{{ product.content|safe}}</p> {% endcomment %}
+          <p>{{ product.content|safe|linebreaks}}</p>
         </div>
-        {% if request.user != product.user %}
-          {% if product.get_status_display != '거래완료' %}
-            <div class="product-info-user">
-              <a href="{% url 'accounts:profile' product.user %}">판매자에게 연락하기</a>
-            </div>
-            <p><span id="product-status">{{ product.get_status_display }}</span></p>
-            {% else %}
-            <div class="product-info-user">
-              <p><span id="product-status">{{ product.get_status_display }}</span></p>
-            </div>
-            {% endif %}
-          {% comment %} <p><span id="product-status">{{ product.get_status_display }}</span></p> {% endcomment %}
-        {% else %}
-          {% if product.get_status_display == '거래완료' %}
-            <div class="product-info-user">
-              <p><span id="product-status">{{ product.get_status_display }}</span></p>
-            </div>
-          {% else %}
-            {% if product.get_status_display == '예약중' %}
+          {% if request.user != product.user %}
+            {% if product.get_status_display != '거래완료'%}
               <div class="product-info-user">
-                <p><span id="product-status">{{ product.get_status_display }}</span></p>
+                <a href="{% url 'accounts:profile' product.user %}">판매자에게 연락하기</a>
               </div>
-            {% else %}
-              <div class="product-info-user" style="display: none;"></div>
             {% endif %}
+            <p><span id="product-status">{{ product.get_status_display }}</span></p>
           {% endif %}
-        {% endif %}
-
-<!--         <div class="product-info-user">
-          <a href="{% url 'chat:start_chat' product.user.pk %}">판매자에게 연락하기</a>
-        </div> -->
-        
-        <div class="product-info-status">
-          {% if request.user == product.user %}
-            {% if product.get_status_display != '거래완료' %}
-              <button id="btn-sale" onclick="changeStatus(2,'예약중');" type="button">예약중으로 변경</button>
-              <button id="btn-complete" onclick="changeStatus(3,'거래완료');" type="button">거래완료로 변경</button>
-              {% csrf_token %}
+          <div class="product-info-status">
+            {% if request.user == product.user %}
+              {% if product.get_status_display != '거래완료' %}
+                <button id="btn-sale" onclick="changeStatus(2,'예약중');" type="button">예약중으로 변경</button>
+                <button id="btn-complete" onclick="changeStatus(3,'거래완료');" type="button">거래완료로 변경</button>
+                {% csrf_token %}
+              {% endif %}
+              <div><p id="product-status">{{ product.get_status_display }}</p></div>
             {% endif %}
-            {% comment %} <p><span id="product-status">{{ product.get_status_display }}</span></p> {% endcomment %}
-          {% endif %}
-        </div>
+          </div>
         <div class="product-info-ud">
           {% if request.user == product.user %}
             <a href="{% url 'secondhands:update' product.pk %}">수정하기</a>
@@ -186,7 +174,5 @@ function changeStatus(newStatus, statusText) {
           console.error("Error:", error);
       });
 }
-
-
 </script>
 {% endblock script %}
