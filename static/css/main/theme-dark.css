@@ -1,11 +1,12 @@
 :root,
 [data-bs-theme=dark] {
-	/* --background-color: #1E1E20; */
 	background-color: #222222;
 	--background-color: #222222;
 	color: #f3f3f3;
 	--text-color: #f3f3f3;
 	--j-sub-text: #aaaaaa;
+
+	--j-sub-line: #ffffff0f;
 
 	--block-bg: #272829;
 

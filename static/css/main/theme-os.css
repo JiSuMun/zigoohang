@@ -5,40 +5,38 @@
 		color: #212529;
 		--text-color: #212529;
 		--j-sub-text: #666666;
-	
+
+		--j-sub-line: #0000000f;
+
 		--block-bg: #fafafa;
-		
-		--bg-color1: #fff;
-		--text-color1: #000;
-	
+
 		--j-color1: #00A95C; /* 테마 녹색 */
-	/* --j-color2: #297821; */
-		--j-color2: #125d3b;
+		--j-color2: #297821;
 		--j-color3: #dddddd;
 		--j-color4: #444444;
 		--j-text-white: white; /* 그냥 흰글씨*/
+		--j-btn-fill: #00A95C; /* 다크모드 버튼 */
 		--j-required_star: #ca0114;
 	}
 }
 @media (prefers-color-scheme: dark) {
 	:root {
-		/* --background-color: #1E1E20; */
-	background-color: #222222;
-	--background-color: #222222;
-	color: #f3f3f3;
-	--text-color: #f3f3f3;
-	--j-sub-text: #aaaaaa;
+		background-color: #222222;
+		--background-color: #222222;
+		color: #f3f3f3;
+		--text-color: #f3f3f3;
+		--j-sub-text: #aaaaaa;
 
-	--block-bg: #272829;
+		--j-sub-line: #ffffff0f;
 
-	--bg-color1: #000;
-	--text-color1: #fff;
-  
-	/* --j-color1: #297821; 테마 녹색 */
-	--j-color1: #125d3b; /* 테마 녹색 */
-	--j-color3: #444444;
-	--j-color4: #dddddd;
-	--j-text-white: #dddddd; /* 그냥 흰글씨*/
-  --j-required_star: #ea868f;
+		--block-bg: #272829;
+
+		--j-color1: #297821; /* 테마 녹색 */
+		--j-color2: #00A95C;
+		--j-color3: #444444;
+		--j-color4: #dddddd;
+		--j-text-white: #dddddd; /* 그냥 흰글씨*/
+		--j-btn-fill: #125d3b; /* 다크모드 버튼 */
+		--j-required_star: #ea868f;
 	}
 }

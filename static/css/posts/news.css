@@ -20,7 +20,7 @@
 .n-wrapper {
   max-width: 1080px;
   padding: 3rem;
-  background-color: white;
+  background-color: var(--block-bg);
   border: 1px solid #e3e3e3;
   border-radius: 7px;
   display: flex;
@@ -33,7 +33,7 @@
 .n-inner {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #0000000f;
+  border-bottom: 1px solid var(--j-sub-line);
 }
 .n-inner a {
   width: 100%;
@@ -60,7 +60,8 @@
   margin-bottom: 10px;
   padding: 2px 5px;
   display: inline-block;
-  background: rgb(220, 219, 219);
+  /* background: rgb(220, 219, 219); */
+  background: var(--j-color3);
   border-radius: 2px;
 }
 
