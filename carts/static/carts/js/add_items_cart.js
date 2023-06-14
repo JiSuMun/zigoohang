@@ -28,6 +28,7 @@ function user_add_item_cart(product, quantity) {
       console.log(response.data.cart_count)
       const countBadge = document.getElementById('count_badge')
 
+      countBadge.style.setProperty('display', 'block')
       countBadge.textContent = response.data.cart_count
     })
     // .then((response) => response.json())
@@ -56,4 +57,8 @@ function guest_add_item_cart(product, quantity) {
   }
 
   localStorage.setItem('cart', JSON.stringify(cart))
+
+  const countBadge = document.getElementById('count_badge')
+
+  countBadge.textContent = cart.length
 }

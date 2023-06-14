@@ -62,6 +62,11 @@ class User(AbstractUser):
 
 class PointLog(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='point_logs')
-    type = models.BooleanField(default=False)
+
+
+class PointLogItem(models.Model):
+    point_log = models.ForeignKey(PointLog, on_delete=models.CASCADE, related_name='point_log_itmes')
+    type = models.BooleanField(default=False) # False일 경우 차감, True일 경우 적립
+    type_detail = models.CharField(max_length=10) # 적립, 사용, 참여, 참여취소
     amount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

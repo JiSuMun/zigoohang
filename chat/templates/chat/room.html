@@ -6,35 +6,45 @@
 {% endblock head %}
 
 {% block content %}
-<a href="{% url 'chat:inbox' %}">inbox로 이동</a>
-{{ room_name|json_script:"room-name" }}
-<input type="hidden" id="username" value="{{ request.user.username }}">
-<section class="room">
-  <div id="chat-room" class="chat-room">
-    {% for message in messages %}
-      <div class="message">
-        {% if message.sender == request.user %}
-          <div class="my-message">
-            <p>{{ message.content }}</p>
-            <p>{{ message.formatted_timestamp }}</p>
-          </div>
-        {% else %}
-          <div class="other-message">
-            <p>{{ message.sender.username }}</p>
-            <p>{{ message.content }}</p>
-            <p>{{ message.formatted_timestamp }}</p>
-          </div>
-        {% endif %}
-      </div>
-    {% empty %}
-      <p>No messages yet.</p>
-    {% endfor %}
-  </div>
-  <form id="text_form" class="text-form">
-    <input type="text" id="message_input" name="message" placeholder="Type your message">
-    <button type="submit">Send</button>
-  </form>
-</section>
+<article>
+  <a id="inbox-link" href="{% url 'chat:inbox' %}">inbox로 이동</a>
+  {{ room_name|json_script:"room-name" }}
+  <input type="hidden" id="username" value="{{ request.user.username }}">
+  <section class="room">
+    <div class="room_name">{{ room_name }}</div>
+    <div id="chat-room" class="chat-room">
+      {% for message in messages %}
+        <div class="message">
+          {% if message.sender == request.user %}
+            <div class="my-message">
+              <p class="message-content_me">{{ message.content }}</p>
+              <p class="time-stamp">{{ message.formatted_timestamp }}</p>
+            </div>
+          {% else %}
+            <div class="other-message">
+              <div class="sender">
+                {% if message.sender.image %}
+                  <div><img class="sender-image" src="{{ message.sender.image.url }}" alt=""></div>
+                {% else %}
+                  <div><img class="sender-image" src="{% static 'img/accounts/no-image.png' %}" alt=""></div>
+                {% endif %}
+                <p>{{ message.sender.username }}</p>
+              </div>
+              <p class="message-content">{{ message.content }}</p>
+              <p class="time-stamp">{{ message.formatted_timestamp }}</p>
+            </div>
+          {% endif %}
+        </div>
+      {% empty %}
+        <p>No messages yet.</p>
+      {% endfor %}
+    </div>
+    <form id="text_form" class="text-form">
+      <input type="text" id="message_input" name="message" placeholder="채팅을 입력하세요." autocomplete="off">
+      <button type="submit" class="message-btn">전송</button>
+    </form>
+  </section>
+</article>
 
 {% endblock %}
 

@@ -241,6 +241,25 @@ input::file-selector-button {
 	gap: 10px;
 }
 
+.wait-title-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 550px;
+}
+
+.wait-title-title {
+  text-align: center;
+  font-size: 50px;
+  margin-bottom: 60px;
+  font-weight: bold;
+}
+
+.wait-title-text {
+  text-align: center;
+  margin-bottom: 10px;
+	font-size: 22px;
+}
 
 /* 정보 수정 */
 .update-wrapper {

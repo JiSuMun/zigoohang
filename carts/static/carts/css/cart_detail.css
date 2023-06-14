@@ -67,7 +67,8 @@
   flex-shrink: 1;
 }
 .cart_img_container > img {
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 

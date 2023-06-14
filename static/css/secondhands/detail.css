@@ -9,11 +9,6 @@
   display: flex;
   margin-top: 100px;
 }
-.detail-page-product-img img {
-  width: 400px;
-  height: 400px;
-  position: relative;
-}
 .detail-page-product-img {
   flex: 6;
   
@@ -131,18 +126,19 @@
 }
 
 /* 반응형 미디어쿼리 */
-/* 핸드폰 크기*/
-@media (min-width: 478.9px) {
-
-}
-@media (max-width: 479px) {
+@media (min-width: 1081px) {
   .detail-page-product-img img {
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
     text-align: center;
   }
 }
-@media screen and (max-width: 900px) {
+@media (max-width: 1080px) {
+  .detail-page-product-img img {
+    width: 500px;
+    height: 500px;
+    text-align: center;
+  }
   .detail-page {
     width: 90%;
   }
@@ -152,6 +148,7 @@
   }
   .detail-page-product-info {
     margin-top: 50px;
+    
   }
   .product-info-head {
     flex-direction: row;
@@ -172,4 +169,18 @@
     height: 300px;
   }
 }
+
+/* 핸드폰 크기*/
+@media (min-width: 478.9px) {
+
+}
+@media (max-width: 479px) {
+  .detail-page-product-img img {
+    width: 300px;
+    height: 300px;
+    text-align: center;
+  }
+}
+
+
 

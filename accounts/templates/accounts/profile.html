@@ -34,12 +34,21 @@
         <p>관심상품</p>
       </div>
     </a>
-    <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">           
-      <div class="profile-sidebar-item">
-        <span class="material-symbols-outlined">shopping_bag</span>
-        <p>구매내역</p> 
-      </div>
-    </a>
+    {% if user.is_seller == False %} 
+      <a class="{% if q == 'purchase_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=purchase_detail">           
+        <div class="profile-sidebar-item">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          <p>구매내역</p> 
+        </div>
+      </a>
+    {% else %}
+      <a class="{% if q == 'sell_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=sell_detail">            
+        <div class="profile-sidebar-item">
+          <span class="material-symbols-outlined">storefront</span>
+          <p>판매내역</p>
+        </div>
+      </a>
+    {% endif %}
     <a class="{% if q == 'second_detail' %} {% endif %}" href="{% url 'accounts:profile' person.username %}?q=second_detail">            
       <div class="profile-sidebar-item">
         <span class="material-symbols-outlined">recycling</span>
@@ -104,10 +113,10 @@
           <div class="header-info">
             <div class="header-img">
               {% if request.user.image %}
-              <img src="{{ person.image.url }}" alt="{{ user.username }}'s Profile Image">
-            {% else %}
-              <img src="#" alt="noimage">
-            {% endif %}
+                <img src="{{ request.user.image.url }}" alt="{{ user.username }}'s Profile Image">
+              {% else %}
+                <img src="{% static 'img/accounts/no-image.png' %}" alt="noimage">
+              {% endif %}
           </div>
           <div class="header-text">
             <div class="header-text-name">
@@ -120,30 +129,47 @@
               <p class="not_seller">일반회원</p>
             {% else %}
               <p class="seller">판매자</p>
-
-              {% endif %}
-
+            {% endif %}
             </div>
           </div>
           <div class="header-update">
-            <a href="{% url 'accounts:update' %}">회원정보수정</a>
-            <a href="{% url 'accounts:change_password' %}">비밀번호변경</a>
+            {% comment %} <p class="request_user">{{ request.user }}</p>
+            <p class="username">{{ user.username }}</p> {% endcomment %}
+            {% if request.user == user.username %}
+              <a href="{% url 'accounts:update' %}" id="updateLink">회원정보수정</a>
+              <a href="{% url 'accounts:change_password' %}" id="passwordLink">비밀번호변경</a>
+            {% endif %}
           </div>
         </div>
         <div class="profile-box-text">
         <div class="profile-page-info-main">
           <div class="main-card">
-              <span class="main-card-title">나의 에코포인트🌱</span>
+              <span class="main-card-title">나의 에코포인트</span>
+              <span class="point_number">{{ user.points|intcomma }}</span>
               <div class="main-card-content">
-                <span>{{ person.points|intcomma }}</span>
+
+<!--                 <span>{{ person.points|intcomma }}</span> -->
+
+                <!-- point log -->
+                <table>
+                  {% for log in point_log_items %}
+                    <tr>
+                      <td>{{ log.amount|intcomma }}</td>
+                      <td class="{% if log.type %}point_green{% else %}point_red{% endif %}">{{ log.type_detail }}</td>
+                      <td>{{ log.created_at }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+                <!-- //point log -->
+
               </div>
           </div>
           <div class="main-card">
-            <span class="main-card-title">나의 친구관리🧸</span>
+            <span class="main-card-title">친구관리</span>
             <div class="main-card-content">
               
               {% comment %} 팔로잉테스트 {% endcomment %}
-              <div class="d-flex gap-3">
+              {% comment %} <div class="d-flex gap-3">
                 <p>팔로잉 :<button type="button" class="profile--card--btn" data-bs-toggle="modal" data-bs-target="#followingsModal"><p id="followings-count">{{ person.followings.all|length }}</p></button></p>
                 <p>팔로워 :<button type="button" class="profile--card--btn" data-bs-toggle="modal" data-bs-target="#followersModal"><p id="followers-count">{{ person.followers.all|length }}</p></button></p>
               </div>
@@ -160,11 +186,11 @@
                       {% endif %}
                     {% endif %}
                 </form>
-              {% endif %}
+              {% endif %} {% endcomment %}
           {% comment %}모달창 {% endcomment %}
           
           <!-- 팔로워 Modal -->
-          <div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
+          {% comment %} <div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content profile--modal--box">
                 <div class="modal-header">
@@ -203,10 +229,10 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
 
           <!-- 팔로잉 Modal -->
-          <div class="modal fade" id="followingsModal" tabindex="-1" aria-labelledby="followingsModalLabel" aria-hidden="true">
+          {% comment %} <div class="modal fade" id="followingsModal" tabindex="-1" aria-labelledby="followingsModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content profile--modal--box">
                 <div class="modal-header">
@@ -245,7 +271,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
 
 
 
@@ -256,9 +282,11 @@
       {% endif %}
   </div>
 </div>
-
-<script src="{% static '/js/accounts_follow.js' %}" type="text/javascript"></script>
 {% endblock content %}
+
+{% block script %}
+{% comment %} <script src="{% static '/js/accounts_follow.js' %}" type="text/javascript"></script> {% endcomment %}
+{% endblock script %}
 
 {% comment %} 위에 있던 항목들을 왼쪽 사이드바로 만들기 / 반응형 할 때 밑으로 내리기 {% endcomment %}
 {% comment %} 사이드바에 채팅도 추가하기 {% endcomment %}

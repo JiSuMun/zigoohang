@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import Cart, CartItem, Order, OrderItem
+from accounts.models import PointLog, PointLogItem
 from stores.models import Product
 from django.http import JsonResponse, HttpResponseNotFound
 import os, requests, json, math
@@ -98,6 +99,7 @@ def product_info(request, product_id):
     print(image.image.url)
     data = {
         'id': product.id,
+        'storeId': product.store.pk,
         'name': product.name,
         'price': product.price,
         'image': image.image.url,
@@ -230,11 +232,31 @@ def approval(request):
             cart_item.delete()
             
     if request.user.is_authenticated:
+        real_point = int((int(jsonObject['totalAmount']) - int(jsonObject['usePoints'])) * POINT_PER_PRICE)
         user = request.user
-        user.total_points += int(jsonObject['usePoints'])
-        user.points += int((int(jsonObject['totalAmount']) - int(jsonObject['usePoints'])) * POINT_PER_PRICE)
+        user.total_points += real_point
+        user.points += real_point
         user.points -= int(jsonObject['usePoints'])
         user.save()
+
+        if int(jsonObject['usePoints']):
+            pointlog, _ = PointLog.objects.get_or_create(user=request.user)
+            point_log_item = PointLogItem()
+            point_log_item.point_log = pointlog
+            point_log_item.type = False
+            point_log_item.type_detail = '사용'
+            point_log_item.amount = int(jsonObject['usePoints'])
+            point_log_item.save()
+
+        pointlog, _ = PointLog.objects.get_or_create(user=request.user)
+        point_log_item = PointLogItem()
+        point_log_item.point_log = pointlog
+        point_log_item.type = True
+        point_log_item.type_detail = '구매'
+        point_log_item.amount = real_point
+        point_log_item.save()
+
+        
 
     request.session['payment'] = {
         'order_id': order_id,

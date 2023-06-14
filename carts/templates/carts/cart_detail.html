@@ -13,9 +13,8 @@
   </header>
   <form action="{% url 'carts:order_page' %}" method="POST" id="order_form">
     {% csrf_token %}
-    <div class="cart_div">
+    <div class="cart_div" id="cart_div">
       <div class="cart_check">
-
       </div>
       <div class="cart_list_header">
         <div class="cart_checkbox_col">
@@ -75,10 +74,10 @@
         </button>
       </div>
       <div class="order_btn">
-        <button id="order_check" class="j_btn">
+        <button id="order_check" class="j_btn" {% if not user.is_authenticated %}type="button" onclick="loginRequired()"{% endif %}>
           선택 주문
         </button>
-        <button id="order_all" class="j_btn">
+        <button id="order_all" class="j_btn" {% if not user.is_authenticated %}type="button" onclick="loginRequired()"{% endif %}>
           전체 주문
         </button>
       </div>

@@ -16,11 +16,12 @@ delBtn.addEventListener('click', function(e) {
   if (confirmed) {
     const checkItems = document.querySelectorAll('input[name="item_check"]')
     const checkedItems = [...checkItems].filter((item) => item.checked)
-    console.log(checkItems)
-    console.log(checkedItems)
+    // console.log(checkItems)
+    // console.log(checkedItems)
 
     if (isAuthenticated) {
       const productIds = checkedItems.map((item) => item.value)
+
       axios({
         method: 'POST',
         url: '/carts/remove_item/',
@@ -33,7 +34,19 @@ delBtn.addEventListener('click', function(e) {
           window.location.href = '/carts/'
         })
     } else {
+      const productIds = checkedItems.map((item) => parseInt(item.value, 10));
 
-    }
+      let cart = JSON.parse(localStorage.getItem('cart'));
+
+      cart = cart.filter((item) => !productIds.includes(item.id));
+
+      const countBadge = document.getElementById('count_badge')
+
+      countBadge.textContent = cart.length
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      window.location.href = '/carts/'
   }
+}
 })
