@@ -14,7 +14,7 @@
 }
 
 .cart_div{
-  margin: 50px 0;
+  margin: 50px 0 20px;
   background-color: #fff;
 }
 
@@ -169,7 +169,9 @@
 .j_btn:hover {
   background-color: #297821;
 }
-
+.cart_empty {
+  padding: 20px 0;
+}
 @media (max-width: 1079px) {
   .cart_container header {
     margin: 0.5em 0;
