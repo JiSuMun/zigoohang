@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def inbox(request):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
     chat_rooms = request.user.chat_rooms.all()
     chat_rooms_with_last_message = []
     # all_users = get_user_model().objects.exclude(id=request.user.id)

@@ -51,7 +51,7 @@
           <p>{{ product.content|safe }}</p>
         </div>
         <div class="product-info-user">
-          <a href="{% url 'accounts:profile' product.user %}">판매자에게 연락하기</a>
+          <a href="{% url 'chat:start_chat' product.user.pk %}">판매자에게 연락하기</a>
         </div>
         <div class="product-info-status">
           {% if request.user == product.user %}
