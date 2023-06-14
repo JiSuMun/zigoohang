@@ -69,15 +69,15 @@
     </div>
     <div class="order_btn_box">
       <div class="order_check_btn">
-        <button id="del_btn" class="j_btn_outline">
+        <button id="del_btn" class="j_btn_outline" type="button">
           선택 삭제
         </button>
       </div>
       <div class="order_btn">
-        <button id="order_check" class="j_btn" {% if not user.is_authenticated %}type="button" onclick="loginRequired()"{% endif %}>
+        <button id="order_check" class="j_btn" type="button" {% if not user.is_authenticated %}onclick="loginRequired()"{% endif %}>
           선택 주문
         </button>
-        <button id="order_all" class="j_btn" {% if not user.is_authenticated %}type="button" onclick="loginRequired()"{% endif %}>
+        <button id="order_all" class="j_btn" type="button" {% if not user.is_authenticated %}onclick="loginRequired()"{% endif %}>
           전체 주문
         </button>
       </div>
