@@ -93,13 +93,13 @@
 .a-hover:hover .hover-content {
   display: flex;
   background: rgba(0,0,0,0.7);
-  color: white;
+  color: var(--j-text-white);
 }
 /* 상품 hover end */
 
 .detail-name {
   font-size: 18px;
-  color: #333333;
+  color: var(--text-color);
   justify-content: center;
   align-items: center;
 }
@@ -144,7 +144,7 @@
   border: 1px solid #297821;
   font-size: 16px;
   color: #297821;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
   margin-left: 5px;

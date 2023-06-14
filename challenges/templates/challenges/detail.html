@@ -35,11 +35,11 @@
   <div class="btn-wrapper">
     <form action="{% url 'challenges:update' challenge.pk %}" method="GET">
       {% csrf_token %}
-      <input class="btn-delete" type="submit" value="수정">
+      <input class="btn-update" type="submit" value="수정">
     </form>
     <form action="{% url 'challenges:delete' challenge.pk %}" method="POST">
       {% csrf_token %}
-      <input class="btn-update" type="submit" value="삭제">
+      <input class="btn-delete" type="submit" value="삭제">
     </form>
   </div>    
   {% endif %}
