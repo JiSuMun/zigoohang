@@ -56,6 +56,10 @@
   font-weight: bold;
   color: white;
 }
+#product-status {
+  font-weight: bold;
+  color: black;
+}
 
 /* 판매상태 */
 .product-info-status p {
@@ -103,6 +107,10 @@
 }
 .product-info-ud a {
   margin-right: 15px;
+  color: grey;
+}
+.product-info-ud a:hover{
+  color: black;
 }
 
 /* 지도 */

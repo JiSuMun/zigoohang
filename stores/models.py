@@ -23,7 +23,6 @@ class Store(models.Model):
     image = ProcessedImageField(upload_to=store_image_path, blank=True, null=True)
     main_image = ProcessedImageField(upload_to=store_image_path, blank=True, null=True)
 
-
     # delivery_fee = models.IntegerField()
 
     def __str__(self):

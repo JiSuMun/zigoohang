@@ -1,11 +1,46 @@
+// 팔로워
+const modal1 = document.querySelector(".modal-body1");
+const openModalBtn1 = document.getElementById("open-modal-btn1");
+
+// 팔로잉
+const modal2 = document.querySelector(".modal-body2");
+const openModalBtn2 = document.getElementById("open-modal-btn2");
+
+// 모달 열고 닫기
+function toggleModal1() {
+  console.log('버튼1 눌림');
+  if (modal1.style.display === "none") {
+    modal1.style.display = "block";
+  } else {
+    modal1.style.display = "none";
+  }
+}
+function toggleModal2() {
+  console.log('버튼2 눌림');
+  if (modal2.style.display === "none") {
+    modal2.style.display = "block";
+  } else {
+    modal2.style.display = "none";
+  }
+}
+
 const form = document.querySelector('#follow-form');
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-const personId = form.dataset.userId;
-const personUsername = form.dataset.username;
+const personData = document.getElementById('person_data')
+// const personId = form.dataset.userId;
+const personId = personData.dataset.userId;
+// const personUsername = form.dataset.username;
+const personUsername = personData.dataset.username;
 const followingsCountTag = document.querySelector('#followings-count');
 const followersCountTag = document.querySelector('#followers-count');
 const followingList = document.querySelector('#following-ul');
 const followerList = document.querySelector('#follower-ul');
+
+
+
+
+openModalBtn1.addEventListener("click", toggleModal1);
+openModalBtn2.addEventListener("click", toggleModal2);
 
 form.addEventListener('submit', function (event) {
   event.preventDefault();
@@ -68,4 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
   updateFollowingList(username);
   updateFollowerList(username);
 });
+
+
+
 
