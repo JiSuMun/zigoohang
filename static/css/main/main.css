@@ -101,6 +101,25 @@
   aspect-ratio: 1 / 1;
 }
 
+/* 지구행 */
+.content-wrapper {
+  margin: 5rem 0;
+}
+
+.content-inner {
+  flex-direction: column;
+  text-align: center;
+  font-size: 24px;  
+}
+
+.content-text {
+  margin-bottom: 1rem;
+}
+
+.text-color {
+  color:green;
+  font-weight: 600;
+}
 /* 상품 hover */
 
 .hover-box {
