@@ -82,3 +82,11 @@ if (getStoredTheme() === null) {
 }
 // 초기 테마 설정 및 적용
 // setTheme(getPreferredTheme());
+// login required
+function loginRequired() {
+  let result = confirm("로그인이 필요합니다. 로그인 하시겠습니까?")
+
+  if (result) {
+    window.location.href = '/accounts/login/';
+  }
+}

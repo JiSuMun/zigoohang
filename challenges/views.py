@@ -19,13 +19,12 @@ def index(request):
         challenges = Challenge.objects.filter(end_date__lte=date.today()).order_by('-created')
     else:
         challenges = Challenge.objects.all().order_by('-created')
-        
-    paginator = Paginator(challenges, 10)
+    paginator = Paginator(challenges, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
         'page_obj' : page_obj,
-        'q': q
+        'q': q,
     }
     return render(request, 'challenges/index.html', context)
 
@@ -37,10 +36,15 @@ def detail(request, challenge_pk):
     certifications = challenge.certifications.all()
     days_remaining = calculate_remaining_days(challenge.end_date.date())
     ended = False
+    is_participant = request.user in challenge.participants.all()
+    certified_users = get_user_model().objects.filter(certification__challenge=challenge).distinct()
+    user_has_certified = False
+    if request.user.is_authenticated:
+        user_has_certified = Certification.objects.filter(user=request.user, challenge=challenge).exists()
 
     if days_remaining == 0:
         d_day_string = 'D-DAY'
-    elif days_remaining < 0:
+    elif days_remaining <= 0:
         ended = True
         d_day_string = "종료되었습니다."
     else:
@@ -54,7 +58,7 @@ def detail(request, challenge_pk):
             
         )
         u_certification_forms.append(u_certification_form)
-    # user_joined = isthisuserjoined(request.user, challenge)
+   
 
     context = {
         'challenge': challenge,
@@ -65,7 +69,10 @@ def detail(request, challenge_pk):
         'days_remaining': days_remaining,
         'ended': ended,
         'd_day_string': d_day_string,
-        # 'user_joined': user_joined,
+        'user_has_certified': user_has_certified,
+        'certified_users': certified_users,
+        'is_participant': is_participant
+        
     }
 
     return render(request, 'challenges/detail.html', context)
@@ -96,7 +103,6 @@ def create(request):
 
 def update(request, challenge_pk):
     challenge = Challenge.objects.get(pk=challenge_pk)
-    print(challenge)
     if request.method == 'POST':
         challenge_form = ChallengeForm(request.POST, instance=challenge)
         files = request.FILES.getlist('image') 
@@ -107,7 +113,6 @@ def update(request, challenge_pk):
             challenge = challenge_form.save(commit=False)
             challenge.user = request.user
             challenge.save()
-
             for delete_id in delete_ids: 
                 challenge.challengeimage_set.filter(pk=delete_id).delete()
 
@@ -153,8 +158,7 @@ def certification_create(request, challenge_pk):
             certification.user = request.user
             certification.challenge = challenge
             certification.save()
-            certification.add_points_to_user(500)
-            certification.save()
+            request.user.add_points(500)
 
             return redirect('challenges:detail', challenge_pk)
         
@@ -194,9 +198,11 @@ def certification_update(request, challenge_pk, certification_pk):
 
 
 def certification_delete(request, challenge_pk, certification_pk):
-    certification = Certification.objects.get(pk=certification_pk)
-    if request.user == certification.user:
+    certification = Certification.objects.filter(pk=certification_pk).first()
+    if certification and request.user == certification.user:
         certification.delete()
+        request.user.subtract_points(500)
+        request.user.save()
 
     return redirect('challenges:detail', challenge_pk)
 
@@ -205,6 +211,8 @@ def certification_delete(request, challenge_pk, certification_pk):
 def participation(request, challenge_pk):
     User = get_user_model()
     challenge = Challenge.objects.get(pk=challenge_pk)
+
+    is_certified = Certification.objects.filter(challenge=challenge, user=request.user).exists()
 
     is_participating = False
     if request.user in challenge.participants.all():
@@ -217,6 +225,7 @@ def participation(request, challenge_pk):
     context = {
         'is_participating': is_participating,
         'participants_count': challenge.participants.count(),
+        'is_certified': is_certified,
     }
     return JsonResponse(context)
 
@@ -232,20 +241,20 @@ def calculate_remaining_days(end_date):
     return days_remaining
 
 
-# def join_challenge(request, challenge_pk):
-#     challenge = Challenge.objects.filter(pk=challenge_pk).first()
-#     if challenge:
-#         challenge.participants.add(request.user)  # 참가자 추가
-#         challenge.save()
-#     return redirect('challenges:detail', challenge_pk)
+def join_challenge(request, challenge_pk):
+    challenge = Challenge.objects.filter(pk=challenge_pk).first()
+    if challenge:
+        challenge.participants.add(request.user)  # 참가자 추가
+        challenge.save()
+    return redirect('challenges:detail', challenge_pk)
 
-# def leave_challenge(request, challenge_pk):
-#     challenge = Challenge.objects.filter(pk=challenge_pk).first()
-#     if challenge:
-#         challenge.participants.remove(request.user)  # 참가자 제거
-#         challenge.save()
-#     return redirect('challenges:detail', challenge_pk)
+def leave_challenge(request, challenge_pk):
+    challenge = Challenge.objects.filter(pk=challenge_pk).first()
+    if challenge:
+        challenge.participants.remove(request.user)  # 참가자 제거
+        challenge.save()
+    return redirect('challenges:detail', challenge_pk)
 
 
-# def isthisuserjoined(user, challenge):
-#     return user.participating_challenges.filter(pk=challenge.pk).exists()
+def isthisuserjoined(user, challenge):
+    return user.participating_challenges.filter(pk=challenge.pk).exists()

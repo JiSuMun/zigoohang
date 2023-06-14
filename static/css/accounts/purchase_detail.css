@@ -1,0 +1,57 @@
+
+.purchase-page {
+  padding: 10px;
+}
+header h2 {
+  font-size: 24px;
+  text-align: start;
+  padding: 3%;
+}
+.purchase-page-content {
+  width: 80%;
+  margin-top: 30px;
+  border-collapse: collapse;
+}
+.purchase-page-content th {
+  color: #333;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+.purchase-page-content td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.purchase-page-content-main tr:last-child td {
+  border-bottom: none;
+}
+
+/* 반응형 */
+@media (max-width: 767px) {
+  .purchase-page-content {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+  }
+  thead {
+    display: none;
+  }
+  .purchase-page-content-main tr {
+    display: block;
+    position: relative;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+    background: #fafafa; 
+  }
+  .purchase-page-content-main td {
+    padding: 5px;
+    border-bottom: 0px solid #ccc;
+  }
+  .purchase-page-day {
+    display: none;
+  }
+}

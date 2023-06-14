@@ -52,6 +52,13 @@ class User(AbstractUser):
                     os.remove(os.path.join(settings.MEDIA_ROOT, old_user.image.path))
         super(User, self).save(*args, **kwargs)
 
+    def add_points(self, points):
+        self.points += points
+        self.save()
+
+    def subtract_points(self, points):
+        self.points -= points
+        self.save()
 
 class PointLog(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='point_logs')

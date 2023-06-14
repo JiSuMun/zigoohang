@@ -82,18 +82,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           {% csrf_token %}
           <input type="hidden" name="item_check" value="{{ product.pk }}">
           <input type="hidden" name="input_quantity" value="1">
-          <input class="buy-button" type="submit" value="바로 구매하기">
+          <input class="buy-button" value="바로 구매하기" {% if request.user.is_authenticated %}type="submit"{% else %}type="button" onclick="loginRequired(product_likes_form)"{% endif %}>
         </form>
         <div class="btn-wrapper">
           <div class="btn-inner">
             <form id="product_likes_form" data-product-id="{{ product.pk }}" data-store-id="{{ product.store.pk}}">
               {% csrf_token %}
-              <input class="sub-button" type="submit" value="관심상품 등록">
+              <input class="sub-button" value="관심상품 {% if user in product.like_users.all %}삭제{% else %}등록{% endif %}" {% if request.user.is_authenticated %}type="submit"{% else %}type="button" onclick="loginRequired(product_likes_form)"{% endif %}>
             </form>
           </div>
           <div class="btn-inner">
             <input type="hidden" id="quantity" value="1">
-          <button class="sub-button" id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">장바구니에 담기</button>
+            <button class="sub-button" id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">장바구니에 담기</button>
           </div>
         </div>        
       </div>

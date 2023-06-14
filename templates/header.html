@@ -16,8 +16,15 @@
         <li>
           <a class="nav-link" href="{% url 'secondhands:index' %}">중고거래</a>
         </li>
-        <li>
-          <a class="nav-link" href="{% url 'challenges:index' %}">챌린지</a>
+        <li class="nav-hover">
+          <div class="nav-drop">
+            <a class="nav-link" href="{% url 'challenges:index' %}">챌린지</a>
+          </div>
+          <ul class="nav-hover-title">
+            <li><a class="nav-hover-list hide-pc" href="{% url 'challenges:index' %}">전체</a></li>
+            <li><a class="nav-hover-list {% if not q or q != '진행중인챌린지' %} pass {% endif %}"  href="{% url 'challenges:index' %}?q=진행중인챌린지">진행 중인 챌린지</a></li>
+            <li><a class="nav-hover-list {% if not q or q != '마감된챌린지' %} pass {% endif %}" href="{% url 'challenges:index' %}?q=마감된챌린지">마감된 챌린지</a></li>
+          </ul>
         </li>
         <li class="nav-hover">
           <div class="nav-drop">
@@ -34,14 +41,12 @@
     </div>
     <div class="nav-inner-right">
       <!--검색-->
-      <div class="search">
-        <form action="{% url 'search' %}">
-          {% csrf_token %}
-            <input class="search-input" type="text" placeholder="검색" name='q' autocomplete="off">
-            <button class="search-button" type="submit"><img class="search-button-size" src="{% static 'img/base/search.svg' %}" alt=""></button>
-        </form>
+      <form class="search"action="{% url 'search' %}">
+        {% csrf_token %}
+          <input class="search-input" type="text" placeholder="검색" name='q' autocomplete="off">
+          <button class="search-button" type="submit"><img class="search-button-size" src="{% static 'img/base/search.svg' %}" alt=""></button>
+      </form>
 
-      </div>
       <!--로그인-->
       <ul class="nav-ul">
         <div class="icons">
@@ -117,6 +122,6 @@
 }
 
 updateNotificationData()
+setInterval(updateNotificationData, 5000);
 </script>
 {% endif %}
-{% comment %} setInterval(updateNotificationData, 5000); {% endcomment %}
