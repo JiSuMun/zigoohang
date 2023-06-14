@@ -21,8 +21,7 @@ class User(AbstractUser):
     is_seller = models.BooleanField(default=False)
     phoneNumberRegex = RegexValidator(regex=r'^0[1-9]\d{0,2}-\d{3,4}-\d{4}$')
     phone = models.CharField(validators=[phoneNumberRegex], max_length=14)
-    points = models.IntegerField(default=0) # 현재 포인트
-    total_points = models.IntegerField(default=0) # 누적 포인트
+    points = models.IntegerField(default=0)
 
     # 포인트 1년마다 초기화
     def reset_points_if_needed(self):
@@ -51,27 +50,3 @@ class User(AbstractUser):
                 if old_user.image:
                     os.remove(os.path.join(settings.MEDIA_ROOT, old_user.image.path))
         super(User, self).save(*args, **kwargs)
-
-    def add_points(self, points):
-        self.points += points
-        self.save()
-
-    def subtract_points(self, points):
-        self.points -= points
-        self.save()
-
-    def get_followings_and_followers(self):
-        followings_and_followers = set(self.followings.all()) | set(self.followers.all())
-        followings_and_followers.discard(self)
-        return followings_and_followers
-
-class PointLog(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='point_logs')
-
-
-class PointLogItem(models.Model):
-    point_log = models.ForeignKey(PointLog, on_delete=models.CASCADE, related_name='point_log_itmes')
-    type = models.BooleanField(default=False) # False일 경우 차감, True일 경우 적립
-    type_detail = models.CharField(max_length=10) # 적립, 사용, 참여, 참여취소
-    amount = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)

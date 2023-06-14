@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   chatSocket.onmessage = function (event) {
     const message = JSON.parse(event.data);
+    console.log('Received message:', message);
     displayMessage({
       sender: message.sender,
       content: message.message,
       formatted_timestamp: message.formatted_timestamp,
-      sender_image_url: message.sender_image_url
     });
   };
 
@@ -63,44 +63,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (message.sender === username) {
       messageElement.classList.add('my-message');
-      const me_content = document.createElement('p');
-      me_content.textContent = message.content;
-      me_content.classList.add('message-content_me')
-      messageElement.appendChild(me_content);
-      
     } else {
       messageElement.classList.add('other-message');
 
-      const senderDiv = document.createElement('div');
-      senderDiv.classList.add('sender')
-
-      const img_div = document.createElement('div');
-      const img = document.createElement('img');
-      img.src = message.sender_image_url;
-      console.log(img.src)
-      img.classList.add('sender-image');
-      img_div.appendChild(img)
-      senderDiv.appendChild(img_div)
-
       const username = document.createElement('p');
       username.textContent = message.sender;
-      senderDiv.appendChild(username);
-
-      messageElement.appendChild(senderDiv);
-
-      const content = document.createElement('p');
-      content.textContent = message.content;
-      content.classList.add('message-content')
-      messageElement.appendChild(content);
-
-
+      messageElement.appendChild(username);
     }
 
-
+    const content = document.createElement('p');
+    content.textContent = message.content;
+    messageElement.appendChild(content);
 
     const timestamp = document.createElement('p');
     timestamp.textContent = message.formatted_timestamp;
-    timestamp.classList.add('time-stamp')
     messageElement.appendChild(timestamp);
 
     chatRoom.appendChild(messageElement);

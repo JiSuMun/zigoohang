@@ -84,9 +84,9 @@ ratingStars.forEach((ratingStar) => {
 });
 
 // 리뷰 좋아요 비동기
-const reviewForms = document.querySelectorAll('[id^="review-likes-form-"]');
-console.log(reviewForms)
-const r_csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+const reviewForms = document.querySelectorAll('.review-like-form');
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
 
 reviewForms.forEach((form) => {
   form.addEventListener('submit', function (event) {
@@ -94,33 +94,26 @@ reviewForms.forEach((form) => {
     const storeId = event.target.dataset.storeId;
     const productId = event.target.dataset.productId;
     const reviewId = event.target.dataset.reviewId;
-    console.log(storeId, productId, reviewId)
-
+       
     axios({
       method: "POST",
       url: `/stores/${storeId}/${productId}/${reviewId}/likes/`,
-      headers: {'X-CSRFToken': r_csrftoken},
+      headers: {'X-CSRFToken': csrftoken},
     })
       .then((response) => {
         const risLiked = response.data.r_is_liked;
-        console.log(risLiked)
-        const rlikeBtn = form.querySelector('#review-like');
-        console.log(rlikeBtn)
-        const rlikeCount = form.nextElementSibling;
-        console.log(rlikeCount)
-        const dreviewForms = document.querySelector(`#review-dislikes-form-${storeId}-${productId}-${reviewId}`);
-        console.log(dreviewForms)
+        const rlikeBtn = document.querySelector(`#review-like-${reviewId}`)
+        const rlikeCount = document.querySelector(`#review_likes_count-${reviewId}`)
         
-        if (risLiked) {
-          rlikeBtn.classList.remove('r-like-color-gray')
+        if (risLiked === true) {
           rlikeBtn.classList.add('r-like-color')
-          dreviewForms.querySelector('button').disabled = true;
+          rlikeBtn.classList.remove('r-like-color-gray')
         } else {
-          rlikeBtn.classList.remove('r-like-color')
           rlikeBtn.classList.add('r-like-color-gray')
-          dreviewForms.querySelector('button').disabled = false;
+          rlikeBtn.classList.remove('r-like-color')
+
         }
-        rlikeCount.textContent = response.data.review_likes_count;
+        rlikeCount.innerText = response.data.review_likes_count;
       })
       .catch((error) => {
         console.log(error.response);
@@ -129,8 +122,7 @@ reviewForms.forEach((form) => {
 });
 
 // 리뷰 싫어요 비동기
-const dreviewForms = document.querySelectorAll('[id^="review-dislikes-form-"]');
-console.log(dreviewForms)
+const dreviewForms = document.querySelectorAll('.review-dislike-form');
 
 dreviewForms.forEach((form) => {
   form.addEventListener('submit', function (event) {
@@ -138,33 +130,26 @@ dreviewForms.forEach((form) => {
     const storeId = event.target.dataset.storeId;
     const productId = event.target.dataset.productId;
     const dreviewId = event.target.dataset.dreviewId;
-    console.log(storeId, productId, dreviewId)
-    
+       
     axios({
       method: "POST",
       url: `/stores/${storeId}/${productId}/${dreviewId}/dislikes/`,
-      headers: {'X-CSRFToken': r_csrftoken},
+      headers: {'X-CSRFToken': csrftoken},
     })
       .then((response) => {
         const rdisLiked = response.data.r_is_disliked;
-        console.log(rdisLiked)
-        const rdlikeBtn = form.querySelector('#review-dislike');
-        console.log(rdlikeBtn)
-        const rdlikeCount = form.nextElementSibling;
-        console.log(rdlikeCount)
-        const reviewForms = document.querySelector(`#review-likes-form-${storeId}-${productId}-${dreviewId}`);
-        console.log(reviewForms)
+        const rdlikeBtn = document.querySelector(`#review-dislike-${dreviewId}`)
+        const rdlikeCount = document.querySelector(`#review_dislikes_count-${dreviewId}`)
         
-        if (rdisLiked) {
-          rdlikeBtn.classList.remove('r-like-color-gray')
+        if (rdisLiked === true) {
           rdlikeBtn.classList.add('r-like-color')
-          reviewForms.querySelector('button').disabled = true;
+          rdlikeBtn.classList.remove('r-like-color-gray')
         } else {
-          rdlikeBtn.classList.remove('r-like-color')
           rdlikeBtn.classList.add('r-like-color-gray')
-          reviewForms.querySelector('button').disabled = false;
+          rdlikeBtn.classList.remove('r-like-color')
+
         }
-        rdlikeCount.textContent = response.data.review_dislikes_count;
+        rdlikeCount.innerText = response.data.review_dislikes_count;
       })
       .catch((error) => {
         console.log(error.response);

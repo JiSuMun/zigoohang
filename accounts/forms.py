@@ -5,23 +5,8 @@ from accounts.models import User
 
 
 class FindUserIDForm(forms.Form):
-    last_name = forms.CharField(
-        label = "이름",
-        widget = forms.TextInput(attrs = {
-            'placeholder': '이름',
-            'class':'form-control',
-            }
-        ),
-    )
-
-    email = forms.EmailField(
-        label = "이메일",
-        widget = forms.EmailInput(attrs = {
-            'placeholder': '이메일',
-            'class':'form-control',
-            }
-        ),
-    )
+    last_name = forms.CharField(label="이름",widget=forms.TextInput(attrs={'placeholder': '이름'}))
+    email = forms.EmailField(label="이메일",widget=forms.EmailInput(attrs={'placeholder': '이메일'}))
 
     def clean(self):
         cleaned_data = super().clean()
@@ -45,8 +30,7 @@ class CustomAuthentication(AuthenticationForm):
             'class':'form-control',
             "placeholder": "아이디",
             "autocomplete": "username off",
-            }
-        ),
+            }),
     )
     password = forms.CharField(
         label = False,
@@ -54,8 +38,7 @@ class CustomAuthentication(AuthenticationForm):
             'class':'form-control',
             "placeholder": "비밀번호",
             "autocomplete": "current-password",
-            }
-        ),
+            }),
     )
 
     class Meta:
@@ -71,8 +54,7 @@ class CustomUserCreationForm(UserCreationForm):
                 "class": "form-control",
                 "placeholder": "아이디",
                 'autocomplete': 'off',
-            }
-        ),
+            }),
     )
 
     first_name = forms.CharField(
@@ -82,8 +64,7 @@ class CustomUserCreationForm(UserCreationForm):
                 "class": "form-control",
                 "placeholder": "닉네임",
                 'autocomplete': 'off',
-            }
-        ),
+            }),
     )
 
     last_name = forms.CharField(
@@ -91,10 +72,9 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.TextInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "이름",
+                "placeholder": "홍길동",
                 'autocomplete': 'off',
-            }
-        ),
+            }),
     )
 
 
@@ -103,20 +83,18 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.PasswordInput(
             attrs = {
                 "class": "form-control",
-                "placeholder": "비밀번호 8자리 이상 입력해 주세요",
+                "placeholder": "******",
                 'autocomplete': 'off',
-            }
-        ),
+            }),
     )
     password2 = forms.CharField(
         label = "비밀번호 확인",
         widget = forms.PasswordInput(
             attrs = {
                 "class": "form-control",
-                "placeholder": "비밀번호 확인",
+                "placeholder": "******",
                 'autocomplete': 'off',
-            }
-        ),
+            }),
     )
 
 
@@ -127,8 +105,7 @@ class CustomUserCreationForm(UserCreationForm):
                 "class": "form-control",
                 "placeholder": "이메일",
                 'autocomplete': 'off',
-            }
-        ),
+            }),
     )
 
     class Meta(UserCreationForm.Meta):
@@ -159,8 +136,7 @@ class CustomUserChangeForm(UserChangeForm):
             attrs = {
                 "class": "form-control",
                 "placeholder": "닉네임",
-            }
-        ),
+            }),
     )
 
     last_name = forms.CharField(
@@ -169,19 +145,18 @@ class CustomUserChangeForm(UserChangeForm):
             attrs = {
                 "class": "form-control",
                 "placeholder": "홍길동",
-            }
-        ),
+            }),
     )
 
     password = None
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'image',)
+        fields = ('first_name', 'last_name', 'image', 'address')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['image'].widget.attrs['class'] = 'form-control form-image'
+        self.fields['image'].widget.attrs['class'] = 'form-control'
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):

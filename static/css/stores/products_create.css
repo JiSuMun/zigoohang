@@ -81,13 +81,7 @@
 }
 
 input:focus {
-  border:1px solid #297821;
-  outline: none;
-}
-
-textarea:focus {
-  border:1px solid #297821;
-  outline: none;
+  outline:1px solid #297821;
 }
 
 input::file-selector-button {

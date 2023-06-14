@@ -92,6 +92,10 @@
 }
 
 /*카드*/
+
+.profile-image {
+  width: 50px;
+}
 .profile-page-info-main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -110,27 +114,13 @@
   margin-top: 20px;
 }
 
-/* 에코 포인트 */
-.point_number {
-  color: var(--j-color1);
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-left: 10px;
-}
-.point_red {
-  color: var(--j-red);
-}
-.point_green {
-  color: var(--j-green);
-}
-
-
 /* 반응형 미디어쿼리 */
 @media (min-width: 1080px) {
   .profile-navbar {
     display: none;
   }
 }
+
 @media (max-width: 1079.9px) {
   /* 사이드바 반응형 */
   .profile-sidebar {
@@ -176,66 +166,51 @@
     margin-bottom: 20px;
   }
 }
-/* 핸드폰 크기*/
-@media (min-width: 478.9px) {
-
-}
-@media (max-width: 479px) {
- .header-text-name h2 {
-  font-size: 18px;
- }
- .header-info {
-  gap: 20px;
-}
-.header-img{
-  width: 120px;
-  height: 120px;
-  border-radius: 70%;
-  overflow: hidden;
-  border: 1px solid grey;
-}
-}
   
-/* 팔로잉&필로우 모달 */
-.profile--card--btn {
-  color: #383943;
-  background: #fff0;
-  border: none;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 0;
-  height: 25px;
-  line-height: 25px;
-  margin: 5px 10px;
-}
-
-.profile {
-  width: 30px;
-  object-fit: fill;
   
-}
+  .profile-page-profile {
+    width: 80%;
+  } */
 
-#follower-ul {
-  padding: 0;
-}
-
-#following-ul {
-  padding: 0;
-}
-
-.follow--modal {
-  list-style: none;
-  width: 50px;
-  display: inline-block;
-  margin: 10px;
-  text-align: center;
-}
-
-.follow--modal a{
-  text-decoration: none;
-}
-
-.follow--modal a span {
-  white-space: nowrap;
-}
+  .profile--card--btn {
+    color: #383943;
+    background: #fff0;
+    border: none;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 0;
+    height: 25px;
+    line-height: 25px;
+    margin: 5px 10px;
+  }
+  
+  .profile {
+    width: 30px;
+    object-fit: fill;
+    
+  }
+  
+  #follower-ul {
+    padding: 0;
+  }
+  
+  #following-ul {
+    padding: 0;
+  }
+  
+  .follow--modal {
+    list-style: none;
+    width: 50px;
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .follow--modal a{
+    text-decoration: none;
+  }
+  
+  .follow--modal a span {
+    white-space: nowrap;
+  }

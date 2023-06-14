@@ -84,7 +84,7 @@ class ProductForm(forms.ModelForm):
                 'class': 'form-image', 
             }
         ),
-        required=True,
+        required=False,
     )
 
     class Meta:

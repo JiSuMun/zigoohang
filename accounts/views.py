@@ -13,7 +13,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib import messages
-from .models import PointLog, PointLogItem
 from posts.models import Post
 from stores.models import Product
 from carts.models import Order, OrderItem
@@ -450,8 +449,8 @@ def profile(request, username):
     User = get_user_model()
     person = User.objects.get(username=username)
     posts = Post.objects.filter(user=person)
-    interests = request.user.like_products.all()  
-    orders = Order.objects.filter(customer=person).exclude(shipping_status='결제전').order_by('-pk')
+    interests = request.user.like_products.all()
+    orders = Order.objects.filter(customer=person, shipping_status=1)
     purchases = S_Purchase.objects.filter(customer=person).select_related('product')
     completed_products = S_Product.objects.filter(user=person, status='3')
     purchase_details = []
@@ -461,17 +460,13 @@ def profile(request, username):
             'order': order,
             'items': items 
         })
-
-    point_log, _ = PointLog.objects.get_or_create(user=person)
-    point_log_items = point_log.point_log_itmes.all().order_by('-pk')[:4]
     context = {
         'q':q,
         'person':person,
         'posts':posts,
         'interests':interests,
         'purchase_details': purchase_details,
-        'completed_products': completed_products,
-        'point_log_items': point_log_items,
+        'completed_products': completed_products
         # 'purchases': purchases,
     }
     return render(request, 'accounts/profile.html', context)
