@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 import math
 
-@login_required(login_url='accounts:login')
 
 def index(request):
     products = S_Product.objects.all()
@@ -16,26 +15,12 @@ def index(request):
     in_progress_products = S_Product.objects.filter(status='거래중')
     completed_products = S_Product.objects.filter(status='거래완료')
 
-    u_address = request.user.address
-    u_latitude, u_longitude = get_latlng_from_address(u_address)
-
-    products_with_distance = []
-    for product in products:
-        product_address = product.road_address
-        latitude, longitude = get_latlng_from_address(product_address)
-        distance = calculate_distance(latitude, longitude, u_latitude, u_longitude)
-        products_with_distance.append((product, distance))
-
-    products_with_distance_sorted = sorted(products_with_distance, key=lambda x: x[1])
-
     context = {
         'products' : products,
         'no_status_products': no_status_products,
         'reserved_products': reserved_products,
         'in_progress_products': in_progress_products,
         'completed_products': completed_products,
-        'products_with_distance': products_with_distance,
-        'products_with_distance_sorted': products_with_distance_sorted,
     }
     return render(request, 'secondhands/index.html', context)
 

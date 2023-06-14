@@ -26,7 +26,6 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main, name="main"),
-    path('search/', views.search, name="search"),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('allauth.urls')),
     path('posts/', include('posts.urls')),
@@ -35,7 +34,6 @@ urlpatterns = [
     path('secondhands/', include('secondhands.urls')),
     path('chat/', include('chat.urls')),
     path('challenges/', include('challenges.urls')),
-    
 
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path(r'^upload/', login_required(views_ckeditor.upload), name='ckeditor_upload'),

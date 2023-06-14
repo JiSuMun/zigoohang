@@ -72,15 +72,12 @@ margin-bottom: 2rem;
   max-width: 100%;
   margin-left: 3px;
 }
-
 input:focus {
-  border:1px solid #297821;
-  outline: none;
+  outline:1px solid #297821;
 }
 
 textarea:focus {
-  border:1px solid #297821;
-  outline: none;
+  outline:1px solid #297821;
 }
 
 .required_star {

@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load humanize %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'carts/css/cart_detail.css' %}">
@@ -8,13 +7,12 @@
 
 {% block content %}
 <div class="cart_container">
-  <header>
-    <h1>장바구니</h1>
-  </header>
+  <h1>cart</h1>
   <form action="{% url 'carts:order_page' %}" method="POST" id="order_form">
     {% csrf_token %}
-    <div class="cart_div" id="cart_div">
+    <div class="cart_div">
       <div class="cart_check">
+
       </div>
       <div class="cart_list_header">
         <div class="cart_checkbox_col">
@@ -36,7 +34,7 @@
             <div class="cart_list_content">
               <div class="cart_checkbox_col">
                 <input type="checkbox" name="item_check" value="{{ cart_item.product.pk }}">
-                <input type="hidden" name="input_quantity" value="{{ cart_item.quantity }}" id="product_quantity-{{ cart_item.product.pk }}">
+                <input type="hidden" name="input_quantity" value="{{ cart_item.quantity }}">
               </div>
               <a href="{% url 'stores:products_detail' cart_item.product.store.pk cart_item.product.pk %}" class="cart_product">
                 <div class="cart_img_container">
@@ -44,7 +42,7 @@
                 </div>
                 <div class="cart_list_product_text">
                   <div class="cart_list_name">{{ cart_item.product.name }}</div>
-                  <div class="cart_list_price">{{ cart_item.product.price|intcomma }} 원</div>
+                  <div class="cart_list_price">{{ cart_item.product.price }}</div>
                 </div>
               </a>
               <div class="cart_quantity_col">
@@ -54,11 +52,11 @@
                   <button class="cart_quantity_button" name="quantity_btn" data-quantity-value="1" data-product-id="{{ cart_item.product.pk }}">+</button>
                 </div>
               </div>
-              <div class="cart_subtotal"><span id="sub_total-{{ cart_item.product.pk }}">{{ cart_item.sub_total|intcomma }}</span> 원</div>
+              <div class="cart_subtotal"><span id="sub_total-{{ cart_item.product.pk }}">{{ cart_item.sub_total }}</span> 원</div>
             </div>
           {% endfor %}
           <div class="cart_total">
-            합계 : <span id="total" class="pointColor">{{ cart.total|intcomma }}</span> 원
+            합계 : <span id="total">{{ cart.total }}</span> 원
           </div>
         {% else %}
           <div>
@@ -67,21 +65,15 @@
         {% endif %}
       {% endif %}
     </div>
-    <div class="order_btn_box">
-      <div class="order_check_btn">
-        <button id="del_btn" class="j_btn_outline" type="button">
-          선택 삭제
-        </button>
-      </div>
-      <div class="order_btn">
-        <button id="order_check" class="j_btn" type="button" {% if not user.is_authenticated %}onclick="loginRequired()"{% endif %}>
-          선택 주문
-        </button>
-        <button id="order_all" class="j_btn" type="button" {% if not user.is_authenticated %}onclick="loginRequired()"{% endif %}>
-          전체 주문
-        </button>
-      </div>
-    </div>
+    <button id="del_btn">
+      선택 삭제
+    </button>
+    <button id="order_check">
+      선택 주문
+    </button>
+    <button id="order_all">
+      전체 주문
+    </button>
   </form>
 </div>
 
