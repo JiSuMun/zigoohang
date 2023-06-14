@@ -7,11 +7,14 @@
 
 {% block content %}
 <article>
-  <a id="inbox-link" href="{% url 'chat:inbox' %}">inbox로 이동</a>
+  {% comment %} 출력안되는 {% endcomment %}
   {{ room_name|json_script:"room-name" }}
   <input type="hidden" id="username" value="{{ request.user.username }}">
+  <div class="room_name">
+    <a id="inbox-link" href="{% url 'chat:inbox' %}"> < </a>
+    {{ room_name }}
+  </div>
   <section class="room">
-    <div class="room_name">{{ room_name }}</div>
     <div id="chat-room" class="chat-room">
       {% for message in messages %}
         <div class="message">
@@ -26,7 +29,7 @@
                 {% if message.sender.image %}
                   <div><img class="sender-image" src="{{ message.sender.image.url }}" alt=""></div>
                 {% else %}
-                  <div><img class="sender-image" src="{% static 'img/accounts/no-image.png' %}" alt=""></div>
+                  <div><img class="sender-image" src="{% static 'img/accounts/no-image-icon-21.png' %}" alt=""></div>
                 {% endif %}
                 <p>{{ message.sender.username }}</p>
               </div>

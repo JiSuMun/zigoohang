@@ -1,5 +1,8 @@
 article {
-  padding-top: 80px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 5rem auto;
 }
 
 .message {
@@ -28,12 +31,16 @@ article {
   align-items: center;
 }
 
-
 .room_name {
+  position: relative;
+  text-align: center;
   margin-bottom: 2rem;
   color: var(--planet-color4);
   font-size: large;
   font-weight: 600;
+}
+.room_name > a {
+  left: 2rem;
 }
 
 .sender {
@@ -56,8 +63,6 @@ article {
 
 
 @media (min-width: 1080px) {
-
-
   .chat-room {
     width: 800px;
     overflow-y: scroll;
@@ -117,7 +122,7 @@ article {
     width: 70%;
     overflow-y: scroll;
     height: 50vh;
-    border: 1px solid var(--planet-color3);
+    border: 2px solid var(--planet-color3);
     border-radius: 5px;
     padding: 10px;
   }
@@ -161,6 +166,14 @@ article {
     border-radius: 5px;
     height: 35px;
     cursor: pointer;
+  }
+
+  .room_name {
+    max-width: 500px; 
+  }
+
+  .room_name > a {
+    position: absolute;
   }
 }
 
