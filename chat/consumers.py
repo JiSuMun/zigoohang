@@ -23,7 +23,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        # formatted_timestamp = await self.save_message(message)
         sender_image_url, formatted_timestamp = await self.save_message(message)
 
         await self.channel_layer.group_send(
