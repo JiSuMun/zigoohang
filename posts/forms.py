@@ -90,7 +90,7 @@ class ReviewForm(forms.ModelForm):
         label = False,
         widget = forms.TextInput(
             attrs = {
-                'placeholder':'리뷰제목',
+                'placeholder':'제목을 입력해 주세요. (50자 이하로 입력해야 합니다)',
                 'class': 'form-control',
             }
         )

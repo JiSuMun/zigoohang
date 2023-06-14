@@ -1,3 +1,9 @@
+function showAlert() {
+  alert("이전 글이 없습니다.");
+}
+
+
+
 function toggleReviewUpdateForm(review_id) {
   const form = document.getElementById("reviewUpdateForm" + review_id);
   const box = document.querySelector(".review--box");
