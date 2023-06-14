@@ -35,11 +35,11 @@
   <div class="btn-wrapper">
     <form action="{% url 'challenges:update' challenge.pk %}" method="GET">
       {% csrf_token %}
-      <input class="btn-delete" type="submit" value="수정">
+      <input class="btn-update" type="submit" value="수정">
     </form>
     <form action="{% url 'challenges:delete' challenge.pk %}" method="POST">
       {% csrf_token %}
-      <input class="btn-update" type="submit" value="삭제">
+      <input class="btn-delete" type="submit" value="삭제">
     </form>
   </div>    
   {% endif %}
@@ -116,11 +116,11 @@
       {% if user == certification.user %}
       <div class="modify-delete-buttons">
         <!-- 수정 버튼 -->
-        <button class="btn-delete" id="certificationUpdateButton{{ certification.pk }}" type="button" onclick="toggleCertificationUpdateForm({{ certification.pk }})">리뷰 수정</button>
+        <button class="c-button" id="certificationUpdateButton{{ certification.pk }}" type="button" onclick="toggleCertificationUpdateForm({{ certification.pk }})">수정</button>
         <form id="certificationUpdateForm{{ certification.pk }}" action="{% url 'challenges:certification_update' challenge.pk certification.pk %}" method="POST" enctype="multipart/form-data" style="display:none;">
           {% csrf_token %}
           <div>
-            <p class="form_label">인증 제목<span class="required_star">*</span></p>
+            <p class="form_label" style="margin-top: 1rem;">인증 제목<span class="required_star">*</span></p>
             {{ u_certification_form.title }}
           </div>
           <div>
@@ -241,7 +241,7 @@ function toggleCertificationUpdateForm(certification_id) {
   } else {
     form.style.display = "none";
     box.style.display = "block";
-    button.innerHTML = "리뷰 수정";
+    button.innerHTML = "수정";
   }
 }
 

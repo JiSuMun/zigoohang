@@ -4,7 +4,7 @@ from .forms import ChallengeForm, ChallengeImageForm, ChallengeImage_DeleteImage
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from datetime import date, datetime, timedelta
 from pytz import timezone
 from django.conf import settings
@@ -79,6 +79,9 @@ def detail(request, challenge_pk):
 
 
 def create(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
+    
     Challenge_form = ChallengeForm()
     image_form = ChallengeImageForm()
 
@@ -102,6 +105,9 @@ def create(request):
 
 
 def update(request, challenge_pk):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
+    
     challenge = Challenge.objects.get(pk=challenge_pk)
     if request.method == 'POST':
         challenge_form = ChallengeForm(request.POST, instance=challenge)

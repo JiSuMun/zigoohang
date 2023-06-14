@@ -376,7 +376,7 @@ def find_user_id(request):
             if users:
                 for user in users:
                     messages.success(
-                        request, f'찾으신 이름: {user.last_name} 이메일: {user.email} 의 사용자명: {user.username}')
+                        request, f'찾으신 이름: {user.last_name} <br><br> 이메일: {user.email} <br><br> 사용자명: {user.username}')
                 return redirect('accounts:find_user_id')
             else:
                 messages.error(request, '입력하신 이메일로 가입된 아이디를 찾을 수 없습니다.')
@@ -412,7 +412,7 @@ def password_reset_request(request):
                 email = render_to_string(email_template_name, c)
                 send_mail(subject, email, settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
                 messages.success(request, '비밀번호 재설정 이메일이 발송되었습니다.')
-                return redirect('accounts:login')
+                return redirect('accounts:password_reset_request')
             else:
                 messages.error(request, '입력한 사용자명에 해당하는 계정을 찾을 수 없습니다.')
                 return redirect('accounts:password_reset_request')

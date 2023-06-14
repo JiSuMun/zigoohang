@@ -16,12 +16,52 @@
 <!--carousel-->
 <div class="swiper mySwiper">
   <div class="swiper-wrapper">
-    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carouselnew.jpg' %}" alt=""></div>
-    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carousel2.jpg' %}" alt=""></div>
-    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carousel3.jpg' %}" alt=""></div>
-    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carousel4.jpg' %}" alt=""></div>
-    <div class="swiper-slide"><img class="main-image" src="{% static 'img/main/carousel1.jpg' %}" alt=""></div>
-
+    <div class="swiper-slide">
+      <img class="main-image" src="{% static 'img/main/main.jpg' %}" alt="">
+      <div class="main-wrapper">
+        <div class="main-inner">
+          <p class="main-content">ABOUT</p>
+          <p class="main-title">지구행</p>
+          <p class="main-content">"지구를 구하는 행동" 이라는 의미를 가지는 지구행은</p>
+          <p class="main-content">환경 보호 및 지속 가능한 삶을 위한 정보를 제공하는 온라인 플랫폼입니다.</p>
+        </div>
+      </div>
+     </div> 
+    <div class="swiper-slide">
+      <a href="{% url 'stores:detail' 1 %}">
+        <img class="main-image" src="{% static 'img/main/carousel_1.webp' %}" alt="">
+        <div class="swipper-inner">
+          <p class="swipper-title">SOWHAT</p>
+          <p class="swipper-content">물과 햇빛 으로 빚은 선인장 가죽 지갑</p>
+        </div>
+      </a>  
+    </div> 
+    <div class="swiper-slide">
+      <a href="{% url 'stores:detail' 2 %}">
+        <img class="main-image" src="{% static 'img/main/carousel_2.jpg' %}" alt="">
+        <div class="swipper-inner">
+          <p class="swipper-title">CUECLYP</p>
+          <p class="swipper-content">소각대신 소생하는 두번째 쓸모</p>
+        </div>
+      </div>
+    <div class="swiper-slide">
+      <a href="{% url 'stores:detail' 3 %}">
+        <img class="main-image" src="{% static 'img/main/carousel_3.jpg' %}" alt="">
+        <div class="swipper-inner">
+          <p class="swipper-title">KI LEE</p>
+          <p class="swipper-content">미니멀리스틱하게 풀어낸 친환경 비건 신소재</p>
+        </div>
+      </a>
+    </div>
+    <div class="swiper-slide">
+      <a href="{% url 'stores:detail' 4 %}">
+        <img class="main-image" src="{% static 'img/main/carousel_4.png' %}" alt="">
+        <div class="swipper-inner">
+          <p class="swipper-title">TOUN 28</p>
+          <p class="swipper-content">행동하는 내일의 바를거리</p>
+        </div>
+      </a>
+    </div>
   </div>
   <div class="swiper-button-next"></div>
   <div class="swiper-button-prev"></div>

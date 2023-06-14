@@ -1,0 +1,21 @@
+:root,
+[data-bs-theme=light] {
+	background-color: #fff;
+	--background-color: #fff;
+	color: #212529;
+	--text-color: #212529;
+	--j-sub-text: #666666;
+
+	--j-sub-line: #0000000f;
+
+	--block-bg: #fafafa;
+
+	--j-color1: #00A95C; /* 테마 녹색 */
+	--j-color2: #297821;
+	--j-color3: #dddddd;
+	--j-color4: #444444;
+	--j-text-white: white; /* 그냥 흰글씨*/
+	--j-btn-fill: #00A95C; /* 다크모드 버튼 */
+  --j-required_star: #ca0114;
+
+}

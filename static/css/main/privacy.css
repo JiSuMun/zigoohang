@@ -15,8 +15,8 @@
 .p-wrapper {
   max-width: 1300px;
   padding: 1rem;
-  background-color: white;
-  border: 1px solid #e3e3e3;
+  background-color: var(--background-color);
+  border: 1px solid var(--j-colors3);
   border-radius: 7px;
   display: flex;
   margin: auto;
