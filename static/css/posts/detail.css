@@ -64,6 +64,9 @@
   font-size: 13px;
   margin-bottom: 1.5rem;
 }
+.d-username a:hover {
+  color: var(--planet-color3);
+}
 
 .d-content {
   line-height: 1.4;
@@ -134,11 +137,13 @@
 }
 
 input:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
 
 textarea:focus {
-  outline:1px solid #297821;
+  border:1px solid #297821;
+  outline: none;
 }
 
 .form_label {

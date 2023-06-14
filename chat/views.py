@@ -6,11 +6,15 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
+
 @login_required
 def inbox(request):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
     chat_rooms = request.user.chat_rooms.all()
     chat_rooms_with_last_message = []
-    all_users = get_user_model().objects.exclude(id=request.user.id)
+    # all_users = get_user_model().objects.exclude(id=request.user.id)
+    all_users = request.user.get_followings_and_followers()
     current_datetime = timezone.now()
 
     for chat_room in chat_rooms:
@@ -23,7 +27,7 @@ def inbox(request):
     context = {
         'chat_rooms': chat_rooms_with_last_message,
         'all_users': all_users,
-        'user_username': request.user.username,
+        'user_username': request.user.first_name,
     }
 
     return render(request, 'chat/inbox.html', context)

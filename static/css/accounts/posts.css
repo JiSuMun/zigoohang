@@ -19,6 +19,9 @@
 .card-title {
   font-size: 18px;
   margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .card-content {
   font-size: 14px;
