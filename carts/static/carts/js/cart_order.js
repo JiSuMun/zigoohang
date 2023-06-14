@@ -17,10 +17,8 @@ const orderCheckBtn = document.getElementById('order_check')
 
 orderCheckBtn.addEventListener('click', function(event){
   const checkItems = document.querySelectorAll("input[name='item_check']")
-  if (checkItems.length > 0) {
-    checkItems.forEach(function(e){
-      e.checked = true
-    })
+  const checkedItems = [...checkItems].filter((item) => item.checked)
+  if (checkedItems.length > 0) {
     const form = document.getElementById('order_form')
     form.submit()
   } else {
