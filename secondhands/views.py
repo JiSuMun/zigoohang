@@ -7,8 +7,8 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 import math
 
-@login_required(login_url='accounts:login')
 
+@login_required(login_url='accounts:login')
 def index(request):
     products = S_Product.objects.all()
     no_status_products = S_Product.objects.filter(status='')
@@ -16,8 +16,11 @@ def index(request):
     in_progress_products = S_Product.objects.filter(status='거래중')
     completed_products = S_Product.objects.filter(status='거래완료')
 
-    u_address = request.user.address
-    u_latitude, u_longitude = get_latlng_from_address(u_address)
+    if request.user.address:
+        u_address = request.user.address
+        u_latitude, u_longitude = get_latlng_from_address(u_address)
+    else:
+        u_latitude, u_longitude = 37.566826, 126.9786567
 
     products_with_distance = []
     for product in products:
@@ -142,9 +145,12 @@ def detail(request, product_pk):
     road_address = product.road_address
     extra_address = product.extra_address
     latitude, longitude = get_latlng_from_address(road_address)
-    u_address = request.user.address
     kakao_script_key = os.getenv('kakao_script_key')
-    u_latitude, u_longitude = get_latlng_from_address(u_address)
+    if request.user.address:
+        u_address = request.user.address
+        u_latitude, u_longitude = get_latlng_from_address(u_address)
+    else:
+        u_latitude, u_longitude = 37.566826, 126.9786567
     distance = calculate_distance(latitude, longitude, u_latitude, u_longitude)
     kakao_key = os.getenv('KAKAO_KEY')
 
