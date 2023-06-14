@@ -3,15 +3,17 @@
 	/* --background-color: #1E1E20; */
 	background-color: #222222;
 	--background-color: #222222;
-	color: #adb5bd;
-	--text-color: #adb5bd;
+	color: #f3f3f3;
+	--text-color: #f3f3f3;
+	--j-sub-text: #aaaaaa;
 
 	--block-bg: #272829;
 
 	--bg-color1: #000;
 	--text-color1: #fff;
   
-	--j-color1: #297821; /* 테마 녹색 */
+	/* --j-color1: #297821; 테마 녹색 */
+	--j-color1: #125d3b; /* 테마 녹색 */
 	--j-color2: #00A95C;
 	--j-color3: #444444;
 	--j-color4: #dddddd;

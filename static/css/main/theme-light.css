@@ -4,6 +4,7 @@
 	--background-color: #fff;
 	color: #212529;
 	--text-color: #212529;
+	--j-sub-text: #666666;
 
 	--block-bg: #fafafa;
 	
@@ -11,7 +12,8 @@
 	--text-color1: #000;
 
 	--j-color1: #00A95C; /* 테마 녹색 */
-	--j-color2: #297821;
+	/* --j-color2: #297821; */
+	--j-color2: #125d3b;
 	--j-color3: #dddddd;
 	--j-color4: #444444;
 	--j-text-white: white; /* 그냥 흰글씨*/
