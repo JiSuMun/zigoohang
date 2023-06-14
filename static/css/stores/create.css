@@ -20,8 +20,8 @@
 .c-wrapper {
   max-width: 1080px;
   padding: 5rem;
-  background-color: white;
-  border: 1px solid #e3e3e3;
+  background-color: var(--block-bg);
+  border: 1px solid var(--j-color3);
   border-radius: 7px;
   display: flex;
   margin: auto;
@@ -48,6 +48,7 @@
   margin-bottom: 1rem;
   border-radius: 5px;
   border: 1px  solid #00000033;
+  color: var(--text-color);
 }
 
 .form_label {
@@ -59,22 +60,23 @@
   margin-bottom: 10px;
 }
 
-.required_star {
-  margin-left: 0.3em;
-  color: #ca0114;
-}
-
 .image-text {
   font-size: 14px;
   color: #999999;
 }
 
-input:focus {
+input.form-control:focus {
   outline:1px solid #297821;
+}
+input.form-control:-webkit-autofill,
+input.form-control:-webkit-autofill:hover,
+input.form-control:-webkit-autofill:focus,
+input.form-control:-webkit-autofill:active {
+  border: 1px solid #297821;
 }
 
 input::file-selector-button {
-  color: black;
+  color: var(--text-color);
   height: 33px;
   padding: 0 10px;
   overflow: hidden;
@@ -88,20 +90,20 @@ input::file-selector-button {
 }
 
 .c-button-cancel {
-  padding: 0.5rem 1rem;;
-  border: 1px solid #999999;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--text-color);
   font-size: 16px;
-  color: #999999;
-  background-color: #fff;
+  color: var(--text-color);
+  background-color: transparent;
   cursor: pointer;
   margin-right: 5px;
   border-radius: 5px;
 }
 
 .c-button-cancel:hover {
-  border: 1px solid #333333;
-  background-color: white;
-  color: #333333;
+  border: 1px solid var(--j-middle-gray);
+  background-color: transparent;
+  color: var(--j-middle-gray);
 }
 
 .c-button {
@@ -109,7 +111,7 @@ input::file-selector-button {
   border: 1px solid #297821;
   font-size: 16px;
   color: #297821;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
 }

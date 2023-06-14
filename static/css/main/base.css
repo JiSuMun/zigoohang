@@ -60,6 +60,22 @@ table {
 
 
 /* :root, */
+:root {
+  --j-green: #00A95C; /* 그냥 녹색 */
+	--j-dark-green: #297821; /* 다크 그린 */
+  --j-red: red;
+  --j-white: white; /* block 안에 흰글씨*/
+  --j-gray: #dddddd;
+  --j-dark-gray: #444444;
+  --j-middle-gray: #888888;
+
+	--planet-color1: #EDF1F4;
+	--planet-color2: #ADCBC9;
+	--planet-color3: #8BBE86;
+	--planet-color4: #363636;
+	--planet-color5: rgb(201, 123, 123);
+	--planet-color6: rgba(163, 158, 158, 0.829);
+}
 
 
 a {
@@ -68,6 +84,7 @@ a {
 }
 input {
 	background-color: var(--background-color);
+	color: var(--text-color);
 }
 
 /* :root {
@@ -96,6 +113,10 @@ input, button, textarea {
 	font-family: 'SUITE-Regular',sans-serif;
 }
 
+.required_star {
+  margin-left: 0.3em;
+  color: var(--j-required_star);
+}
 
 .j-btn {
   padding: 0.5rem 1rem;
@@ -157,4 +178,15 @@ input, button, textarea {
 		width: 40px;
 		font-size: 12px;
 	}
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	-webkit-text-fill-color: var(--text-color) !important;
+	box-shadow: 0 0 0 30px var(--background-color) inset !important;
+	/* -webkit-box-shadow: 0 0 0 30px violet inset !important;
+	background-color: violet !important;
+	color: violet !important; */
 }

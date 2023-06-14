@@ -157,17 +157,17 @@
   margin-top:1.5rem;
   width: 130px;
   height: 40px;
-  border: 1px solid var(--j-color1);
+  border: 1px solid var(--j-green);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  color: var(--j-color1);
+  color: var(--j-green);
   background-color: transparent;
 }
 
 .hover-button:hover {
-  background-color: var(--j-color1);
+  background-color: var(--j-green);
   color: white;
 }
 

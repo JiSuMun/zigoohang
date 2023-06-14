@@ -168,10 +168,6 @@ textarea:focus {
   border-radius: 5px;
   border: 1px  solid #00000033;
 }
-.required_star {
-  margin-left: 0.3em;
-  color: #ca0114;
-}
 
 #u-image input::file-selector-button {
   color: black;
