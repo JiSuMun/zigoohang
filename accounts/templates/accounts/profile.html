@@ -120,7 +120,7 @@
           </div>
           <div class="header-text">
             <div class="header-text-name">
-              <h2>{{ user.last_name }} 님</h2>
+              <h2>{{ person.last_name }} 님</h2>
               <a href="#">
                 <span class="material-symbols-outlined">forum</span>
               </a>
@@ -147,6 +147,9 @@
               <span class="main-card-title">나의 에코포인트</span>
               <span class="point_number">{{ user.points|intcomma }}</span>
               <div class="main-card-content">
+
+<!--                 <span>{{ person.points|intcomma }}</span> -->
+
                 <!-- point log -->
                 <table>
                   {% for log in point_log_items %}
@@ -158,6 +161,7 @@
                   {% endfor %}
                 </table>
                 <!-- //point log -->
+
               </div>
           </div>
           <div class="main-card">
