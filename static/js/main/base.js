@@ -52,15 +52,18 @@ const lightThemeBtn = document.getElementById("lightThemeBtn");
 const darkThemeBtn = document.getElementById("darkThemeBtn");
 
 lightThemeBtn.addEventListener("click", () => {
+  stylesheet.href = '/static/css/main/theme-light.css'
   setStoredTheme("light");
   setTheme("light");
 });
 
 darkThemeBtn.addEventListener("click", () => {
+  stylesheet.href = '/static/css/main/theme-dark.css'
   setStoredTheme("dark");
   setTheme("dark");
 });
 function applyOSTheme() {
+  stylesheet.href = '/static/css/main/theme-os.css'
   const osTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
@@ -82,6 +85,8 @@ if (getStoredTheme() === null) {
 }
 // 초기 테마 설정 및 적용
 // setTheme(getPreferredTheme());
+
+
 // login required
 function loginRequired() {
   let result = confirm("로그인이 필요합니다. 로그인 하시겠습니까?")

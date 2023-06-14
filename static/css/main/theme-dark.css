@@ -1,0 +1,28 @@
+:root,
+[data-bs-theme=dark] {
+	/* --background-color: #1E1E20; */
+	background-color: #222222;
+	--background-color: #222222;
+	color: #adb5bd;
+	--text-color: #adb5bd;
+
+	--block-bg: #272829;
+
+	--bg-color1: #000;
+	--text-color1: #fff;
+	--planet-color1: #EDF1F4;
+	--planet-color2: #ADCBC9;
+	--planet-color3: #8BBE86;
+	--planet-color4: #363636;
+	--planet-color5: rgb(201, 123, 123);
+	--j-color1: #297821; /* 테마 녹색 */
+	--j-color2: #00A95C;
+	--j-color3: #444444;
+	--j-color4: #dddddd;
+	--j-text-white: #dddddd;
+
+
+	--j-green: #00A95C; /* 그냥 녹색 */
+	--j-red: red;
+	--j-white: white;
+}
