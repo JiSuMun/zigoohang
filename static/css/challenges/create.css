@@ -20,7 +20,7 @@
 .c-wrapper {
   max-width: 1080px;
   padding: 5rem;
-  background-color: white;
+  background-color: var(--block-bg);
   border: 1px solid #e3e3e3;
   border-radius: 7px;
   display: flex;
@@ -75,13 +75,13 @@
   }
   
   input::file-selector-button {
-    color: black;
+    color: var(--text-color);
     height: 33px;
     padding: 0 10px;
     overflow: hidden;
     background-color: transparent;
     border: 0;
-    border-right: 1px  solid #00000033;
+    border-right: 1px solid #00000033;
   }
 
   
@@ -94,7 +94,7 @@
   border: 1px solid #999999;
   font-size: 16px;
   color: #999999;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   margin-right: 5px;
   border-radius: 5px;
@@ -102,8 +102,8 @@
 
 .c-button-cancel:hover {
   border: 1px solid #333333;
-  background-color: white;
-  color: #333333;
+  background-color: var(--j-dark-gray);
+  color: white;
 }
 
 .c-button {
@@ -111,7 +111,7 @@
   border: 1px solid #297821;
   font-size: 16px;
   color: #297821;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
 }

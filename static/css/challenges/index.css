@@ -31,7 +31,7 @@
   }
 
   .item {
-    border: 1px  solid #00000033;
+    border: 1px solid var(--text-color);
     border-radius: 10px;
     width: calc(25% - 1.6rem);
     overflow: hidden;
@@ -91,7 +91,7 @@
     border: 1px solid #297821;
     font-size: 16px;
     color: #297821;
-    background-color: #fff;
+    background-color: transparent;
     cursor: pointer;
     border-radius: 5px;
   }
@@ -120,7 +120,7 @@
     padding: 6px 6px;
     text-decoration: none;
     color: #3f4d67;
-    border: 1px solid white;
+    border: 1px solid var(--background-color);
     border-radius: 5px;
     width: 25px;
     height: 30px;

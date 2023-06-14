@@ -199,6 +199,10 @@ input.form-control:focus {
   border:1px solid #297821;
   outline: none;
 }
+textarea {
+	background-color: var(--background-color);
+	color: var(--text-color)
+}
 textarea.form-control:focus {
   border:1px solid #297821;
   outline: none;
