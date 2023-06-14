@@ -14,6 +14,7 @@
   text-align: center;
 }
 .create-page-content-wrapper {
+  background-color: var(--block-bg);
   border: 1px solid grey;
   border-radius: 10px;
   width: 100%;
@@ -47,6 +48,8 @@ input[type=number] {
 .form-content-box textarea{
   width: 100%;
   height: 200px;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 /* 이미지 */
@@ -66,7 +69,7 @@ input[type=number] {
   margin-top: 30px;
 }
 .form-button-back {
-  background-color: white;
+  background-color: transparent;
   color: grey;
   font-weight: bold;
   border: 1px solid grey;
@@ -75,7 +78,7 @@ input[type=number] {
   height: 30px;
 }
 .form-button-submit {
-  background-color: white;
+  background-color: transparent;
   color: #297821;
   font-weight: bold;
   border: 1px solid #297821;
@@ -84,7 +87,7 @@ input[type=number] {
   height: 30px;
 }
 .form-button-back:hover {
-  background-color: lightgrey;
+  background-color: var(--j-dark-gray);
   color: white;
   font-weight: bold;
 }
@@ -94,7 +97,15 @@ input[type=number] {
   font-weight: bold;
 }
 
-
+input::file-selector-button {
+  color: var(--text-color);
+  height: 33px;
+  padding: 0 10px;
+  overflow: hidden;
+  background-color: transparent;
+  border: 0;
+  border-right: 1px solid #00000033;
+}
 /* 반응형 미디어쿼리 */
 @media (min-width: 1080px) {
 

@@ -190,3 +190,28 @@ input:-webkit-autofill:active {
 	background-color: violet !important;
 	color: violet !important; */
 }
+select {
+	background-color: var(--background-color);
+	color: var(--text-color);
+	border: 1px solid #00000033;
+}
+input.form-control:focus {
+  border:1px solid #297821;
+  outline: none;
+}
+textarea.form-control:focus {
+  border:1px solid #297821;
+  outline: none;
+}
+input {
+	border: 1px solid #00000033;
+}
+input::file-selector-button {
+  color: var(--text-color);
+  height: 33px;
+  padding: 0 10px;
+  overflow: hidden;
+  background-color: transparent;
+  border: 0;
+  border-right: 1px solid #00000033;
+}

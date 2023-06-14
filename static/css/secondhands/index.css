@@ -36,8 +36,9 @@
   flex: 1;
 }
 .secondhands-page-content-filter button {
-  background-color: white;
+  background-color: transparent;
   border: 0;
+  color: var(--j-sub-text);
 }
 
 /* 상품 등록하기 */
@@ -85,11 +86,11 @@
 }
 
 /* 버튼 호버 */
-button:not([data-filter="all"]) {
-  color: grey;
+.filter-button:not([data-filter="all"]) {
+  color: var(--j-sub-text);
 }
-button:not([data-filter="all"]):hover {
-  color: black;
+.filter-button:not([data-filter="all"]):hover {
+  color: var(--text-color);
 }
 
 /* 반응형 미디어쿼리 */
