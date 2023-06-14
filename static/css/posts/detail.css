@@ -20,7 +20,7 @@
 .d-wrapper {
   max-width: 1080px;
   /* padding: 2rem; */
-  background-color: white;
+  background-color: var(--background-color);
   /* border: 1px solid #e3e3e3; */
   border-radius: 7px;
   display: flex;
@@ -32,13 +32,16 @@
 
 .d-title-wrapper {
   padding:1.5rem;
-  background-color: #fafafa;
-  border-top: 1px solid #e6e6e6;
-  border-bottom: 1px solid #e6e6e6;
+  background-color: var(--background-color);
+  /* border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6; */
+  border-top: 1px solid var(--j-color3);
+  border-bottom: 1px solid var(--j-color3);
+
 }
 
 .d-title {
-  color: #333333;
+  color: var(--j-sub-text);
   font-weight: 600;
   font-size: 18px;
   margin-bottom: 1rem;
@@ -55,8 +58,8 @@
 }
 .d-content-wrapper {
   display: block;
-  padding:1.5rem;
-  border-bottom: 1px solid #e6e6e6;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--j-color3);
 }
 
 
@@ -86,15 +89,15 @@
   border: 1px solid #999999;
   font-size: 16px;
   color: #999999;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
 }
 
 .d-button-cancel:hover {
   border: 1px solid #333333;
-  background-color: white;
-  color: #333333;
+  background-color: #333333;
+  color: white;
 }
 
 .d-button {
@@ -102,7 +105,7 @@
   border: 1px solid #297821;
   font-size: 16px;
   color: #297821;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
 }
@@ -115,7 +118,7 @@
 .review-box {
   padding: 1.5rem;
   max-width: 100%;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid var(--j-color3);
 }
 
 .review-name {
@@ -165,6 +168,7 @@ textarea:focus {
   border-radius: 5px;
   padding: 0.5rem 0.4rem;
   border: 1px  solid #00000033;
+  background-color: var(--block-bg);
 }
 
 .form-image {
@@ -173,19 +177,20 @@ textarea:focus {
   border-radius: 5px;
   border: 1px  solid #00000033;
 }
-.required_star {
-  margin-left: 0.3em;
-  color: #ca0114;
-}
 
 #u-image input::file-selector-button {
-  color: black;
+  color: var(--text-color);
   height: 33px;
   padding: 0 10px;
   overflow: hidden;
-  background-color: transparent;
+  background-color: var(--block-bg);
   border: 0;
-  border-right: 1px  solid #00000033;
+  border-right: 1px solid #00000033;
+}
+
+input[type="file"] {
+	background-color: var(--block-bg);
+	color: var(--text-color);
 }
 
 .button-wrapper {
@@ -199,7 +204,7 @@ textarea:focus {
   border: 1px solid #297821;
   font-size: 16px;
   color: #297821;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
 }
@@ -221,11 +226,12 @@ textarea:focus {
   border: 0;
   cursor: pointer;
   background-color: transparent;
+  color: var(--text-color);
 }
 .review-none {
   display: flex;
   padding:3rem 1.5rem;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid var(--j-color3);
   justify-content: center;
   font-size: 14px;
   color: #333333;
@@ -233,7 +239,7 @@ textarea:focus {
 .r-create {
   display: block;
   padding:1.5rem 0;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid var(--j-color3);
   display: none;
 }
 
@@ -242,7 +248,7 @@ textarea:focus {
   border: 1px solid #297821;
   font-size: 16px;
   color: #297821;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
 }
@@ -322,9 +328,9 @@ textarea:focus {
 
 .r-count {
   font-size: 13px;
-  color: #333333;
+  color: var(--j-sub-text);
 }
 
 .tag-text {
-  color: #333333;
+  color: var(--j-sub-text);
 }

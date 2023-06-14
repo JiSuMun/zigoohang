@@ -47,6 +47,7 @@
   flex-direction: column;
   padding: 0 9%;
   justify-content: center;
+  background-color: var(--background-color);
 }
 
 .main-button {

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load socialaccount %}
+
 {% load static %}
 
 {% block title %}
@@ -10,6 +11,7 @@
 <link rel="stylesheet" href="{% static 'css/accounts/account.css' %}">
 {% endblock head %}
 {% block content %}
+
 <div class="login-wrapper">
   <div class="login-page">
     <div class="login-page-top">
@@ -19,14 +21,21 @@
       <h1>LOGIN</h1>
     </div>
     <form class="login-page-form" id="login-form" action="{% url 'accounts:login' %}" method="POST" autocomplete="off">
-      {% csrf_token %}
-      {% for field in form %}
-        {{ field }}
-      {% endfor %} 
+    {% csrf_token %}
+
+    <div class="form-group">
+      <input type="text" class="form-control" name="{{ form.username.html_name }}" id="{{ form.username.auto_id }}" autocomplete="off" value="{{ form.username.value|default:'' }}">
+    </div>
+
+    {% for field in form %}
+        {% if field != form.username %}  {# username 필드를 건너뛰기 위한 추가 조건 #}
+            {{ field }}
+        {% endif %}
+    {% endfor %}
     <div>
       <button class type="submit">로그인</button>
       <div class='kakao-button'>
-        <a href="{% provider_login_url 'kakao' method='oauth2' %}">
+        <a href="{% provider_login_url 'kakao' process='login' method='oauth2' %}">
           <img class='kakao-button-img' src="{% static 'img/accounts/login-kakao.png' %}" alt="카카오_로그인">
           <span class="kakao-text">카카오 로그인</span>
         </a>

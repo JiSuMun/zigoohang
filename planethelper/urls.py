@@ -26,6 +26,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main, name="main"),
+    path('terms/', views.terms, name="terms"),
+    path('privacy', views.privacy, name="privacy"),
     path('search/', views.search, name="search"),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('allauth.urls')),
