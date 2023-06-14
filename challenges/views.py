@@ -237,7 +237,7 @@ def calculate_remaining_days(end_date):
     
     end_date_time = datetime.combine(end_date, datetime.min.time(), tzinfo=seoul_timezone)
     remaining_time = end_date_time - current_time
-    days_remaining = remaining_time.days
+    days_remaining = remaining_time.days + 1
     
     return days_remaining
 
