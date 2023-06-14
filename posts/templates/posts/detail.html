@@ -67,7 +67,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   <div class="d-button-wrapper">
     <div>
       <a class="d-button-cancel" href="{% url 'posts:index' %}">목록</a>
-      <a class="d-button-cancel" href="{{ previous_post_url }}">이전</a>
+      {% if previous_post_url %}
+        <a class="d-button-cancel" href="{{ previous_post_url }}">이전</a>
+      {% else %}
+        <a class="d-button-cancel" onclick="showAlert()" disabled>이전</a>
+      {% endif %}
     </div>
     <div>
       <a class="d-button" href="{% url 'posts:update' post.pk %}">수정</a>
