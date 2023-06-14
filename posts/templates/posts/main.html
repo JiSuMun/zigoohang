@@ -8,6 +8,8 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/posts/main.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"> 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
 {% endblock head %}
 
 {% block content %}
@@ -22,7 +24,7 @@
 
 <div class="main-link-wrap">
   <!--친환경 지도 바로가기-->
-  <div class="m-reverse">
+  <div class="m-reverse" data-aos="fade-up" data-aos-duration="1000">
     <div class="main-wrap">
       <div class="main-box main-box-wrap">
         <p class="main-button_title">친환경 지도</p>
@@ -36,7 +38,7 @@
   </div>
   <!--에코뉴스-->
   <div>
-    <div class="main-wrap">
+    <div class="main-wrap" data-aos="fade-up" data-aos-duration="1000">
       <div class="main-box">
         <a href="#"><img class="main-box-image" src="{% static 'img/post/news.jpg' %}" alt=""></a>
       </div>
@@ -49,7 +51,7 @@
   </div>
   
   <!--게시판-->
-  <div class="m-reverse">
+  <div class="m-reverse" data-aos="fade-up" data-aos-duration="1000">
     <div class="main-wrap">
       <div class="main-box main-box-wrap">
         <p class="main-button_title">FORUM</p>
@@ -62,4 +64,7 @@
     </div>
   </div>
 </div>
+<script> 
+  AOS.init();
+</script>
 {% endblock content %}
