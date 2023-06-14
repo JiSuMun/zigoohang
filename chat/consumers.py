@@ -58,7 +58,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         new_message = Message(chat_room=chat_room, sender=sender, content=message)
         new_message.save()
         formatted_timestamp = new_message.formatted_timestamp()
-        sender_image_url = str(sender.image.url) if sender.image else '/static/img/accounts/no-image.png'
+        sender_image_url = str(sender.image.url) if sender.image else '/static/img/accounts/no-image-icon-21.png'
         participants = chat_room.participants.exclude(id=sender.id)
         for participant in participants:
             notification = Notification(user=participant, chat_room=chat_room, message=new_message)
