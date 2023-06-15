@@ -6,7 +6,7 @@ function showAlert() {
 
 function toggleReviewUpdateForm(review_id) {
   const form = document.getElementById("reviewUpdateForm" + review_id);
-  const box = document.querySelector(".review--box");
+  const box = document.querySelector(".review--box" + review_id);
   const button = document.getElementById("reviewUpdateButton" + review_id);
   
   if (form.style.display === "none") {

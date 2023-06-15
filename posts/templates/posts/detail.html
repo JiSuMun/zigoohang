@@ -113,7 +113,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           </div>
 
           <!--리뷰 내용-->
-          <div class="review--box">
+          <div class="review--box{{ review.pk }}">
             <p class="review-title">{{ review.title }}<p>
               {% for image in review.reviewimage_set.all %}
                 <img class="review-image" src="{{ image.image.url }}" alt="Review Image">
