@@ -104,7 +104,7 @@ class CustomUserCreationForm(UserCreationForm):
             attrs = {
                 "class": "form-control",
                 "placeholder": "비밀번호 8자리 이상 입력해 주세요",
-                'autocomplete': 'off',
+                'autocomplete': 'new-password',
             }
         ),
     )

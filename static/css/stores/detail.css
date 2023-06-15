@@ -132,6 +132,7 @@
 .button-wrapper {
   text-align: right;
   margin-bottom: 1rem;
+  margin-right: 1rem;
   display: flex;
   justify-content: end;
 }
@@ -159,6 +160,7 @@
     padding: 0.8rem;
     width: 50%;
   }
+
   .detail-title-title {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -174,7 +176,20 @@
     padding: 0.8rem;
     width: 100%;
   }
+
   .detail-image-wrapper {
     display: none;
+  }
+
+  .detail-title-wrap {
+    height: 250px;
+  }
+
+  .detail-title-title {
+    font-size: 40px;
+  }
+  
+  .detail-title-text {
+    font-size: 15px;
   }
 }

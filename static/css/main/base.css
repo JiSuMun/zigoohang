@@ -161,8 +161,8 @@ input, button, textarea {
   opacity: 0.6;
   transition: opacity 0.3s ease;
 	justify-content: center;
-	height: 60px;
-	width: 60px;
+	height: 40px;
+	width: 40px;
 	align-items: center;
 	flex-direction: column;
 	line-height: 1.3;
