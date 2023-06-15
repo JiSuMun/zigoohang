@@ -208,9 +208,15 @@
   background: #6d6d6d;
 }
 
+
 .hover-name {
   font-size: 27px;
   margin-bottom: 1.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  text-align: center;
 }
 
 
