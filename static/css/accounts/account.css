@@ -87,11 +87,15 @@ textarea:focus {
 	top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+	color: black;
 }
 .login-page-search {
 	margin-top: 20px;
+	color: black;
 }
-
+.login-page-search a {
+	color: black;
+}
 /* 회원가입 */
 .signup-wrapper {
 	position: relative;
@@ -114,6 +118,7 @@ textarea:focus {
 .signup-page-title h1 {
 	font-weight: bold;
 	padding-bottom: 20px;
+	color: black
 }
 
 .signup-page-form button {
@@ -133,13 +138,13 @@ textarea:focus {
 	display: none;
 } */
 input::file-selector-button {
-  color: black;
+  color: var(--text-color);
   height: 40px;
   padding: 0 10px;
   overflow: hidden;
   background-color: transparent;
   border: 0;
-  border-right: 1px  solid #00000033;
+  border-right: 1px solid #00000033;
 }
 
 .form-image {
@@ -165,10 +170,25 @@ input::file-selector-button {
 }
 
 .user-button {
-	background-color: #fff !important;
-	color: green !important;
+	background-color: var(--background-color) !important;
+	color: var(--j-green) !important;
 }
 
+.agreement-btn {
+	background-color: white !important;;
+	color: green !important;;
+	border: 1px solid green !important;
+}
+
+.agreement-btn:hover {
+  background-color: green !important;
+  color: white !important;
+}
+
+.seller-wrapper {
+	display: flex;
+	gap: 5px;
+}
 .active {
 	width: 100%;
 	height: 40px;
@@ -200,6 +220,8 @@ input::file-selector-button {
 	border-radius: 5px;
 	flex: 8;
 	border: 1px  solid #00000033;
+	background-color: var(--background-color);
+	color: var(--text-color)
 }
 .form-check-id {
 	flex: 2;
@@ -213,7 +235,7 @@ input::file-selector-button {
 	width: 500px;
   z-index: 1;
   position: absolute;
-	background-color: white;
+	background-color: var(--background-color);
 	top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -418,9 +440,11 @@ label[for="image-clear_id"] {
 		width: 100%;
 		height: 100px;
 	}
+
 	.login-page-top img{
 		display: none;
 	}
+
 	.signup-page {
 		width: 450px;
 	}
@@ -429,25 +453,34 @@ label[for="image-clear_id"] {
 @media (max-width: 479px) {
 	/* 약관동의 */
 	.agreement-page {
-		width: 80%;
+		width: 87%;
+		padding: 20px;
 	}
+
 	.agreement-submit {
 		display: none;
 	}
+
 	.agreement-submit-media {
 		display: flex;
 		gap: 10px;
 	}
+	
+	label[for="agreement1"] {
+  font-size: 14px;
+	}
+
+	label[for="agreement2"] {
+  font-size: 14px;
+	}
 
 	/* 회원가입 */
 	.signup-page {
-		width: 50%;
+		width: 85%;
 	}
-/* 
-	로그인
-	.login-page {
-		width: 50%;
-		margin-top: 50%;
-	} */
 
+	/* 로그인 */
+	.login-page {
+    width: 85%;
+	}
 }

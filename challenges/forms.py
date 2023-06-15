@@ -98,7 +98,7 @@ class CertificationForm(forms.ModelForm):
         label = False,
         widget = forms.TextInput(
             attrs = {
-                'placeholder':'인증제목',
+                'placeholder':'인증제목 (50자 이하로 입력해야 합니다)',
                 'class': 'form-control',
             }
         )

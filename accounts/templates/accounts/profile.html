@@ -168,7 +168,7 @@
                     <td>{% if log.type %}<p>+</p>{% else %}<p>-</p>{% endif %}</td>
                     <td>{{ log.amount|intcomma }}</td>
                     <td class="{% if log.type %}point_green{% else %}point_red{% endif %}">{{ log.type_detail }}</td>
-                    <td>{{ log.created_at }}</td>
+                    <td>{{ log.created_at|date:'n.d H:i:s' }}</td>
                   </tr>
                 {% endfor %}
               </table>
