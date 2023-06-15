@@ -1,7 +1,7 @@
 .footer {
   border-top: 0.5px solid #dddddd;
   background-color: var(--background-color);
-  height: 250px;
+  /* height: 250px; */
   z-index: 99;
   color: var(--text-color);
   padding: 40px 0px 40px;

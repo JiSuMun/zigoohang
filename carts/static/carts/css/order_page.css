@@ -65,13 +65,13 @@
   position: relative;
   margin-bottom: 10px;
   padding: 15px;
-  border: 1px solid #c1c1c1;
+  border: 1px solid var(--j-color3);
   border-radius: 3px;
-  background: #fafafa;
+  background: var(--block-bg);
 }
 
 #shop .shopTable th {
-  color: #343434;
+  color: var(--text-color);
 }
 
 #shop .shopTable tbody,
@@ -138,7 +138,7 @@
 #shop .shopTable td {
   display: block;
   padding: 10px 0 0;
-  color: #343434;
+  color: var(--text-color);
 }
 
 #shop .shopTable tfoot .price {
@@ -262,13 +262,13 @@
   #shop .shopTable tfoot td {
     padding: 25px 15px;
     text-align: right;
-    background: #fafafa;
+    background: var(--block-bg);
   }
 
   #shop .shopTable td {
     display: table-cell;
     padding: 25px 5px;
-    color: #676767;
+    color: var(--text-color);
   }
 
   #shop .shopTable th,
@@ -333,7 +333,7 @@
 
 .address_btn {
   padding: 0.5rem 1rem;;
-  border: 1px solid #fff;
+  border: 1px solid #00A95C;
   font-size: 13px;
   color: #fff;
   background-color: #00A95C;
@@ -342,6 +342,7 @@
 }
 .address_btn:hover {
   background-color: #297821;
+  border-color: #297821;
 }
 .postcode_box .address_btn {
   margin-bottom: 1rem;
@@ -354,7 +355,8 @@
 #shop .orderBox {
   margin-bottom: 15px;
   padding: 20px 15px 0;
-  border: 1px solid #c1c1c1;
+  border: 1px solid var(--j-color3);
+  background-color: var(--block-bg);
 }
 
 .postcode_box .form-control {
@@ -371,7 +373,7 @@
 
 .pay_btn {
   padding: 0.5rem 1rem;;
-  border: 1px solid #fff;
+  border: 1px solid #00A95C;
   font-size: 13px;
   color: #fff;
   background-color: #00A95C;
@@ -380,6 +382,7 @@
 }
 .pay_btn:hover {
   background-color: #297821;
+  border-color: #297821;
 }
 .pay_btn_box .pay_btn {
   padding: 0.5rem 50px;

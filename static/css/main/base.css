@@ -77,7 +77,9 @@ table {
 	--planet-color6: rgba(163, 158, 158, 0.829);
 }
 
-
+/* * {
+	transition: background-color 0.25s, color 0.25s;
+} */
 a {
 	text-decoration: none;
 	color: var(--text-color);
@@ -120,7 +122,7 @@ input, button, textarea {
 
 .j-btn {
   padding: 0.5rem 1rem;
-  border: 1px solid #fff;
+  border: 1px solid #00A95C;
   font-size: 13px;
   color: #fff;
   background-color: #00A95C;
@@ -129,6 +131,7 @@ input, button, textarea {
 }
 .j-btn:hover {
   background-color: #297821;
+	border-color: #297821;
 }
 
 .j-btn-outline {
@@ -136,7 +139,7 @@ input, button, textarea {
   border: 1px solid #00A95C;
   font-size: 13px;
   color: #00A95C;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
 }
