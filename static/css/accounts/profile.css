@@ -3,8 +3,8 @@
   width: 100%;
 }
 .profile-sidebar {
-  width: 300px; 
-  float: left; 
+  width: 300px;
+  float: left;
   padding: 30px;
 }
 .profile-sidebar-item:hover {
@@ -78,6 +78,7 @@
   border-radius: 10px;
   padding: 5px;
   text-align: center;
+  color: black
 }
 .seller {
   background-color: #8BBE86;
@@ -98,7 +99,7 @@
   grid-gap: 30px;
 }
 .main-card {
-  background-color: #f1f1f1;
+  background-color: var(--card-profile);
   padding: 20px;
   border-radius: 5px;
 }
@@ -130,7 +131,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
-} 
+}
 
 /* 반응형 미디어쿼리 */
 @media (min-width: 1080px) {
@@ -188,11 +189,11 @@
 
 }
 @media (max-width: 479px) {
- .header-text-name h2 {
-  font-size: 15px;
- }
- .header-info {
-  gap: 20px;
+  .header-text-name h2 {
+    font-size: 15px;
+  }
+  .header-info {
+    gap: 20px;
 }
 .header-img{
   width: 120px;
@@ -205,8 +206,8 @@
   width: 100%;
 }
 }
-  
-/* 팔로잉&필로우 모달 */ 
+
+/* 팔로잉&필로우 모달 */
 .modal {
   margin-bottom: 20px;
 }
@@ -222,7 +223,8 @@
 }
 .modal-footer button {
   border: 0;
-  color: #383943;
+  color: var(--j-sub-text);
+  background-color: transparent;
 }
 .modal-footer button:hover {
   border: 0;
@@ -234,8 +236,8 @@
   align-items: center;
 }
 .profile--card--btn {
-  color: #383943;
-  background: #fff0;
+  color: var(--j-sub-text);
+  background: transparent;
   border: none;
   text-decoration: none;
   font-size: 15px;
@@ -302,8 +304,8 @@
 #following-list::-webkit-scrollbar {
   width: 15px;
 }
-#follower-list::-webkit-scrollbar-thumb, 
-#following-list::-webkit-scrollbar-thumb { 
+#follower-list::-webkit-scrollbar-thumb,
+#following-list::-webkit-scrollbar-thumb {
   background-color: #ADCBC9;
   border-radius: 10px;
   height: 10%;

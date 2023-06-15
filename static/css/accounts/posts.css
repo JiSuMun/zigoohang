@@ -2,9 +2,9 @@
   padding-inline: 20px;
 }
 .post-page-title h2{
- text-align: start;
- padding: 3%;
- font-size: 24px;
+  text-align: start;
+  padding: 3%;
+  font-size: 24px;
 }
 .card-grid {
   display: grid;
@@ -12,7 +12,7 @@
   grid-gap: 20px;
 }
 .card {
-  background-color: #f1f1f1;
+  background-color: var(--card-profile);
   padding: 20px;
   /* border-radius: 5px; */
 }

@@ -13,7 +13,7 @@ header h2 {
   border-collapse: collapse;
 }
 .interest-page-content th {
-  color: #333;
+  color: var(--text-color);
   font-weight: bold;
   padding: 10px;
   text-align: left;
@@ -46,15 +46,15 @@ header h2 {
   border-radius: 4px;
 }
 .main-items-product {
-  color: #333;
+  color: var(--text-color);
   font-weight: bold;
   margin: 0;
 }
 .main-items-price {
-  color: #666;
+  color: var(--j-sub-text);
 }
 .main-items-store {
-  color: #666;
+  color: var(--j-sub-text);
   margin: 0;
 }
 .interest-page-content-main tr:last-child td {
@@ -64,7 +64,7 @@ header h2 {
 /* 삭제버튼 */
 .sub-button {
   border: 0;
-  background-color: white;
+  background-color: transparent;
   margin-bottom: 0;
 }
 .sub-button span {
