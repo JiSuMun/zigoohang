@@ -2,7 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px;
+  max-width: 1300px;
+  margin: 0 auto;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
 }
 
 .challenges-title-title {
@@ -66,10 +69,15 @@
   font-size: 20px;
   font-weight: 600;
   margin-top: 1rem;
+  margin-left: 1rem;
 }
 
+.input-form {
+  margin: 0 1rem;
+}
 
 .green-button {
+  margin-left: 1rem;
   background-color: green;
   color: white;
   border: none;
@@ -98,6 +106,7 @@
 
 .btn-wrapper {
   margin-top: 1rem;
+  margin-right: 1rem;
   display: flex;
   justify-content: end;
   gap: 10px;
@@ -270,13 +279,16 @@ input::file-selector-button {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+
   .challenges-title-text {
     font-size: 15px;
   }
+
   .c-wrapper {
     width: calc(50% - 1.6rem);
     aspect-ratio: 4 / 6;
   }
+
   .c-content-wrapper {
     height: calc(33% - 1rem);
   }
@@ -284,10 +296,25 @@ input::file-selector-button {
 @media (max-width: 767px) {
   .c-wrapper {
     width: calc(100% - 1.6rem);
-    aspect-ratio: 8 / 11;
+    aspect-ratio: 7 / 11;
   }
+
   .c-content-wrapper {
-    height: calc(27% - 1rem);
+    height: calc(32% - 1rem);
+  }
+
+  .challenges-title-title {
+    font-size: 40px;
   }
   
+  .challenges-title-text {
+    font-size: 15px;
+  }
+
+  .challenge-date {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
 }

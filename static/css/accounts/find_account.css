@@ -147,10 +147,10 @@ input[type='password'] {
 
 @media (max-width:767px) {
 	.find_id-page {
-		width: 80%;
+		width: 85%;
 	}
 	.find_pw-page {
-		width: 80%;
+		width: 85%;
 	}
 }
 

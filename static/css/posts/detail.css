@@ -75,6 +75,7 @@
   line-height: 1.4;
 }
 .d-button-wrapper {
+  padding: 0 1rem;
   margin-top: 1.5rem;
   width: 100%;
   display: flex;
@@ -239,6 +240,7 @@ input[type="file"] {
 .r-create {
   display: block;
   padding:1.5rem 0;
+  margin: 0 1rem;
   border-bottom: 1px solid var(--j-color3);
   display: none;
 }
@@ -262,6 +264,7 @@ input[type="file"] {
   display: flex;
   justify-content: flex-end;
   margin-top: 1.5rem;
+  margin-right: 1rem;
 }
 
 .login-required {
@@ -333,4 +336,41 @@ input[type="file"] {
 
 .tag-text {
   color: var(--j-sub-text);
+}
+
+@media (max-width: 1079.9px) {
+  .detail-title-wrap {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .detail-title-text {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768.9px) {
+  .detail-title-wrap {
+    height: 250px;
+  }
+
+  .detail-title-title {
+    font-size: 40px;
+  }
+  
+  .detail-title-text {
+    font-size: 15px;
+  }
+
+  .d-title-wrapper {
+    padding: 1rem;
+  }
+
+  .d-content-wrapper {
+    padding: 1rem;
+  }
+
+  .review-box {
+    padding: 1rem;
+  }
 }

@@ -6,6 +6,7 @@ import os
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 import math
+from django.core.paginator import Paginator
 
 
 @login_required(login_url='accounts:login')
@@ -15,7 +16,7 @@ def index(request):
     reserved_products = S_Product.objects.filter(status='예약중')
     in_progress_products = S_Product.objects.filter(status='거래중')
     completed_products = S_Product.objects.filter(status='거래완료')
-
+    
     if request.user.address:
         u_address = request.user.address
         u_latitude, u_longitude = get_latlng_from_address(u_address)
@@ -31,6 +32,10 @@ def index(request):
 
     products_with_distance_sorted = sorted(products_with_distance, key=lambda x: x[1])
 
+    page_number = request.GET.get('page')
+    paginator = Paginator(products_with_distance, 12)
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'products' : products,
         'no_status_products': no_status_products,
@@ -39,6 +44,7 @@ def index(request):
         'completed_products': completed_products,
         'products_with_distance': products_with_distance,
         'products_with_distance_sorted': products_with_distance_sorted,
+        'page_obj' : page_obj,
     }
     return render(request, 'secondhands/index.html', context)
 

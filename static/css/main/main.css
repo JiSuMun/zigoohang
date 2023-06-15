@@ -11,10 +11,6 @@
   position: relative;
 }
 
-.main-wrapper {
-
-}
-
 .main-inner {
   position: absolute;
   top: 0;
@@ -173,6 +169,10 @@
   margin-bottom: 1rem;
 }
 
+.content-image {
+  max-width: 100%;
+}
+
 .text-color {
   color:green;
   font-weight: 600;
@@ -227,6 +227,15 @@
   color: var(--text-color);
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-price {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .hover-button {
@@ -269,17 +278,21 @@
   .main-inner {
     margin-top: 11rem;
   }
+
   .main-title {
     font-size: 4rem;
     margin: 2rem 0;
   }
+
   .main-content {
     font-size: 1.4rem;
     margin-bottom: 0.8rem;
   }
+
   .swipper-inner {
     margin-top: 14rem;
   }
+
   .swipper-title {
     font-size: 7rem;
   }
@@ -287,6 +300,24 @@
   .swipper-content {
     font-size: 1.8rem;
   }
+
+  .main-button_title {
+    font-size: 30px;
+  }
+
+  .main-button_text {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .product-name {
+    font-size: 14px;
+  }
+
+  .product-price {
+    font-size: 14px;
+  }
+
 }
 /* 모바일 */
 
@@ -328,7 +359,7 @@
   }
 
   .main-content {
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin-bottom: 0.5rem;
   }
 
@@ -338,14 +369,19 @@
   }
 
   .swipper-inner {
-    margin-top: 7rem;
+    margin-top: 6rem;
   }
 
   .swipper-title {
-    font-size: 4rem;
+    font-size: 3rem;
   }
   
   .swipper-content {
     font-size: 1rem;
   }
+
+  .content-text {
+  margin-bottom: 1rem;
+  font-size: 12px;
+}
 }

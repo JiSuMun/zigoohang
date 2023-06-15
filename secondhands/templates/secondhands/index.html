@@ -50,7 +50,7 @@
 
       {% comment %} 중고거래 상품 목록 {% endcomment %}
       <div class="secondhands-page-content-product">
-        {% for product in products_with_distance %}
+        {% for product in page_obj %}
           <a href="{% url 'secondhands:detail' product.0.id %}">
             <div class="product-card">
               <div class="product-card-photo"> 
@@ -70,6 +70,41 @@
         {% endfor %}
       </div>
     </div>
+  </div>
+
+  {% comment %} 페이지네이션 {% endcomment %}
+  <div class="pagination">
+    <span class="step-links">
+      {% if page_obj.has_previous %}
+        <a href="?page=1" class="{% if page_obj.number == 1 %}disabled{% endif %}">«</a>
+      {% else %}
+        <span class="disabled">«</span>
+      {% endif %}
+  
+      {% if page_obj.number > 2 %}
+        <span class="ellipsis">...</span>
+      {% endif %}
+  
+      {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i or i|add:"-1" == page_obj.number or i|add:"1" == page_obj.number %}
+          {% if page_obj.number == i %}
+            <span class="current-page">{{ i }}</span>
+          {% else %}
+            <a href="?page={{ i }}">{{ i }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+  
+      {% if page_obj.number < page_obj.paginator.num_pages|add:"-1" %}
+        <span class="ellipsis">...</span>
+      {% endif %}
+      
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="{% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">»</a>
+      {% else %}
+        <span class="disabled">»</span>
+      {% endif %}
+    </span>
   </div>
 {% endblock content %}
 
