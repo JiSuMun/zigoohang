@@ -14,21 +14,21 @@
     {% if completed_products %}
       <div class="card-grid">
         {% for product in completed_products %}
-        {% comment %} <h3>(거래완료)</h3> {% endcomment %}
-        <a href="{% url 'secondhands:detail' product.pk %}">
-          <div class="card">
-            <div class="card-img">
-              {% for image in product.s_productimage_set.all %}
-                <img src="{{ image.image.url }}" alt="이미지"/>
-                {% empty %}
-                <p>이미지가 없습니다.</p>
-                {% endfor %}
-              </div>
-              <div class="card-info">
-                <p class="card-info-product">{{ product.product }}</p>
-                <p class="card-info-price">{{ product.price|intcomma }}원</p>
-                <p class="card-info-label">거래장소</p>
-                <p class="card-info-address">{{ product.address }}</p>
+          <a href="{% url 'secondhands:detail' product.pk %}">
+            <div class="card">
+              <div class="card-img">
+                {% for image in product.s_productimage_set.all %}
+                  <img src="{{ image.image.url }}" alt="이미지"/>
+                  {% empty %}
+                    <p>이미지가 없습니다.</p>
+                  {% endfor %}
+                </div>
+                <div class="card-info">
+                  <p class="card-info-product">{{ product.product }}</p>
+                  <p class="card-info-price">{{ product.price|intcomma }}원</p>
+                  <p class="card-info-label">거래장소</p>
+                  <p class="card-info-address">{{ product.address }}</p>
+                </div>
               </div>
             </div>
           </a>
