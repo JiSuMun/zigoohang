@@ -32,6 +32,7 @@ def inbox(request):
 
     return render(request, 'chat/inbox.html', context)
 
+
 @login_required
 def unread_notifications(request):
     user = request.user
@@ -64,6 +65,7 @@ def unread_notifications(request):
 
     return JsonResponse(response_data)
 
+
 @login_required
 def get_new_chat_rooms(request):
     response_data = {"chat_rooms": []}
@@ -74,11 +76,13 @@ def get_new_chat_rooms(request):
         })
     return JsonResponse(response_data)
 
+
 @login_required
 def start_chat(request, user_id):
     target_user = get_user_model().objects.get(id=user_id)
     chat_room = ChatRoom.get_or_create_chat_room([request.user, target_user])
     return redirect('chat:room', room_name=chat_room.name)
+
 
 @login_required
 def start_group_chat(request):
@@ -90,6 +94,7 @@ def start_group_chat(request):
             chat_room = ChatRoom.get_or_create_chat_room(selected_users)
             return redirect('chat:room', room_name=chat_room.name)
     return redirect('chat:inbox')
+
 
 @login_required
 def room(request, room_name):
@@ -107,6 +112,7 @@ def room(request, room_name):
         'user': user,
     }
     return render(request, 'chat/room.html', context)
+
 
 @login_required
 def delete_chat(request, room_name):

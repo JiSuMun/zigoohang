@@ -43,6 +43,7 @@ def index(request):
     return render(request, 'secondhands/index.html', context)
 
 
+@login_required
 def create(request):
     product_form = S_ProductForm()
     image_form = S_ProductImageForm()
@@ -72,6 +73,7 @@ def create(request):
     return render(request, 'secondhands/create.html', context)
 
 
+@login_required
 def update(request, product_pk):
     product = S_Product.objects.get(pk=product_pk)
     if request.method == 'POST':
@@ -114,6 +116,7 @@ def update(request, product_pk):
     return render(request, 'secondhands/update.html', context)  
 
 
+@login_required
 def delete(request, product_pk):
     product = S_Product.objects.get(pk=product_pk)
     if request.user == product.user:
@@ -176,6 +179,7 @@ def detail(request, product_pk):
     return render(request, 'secondhands/detail.html', context)
 
 
+@login_required
 def likes(request, product_pk):
     product = S_Product.objects.get(pk=product_pk)
     if request.user in product.like_users.all():
