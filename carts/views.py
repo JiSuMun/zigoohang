@@ -238,7 +238,8 @@ def approval(request):
 
         if int(jsonObject['usePoints']):
             user.subtract_points(int(jsonObject['usePoints']), '사용')
-        user.add_points(real_point, '구매')
+        if real_point:
+            user.add_points(real_point, '구매')
 
     request.session['payment'] = {
         'order_id': order_id,

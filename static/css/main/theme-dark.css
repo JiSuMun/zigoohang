@@ -17,4 +17,5 @@
 	--j-text-white: #dddddd; /* 그냥 흰글씨*/
 	--j-btn-fill: #125d3b; /* 다크모드 버튼 */
   --j-required_star: #ea868f;
+	--card-profile: #303030; /* 프로필 정보 카드 */
 }

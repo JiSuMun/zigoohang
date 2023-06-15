@@ -12,7 +12,7 @@
   width: 500px;
   z-index: 1;
   position: absolute;
-	background-color: white;
+	background-color: var(--block-bg);
 	top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -71,12 +71,14 @@
 	background-color: white;
 	background-size: 100%;
   text-align: center;
+	background-size: cover;
+	background-position: center;
 }
 .find_pw-page {
   width: 500px;
   z-index: 1;
   position: absolute;
-	background-color: white;
+	background-color: var(--block-bg);
 	top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

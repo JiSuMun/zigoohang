@@ -13,7 +13,7 @@ header h2 {
   border-collapse: collapse;
 }
 .sell-page-content th {
-  color: #333;
+  color: var(--j-sub-text);
   font-weight: bold;
   padding: 10px;
   text-align: left;

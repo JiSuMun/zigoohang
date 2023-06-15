@@ -31,7 +31,7 @@
   }
 
   .item {
-    border: 1px solid var(--text-color);
+    border: 1px solid var(--j-color3);
     border-radius: 10px;
     width: calc(25% - 1.6rem);
     overflow: hidden;
