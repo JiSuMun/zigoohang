@@ -41,6 +41,7 @@
   justify-content: space-between;
   border-top: 3px solid #ADCBC9;
   padding-top: 25px;
+  word-break: break-all;
 }
 .product-info-head-name {
   font-size: 30px;
@@ -57,11 +58,8 @@
   margin-top: 10px;
   overflow-y: scroll;
   height: 150px;
+  word-break: break-all;
 }
-/* .product-info-head-content p{
-  margin-top: 5px;
-} */
-
 
 /* 판매자에게 연락하기 */
 .product-info-user {
@@ -78,21 +76,11 @@
   font-weight: bold;
   color: white;
 }
-#product-status {
-  /* font-weight: bold; */
-  /* width: 150px;
-  height: 30px;
-  border: 1px solid #ADCBC9;
-  border-radius: 5px;
-  background-color: #ADCBC9;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center; */
-  /* display: none; */
-}
 
 /* 판매상태 */
+.product-info-status {
+  margin-top: 15px;
+}
 .product-info-status p {
   margin-top: 10px;
 }
@@ -185,6 +173,17 @@
   .detail-page-product-img img {
     width: 500px;
     height: 500px;
+    text-align: center;
+  }
+  .sold-out {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 500px;
+    height: 500px;
+    display: table;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
     text-align: center;
   }
   .detail-page {

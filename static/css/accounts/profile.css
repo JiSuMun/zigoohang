@@ -281,12 +281,10 @@
 }
 .follow--modal a span {
   white-space: nowrap;
-  /* font-size: 10px; */
 }
-/* .follow--modal-username {
-  width: 10px;
-  font-size: 10px;
-} */
+.profile--followbtn:hover {
+  color: #8BBE86;
+}
 
 /* 모달이 닫혀있는 기본상태 */
 .modal-body1, .modal-body2 {

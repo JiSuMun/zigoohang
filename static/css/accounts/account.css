@@ -189,7 +189,6 @@ input::file-selector-button {
 .form-check-id {
 	margin-top: 0;
 }
-
 .form-control {
 	display: block;
 	width: calc(100% - 0.4rem);
@@ -252,21 +251,18 @@ input::file-selector-button {
 	display: flex;
 	gap: 10px;
 }
-
 .wait-title-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 550px;
 }
-
 .wait-title-title {
   text-align: center;
   font-size: 50px;
   margin-bottom: 60px;
   font-weight: bold;
 }
-
 .wait-title-text {
   text-align: center;
   margin-bottom: 10px;
@@ -317,7 +313,6 @@ input::file-selector-button {
 	border-radius: 5px;
 	cursor: pointer;
 }
-
 .delete {
 	width: 100%;
 	padding: 10px;
@@ -328,6 +323,15 @@ input::file-selector-button {
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+}
+#image-clear_id {
+	display: none;
+}
+label[for="image-clear_id"] {
+	display: none;
+}
+.update-page-form #text {
+	display: none;
 }
 
 /* 비밀번호 수정 */
@@ -373,6 +377,9 @@ input::file-selector-button {
 	font-size: 16px;
 	border-radius: 5px;
 	cursor: pointer;
+}
+#id_image {
+	margin-top: 10px;
 }
 
 /* 반응형 미디어쿼리 */

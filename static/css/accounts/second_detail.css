@@ -34,6 +34,10 @@
 .card-info-product {
   font-size: 30px;
   margin-bottom: 20px;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .card-info-price {
   font-weight: bold;

@@ -28,7 +28,7 @@
     </div>
       <button type="submit">회원정보 수정</button>
     </form>
-  <form action="{% url 'accounts:delete' %}" method="post">
+    <form action="{% url 'accounts:delete' %}" method="post">
     {% csrf_token %}
     <input class="delete" type="submit" value="회원탈퇴" onclick="return confirm('정말 탈퇴하시겠습니까?')">
     </form>
