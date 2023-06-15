@@ -57,7 +57,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     <!--태그-->
     <div class="tag-wrapper">
       {% for tag in post.tags.all %}
-      <span class="tag-text">#{{ tag.name }}</span>
+        {% if tag.name %}
+          <span class="tag-text">#{{ tag.name }}</span>
+        {% endif %}
       {% endfor %}
     </div>
 

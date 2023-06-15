@@ -26,8 +26,10 @@ const rCreate = document.querySelector('.r-create');
 
 reviewButton.addEventListener('click', () => {
   if (rCreate.style.display === 'block') {
+    reviewButton.innerHTML = '리뷰 작성'
     rCreate.style.display = 'none';
   } else {
+    reviewButton.innerHTML = '작성 취소';
     rCreate.style.display = 'block';
   }
 });
