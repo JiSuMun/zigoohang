@@ -228,6 +228,31 @@
   color: white;
 }
 
+.button-wrapper {
+  text-align: right;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: end;
+}
+
+.d-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;;
+  border: 1px solid #297821;
+  font-size: 16px;
+  color: #297821;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+.d-button:hover {
+  background-color: #297821;
+  color: white;
+}
 /* 상품 navbar */
 
 .products-navbar {
@@ -404,15 +429,15 @@
   padding: 0.5rem 1rem;
   border: 1px solid #297821;
   font-size: 16px;
-  color: #297821;
-  background-color: #fff;
+  color: white;
+  background-color: #297821;
   cursor: pointer;
   border-radius: 5px;
 }
 
 .create-review:hover {
-  background-color: #297821;
-  color: white;
+  background-color: transparent;
+  color: #297821;
 }
 
 /* 구매안내 */
@@ -432,7 +457,7 @@
   display: inline-block;
   width: 4px;
   flex: 0 0 4px;
-  background-color: black;
+  background-color: var(--text-color);
   height: 4px;
   border-radius: 2px;
   margin-left: 0.5rem;
@@ -442,7 +467,7 @@
 .buy-title {
   font-size: 16px;
   font-weight: 600;
-  color: #696969;
+  color: var(--j-sub-text);
   margin-top: 1.5rem;
   margin-bottom: 1rem;
 }

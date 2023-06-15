@@ -249,6 +249,7 @@
 }
 .profile {
   width: 30px;
+  height: 30px;
   object-fit: fill;
 }
 #follower-ul {
@@ -286,6 +287,12 @@
 }
 .profile--followbtn:hover {
   color: #8BBE86;
+}
+.profile--image img {
+  border-radius: 70%;
+}
+.follow--modal-username {
+  font-size: 10px;
 }
 
 /* 모달이 닫혀있는 기본상태 */

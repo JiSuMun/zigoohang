@@ -14,11 +14,12 @@
   text-align: center;
 }
 .update-page-content-wrapper {
-  border: 1px solid grey;
+  border: 1px solid var(--j-color3);
   border-radius: 10px;
   width: 100%;
   height: 600px;
   padding: 50px;
+  background-color: var(--block-bg);
 }
 .form-info-box {
   display: flex;

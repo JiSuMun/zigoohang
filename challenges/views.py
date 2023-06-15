@@ -118,7 +118,7 @@ def create(request):
 @staff_only
 @login_required
 def update(request, challenge_pk):
-    if not request.request.user.is_staff:
+    if not request.user.is_staff:
         return HttpResponseForbidden()
     
     challenge = Challenge.objects.get(pk=challenge_pk)

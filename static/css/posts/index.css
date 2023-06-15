@@ -21,7 +21,7 @@
   max-width: 1080px;
   padding: 2rem;
   background-color: var(--block-bg);
-  border: 1px solid #e3e3e3;
+  border: 1px solid var(--j-color3);
   border-radius: 7px;
   display: flex;
   margin: auto;
@@ -104,8 +104,8 @@
   text-align: center;
   padding: 6px 6px;
   text-decoration: none;
-  color: #3f4d67;
-  border: 1px solid var(--background-color);
+  color: var(--j-sub-text);
+  border: 1px solid transparent;
   border-radius: 5px;
   width: 25px;
   height: 30px;

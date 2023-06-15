@@ -45,12 +45,12 @@ FORUM
         <td class="p-td">
           <a class="p-td-title" href="{% url 'posts:detail' post.id %}">
             {{ post.title }}
-            <p class="m-size"><span class="m-name">{{ post.user.username }}</span></p>
+            <p class="m-size"><span class="m-name"><a href="{% url 'accounts:profile' post.user.username %}">{{ post.user.first_name }}</a></span></p>
             <p class="m-size"><span class="m-date">{{ post.created_at|date:'m-d' }}</span></p>
 
           </a>
         </td>
-        <td class="p-td p-center">{{ post.user.username }}</td>
+        <td class="p-td p-center"><a href="{% url 'accounts:profile' post.user.username %}">{{ post.user.first_name }}</a></td>
         <td class="p-td p-center">{{ post.created_at|date:'m-d' }}</td>
         <td class="p-td p-center">{{ post.like_users.count }}</td>
       </tr>

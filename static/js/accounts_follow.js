@@ -11,16 +11,20 @@ function toggleModal1() {
   console.log('버튼1 눌림');
   if (modal1.style.display === "none") {
     modal1.style.display = "block";
+    openModalBtn1.innerHTML = "더보기 취소";
   } else {
     modal1.style.display = "none";
+    openModalBtn1.innerHTML = "더보기";
   }
 }
 function toggleModal2() {
   console.log('버튼2 눌림');
   if (modal2.style.display === "none") {
     modal2.style.display = "block";
+    openModalBtn2.innerHTML = "더보기 취소";
   } else {
     modal2.style.display = "none";
+    openModalBtn2.innerHTML = "더보기";
   }
 }
 

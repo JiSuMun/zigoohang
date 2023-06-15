@@ -64,7 +64,7 @@
 
   <form class="participation-forms" action="{% url 'challenges:participation' challenge_pk=challenge.pk %}" method="POST" data-challenge-id="{{ challenge.pk }}">
     {% csrf_token %}
-    <button id="participation-toggle-{{ challenge.pk }}" class="green-button" type="{% if days_remaining < 0 %}button{% else %}submit{% endif %}" {% if days_remaining < 0 %}onclick="showEndedMessage()"{% endif %}>
+    <button id="participation-toggle-{{ challenge.pk }}" class="green-button" type="{% if days_remaining < 0 or ended %}button{% else %}submit{% endif %}" {% if days_remaining < 0 %}onclick="showEndedMessage()"{% endif %}>
       {% if request.user in challenge.participants.all %}
         참여하기
       {% else %}
@@ -99,62 +99,62 @@
   <br>
   <!--인증 내용-->
   {% if u_certification_forms %}
-    {% for certification, u_certification_form in u_certification_forms %}
-      <div class="c-wrapper certification--box">
-        <div class="c-title-wrapper">
-          <p class="c-username">{{ certification.user.username }}</p>         
-          {% if certification.image %}
-          <img class="c-image"src="{{certification.image.url }}" alt="이미지">
-          {% else %}
-          <img class="c-image"src="{% static 'img/chellenges/no-image.png' %}" alt="이미지">
-          {% endif %}
+  
+    <div class="challenge-box">
+      {% for certification, u_certification_form in u_certification_forms %}
+        <div class="c-wrapper certification--box">
+          <div class="c-title-wrapper">
+            <p class="c-username">{{ certification.user.first_name }}</p>         
+            {% if certification.image %}
+            <img class="c-image"src="{{certification.image.url }}" alt="이미지">
+            {% else %}
+            <img class="c-image"src="{% static 'img/chellenges/no-image.png' %}" alt="이미지">
+            {% endif %}
+          </div>
+          <div class="c-content-wrapper">
+            <p class="c-title">{{ certification.title }}</p>
+            <p class="c-content">{{ certification.content }}</p>
+            <p class="c-created_at">{{ certification.created_at|date:"Y-m-d" }}</p>
+          </div>
         </div>
-        <div class="c-content-wrapper">
-          <p class="c-title">{{ certification.title }}</p>
-          <p class="c-content">{{ certification.content }}</p>
-          <p class="c-created_at">{{ certification.created_at|date:"Y-m-d" }}</p>
-        </div>
-      </div>
 
-      <!-- 수정 및 삭제 버튼 추가 -->
-      {% if user == certification.user %}
-      <div class="modify-delete-buttons input-form">
-        <!-- 수정 버튼 -->
-        <button class="c-button" id="certificationUpdateButton{{ certification.pk }}" type="button" onclick="toggleCertificationUpdateForm({{ certification.pk }})">수정</button>
-        <form id="certificationUpdateForm{{ certification.pk }}" action="{% url 'challenges:certification_update' challenge.pk certification.pk %}" method="POST" enctype="multipart/form-data" style="display:none;">
-          {% csrf_token %}
-          <div>
-            <p class="form_label" style="margin-top: 1rem;">인증 제목<span class="required_star">*</span></p>
-            {{ u_certification_form.title }}
-          </div>
-          <div>
-            <p class="form_label">인증 내용<span class="required_star">*</span></p>
-            {{ u_certification_form.content }}
-          </div>
-          <div>
-            <p class="form_label">인증 이미지<span class="required_star">*</span></p>
-            {{ u_certification_form.image }}
-          </div>    
-          <div class="button-wrapper">
-            <input class="btn-delete" type="submit" value="수정">
-            <form action="{% url 'challenges:certification_delete' challenge.pk certification.pk %}" method="POST">
+        <!-- 수정 및 삭제 버튼 추가 -->
+        {% if user == certification.user %}
+          <div class="modify-delete-buttons input-form">
+            <!-- 수정 버튼 -->
+            <button class="c-button" id="certificationUpdateButton{{ certification.pk }}" type="button" onclick="toggleCertificationUpdateForm({{ certification.pk }})">수정</button>
+            <form id="certificationUpdateForm{{ certification.pk }}" action="{% url 'challenges:certification_update' challenge.pk certification.pk %}" method="POST" enctype="multipart/form-data" style="display:none;">
               {% csrf_token %}
-              <button class="btn-update" type="submit">삭제</button>
+              <div>
+                <p class="form_label" style="margin-top: 3rem;">인증 제목<span class="required_star">*</span></p>
+                {{ u_certification_form.title }}
+              </div>
+              <div>
+                <p class="form_label">인증 내용<span class="required_star">*</span></p>
+                {{ u_certification_form.content }}
+              </div>
+              <div>
+                <p class="form_label">인증 이미지<span class="required_star">*</span></p>
+                {{ u_certification_form.image }}
+              </div>    
+              <div class="button-wrapper">
+                <input class="btn-delete" type="submit" value="수정">
+                <form action="{% url 'challenges:certification_delete' challenge.pk certification.pk %}" method="POST">
+                  {% csrf_token %}
+                  <!-- 삭제 버튼 -->
+                  <button class="btn-update" type="submit">삭제</button>
+                </form>
+              </div>
             </form>
           </div>
-        <!-- 삭제 버튼 -->
-      
-        </form>
-
-
-
-      </div>
-      {% endif %}
-    {% empty %}
-    <p>게시물이 없습니다.</p>
-    {% endfor %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>인증이 없습니다.</p>
   {% endif %}
 </div>
+
 <script>
   const participationToggleButton = document.getElementById("participation-toggle-{{ challenge.pk }}");
 

@@ -49,7 +49,7 @@ def detail(request, store_pk):
 @login_required
 def update(request, store_pk):
     store = Store.objects.get(pk=store_pk)
-    if not(request.user.is_seller or request.user.is_staff) or request.user != store.user:
+    if not(request.user.is_seller or request.user.is_staff or request.user == store.user):
         return redirect('stores:index')
     if request.method == 'POST':
         store_form = StoreForm(request.POST, request.FILES, instance=store)
@@ -72,7 +72,7 @@ def update(request, store_pk):
 @login_required
 def delete(request, store_pk):
     store = Store.objects.get(pk=store_pk)
-    if not(request.user.is_seller or request.request.user.is_staff) or request.user != store.user:
+    if not(request.user.is_seller or request.user.is_staff or request.user == store.user):
         return redirect('stores:index')
     if request.user == store.user:
         store.delete()
@@ -83,7 +83,7 @@ def delete(request, store_pk):
 @login_required
 def products_create(request, store_pk):
     store = Store.objects.get(pk=store_pk)
-    if not(request.user.is_seller or request.user.is_staff) or request.user != store.user:
+    if not(request.user.is_seller or request.user.is_staff or request.user == store.user):
         return redirect('stores:index')
     if request.method == 'POST':
         product_form = ProductForm(request.POST, request.FILES)
@@ -125,7 +125,7 @@ def products_detail(request, store_pk, product_pk):
 @login_required
 def products_update(request, store_pk, product_pk):
     store = Store.objects.get(pk=store_pk)
-    if not(request.user.is_seller or request.user.is_staff) or request.user != store.user:
+    if not(request.user.is_seller or request.user.is_staff or request.user == store.user):
         return redirect('stores:index')
     product = Product.objects.get(pk=product_pk)
     images = product.images.all()
@@ -154,7 +154,7 @@ def products_update(request, store_pk, product_pk):
 @login_required
 def products_delete(request, store_pk, product_pk):
     product = Product.objects.get(pk=product_pk)
-    if not(request.user.is_seller or request.user.is_staff) or request.user != product.store.user:
+    if not(request.user.is_seller or request.user.is_staff or request.user == product.store.user):
         return redirect('stores:index')
     if request.user == product.store.user:
         product.delete()
@@ -174,7 +174,7 @@ def products_likes(request, store_pk, product_pk):
         'is_liked': is_liked,
     }
     return JsonResponse(context)
-    return redirect('stores:products_detail', store_pk, product_pk)
+    # return redirect('stores:products_detail', store_pk, product_pk)
 
 
 ##### reviews

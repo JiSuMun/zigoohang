@@ -49,7 +49,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     <!-- 상품 정보 텍스트 시작-->
     <div class="product-info-right">
       <div class="product-inner">
-        <p class="store-name">{{ store.name }}</p>
+        <p class="store-name"><a href="{% url 'stores:detail' product.store.pk %}">{{ store.name }}</a></p>
         <p class="product-title"> {{ product.name }}</p>
         <p class="product-price">{{ product.price|intcomma }} 원</p>
         <div class="delivery-info">
@@ -95,7 +95,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
             <input type="hidden" id="quantity" value="1">
             <button class="sub-button" id="addItem" data-product-id="{{ product.pk }}" data-item-quantity="1" data-product-img-url="{{ product.images.first.image.url }}" data-product-price="{{ product.price }}" data-product-name="{{ product.name }}">장바구니에 담기</button>
           </div>
-        </div>        
+        </div>
+        <div class="button-wrapper">
+          {% if request.user == store.user or request.user.is_staff %}
+            <a class="d-button" href="{% url 'stores:products_update' store.pk product.pk %}">상품 수정</a>
+            <form action="{% url 'stores:products_delete' store.pk product.pk %}" method="POST">
+              {% csrf_token %}
+              <input class="d-button" type="submit" value="상품 삭제">
+            </form>
+            {% endif %}
+        </div>     
       </div>
     </div>
   </div>
@@ -134,7 +143,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     {% for review in reviews %}
     <div class="review-box">
       <div class="review-name">
-        {{ review.user.username }}<span class="review-date">&nbsp; |&nbsp; {{ review.created_at|date:"Y.m.d H:i" }}</span>
+        {{ review.user.first_name }}<span class="review-date">&nbsp; |&nbsp; {{ review.created_at|date:"Y.m.d H:i" }}</span>
         {% if review.user.username == request.user.username %}
         <a class="review-update"href="{% url 'stores:reviews_update' store.pk product.pk review.pk %}">수정</a>
         <a class="review-delete"href="{% url 'stores:reviews_delete' store.pk product.pk review.pk %}" onclick="return confirm('삭제하시겠습니까?')">삭제</a>

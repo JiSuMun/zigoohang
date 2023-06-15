@@ -29,7 +29,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     <p class="d-created_at">{{ post.created_at|date:"Y-m-d" }}&nbsp;&nbsp;&nbsp;&nbsp;{{ post.created_at|date:"H:i:s" }}</p>
   </div>
   <div class="d-content-wrapper">
-    <p class="d-username">작성자 : <a href="{% url 'accounts:profile' post.user.username %}">{{ post.user.username }}</a></p>
+    <p class="d-username">작성자 : <a href="{% url 'accounts:profile' post.user.username %}">{{ post.user.first_name }}</a></p>
 
     <!--이미지-->
     {% for image in post.postimage_set.all %}
@@ -75,10 +75,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         <a class="d-button-cancel" onclick="showAlert()" disabled>이전</a>
       {% endif %}
     </div>
-    <div>
-      <a class="d-button" href="{% url 'posts:update' post.pk %}">수정</a>
-      <a class="d-button-cancel"href="{% url 'posts:delete' post.pk %}" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
-    </div>
+    {% if request.user == post.user %}
+      <div>
+        <a class="d-button" href="{% url 'posts:update' post.pk %}">수정</a>
+        <a class="d-button-cancel"href="{% url 'posts:delete' post.pk %}" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+      </div>
+    {% endif %}
   </div>
   
   <!--댓글-->

@@ -21,6 +21,7 @@
 .login-page-title h1 {
 	font-weight: bold;
 	padding-bottom: 20px;
+	color: black;
 }
 .login-page-form input{
 	padding: 0;
