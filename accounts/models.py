@@ -35,9 +35,9 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
     
     # 포인트 기부하면 기존의 포인트에서 빼기
-    def subtract_points(self, amount):
-        self.points -= amount
-        self.save()
+    # def subtract_points(self, amount):
+    #     self.points -= amount
+    #     self.save()
     
     def delete(self, *args, **kargs):
         if self.image:
@@ -52,13 +52,27 @@ class User(AbstractUser):
                     os.remove(os.path.join(settings.MEDIA_ROOT, old_user.image.path))
         super(User, self).save(*args, **kwargs)
 
-    def add_points(self, points):
+    def add_points(self, points, detail):
         self.points += points
         self.save()
+        pointlog, _ = PointLog.objects.get_or_create(user=self)
+        point_log_item = PointLogItem()
+        point_log_item.point_log = pointlog
+        point_log_item.type = True
+        point_log_item.type_detail = detail
+        point_log_item.amount = points
+        point_log_item.save()
 
-    def subtract_points(self, points):
+    def subtract_points(self, points, detail):
         self.points -= points
         self.save()
+        pointlog, _ = PointLog.objects.get_or_create(user=self)
+        point_log_item = PointLogItem()
+        point_log_item.point_log = pointlog
+        point_log_item.type = False
+        point_log_item.type_detail = detail
+        point_log_item.amount = points
+        point_log_item.save()
 
     def get_followings_and_followers(self):
         followings_and_followers = set(self.followings.all()) | set(self.followers.all())
