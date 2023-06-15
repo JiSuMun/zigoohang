@@ -428,6 +428,12 @@ label[for="image-clear_id"] {
 	.login-wrapper {
 		background: none;
 	}
+	.update-wrapper {
+		background: none;
+	}
+	.password-wrapper {
+		background: none;
+	}
 }
 @media (min-width: 768px) {
 	.login-page-top {
@@ -448,6 +454,7 @@ label[for="image-clear_id"] {
 	.signup-page {
 		width: 450px;
 	}
+
 }
 
 @media (max-width: 479px) {
@@ -481,6 +488,13 @@ label[for="image-clear_id"] {
 
 	/* 로그인 */
 	.login-page {
+    width: 85%;
+	}
+
+	.update-page {
+    width: 85%;
+	}
+	.password-page {
     width: 85%;
 	}
 }
