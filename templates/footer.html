@@ -1,3 +1,4 @@
+{% load static %}
 <div class="footer">
   <div class="footer-wrap">
     <div class="title">
@@ -40,10 +41,16 @@
     <p class="copy">
       Copyright © 지구행. all right reserved
     </p>
-    <div>
-      <button class="theme-btn" id="lightThemeBtn">Light Theme</button> |
-      <button class="theme-btn" id="darkThemeBtn">Dark Theme</button> |
-      <button class="theme-btn" id="userPrefThemeBtn">system Theme</button>
+    <div class="theme_btn_box">
+      <button class="theme-btn" id="lightThemeBtn">
+        <img src="{% static 'img/main/sun.svg' %}" class="theme_icon">
+      </button>
+      <button class="theme-btn" id="darkThemeBtn">
+        <img src="{% static 'img/main/moon-stars.svg' %}" class="theme_icon">
+      </button>
+      <button class="theme-btn" id="userPrefThemeBtn">
+        <img src="{% static 'img/main/star-half.svg' %}" class="theme_icon">
+      </button>
     </div>
   </div>
 </div>

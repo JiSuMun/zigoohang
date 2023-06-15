@@ -89,3 +89,17 @@ function loginRequired() {
     window.location.href = '/accounts/login/';
   }
 }
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const svgElement = document.getElementById("sun_svg");
+//   const svgFillColor = "orange"; // 원하는 색상을 여기에 입력하세요.
+
+//   svgElement.addEventListener("load", function () {
+//     const svg = svgElement.contentDocument;
+//     const elements = svg.getElementsByTagName("path");
+//     console.log(elements, elements.length)
+//     for (let i = 0; i < elements.length; i++) {
+//       elements[i].setAttribute("fill", svgFillColor);
+//     }
+//   });
+// });

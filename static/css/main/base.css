@@ -75,6 +75,8 @@ table {
 	--planet-color4: #363636;
 	--planet-color5: rgb(201, 123, 123);
 	--planet-color6: rgba(163, 158, 158, 0.829);
+
+	--filter-orange: invert(68%) sepia(13%) saturate(4463%) hue-rotate(359deg) brightness(101%) contrast(103%); /* orange */
 }
 
 /* * {

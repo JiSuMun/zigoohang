@@ -103,9 +103,19 @@
   transform: rotate(180deg);
 }
 
+/* .theme_btn_box {
+  display: flex;
+} */
+.theme_icon {
+  filter: var(--filter-base);
+}
+.theme_icon:hover {
+  filter: var(--filter-orange);
+}
+
 .theme-btn {
   margin-top: 10px;
-  background: inherit ;
+  background: inherit;
   border:none;
   box-shadow:none;
   border-radius:0;
