@@ -16,7 +16,7 @@ header h2 {
   color: var(--text-color);
   font-weight: bold;
   padding: 10px;
-  text-align: left;
+  text-align: center;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
 }
@@ -52,9 +52,13 @@ header h2 {
 }
 .main-items-price {
   color: var(--j-sub-text);
+  vertical-align: middle;
+  text-align: center;
 }
 .main-items-store {
   color: var(--j-sub-text);
+  vertical-align: middle;
+  text-align: center;
   margin: 0;
 }
 .interest-page-content-main tr:last-child td {
@@ -71,6 +75,12 @@ header h2 {
   font-size: 17px;
   color: lightgrey;
 }
+
+.delete-btn {
+  vertical-align: middle;
+  text-align: center;
+}
+
 .material-symbols-outlined:hover {
   color: var(--planet-color3);
 }
@@ -116,4 +126,12 @@ header h2 {
     font-size: bold;
     margin: 0;
   }
+  .delete-btn {
+    text-align: left;
+  }
+  .main-items-price {
+    text-align: left;
+  }
+  .main-items-store {
+    text-align: left;
 }
