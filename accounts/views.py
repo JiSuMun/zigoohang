@@ -35,7 +35,7 @@ from secondhands.models import S_Product
 
 class CustomLoginView(LoginView):    
     def form_invalid(self, form):
-        return JsonResponse({'status': 'error', 'message': 'Username or password is incorrect'})
+        return JsonResponse({'status': 'error', 'message': '아이디, 비밀번호를 다시 확인해주세요.'})
 
     def form_valid(self, form):
         # 로그인 작업 완료

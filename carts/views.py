@@ -7,9 +7,6 @@ from accounts.models import PointLog, PointLogItem
 from stores.models import Product
 from django.http import JsonResponse, HttpResponseNotFound
 import os, requests, json, math
-from dotenv import load_dotenv
-load_dotenv()
-KAKAO_AK = os.getenv('KAKAO_AK')
 
 POINT_PER_PRICE = 0.01
 
