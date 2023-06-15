@@ -20,20 +20,21 @@
   justify-content: center;
   flex-direction: column;
   color: white;
-  margin-top: 16rem;
+  margin-top: 8rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-
 }
 
 .main-title {
-  font-size: 6rem;
+  /* font-size: 6rem; */
+  font-size: 8vw;
   margin: 3rem 0;
   color: white;
   font-weight: 600;
 }
 
 .main-content {
-  font-size: 2rem;
+  /* font-size: 2rem; */
+  font-size: 2.7vw;
   margin-bottom: 1rem;
   color: white;
 }
@@ -41,22 +42,26 @@
 .swipper-inner {
   position: absolute;
   top: 0;
-  margin-left: 6rem;
+  /* margin-left: 6rem; */
   color: white;
   margin-top: 20rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-
+  /* top: 50%; */
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .swipper-title {
-  font-size: 10rem;
+  /* font-size: 10rem; */
+  font-size: 11.5vw;
   color: white;
   font-weight: 600;
 }
 
 .swipper-content {
   margin-top: 1rem;
-  font-size: 2rem;
+  /* font-size: 2rem; */
+  font-size: 2.3vw;
   color: white;
 }
 
@@ -282,29 +287,36 @@
 /* 태블릿 */
 @media (min-width: 768px) and (max-width: 1279.9px) {
   .main-inner {
-    margin-top: 11rem;
+    margin-top: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .main-title {
-    font-size: 4rem;
-    margin: 2rem 0;
+    /* font-size: 4rem; */
+    /* margin: 2rem 0; */
   }
 
   .main-content {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
+    /* font-size: 1.4rem; */
+    /* margin-bottom: 0.8rem; */
   }
 
   .swipper-inner {
-    margin-top: 14rem;
+    /* margin-top: 14rem; */
+    margin-top: 0;
+    top: 50%;
   }
 
   .swipper-title {
-    font-size: 7rem;
+    /* font-size: 7rem; */
+    /* font-size: 11.5vw; */
   }
   
   .swipper-content {
-    font-size: 1.8rem;
+    /* font-size: 1.8rem; */
+    /* font-size: 3vw; */
   }
 
   .main-button_title {
@@ -356,16 +368,19 @@
   }
 
   .main-inner {
-    margin-top: 5rem;
+    margin-top: 0rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .main-title {
-    font-size: 3rem;
+    /* font-size: 3rem; */
     margin: 1rem 0;
   }
 
   .main-content {
-    font-size: 0.8rem;
+    /* font-size: 0.8rem; */
     margin-bottom: 0.5rem;
   }
 
@@ -375,19 +390,39 @@
   }
 
   .swipper-inner {
-    margin-top: 6rem;
+    margin-top: 0;
+    top: 50%;
   }
 
   .swipper-title {
-    font-size: 3rem;
+    /* font-size: 3rem; */
+    /* font-size: 88px; */
   }
   
   .swipper-content {
-    font-size: 1rem;
+    /* font-size: 1rem; */
   }
 
   .content-text {
   margin-bottom: 1rem;
   font-size: 12px;
+  }
 }
+@media (max-width: 374.9px) {
+  .main-title {
+    font-size: 30px;
+    /* font-size: 3rem; */
+    margin: 1rem 0;
+  }
+  .main-content {
+    font-size: 10px;
+    margin-bottom: 0.5rem;
+  }
+
+  .swipper-title {
+    font-size: 43px;
+  }
+  .swipper-content {
+    font-size: 10px;
+  }
 }
