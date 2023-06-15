@@ -570,10 +570,12 @@
         <input class="form-address form-control" type="text" id="address" placeholder="주소" name="address" readonly>
         <input class="address--btn form-check-id" type="button" onclick="search_address()" value="주소 검색">
       </div>
+      <div class="seller-wrapper">
         <button class="user-button" type="button" id="sellerBtn" onclick="setIsSellerValue(1)">판매자</button>
         <button class="user-button" type="button" id="memberBtn" onclick="setIsSellerValue(0)">일반회원</button>
         <input type="hidden" id="is_seller" name="is_seller" value="">
-      <button type="submit">회원가입</button>
+      </div>
+      <button class="agreement-btn" type="submit">회원가입</button>
     </form>
   </div>
 </div>
