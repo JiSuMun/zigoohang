@@ -52,7 +52,7 @@
   height: 200px;
   border-radius: 70%;
   overflow: hidden;
-  border: 1px solid grey;
+  border: 1px solid var(--j-color3);
 }
 .header-img img {
   width: 100%;
