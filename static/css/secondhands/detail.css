@@ -107,10 +107,12 @@
   border: 0.5px solid #ADCBC9;
   padding: 10px;
   border-radius: 5px;
-  background-color: white;
+  background-color: transparent;
+  color: #ADCBC9;
 }
 .product-info-status button:hover {
   background-color: #ADCBC9;
+  color: white;
 }
 
 /* 좋아요 */
@@ -147,15 +149,15 @@
 }
 .product-info-ud a {
   margin-right: 15px;
-  color: grey;
+  color: var(--j-sub-text);
 }
 .product-info-ud a:hover{
-  color: black;
+  color: var(--text-color);
 }
 
 /* 지도 */
 .detail-page-map {
-  border-top: 1px solid grey;
+  border-top: 1px solid var(--j-sub-text);
   margin-top: 50px;
 }
 .detail-page-map-title {
