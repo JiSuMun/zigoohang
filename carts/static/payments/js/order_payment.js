@@ -14,7 +14,6 @@ function requestPay() {
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
   
   const pg = $("#pg").val()
-  console.log(pg);
   const paymentsData = document.getElementById('payments_data')
   const totalAmount = paymentsData.dataset.totalAmount
   const orderId = paymentsData.dataset.orderId
@@ -32,32 +31,24 @@ function requestPay() {
   if (pg === 'eximbay') {
     finalAmount = Math.ceil(finalAmount * ExchangeRate)
   }
-  console.log(orderPhone);
   IMP.request_pay({
     pg: pg,
-    // pay_method: "card",
-    // merchant_uid: "merchant_" + new Date().getTime(),   // 주문번호
     name: orderItem,
-    amount: finalAmount,                         // 숫자 타입
+    amount: finalAmount,                         
     buyer_email: orderEmail,
     buyer_name: receiver,
     buyer_tel: orderPhone,
     buyer_addr: orderAddress,
     buyer_postcode: orderPostcode,
-  }, function (rsp) { // callback
+  }, function (rsp) {
     if ( rsp.success ) {
-      console.log(rsp);
       var msg = '결제가 완료되었습니다.';
-      // msg += '고유ID : ' + rsp.imp_uid;
-      // msg += '상점 거래ID : ' + rsp.merchant_uid;
-      // msg += '\n결제 금액 : ' + rsp.paid_amount;
       msg += '\n결제 금액 : ' + rsp.paid_amount.toLocaleString();
       if (pg === 'eximbay') {
         msg += ' $'
       } else {
         msg += ' 원'
       }
-      // msg += '카드 승인번호 : ' + rsp.apply_num;
       axios({
         method: 'POST',
         url: '/carts/payments/approval/',

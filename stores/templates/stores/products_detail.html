@@ -51,6 +51,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       <div class="product-inner">
         <p class="store-name"><a href="{% url 'stores:detail' product.store.pk %}">{{ store.name }}</a></p>
         <p class="product-title"> {{ product.name }}</p>
+        <p class="product-star"> <i class="fas fa-star new-rating-star">&nbsp;</i>{{ product.rating }}</p>
         <p class="product-price">{{ product.price|intcomma }} 원</p>
         <div class="delivery-info">
           <p class="delivery-title">배송비</p>
@@ -98,12 +99,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         </div>
         <div class="button-wrapper">
           {% if request.user == store.user or request.user.is_staff %}
-            <a class="d-button" href="{% url 'stores:products_update' store.pk product.pk %}">상품 수정</a>
-            <form action="{% url 'stores:products_delete' store.pk product.pk %}" method="POST">
+            <a class="d-button" href="{% url 'stores:products_update' product.store.pk product.pk %}">상품 수정</a>
+            <form action="{% url 'stores:products_delete' product.store.pk product.pk %}" method="POST">
               {% csrf_token %}
               <input class="d-button" type="submit" value="상품 삭제">
             </form>
-            {% endif %}
+          {% endif %}
         </div>     
       </div>
     </div>

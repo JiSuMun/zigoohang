@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const latestButton = document.querySelector('[data-filter="latest"]');
 
   const latestButtonClick = function() {
-    // console.log('최신순 버튼 눌렸다!');
-
+    
     const productContainer = document.querySelector('.secondhands-page-content-product');
     const productCards = Array.from(productContainer.querySelectorAll('.product-card'));
     const sortedCards = productCards.sort(function(a, b) {
+
       const idA = parseInt(a.querySelector('.detail-product_id').textContent.replace(/[^0-9]/g, ''));
       const idB = parseInt(b.querySelector('.detail-product_id').textContent.replace(/[^0-9]/g, ''));
   
@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const lowPriceButton = document.querySelector('[data-filter="lowcost"]');
 
   lowPriceButton.addEventListener('click', function() {
-    // console.log(lowPriceButton);
   
     const productContainer = document.querySelector('.secondhands-page-content-product');
     const productCards = Array.from(productContainer.querySelectorAll('.product-card'));
@@ -61,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // 가격 높은 순 버튼 클릭 이벤트 처리
   const highPriceButton = document.querySelector('[data-filter="highcost"]');
   highPriceButton.addEventListener('click', function() {
-    // console.log(highPriceButton);
 
     const productContainer = document.querySelector('.secondhands-page-content-product');
     const productCards = Array.from(productContainer.querySelectorAll('.product-card'));
@@ -82,15 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const shortDistanceButton = document.querySelector('[data-filter="shortdistance"]');
 
   shortDistanceButton.addEventListener('click', function() {
-    // console.log(shortDistanceButton);
 
     const productContainer = document.querySelector('.secondhands-page-content-product');
     const productCards = Array.from(productContainer.querySelectorAll('.product-card'));
     const sortedCards = productCards.sort(function(a, b) {
       const distanceA = parseInt(a.querySelector('.detail-product_distance').textContent);
       const distanceB = parseInt(b.querySelector('.detail-product_distance').textContent);  
-      // console.log('거리 : ' + distanceA, distanceB)
-     
       return distanceA - distanceB;
     });
   

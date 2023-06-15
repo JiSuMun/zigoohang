@@ -97,13 +97,19 @@
 }
 
 .product-title {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-size: 30px;
   font-weight: 600;
 }
 
 .product-price {
   font-size: 25px;
+  font-weight: 700;
+}
+
+.product-star {
+  margin-bottom: 1rem;
+  font-size: 20px;
   font-weight: 700;
 }
 .delivery-info {
@@ -306,6 +312,10 @@
   display: block;
 }
 
+ .new-rating-star{
+  color:#ffc107;
+  font-size: 20px;
+ }
 
 /* 상품 상세이미지 */
 .image-wrapper {

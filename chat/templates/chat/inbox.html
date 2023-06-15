@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block title %}
+  Chat
+{% endblock title %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/chat/inbox.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
@@ -194,14 +196,12 @@
 
             const deleteDiv = document.createElement("div");
             deleteDiv.classList.add("chat__delete", "none");
-            console.log(deleteDiv)
             deleteDiv.addEventListener('click', showdeleteChatBtn);
             
 
             const deleteForm = document.createElement("form");
             deleteForm.action = `{% url 'chat:delete_chat' room_name='PLACEHOLDER' %}`.replace("PLACEHOLDER", chat_room.name);
             deleteForm.method = "post";
-            console.log(deleteForm)
 
             const csrfToken = document.createElement("input");
             csrfToken.type = "hidden";
@@ -239,7 +239,6 @@
       .then(data => {
         data.data.forEach(chat_room_data => {
           let chat_room_div = document.getElementById(chat_room_data.room_name);
-          console.log(chat_room_div)
           let unread_count = chat_room_div.querySelector(".unread_count");
           let last_message = chat_room_div.querySelector(".last-message");
           let timestamp = chat_room_div.querySelector(".timestamp");

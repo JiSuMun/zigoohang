@@ -73,6 +73,7 @@ def create(request):
     return render(request, 'posts/create.html', context)
 
 
+@login_required
 def detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     reviews = post.reviews.all()

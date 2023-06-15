@@ -40,6 +40,8 @@ def index(request):
 
 def detail(request, challenge_pk):
     challenge = Challenge.objects.get(pk=challenge_pk)
+    seoul_timezone = timezone(settings.TIME_ZONE)
+    in_progress = challenge.start_date.date() <= datetime.now(seoul_timezone).date() <= challenge.end_date.date()
     challenge_images = ChallengeImage.objects.filter(challenge=challenge_pk)
     certification_form = CertificationForm() 
     certifications = challenge.certifications.all()
@@ -80,8 +82,8 @@ def detail(request, challenge_pk):
         'd_day_string': d_day_string,
         'user_has_certified': user_has_certified,
         'certified_users': certified_users,
-        'is_participant': is_participant
-        
+        'is_participant': is_participant,
+        'in_progress': in_progress
     }
 
     return render(request, 'challenges/detail.html', context)

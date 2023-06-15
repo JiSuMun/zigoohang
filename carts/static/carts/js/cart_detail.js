@@ -11,20 +11,6 @@ if (!isAuthenticated) {
   async function getProductInfoAndRender(product_id, quantity) {
     return new Promise((resolve) => {
       $.get(`/carts/api/products/${product_id}/`, function(data) {
-      // const productInfo = `
-      //   <tr>
-      //     <td><img src="${data.image}" alt="" width="100px"></td>
-      //     <td>${data.name}</td>
-      //     <td>${data.price}</td>
-      //     <td>${quantity}</td>
-      //     <td>${data.price * quantity}</td>
-      //   </tr>
-      //   `
-      // document.querySelector('#cart_table > tbody').innerHTML += productInfo;
-
-      // const cartDiv = document.createElement("div");
-      // cartDiv.id = "cart_div";
-
       const productDataDiv = document.createElement("div");
       productDataDiv.id = `product_data-${data.id}`
       productDataDiv.setAttribute("data-product-price", data.price);
@@ -41,14 +27,7 @@ if (!isAuthenticated) {
       checkbox.name = "item_check";
       checkbox.value = `${data.id}`;
 
-      // const hiddenInput = document.createElement("input");
-      // hiddenInput.type = "hidden";
-      // hiddenInput.name = "input_quantity";
-      // hiddenInput.value = "1";
-      // hiddenInput.id = "product_quantity-2";
-
       checkboxCol.appendChild(checkbox);
-      // checkboxCol.appendChild(hiddenInput);
 
       const link = document.createElement("a");
       link.href = `/stores/${data.storeId}/${data.id}/`;
@@ -88,11 +67,10 @@ if (!isAuthenticated) {
 
       const minusButton = document.createElement("button");
       minusButton.className = "cart_quantity_button";
-      // minusButton.name = "quantity_btn";
+
       minusButton.setAttribute("type", "button");
       minusButton.setAttribute("onclick", `dicreaseItem(${data.id})`);
       minusButton.setAttribute("data-quantity-value", "-1");
-      // minusButton.setAttribute("data-product-id", data.id);
       minusButton.textContent = "-";
 
       const quantityDisplay = document.createElement("div");
@@ -102,11 +80,10 @@ if (!isAuthenticated) {
 
       const plusButton = document.createElement("button");
       plusButton.className = "cart_quantity_button";
-      // plusButton.name = "quantity_btn";
+
       plusButton.setAttribute("type", "button");
       plusButton.setAttribute("onclick", `increaseItem(${data.id})`);
       plusButton.setAttribute("data-quantity-value", "1");
-      // plusButton.setAttribute("data-product-id", data.id);
       plusButton.textContent = "+";
 
       quantityContainer.appendChild(minusButton);
@@ -127,44 +104,12 @@ if (!isAuthenticated) {
 
       
       cartDiv.appendChild(content);
-
-      
-
-
-
-      // const tr = document.createElement('tr')
-      // const imgTd = document.createElement('td')
-      // const productTd = document.createElement('td')
-      // const productPriceTd = document.createElement('td')
-      // const quantityTd = document.createElement('td')
-      // const subtotalTd = document.createElement('td')
-
-      // const imgTag = document.createElement('img')
-      // imgTag.src = data.image
-      // imgTag.width = 100
-
-      // imgTd.appendChild(imgTag)
-      // productTd.textContent = data.name
-      // productPriceTd.textContent = data.price
-      // quantityTd.textContent = quantity
-      // subtotalTd.textContent = data.price * quantity
-
-      // tr.appendChild(imgTd)
-      // tr.appendChild(productTd)
-      // tr.appendChild(productPriceTd)
-      // tr.appendChild(quantityTd)
-      // tr.appendChild(subtotalTd)
-
-      // const cartTableBody = document.querySelector('#cart_table tbody')
-      // cartTableBody.appendChild(tr)
       cartTotalAmount += data.price * quantity
       
       resolve();
     });
   });
 }
-
-  // 저장된 'cart'에서 각 상품 ID와 수량을 가져옵니다.
   async function displayCart() {
     for (let i = 0; i < cart.length; i++) {
       await getProductInfoAndRender(cart[i].id, cart[i].quantity);
@@ -180,9 +125,5 @@ if (!isAuthenticated) {
   }
   (async () => {
     await displayCart();
-    console.log(cartTotalAmount); // test
   })();
-  }
-  // displayCart();
-// }
-console.log(cartTotalAmount);
+}

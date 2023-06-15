@@ -42,9 +42,6 @@ incrementBtn.addEventListener("click", () => {
   subTotalPrice = count * price
   totalPrice = count * price
 
-  console.log(subTotalPrice)
-  console.log(totalPrice)
-
   subTotalPriceSpan.textContent = subTotalPrice.toLocaleString()
   totalPriceSpan.textContent = totalPrice.toLocaleString()
 })
@@ -85,7 +82,6 @@ ratingStars.forEach((ratingStar) => {
 
 // 리뷰 좋아요 비동기
 const reviewForms = document.querySelectorAll('[id^="review-likes-form-"]');
-console.log(reviewForms)
 const r_csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 reviewForms.forEach((form) => {
@@ -94,7 +90,6 @@ reviewForms.forEach((form) => {
     const storeId = event.target.dataset.storeId;
     const productId = event.target.dataset.productId;
     const reviewId = event.target.dataset.reviewId;
-    console.log(storeId, productId, reviewId)
 
     axios({
       method: "POST",
@@ -103,13 +98,9 @@ reviewForms.forEach((form) => {
     })
       .then((response) => {
         const risLiked = response.data.r_is_liked;
-        console.log(risLiked)
         const rlikeBtn = form.querySelector('#review-like');
-        console.log(rlikeBtn)
         const rlikeCount = form.nextElementSibling;
-        console.log(rlikeCount)
         const dreviewForms = document.querySelector(`#review-dislikes-form-${storeId}-${productId}-${reviewId}`);
-        console.log(dreviewForms)
         
         if (risLiked) {
           rlikeBtn.classList.remove('r-like-color-gray')
@@ -130,7 +121,6 @@ reviewForms.forEach((form) => {
 
 // 리뷰 싫어요 비동기
 const dreviewForms = document.querySelectorAll('[id^="review-dislikes-form-"]');
-console.log(dreviewForms)
 
 dreviewForms.forEach((form) => {
   form.addEventListener('submit', function (event) {
@@ -138,7 +128,6 @@ dreviewForms.forEach((form) => {
     const storeId = event.target.dataset.storeId;
     const productId = event.target.dataset.productId;
     const dreviewId = event.target.dataset.dreviewId;
-    console.log(storeId, productId, dreviewId)
     
     axios({
       method: "POST",
@@ -147,13 +136,9 @@ dreviewForms.forEach((form) => {
     })
       .then((response) => {
         const rdisLiked = response.data.r_is_disliked;
-        console.log(rdisLiked)
         const rdlikeBtn = form.querySelector('#review-dislike');
-        console.log(rdlikeBtn)
         const rdlikeCount = form.nextElementSibling;
-        console.log(rdlikeCount)
         const reviewForms = document.querySelector(`#review-likes-form-${storeId}-${productId}-${dreviewId}`);
-        console.log(reviewForms)
         
         if (rdisLiked) {
           rdlikeBtn.classList.remove('r-like-color-gray')

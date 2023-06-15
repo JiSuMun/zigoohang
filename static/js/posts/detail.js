@@ -77,7 +77,6 @@ reviewForms.forEach((form) => {
     event.preventDefault();
     const postId = event.target.dataset.postId;
     const reviewId = event.target.dataset.reviewId;
-    console.log(postId, reviewId)
 
     axios({
       method: "POST",
@@ -86,13 +85,9 @@ reviewForms.forEach((form) => {
     })
       .then((response) => {
         const risLiked = response.data.r_is_liked;
-        console.log(risLiked)
         const rlikeBtn = form.querySelector('#review-like');
-        console.log(rlikeBtn)
         const rlikeCount = form.nextElementSibling;
-        console.log(rlikeCount)
         const dreviewForms = document.querySelector(`#review-dislikes-form-${postId}-${reviewId}`);
-        console.log(dreviewForms)
         
         if (risLiked) {
           rlikeBtn.classList.remove('r-like-color-gray')
@@ -119,7 +114,6 @@ dreviewForms.forEach((form) => {
     event.preventDefault();
     const dpostId = event.target.dataset.postId;
     const dreviewId = event.target.dataset.dreviewId;
-    console.log(dpostId, dreviewId)
 
     axios({
       method: "POST",
@@ -128,13 +122,9 @@ dreviewForms.forEach((form) => {
     })
       .then((response) => {
         const rdisLiked = response.data.r_is_disliked;
-        console.log(rdisLiked)
         const rdlikeBtn = form.querySelector('#review-dislike');
-        console.log(rdlikeBtn)
         const rdlikeCount = form.nextElementSibling;
-        console.log(rdlikeCount)
         const reviewForms = document.querySelector(`#review-likes-form-${dpostId}-${dreviewId}`);
-        console.log(reviewForms)
         
         if (rdisLiked) {
           rdlikeBtn.classList.remove('r-like-color-gray')

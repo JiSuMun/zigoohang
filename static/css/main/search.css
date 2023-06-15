@@ -60,6 +60,10 @@
 }
 
 /* 챌린지 */
+.challenge {
+  display: flex;
+  flex-wrap: wrap;
+}
 .challenge-wrapper {
   border: 1px  solid var(--j-line);
   border-radius: 10px;
@@ -235,6 +239,7 @@
 @media (max-width: 767px) {
   .challenge-wrapper {
     width: calc(100% - 1.6rem);
+    aspect-ratio: 7 / 11;
   }
   .store-wrapper {
     padding: 0.8rem;

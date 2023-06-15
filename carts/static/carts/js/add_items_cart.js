@@ -25,7 +25,6 @@ function user_add_item_cart(product, quantity) {
     }),
   })
     .then((response) => {
-      console.log(response.data.cart_count)
       const countBadge = document.getElementById('count_badge')
 
       countBadge.textContent = response.data.cart_count
@@ -33,17 +32,6 @@ function user_add_item_cart(product, quantity) {
 
       alert('장바구니에 추가되었습니다.')
     })
-    // .then((response) => response.json())
-    // .then((data) => {
-    //   if (data.success) {
-    //     console.log('Item added to cart')
-    //   } else if (data.error) {
-    //     console.error(data.error)
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.error('Error:', error)
-    // })
 }
 
 function guest_add_item_cart(product, quantity) {

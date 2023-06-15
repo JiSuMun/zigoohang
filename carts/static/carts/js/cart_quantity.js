@@ -16,7 +16,6 @@ quantityBtn.forEach(function(e) {
 
 
 function user_modify_quantity(productId, quantityValue) {
-  console.log(Number(quantityValue))
   axios({
     method: 'POST',
     url: '/carts/modify_quantity/',
@@ -31,10 +30,6 @@ function user_modify_quantity(productId, quantityValue) {
       const productQuantityInput = document.getElementById(`product_quantity-${productId}`)
       const subTotalSpan = document.getElementById(`sub_total-${productId}`)
       const totalSpan = document.getElementById('total')
-      // console.log(response)
-      // console.log(response.data.subTotal)
-      // console.log(response.data.total)
-      // subTotalSpan.innerHTML = response.data.subTotal
       productQuantityDiv.textContent = response.data.quantity
       productQuantityInput.value = response.data.quantity
       subTotalSpan.innerHTML = response.data.subTotal.toLocaleString()

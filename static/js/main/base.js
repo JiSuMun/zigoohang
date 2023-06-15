@@ -54,20 +54,14 @@ const darkThemeBtn = document.getElementById("darkThemeBtn");
 lightThemeBtn.addEventListener("click", () => {
   stylesheet.href = '/static/css/main/theme-light.css'
   setStoredTheme("light");
-  // setTheme("light");
 });
 
 darkThemeBtn.addEventListener("click", () => {
   stylesheet.href = '/static/css/main/theme-dark.css'
   setStoredTheme("dark");
-  // setTheme("dark");
 });
 function applyOSTheme() {
   stylesheet.href = '/static/css/main/theme-os.css'
-  // const osTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-  //   ? "dark"
-  //   : "light";
-  // setTheme(osTheme);
   localStorage.removeItem("theme"); // 기존 사용자 지정 테마 정보 삭제
 }
 

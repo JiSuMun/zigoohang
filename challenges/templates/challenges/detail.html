@@ -51,7 +51,7 @@
     <p >* 참여 기간 : {{ challenge.start_date|date:"Y년 m월 d일" }}
     ~ {{ challenge.end_date|date:"Y년 m월 d일" }}
     {% if days_remaining >= 0 %}
-    <span class="red-text">{{ d_day_string }}</span>
+    <span class="red-text">종료 {{ d_day_string }}</span>
     <div class="participation-count">참여인원 : <span id="participants-count">{{ challenge.participants.count }}</span>명</div>
 
     {% else %}
@@ -59,12 +59,12 @@
     {% endif %}
     </p>    
   </div>
-  {% comment %} 참가/미참가 {% endcomment %}
+
   <br>
 
   <form class="participation-forms" action="{% url 'challenges:participation' challenge_pk=challenge.pk %}" method="POST" data-challenge-id="{{ challenge.pk }}">
     {% csrf_token %}
-    <button id="participation-toggle-{{ challenge.pk }}" class="green-button" type="{% if days_remaining < 0 or ended %}button{% else %}submit{% endif %}" {% if days_remaining < 0 %}onclick="showEndedMessage()"{% endif %}>
+    <button id="participation-toggle-{{ challenge.pk }}" class="green-button" type="{% if days_remaining < 0 or not in_progress %}button{% else %}submit{% endif %}" {% if days_remaining < 0 %}onclick="showEndedMessage()"{% elif not in_progress %}onclick="showNotInProgressMessage()"{% endif %}>
       {% if request.user in challenge.participants.all %}
         참여하기
       {% else %}
@@ -74,7 +74,9 @@
   </form>
 
   <br>
+  
   <div id="certification_form_container" class="certification-none">
+    <p>챌린지에 참여하신 사용자만 인증이 가능합니다.</p>
     <form class="input-form"action="{% url 'challenges:certification_create' challenge.pk %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div>
@@ -93,7 +95,6 @@
           <input class="btn-delete"type="submit" value="작성하기">
         </div>
     </form>
-    <p>챌린지에 참여하신 사용자만 인증이 가능합니다.</p>
   </div>
 
   <br>
@@ -165,7 +166,8 @@
       location.href = "/accounts/login/";
     {% endif %}
   });
-
+</script>
+<script>
   function showEndedMessage() {
     alert("이미 종료된 챌린지입니다.");
   }
@@ -173,81 +175,82 @@
   function showCertification() {
     alert("이미 인증을 완료하셨습니다. 추가 인증은 불가능합니다.");
   }
+
+  function showNotInProgressMessage() {
+    alert("현재 진행중이 아닙니다!");
+  }
 </script>
 <script>
 
-function disableParticipationForm() {
-  const participantBtn = document.querySelector(".green-button");
-  participantBtn.setAttribute("disabled", "disabled");
-  participantBtn.addEventListener("click", function () {
-    alert("이미 인증을 완료하셨습니다. 추가 인증은 불가능합니다.");
-  });
-}
-
-const userHasCertified = {{ user_has_certified|yesno:"true,false" }};
-
-if (userHasCertified) {
-  disableParticipationForm();
-}
-
-const participationForm = document.querySelectorAll(".participation-forms");
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-participationForm.forEach((form) => {
-  form.addEventListener('submit', function (e){
-    e.preventDefault();
-    const challengeId = e.target.dataset.challengeId;
-
-    axios({
-      method: "POST",
-      url: `/challenges/${challengeId}/participation/`,
-      headers: {'X-CSRFToken': csrftoken},
-    })
-    .then((response) => {
-      console.log(response.data)
-      const isParticipating = response.data.is_participating;
-      const participantBtn = document.querySelector(`#participation-toggle-${challengeId}`);
-      const participantCount = document.querySelector(`#participants-count`);
-      const certificationForm = document.querySelector(`#certification_form_container`)
-      const isCertified = response.data.is_certified;
-      console.log(isCertified)
-
-      if (isCertified) {
-        disableParticipationForm();
-      } else {
-        if (isParticipating) {
-          participantBtn.textContent = "참여 취소";
-          certificationForm.classList.remove('certification-none');
-        } else {
-          participantBtn.textContent = "참여하기";
-          certificationForm.classList.add('certification-none');
-        }
-        participantCount.innerText = response.data.participants_count;
-      }
-    })
-    .catch((error) => {
-      console.log(error.response);
+  function disableParticipationForm() {
+    const participantBtn = document.querySelector(".green-button");
+    participantBtn.setAttribute("disabled", "disabled");
+    participantBtn.addEventListener("click", function () {
+      alert("이미 인증을 완료하셨습니다. 추가 인증은 불가능합니다.");
     });
-  })
-  const participantBtn = form.querySelector(`button`);
-  participantBtn.textContent = "참여하기";
-})
-
-
-function toggleCertificationUpdateForm(certification_id) {
-  const form = document.getElementById("certificationUpdateForm" + certification_id);
-  const box = document.querySelector(".certification--box");
-  const button = document.getElementById("certificationUpdateButton" + certification_id);
-  
-  if (form.style.display === "none") {
-    form.style.display = "block";
-    box.style.display = "none";
-    button.innerHTML = "취소";
-  } else {
-    form.style.display = "none";
-    box.style.display = "block";
-    button.innerHTML = "수정";
   }
-}
+
+  const userHasCertified = {{ user_has_certified|yesno:"true,false" }};
+
+  if (userHasCertified) {
+    disableParticipationForm();
+  }
+
+  const participationForm = document.querySelectorAll(".participation-forms");
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  participationForm.forEach((form) => {
+    form.addEventListener('submit', function (e){
+      e.preventDefault();
+      const challengeId = e.target.dataset.challengeId;
+
+      axios({
+        method: "POST",
+        url: `/challenges/${challengeId}/participation/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+        const isParticipating = response.data.is_participating;
+        const participantBtn = document.querySelector(`#participation-toggle-${challengeId}`);
+        const participantCount = document.querySelector(`#participants-count`);
+        const certificationForm = document.querySelector(`#certification_form_container`)
+        const isCertified = response.data.is_certified;
+
+        if (isCertified) {
+          disableParticipationForm();
+        } else {
+          if (isParticipating) {
+            participantBtn.textContent = "참여 취소";
+            certificationForm.classList.remove('certification-none');
+          } else {
+            participantBtn.textContent = "참여하기";
+            certificationForm.classList.add('certification-none');
+          }
+          participantCount.innerText = response.data.participants_count;
+        }
+      })
+      .catch((error) => {
+      });
+    })
+    const participantBtn = form.querySelector(`button`);
+    participantBtn.textContent = "참여하기";
+  })
+
+
+  function toggleCertificationUpdateForm(certification_id) {
+    const form = document.getElementById("certificationUpdateForm" + certification_id);
+    const box = document.querySelector(".certification--box");
+    const button = document.getElementById("certificationUpdateButton" + certification_id);
+    
+    if (form.style.display === "none") {
+      form.style.display = "block";
+      box.style.display = "none";
+      button.innerHTML = "취소";
+    } else {
+      form.style.display = "none";
+      box.style.display = "block";
+      button.innerHTML = "수정";
+    }
+  }
 
 </script>
 {% endblock content %}

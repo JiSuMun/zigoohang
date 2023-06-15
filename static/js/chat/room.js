@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const img_div = document.createElement('div');
       const img = document.createElement('img');
       img.src = message.sender_image_url;
-      console.log(img.src)
       img.classList.add('sender-image');
       img_div.appendChild(img)
       senderDiv.appendChild(img_div)

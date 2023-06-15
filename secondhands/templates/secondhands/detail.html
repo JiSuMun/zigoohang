@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
-{% block title %}Detail{% endblock title %}
+{% block title %}{{ product.product }}{% endblock title %}
 
 
 {% block head %}
@@ -59,13 +59,12 @@
         <p class="product-info-head-price">{{ product.price|intcomma }}원</p>
         <p class="product-info-head-p">상세정보</p>
         <div class="product-info-head-content">
-          {% comment %} <p>{{ product.content|safe}}</p> {% endcomment %}
           <p>{{ product.content|safe|linebreaks}}</p>
         </div>
           {% if request.user != product.user %}
             {% if product.get_status_display != '거래완료'%}
               <div class="product-info-user">
-                <a href="{% url 'chat:start_chat' product.pk %}">판매자에게 연락하기</a>
+                <a href="{% url 'chat:start_chat' product.user.pk %}">판매자에게 연락하기</a>
               </div>
             {% endif %}
             <p><span id="product-status">{{ product.get_status_display }}</span></p>

@@ -40,23 +40,25 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     <p class="inner-title">챌린지</p>
     {% if challenges %}
     <p class="inner-count">총 {{challenges|length}} 건의 검색결과가 있습니다.</p>
-    {% for challenge, c_image in challenges %}
-    <div class="challenge-wrapper">
-      <a href="{% url 'challenges:detail' challenge.id %}">
-        <div class="c-img-wrapper">
-          <img class="c-image" src="{{ c_image.image.url }}" alt="">
-        </div>
-        <div class="c-content-wrapper">
-          <p class="c-title">{{ challenge.title }}</p>
-          <p class="c-date">{{ challenge.start_date|date:"Y-m-d" }}~{{ challenge.end_date|date:"Y-m-d"  }}</p>
-          <div class="icon-box">
-            <i class="fa-regular fa-user"></i>{{ challenge.participants.count }}
-            <i class="fa-regular fa-comment-dots"></i>{{ challenge.certifications.count }}
-          </div>  
-        </div>
-      </a>  
+    <div class="challenge">
+      {% for challenge, c_image in challenges %}
+          <div class="challenge-wrapper">
+        <a href="{% url 'challenges:detail' challenge.id %}">
+          <div class="c-img-wrapper">
+            <img class="c-image" src="{{ c_image.image.url }}" alt="">
+          </div>
+          <div class="c-content-wrapper">
+            <p class="c-title">{{ challenge.title }}</p>
+            <p class="c-date">{{ challenge.start_date|date:"Y-m-d" }}~{{ challenge.end_date|date:"Y-m-d"  }}</p>
+            <div class="icon-box">
+              <i class="fa-regular fa-user"></i>{{ challenge.participants.count }}
+              <i class="fa-regular fa-comment-dots"></i>{{ challenge.certifications.count }}
+            </div>  
+          </div>
+        </a>  
     </div>
     {% endfor %}
+    </div>
     {% else %}
     <p class="search-none">검색결과가 없습니다.</p>
     {% endif %}

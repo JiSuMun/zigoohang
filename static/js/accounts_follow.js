@@ -8,7 +8,6 @@ const openModalBtn2 = document.getElementById("open-modal-btn2");
 
 // 모달 열고 닫기
 function toggleModal1() {
-  console.log('버튼1 눌림');
   if (modal1.style.display === "none") {
     modal1.style.display = "block";
     openModalBtn1.innerHTML = "더보기 취소";
@@ -18,7 +17,6 @@ function toggleModal1() {
   }
 }
 function toggleModal2() {
-  console.log('버튼2 눌림');
   if (modal2.style.display === "none") {
     modal2.style.display = "block";
     openModalBtn2.innerHTML = "더보기 취소";
@@ -31,9 +29,7 @@ function toggleModal2() {
 const form = document.querySelector('#follow-form');
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const personData = document.getElementById('person_data')
-// const personId = form.dataset.userId;
 const personId = personData.dataset.userId;
-// const personUsername = form.dataset.username;
 const personUsername = personData.dataset.username;
 const followingsCountTag = document.querySelector('#followings-count');
 const followersCountTag = document.querySelector('#followers-count');

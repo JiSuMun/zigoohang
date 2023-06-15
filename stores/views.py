@@ -107,11 +107,8 @@ def products_create(request, store_pk):
 
 def products_detail(request, store_pk, product_pk):
     store = Store.objects.get(pk=store_pk)
-    print(store)
     product = Product.objects.get(pk=product_pk)
-    print(product)
     reviews = ProductReview.objects.filter(product=product)
-    print(reviews)
     for review in reviews:
         review.review_images = [review.image1, review.image2, review.image3, review.image4, review.image5]
     context = {
@@ -130,7 +127,7 @@ def products_update(request, store_pk, product_pk):
     product = Product.objects.get(pk=product_pk)
     images = product.images.all()
     if request.method == 'POST':
-        product_form = ProductForm(request.POST, instance=product)
+        product_form = ProductForm(request.POST, request.FILES, instance=product)
         if product_form.is_valid():
             product = product_form.save()
             for image in request.FILES.getlist('image'):
@@ -156,7 +153,7 @@ def products_delete(request, store_pk, product_pk):
     product = Product.objects.get(pk=product_pk)
     if not(request.user.is_seller or request.user.is_staff or request.user == product.store.user):
         return redirect('stores:index')
-    if request.user == product.store.user:
+    if request.user == product.store.user or request.user.is_staff:
         product.delete()
     return redirect('stores:detail', store_pk)
 
@@ -262,36 +259,4 @@ def reviews_dislikes(request, store_pk, product_pk, review_pk):
     return JsonResponse(context)
 
 
-##### cart
 
-# def add_to_cart(request, product_id):
-#     cart = request.session.get('cart', {})  # Retrieve the cart data from the session
-#     quantity = cart.get(product_id, 0) + 1
-#     cart[product_id] = quantity
-#     request.session['cart'] = cart  # Store the updated cart data in the session under 'cart' key
-#     return redirect('cart')
-
-
-# def cart(request):
-#     cart = request.session.get('cart', {})
-#     product_ids = cart.keys()
-#     products = Product.objects.filter(id__in=product_ids)
-#     context = {'cart': cart, 'products': products}
-#     return render(request, 'cart.html', context)
-
-
-# def remove_from_cart(request, product_id):
-#     cart = request.session.get('cart', {})
-#     if product_id in cart:
-#         del cart[product_id]
-#         request.session['cart'] = cart  # Update the cart data in the session
-#     return redirect('cart')
-
-
-# def update_quantity(request, product_id):
-#     cart = request.session.get('cart', {})
-#     new_quantity = request.POST.get('quantity')  # Retrieve the new quantity from the request
-#     if new_quantity:
-#         cart[product_id] = int(new_quantity)
-#         request.session['cart'] = cart  # Update the cart data in the session
-#     return redirect('cart')

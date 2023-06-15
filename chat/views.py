@@ -13,7 +13,6 @@ def inbox(request):
         return redirect('accounts:login')
     chat_rooms = request.user.chat_rooms.all()
     chat_rooms_with_last_message = []
-    # all_users = get_user_model().objects.exclude(id=request.user.id)
     all_users = request.user.get_followings_and_followers()
     current_datetime = timezone.now()
 
@@ -57,7 +56,6 @@ def unread_notifications(request):
             "last_message": last_message_content,
             "last_message_timestamp": last_message_timestamp,
         })
-        # print(chat_rooms_data)
 
     response_data = {
         "data": chat_rooms_data
@@ -120,12 +118,3 @@ def delete_chat(request, room_name):
     chat_room.delete()
     return redirect('chat:inbox')
 
-
-# def delete_chat(request, room_name):
-#     chat_room = ChatRoom.objects.get(name=room_name)
-#     if request.user in chat_room.participants.all():
-#         chat_room.participants.remove(request.user)
-#     if chat_room.participants.count() == 0:
-#         chat_room.delete()
-
-#     return redirect('chat:inbox')

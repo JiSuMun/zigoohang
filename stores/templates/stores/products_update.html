@@ -45,10 +45,6 @@
         {{ image_form.image }}
       </div>
       <div>
-        <p class="form_label">상품 상세 이미지 추가&nbsp;<span class="image-text">(선택)</span></p>
-        {{ product_form.detail_image }}
-      </div>
-      <div>
         <p class="form_label">기존 이미지 삭제&nbsp;<span class="image-text">(선택)</span></p>
         <ul>
           {% for image in images %}
@@ -62,6 +58,10 @@
           {% endfor %}
         </ul>
       </div>
+    </div>
+    <div>
+      <p class="form_label">상품 상세 이미지 추가&nbsp;<span class="image-text">(선택)</span></p>
+      {{ product_form.detail_image }}
     </div>
     <!--버튼-->
     <div class="button-wrapper">
