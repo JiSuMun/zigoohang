@@ -54,7 +54,7 @@
   align-items: center;
 }
 .nav-link:hover {
-  color: var(--j-color2);
+  color: var(--j-green);
 }
 
 .nav-image {
@@ -73,7 +73,7 @@
   justify-content: space-between;
   width: 300px;
   height: 38px;
-  border: 2px solid var(--j-color2);
+  border: 2px solid var(--j-green);
   border-radius: 19px;
   padding-left: 15px;
   overflow: hidden;
@@ -143,7 +143,7 @@
   font-size: 16px;
 }
 .nav-hover-list:hover {
-  color: var(--j-color2);
+  color: var(--j-green);
 }
 /* 반응형 버튼 */
 .drawer_check {

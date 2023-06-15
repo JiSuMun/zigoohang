@@ -378,6 +378,7 @@ label[for="image-clear_id"] {
 .password-page-title h1 {
 	font-weight: bold;
 	padding-bottom: 20px;
+	color: black;
 }
 .password-page-form input{
 	display: block;
