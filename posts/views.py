@@ -12,6 +12,7 @@ import json
 import os
 from django.conf import settings
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 
 # @receiver(post_save, sender=Post)
@@ -27,6 +28,7 @@ from django.core.paginator import Paginator
 
 def main(request):
     return render(request, 'posts/main.html')
+
 
 def index(request):
     posts = Post.objects.all().order_by('-created_at')
@@ -47,6 +49,7 @@ def news(request):
     return render(request, 'posts/news.html', context)
 
 
+@login_required
 def create(request):
     post_form = PostForm()
     image_form = PostImageForm()
@@ -102,6 +105,7 @@ def detail(request, post_pk):
     return render(request, 'posts/detail.html', context)
 
 
+@login_required
 def likes(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if request.user in post.like_users.all():
@@ -117,6 +121,7 @@ def likes(request, post_pk):
     return JsonResponse(context)
 
 
+@login_required
 def update(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     post_form = PostForm(request.POST, instance=post)
@@ -154,6 +159,7 @@ def update(request, post_pk):
     return render(request, 'posts/update.html', context)  
 
 
+@login_required
 def delete(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     if request.user == post.user:
@@ -161,6 +167,7 @@ def delete(request, post_pk):
     return redirect('posts:index')
 
 
+@login_required
 def review_create(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     image_form = ReviewImageForm()
@@ -186,6 +193,7 @@ def review_create(request, post_pk):
     return render(request, 'posts/detail.html', context)
 
 
+@login_required
 def review_update(request, post_pk, review_pk):
     post = Post.objects.get(pk=post_pk)
     review = Review.objects.get(pk=review_pk)
@@ -221,7 +229,7 @@ def review_update(request, post_pk, review_pk):
     return render(request, 'posts/detail.html', context)
 
 
-
+@login_required
 def review_delete(request, post_pk, review_pk):
     review = Review.objects.get(pk=review_pk)
     if request.user == review.user:
@@ -230,7 +238,7 @@ def review_delete(request, post_pk, review_pk):
     return redirect('posts:detail', post_pk)
 
 
-
+@login_required
 def review_likes(request, post_pk, review_pk):
     review = Review.objects.get(pk=review_pk)
     if request.user in review.like_users.all():
@@ -248,6 +256,7 @@ def review_likes(request, post_pk, review_pk):
     return JsonResponse(context)
 
 
+@login_required
 def review_dislikes(request, post_pk, review_pk):
     review = Review.objects.get(pk=review_pk)
     if request.user in review.dislike_users.all():
@@ -265,31 +274,11 @@ def review_dislikes(request, post_pk, review_pk):
     return JsonResponse(context)
 
 
+@login_required
 def import_zero(request):
     file_path = os.path.join(settings.BASE_DIR, 'utils', 'zero.xlsx')
     import_zero_data(file_path)
     return HttpResponse("Data Imported Successfully")
-
-
-def zero_map(request):
-    region = request.GET.get('region', '서울')
-    all_zero = Zero.objects.all()
-    regions = {a_zero.region for a_zero in all_zero}
-    zeros = Zero.objects.filter(region=region).values()
-    kakao_script_key = os.getenv('kakao_script_key')
-    kakao_key = os.getenv('KAKAO_KEY')
-    
-    context = {
-        'all_zero': all_zero,
-        'zeros': list(zeros),
-        'regions': regions,
-        'kakao_script_key': kakao_script_key,
-        'kakao_key': kakao_key,
-    }
-    if request.is_ajax():
-        return JsonResponse(context)
-    return render(request, 'posts/zero_map.html', context)
-
 
 
 def zero_map(request):

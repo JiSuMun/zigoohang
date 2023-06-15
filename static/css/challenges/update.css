@@ -59,11 +59,6 @@
   margin-bottom: 10px;
 }
 
-.required_star {
-  margin-left: 0.3em;
-  color: #ca0114;
-}
-
 .image-text {
   font-size: 14px;
   color: #999999;
@@ -140,5 +135,18 @@ label {
   .u-wrapper {
     padding: 2rem;
   }
-  
+}
+
+@media (max-width: 768.9px) {
+  .update-title-wrap {
+    height: 250px;
+  }
+
+  .update-title-title {
+    font-size: 40px;
+  }
+
+  .update-title-text {
+    font-size: 15px;
+  }
 }

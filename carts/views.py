@@ -7,9 +7,6 @@ from accounts.models import PointLog, PointLogItem
 from stores.models import Product
 from django.http import JsonResponse, HttpResponseNotFound
 import os, requests, json, math
-from dotenv import load_dotenv
-load_dotenv()
-KAKAO_AK = os.getenv('KAKAO_AK')
 
 POINT_PER_PRICE = 0.01
 
@@ -235,28 +232,14 @@ def approval(request):
         real_point = int((int(jsonObject['totalAmount']) - int(jsonObject['usePoints'])) * POINT_PER_PRICE)
         user = request.user
         user.total_points += real_point
-        user.points += real_point
-        user.points -= int(jsonObject['usePoints'])
+        # user.points += real_point
+        # user.points -= int(jsonObject['usePoints'])
         user.save()
 
         if int(jsonObject['usePoints']):
-            pointlog, _ = PointLog.objects.get_or_create(user=request.user)
-            point_log_item = PointLogItem()
-            point_log_item.point_log = pointlog
-            point_log_item.type = False
-            point_log_item.type_detail = '사용'
-            point_log_item.amount = int(jsonObject['usePoints'])
-            point_log_item.save()
-
-        pointlog, _ = PointLog.objects.get_or_create(user=request.user)
-        point_log_item = PointLogItem()
-        point_log_item.point_log = pointlog
-        point_log_item.type = True
-        point_log_item.type_detail = '구매'
-        point_log_item.amount = real_point
-        point_log_item.save()
-
-        
+            user.subtract_points(int(jsonObject['usePoints']), '사용')
+        if real_point:
+            user.add_points(real_point, '구매')
 
     request.session['payment'] = {
         'order_id': order_id,

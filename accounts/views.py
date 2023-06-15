@@ -35,7 +35,7 @@ from secondhands.models import S_Product
 
 class CustomLoginView(LoginView):    
     def form_invalid(self, form):
-        return JsonResponse({'status': 'error', 'message': 'Username or password is incorrect'})
+        return JsonResponse({'status': 'error', 'message': '아이디, 비밀번호를 다시 확인해주세요.'})
 
     def form_valid(self, form):
         # 로그인 작업 완료
@@ -376,7 +376,7 @@ def find_user_id(request):
             if users:
                 for user in users:
                     messages.success(
-                        request, f'찾으신 이름: {user.last_name} 이메일: {user.email} 의 사용자명: {user.username}')
+                        request, f'찾으신 이름: {user.last_name} <br><br> 이메일: {user.email} <br><br> 사용자명: {user.username}')
                 return redirect('accounts:find_user_id')
             else:
                 messages.error(request, '입력하신 이메일로 가입된 아이디를 찾을 수 없습니다.')
@@ -412,7 +412,7 @@ def password_reset_request(request):
                 email = render_to_string(email_template_name, c)
                 send_mail(subject, email, settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
                 messages.success(request, '비밀번호 재설정 이메일이 발송되었습니다.')
-                return redirect('accounts:login')
+                return redirect('accounts:password_reset_request')
             else:
                 messages.error(request, '입력한 사용자명에 해당하는 계정을 찾을 수 없습니다.')
                 return redirect('accounts:password_reset_request')
@@ -452,9 +452,11 @@ def profile(request, username):
     posts = Post.objects.filter(user=person)
     interests = request.user.like_products.all()  
     orders = Order.objects.filter(customer=person).exclude(shipping_status='결제전').order_by('-pk')
+    sells = Order.objects.filter(seller=person, shipping_status='배송준비중').order_by('-pk')
     purchases = S_Purchase.objects.filter(customer=person).select_related('product')
     completed_products = S_Product.objects.filter(user=person, status='3')
     purchase_details = []
+
     for order in orders:
         items = OrderItem.objects.filter(order=order)
         purchase_details.append({
@@ -462,8 +464,16 @@ def profile(request, username):
             'items': items 
         })
 
+    selled_products = []
+    for sell in sells:
+        items = OrderItem.objects.filter(order=sell)
+        selled_products.append({
+            'sell': sell,
+            'items': items 
+        })
+
     point_log, _ = PointLog.objects.get_or_create(user=person)
-    point_log_items = point_log.point_log_itmes.all().order_by('-pk')[:4]
+    point_log_items = point_log.point_log_itmes.all().order_by('-pk')[:5]
     context = {
         'q':q,
         'person':person,
@@ -471,6 +481,7 @@ def profile(request, username):
         'interests':interests,
         'purchase_details': purchase_details,
         'completed_products': completed_products,
+        'selled_products' :selled_products,
         'point_log_items': point_log_items,
         # 'purchases': purchases,
     }

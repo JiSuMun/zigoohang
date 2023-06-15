@@ -4,10 +4,19 @@ from .forms import ChallengeForm, ChallengeImageForm, ChallengeImage_DeleteImage
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from datetime import date, datetime, timedelta
 from pytz import timezone
 from django.conf import settings
+
+
+def staff_only(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_staff:
+            return view_func(request, *args, **kwargs)
+        else:
+            return redirect('main')
+    return wrapper
 
 
 def index(request):
@@ -78,7 +87,12 @@ def detail(request, challenge_pk):
     return render(request, 'challenges/detail.html', context)
 
 
+@staff_only
+@login_required
 def create(request):
+    if not request.user.is_staff:
+        return HttpResponseForbidden()
+    
     Challenge_form = ChallengeForm()
     image_form = ChallengeImageForm()
 
@@ -101,7 +115,12 @@ def create(request):
     return render(request, 'challenges/create.html', context)
 
 
+@staff_only
+@login_required
 def update(request, challenge_pk):
+    if not request.request.user.is_staff:
+        return HttpResponseForbidden()
+    
     challenge = Challenge.objects.get(pk=challenge_pk)
     if request.method == 'POST':
         challenge_form = ChallengeForm(request.POST, instance=challenge)
@@ -141,6 +160,8 @@ def update(request, challenge_pk):
     return render(request, 'challenges/update.html', context)
 
 
+@staff_only
+@login_required
 def delete(request, challenge_pk):
     challenge = Challenge.objects.get(pk=challenge_pk)
     if request.user == challenge.creator:
@@ -148,6 +169,7 @@ def delete(request, challenge_pk):
     return redirect('challenges:index')
 
 
+@login_required
 def certification_create(request, challenge_pk):
     challenge = Challenge.objects.get(pk=challenge_pk)
 
@@ -158,7 +180,7 @@ def certification_create(request, challenge_pk):
             certification.user = request.user
             certification.challenge = challenge
             certification.save()
-            request.user.add_points(500)
+            request.user.add_points(500, '참여')
 
             return redirect('challenges:detail', challenge_pk)
         
@@ -172,6 +194,7 @@ def certification_create(request, challenge_pk):
     return render(request, 'challenges/detail.html', context)
 
 
+@login_required
 def certification_update(request, challenge_pk, certification_pk):
     challenge = Challenge.objects.get(pk=challenge_pk)
     certification = Certification.objects.get(pk=certification_pk)
@@ -196,12 +219,12 @@ def certification_update(request, challenge_pk, certification_pk):
     return render(request, 'challenges/detail.html', context)
 
 
-
+@login_required
 def certification_delete(request, challenge_pk, certification_pk):
     certification = Certification.objects.filter(pk=certification_pk).first()
     if certification and request.user == certification.user:
         certification.delete()
-        request.user.subtract_points(500)
+        request.user.subtract_points(500, '참여취소')
         request.user.save()
 
     return redirect('challenges:detail', challenge_pk)

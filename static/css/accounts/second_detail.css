@@ -5,17 +5,14 @@
   text-align: start;
   padding: 3%;
   font-size: 24px;
- }
- .card-grid {
+}
+.card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 20px;
- }
- .card {
-  border-top: 1px solid lightgray;
-  border-bottom: 1px solid lightgray;
-  border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray; 
+}
+.card {
+  border: 1px solid var(--j-color3);
   padding: 20px;
   display: flex;
   gap: 20px;
@@ -34,6 +31,10 @@
 .card-info-product {
   font-size: 30px;
   margin-bottom: 20px;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .card-info-price {
   font-weight: bold;

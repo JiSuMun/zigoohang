@@ -5,23 +5,22 @@
 <link rel="stylesheet" href="{% static 'css/accounts/second_detail.css' %}">
 {% endblock head %}
 
-{% if request.user == person %}
+<div class="completed-page">
+  <div class="completed-page-title">
+    <h2>중고거래 완료 목록</h2>
+  </div>
+  
+  {% if request.user == person %}
     {% if completed_products %}
-      <div class="completed-page">
-        <div class="completed-page-title">
-          <h2>중고거래 완료 목록</h2>
-        </div>
-        
-        <div class="card-grid">
-          {% for product in completed_products %}
-          {% comment %} <h3>(거래완료)</h3> {% endcomment %}
+      <div class="card-grid">
+        {% for product in completed_products %}
           <a href="{% url 'secondhands:detail' product.pk %}">
             <div class="card">
               <div class="card-img">
                 {% for image in product.s_productimage_set.all %}
                   <img src="{{ image.image.url }}" alt="이미지"/>
                   {% empty %}
-                  <p>이미지가 없습니다.</p>
+                    <p>이미지가 없습니다.</p>
                   {% endfor %}
                 </div>
                 <div class="card-info">
@@ -31,11 +30,12 @@
                   <p class="card-info-address">{{ product.address }}</p>
                 </div>
               </div>
-            </a>
-          {% endfor %}
-        </div>
+            </div>
+          </a>
+        {% endfor %}
       </div>
     {% else %}
-        <p>중고거래 내역이 없습니다.</p>
+      <p>중고거래 내역이 없습니다.</p>
     {% endif %}
-{% endif %}
+  {% endif %}
+</div>

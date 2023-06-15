@@ -1,18 +1,58 @@
 <div class="footer">
-  <div>
-    <a href="https://github.com/JiSuMun/PlanetHelper">
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-github" viewBox="0 0 16 16">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-      </svg>
-    </a>
-  </div>
-  <div class="footer-text">
-    <a href="">문지수</a>
-    <a href="">방한영</a>
-    <a href="">서유영</a>
-    <a href="">박은정</a>
-    <a href="">정광배</a>
-  </div>
-  <div class="footer-logo">@PLANET HELPER
+  <div class="footer-wrap">
+    <div class="title">
+      <p class="footer-logo">지구행</p>
+    </div>
+    <div>
+      <div class="cscenter">
+        <p class="tit_field">C/S CENTER</p>
+        <p class="info_field">1234-5678</p>
+        <p class="info_field">월 - 금 : 09:10 ~ 17:50</p>
+        <p class="info_field">점심시간 : 11:50 ~ 13:30</p>
+      </div>
+      <div class="link">
+        <p class="tit_field">POLICY</p>
+        <a href="{% url 'terms' %}">이용약관</a>
+        <a href="{% url 'privacy' %}">개인정보 처리방침</a>
+      </div>
+    </div>
+    <div class="info">
+      <p class="tit_field" onclick="toggleInfo()">
+        사업자 정보
+        <img id="icon" src="../../static/img/base/drawer.svg" class="footer-icon">
+      </p>
+      <div class="info_wrap" id="infoWrap">
+        <p>대표자 : 
+          <a href="https://github.com/JiSuMun">문지수</a>
+          <a href="https://github.com/hany0829">방한영</a>
+          <a href="https://github.com/syuyoung">서유영</a>
+          <a href="https://github.com/Dreamofheaven">박은정</a>
+          <a href="https://github.com/iblug">정광배</a>
+        </p>
+        <p>상호명 : <a href="https://github.com/nninzy">지구행</a> </p>
+        <p>사업자등록번호 : 123-12-12345</p>
+        <p>대표이메일 : finalhot6@gmail.com</p>
+        <p>주소 : <a href="https://github.com/JiSuMun/zigoohang">https://github.com/JiSuMun/zigoohang</a></p>
+        <p>통신판매업 정보 : 아직 없음</p>
+        <p>호스팅 제공자 : cloudtype</p>
+      </div>
+    </div>  
+    <p class="copy">
+      Copyright © 지구행. all right reserved
+    </p>
+    <div>
+      <button id="lightThemeBtn">Light Theme</button>
+      <button id="darkThemeBtn">Dark Theme</button>
+      <button id="userPrefThemeBtn">system Theme</button>
+    </div>
   </div>
 </div>
+<script>
+  function toggleInfo() {
+    var infoWrap = document.getElementById("infoWrap");
+    var footerIcon = document.getElementById("icon");
+  
+    infoWrap.classList.toggle("show");
+    footerIcon.classList.toggle("rotate");
+  }
+</script>

@@ -59,11 +59,6 @@
   margin-bottom: 10px;
 }
 
-.required_star {
-  margin-left: 0.3em;
-  color: #ca0114;
-}
-
 .image-text {
   font-size: 14px;
   color: #999999;
@@ -152,4 +147,18 @@ input::file-selector-button {
     padding: 2rem;
   }
   
+}
+
+@media (max-width: 768.9px) {
+  .create-title-wrap {
+    height: 250px;
+  }
+
+  .create-title-title {
+    font-size: 40px;
+  }
+  
+  .create-title-text {
+    font-size: 15px;
+  }
 }

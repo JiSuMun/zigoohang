@@ -12,7 +12,7 @@
       <h1>중고 물품 등록하기</h1>
     </div>
     <div class="create-page-content-wrapper">
-      <form class="create-page-content-form" action="{% url 'secondhands:create' %}" method='POST' enctype='multipart/form-data'>
+      <form class="create-page-content-form" action="{% url 'secondhands:create' %}" method='POST' enctype='multipart/form-data' onsubmit="return validateForm();">
         {% csrf_token %}
         <div class="form-info-box">
           {{ product_form.product }}
@@ -56,4 +56,21 @@
     }).open();
   }
 </script>
+
+<script>
+  function validateForm() {
+    const product = document.querySelector('input[name="product"]').value;
+    const price = document.querySelector('input[name="price"]').value;
+    const content = document.querySelector('textarea[name="content"]').value;
+    const address = document.querySelector('input[name="address"]').value;
+    const road_address = document.querySelector('input[name="road_address"]').value;
+
+    if (product === '' || price === '' || content === '' || address === '' || road_address === '') {
+      alert('주소를 선택해주세요.');
+      return false;
+    }
+    return true;
+  }
+</script>
+
 {% endblock script %}

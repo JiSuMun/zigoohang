@@ -43,7 +43,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     {% endfor %}
   </div>
   <div class="c-write-wrapper">
-    <a class="c-write" href="{% url 'challenges:create' %}">글쓰기</a>
+    {% if request.user.is_superuser %}
+      <a class="c-write" href="{% url 'challenges:create' %}">글쓰기</a>
+    {% endif %}
   </div>
   <div class="pagination">
     <span class="step-links">

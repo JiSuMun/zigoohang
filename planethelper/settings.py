@@ -17,6 +17,7 @@ load_dotenv()
 
 KAKAO_KEY = os.getenv('KAKAO_KEY')
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -197,12 +198,13 @@ LOGIN_REDIRECT_URL = 'main'
 
 # 소셜 로그인 관련
 SITE_ID = 1
+LOGIN_REDIRECT_URL = "/"
 
 SOCIALACCOUNT_PROVIDERS = {
     'kakao': {
         'APP': {
             'client_id': KAKAO_KEY,
-            'secret': '',
+            'secret': KAKAO_KEY,
             'key': '',
         },
         'SCOPE': ['account_email', 'profile_nickname'],# 권한
@@ -242,3 +244,7 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)

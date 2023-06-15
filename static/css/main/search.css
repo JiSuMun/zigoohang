@@ -36,7 +36,7 @@
   margin-left: 1rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #0000000f;
+  border-bottom: 1px solid var(--j-sub-line);
 }
 
 .f-title {
@@ -51,7 +51,7 @@
   margin-bottom: 10px;
   padding: 2px 5px;
   display: inline-block;
-  background: rgb(220, 219, 219);
+  background: var(--j-color3);
   border-radius: 2px;
 }
 
@@ -61,7 +61,7 @@
 
 /* 챌린지 */
 .challenge-wrapper {
-  border: 1px  solid #00000033;
+  border: 1px  solid var(--j-line);
   border-radius: 10px;
   width: calc(25% - 1.6rem);
   overflow: hidden;
@@ -205,7 +205,7 @@
 
 .product-name {
   font-size: 18px;
-  color: #333333;
+  color: var(--text-color);
   justify-content: center;
   align-items: center;
 }

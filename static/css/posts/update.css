@@ -20,8 +20,8 @@
 .u-wrapper {
 max-width: 1080px;
 padding: 5rem;
-background-color: white;
-border: 1px solid #e3e3e3;
+background-color: var(--block-bg);
+border: 1px solid var(--j-color3);
 border-radius: 7px;
 display: flex;
 margin: auto;
@@ -83,19 +83,14 @@ textarea:focus {
   outline: none;
 }
 
-.required_star {
-  margin-left: 0.3em;
-  color: #ca0114;
-}
-
 input::file-selector-button {
-  color: black;
+  color: var(--text-color);
   height: 33px;
   padding: 0 10px;
   overflow: hidden;
   background-color: transparent;
   border: 0;
-  border-right: 1px  solid #00000033;
+  border-right: 1px solid #00000033;
 }
 
 
@@ -108,7 +103,7 @@ input::file-selector-button {
   border: 1px solid #999999;
   font-size: 13px;
   color: #999999;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   margin-right: 5px;
   border-radius: 5px;
@@ -116,8 +111,8 @@ input::file-selector-button {
 
 .u-button-cancel:hover {
   border: 1px solid #333333;
-  background-color: white;
-  color: #333333;
+  background-color: var(--j-dark-gray);
+  color: white;
 }
 
 .u-button {
@@ -125,7 +120,7 @@ input::file-selector-button {
   border: 1px solid #297821;
   font-size: 13px;
   color: #297821;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
 }
@@ -147,5 +142,19 @@ input::file-selector-button {
 
   .u-wrapper {
     padding: 2rem;
+  }
+}
+
+@media (max-width: 768.9px) {
+  .update-title-wrap {
+    height: 250px;
+  }
+
+  .update-title-title {
+    font-size: 40px;
+  }
+  
+  .update-title-text {
+    font-size: 15px;
   }
 }

@@ -20,8 +20,8 @@
 .m-wrapper {
   max-width: 1080px;
   padding: 1rem;
-  background-color: white;
-  border: 1px solid #e3e3e3;
+  background-color: var(--block-bg);
+  border: 1px solid var(--j-color3);
   border-radius: 7px;
   display: flex;
   margin: auto;
@@ -82,7 +82,7 @@
 
 .marker {
   border: none;
-  background-color: white;
+  background-color: var(--block-bg);
   font-size: 12px;
   padding: 0.5rem 0.4rem;
   text-align: center;
@@ -131,5 +131,19 @@
   .m-phonenumber {
     font-size: 14px;
     margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 768.9px) {
+  .map-title-wrap {
+    height: 250px;
+  }
+
+  .map-title-title {
+    font-size: 40px;
+  }
+  
+  .map-title-text {
+    font-size: 15px;
   }
 }

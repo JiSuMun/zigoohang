@@ -51,3 +51,9 @@ def search(request):
     else:
         context = {}
     return render(request, 'search.html', context)
+
+def terms(request):
+    return render(request, 'terms.html')
+
+def privacy(request):
+    return render(request, 'privacy.html')

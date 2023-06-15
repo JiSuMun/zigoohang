@@ -1,0 +1,22 @@
+:root,
+[data-bs-theme=dark] {
+	background-color: #222222;
+	--background-color: #222222;
+	color: #f3f3f3;
+	--text-color: #f3f3f3;
+	--j-sub-text: #aaaaaa;
+
+	--j-line: #ffffff33;
+	--j-sub-line: #ffffff0f;
+
+	--block-bg: #272829;
+
+	--j-color1: #297821; /* 테마 녹색 */
+	--j-color2: #00A95C;
+	--j-color3: #444444;
+	--j-color4: #dddddd;
+	--j-text-white: #dddddd; /* 그냥 흰글씨*/
+	--j-btn-fill: #125d3b; /* 다크모드 버튼 */
+  --j-required_star: #ea868f;
+	--card-profile: #303030; /* 프로필 정보 카드 */
+}

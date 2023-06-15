@@ -5,26 +5,24 @@
 <link rel="stylesheet" href="{% static 'css/accounts/posts.css' %}">
 {% endblock head %}
 
-{% if request.user == person %}
-    {% if posts %}
-        <div class="post-page">
-            <div class="post-page-title">
-                <h2>내가 작성한 게시글</h2>
-            </div>
-            <div class="card-grid">
-                {% for post in posts %}
-                <a href="{% url 'posts:detail' post.pk %}">
-                    <div class="card">
-                        <h3 class="card-title">{{ post.title }}</h3>
-                        <p class="card-content">{{ post.content }}</p>
-                        <p class="card-date">{{ post.created_at }}</p>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
+<div class="post-page">
+  <div class="post-page-title">
+    <h2>작성한 게시글</h2>
+  </div>
+  {% if posts %}
+    <div class="card-grid">
+      {% for post in posts %}
+      <a href="{% url 'posts:detail' post.pk %}">
+        <div class="card">
+          <h3 class="card-title">{{ post.title }}</h3>
+          <p class="card-content">{{ post.content }}</p>
+          <p class="card-date">{{ post.created_at }}</p>
         </div>
+      </a>
+      {% endfor %}
+    </div>
     {% else %}
-        <h5>작성한 게시글이 없습니다.</h5>
+      <p>작성한 게시글이 없습니다.</p>
     {% endif %}
-{% endif %}
+</div>
   

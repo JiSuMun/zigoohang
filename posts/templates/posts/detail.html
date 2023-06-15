@@ -29,7 +29,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     <p class="d-created_at">{{ post.created_at|date:"Y-m-d" }}&nbsp;&nbsp;&nbsp;&nbsp;{{ post.created_at|date:"H:i:s" }}</p>
   </div>
   <div class="d-content-wrapper">
-    <p class="d-username">작성자 : {{ post.user.username }}</p>
+    <p class="d-username">작성자 : <a href="{% url 'accounts:profile' post.user.username %}">{{ post.user.username }}</a></p>
 
     <!--이미지-->
     {% for image in post.postimage_set.all %}
@@ -57,7 +57,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     <!--태그-->
     <div class="tag-wrapper">
       {% for tag in post.tags.all %}
-      <span class="tag-text">#{{ tag.name }}</span>
+        {% if tag.name %}
+          <span class="tag-text">#{{ tag.name }}</span>
+        {% endif %}
       {% endfor %}
     </div>
 
@@ -67,7 +69,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   <div class="d-button-wrapper">
     <div>
       <a class="d-button-cancel" href="{% url 'posts:index' %}">목록</a>
-      <a class="d-button-cancel" href="{{ previous_post_url }}">이전</a>
+      {% if previous_post_url %}
+        <a class="d-button-cancel" href="{{ previous_post_url }}">이전</a>
+      {% else %}
+        <a class="d-button-cancel" onclick="showAlert()" disabled>이전</a>
+      {% endif %}
     </div>
     <div>
       <a class="d-button" href="{% url 'posts:update' post.pk %}">수정</a>

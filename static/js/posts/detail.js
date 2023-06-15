@@ -1,3 +1,9 @@
+function showAlert() {
+  alert("이전 글이 없습니다.");
+}
+
+
+
 function toggleReviewUpdateForm(review_id) {
   const form = document.getElementById("reviewUpdateForm" + review_id);
   const box = document.querySelector(".review--box");
@@ -20,8 +26,10 @@ const rCreate = document.querySelector('.r-create');
 
 reviewButton.addEventListener('click', () => {
   if (rCreate.style.display === 'block') {
+    reviewButton.innerHTML = '리뷰 작성'
     rCreate.style.display = 'none';
   } else {
+    reviewButton.innerHTML = '작성 취소';
     rCreate.style.display = 'block';
   }
 });

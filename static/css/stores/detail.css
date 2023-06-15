@@ -93,13 +93,13 @@
 .a-hover:hover .hover-content {
   display: flex;
   background: rgba(0,0,0,0.7);
-  color: white;
+  color: var(--j-text-white);
 }
 /* 상품 hover end */
 
 .detail-name {
   font-size: 18px;
-  color: #333333;
+  color: var(--text-color);
   justify-content: center;
   align-items: center;
 }
@@ -132,6 +132,7 @@
 .button-wrapper {
   text-align: right;
   margin-bottom: 1rem;
+  margin-right: 1rem;
   display: flex;
   justify-content: end;
 }
@@ -144,7 +145,7 @@
   border: 1px solid #297821;
   font-size: 16px;
   color: #297821;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
   margin-left: 5px;
@@ -159,6 +160,7 @@
     padding: 0.8rem;
     width: 50%;
   }
+
   .detail-title-title {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -174,7 +176,20 @@
     padding: 0.8rem;
     width: 100%;
   }
+
   .detail-image-wrapper {
     display: none;
+  }
+
+  .detail-title-wrap {
+    height: 250px;
+  }
+
+  .detail-title-title {
+    font-size: 40px;
+  }
+  
+  .detail-title-text {
+    font-size: 15px;
   }
 }

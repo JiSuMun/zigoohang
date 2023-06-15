@@ -13,7 +13,7 @@ header h2 {
   border-collapse: collapse;
 }
 .interest-page-content th {
-  color: #333;
+  color: var(--text-color);
   font-weight: bold;
   padding: 10px;
   text-align: left;
@@ -46,19 +46,33 @@ header h2 {
   border-radius: 4px;
 }
 .main-items-product {
-  color: #333;
+  color: var(--text-color);
   font-weight: bold;
   margin: 0;
 }
 .main-items-price {
-  color: #666;
+  color: var(--j-sub-text);
 }
 .main-items-store {
-  color: #666;
+  color: var(--j-sub-text);
   margin: 0;
 }
 .interest-page-content-main tr:last-child td {
   border-bottom: none;
+}
+
+/* 삭제버튼 */
+.sub-button {
+  border: 0;
+  background-color: transparent;
+  margin-bottom: 0;
+}
+.sub-button span {
+  font-size: 17px;
+  color: lightgrey;
+}
+.material-symbols-outlined:hover {
+  color: var(--planet-color3);
 }
 
 /* 반응형 스타일 */
@@ -78,7 +92,10 @@ header h2 {
     display: none;
   }
   .interest-page-content-main tr {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    /* align-items: end; */
     position: relative;
     margin-bottom: 10px;
     padding: 10px 15px;

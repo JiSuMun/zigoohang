@@ -50,22 +50,22 @@
   height: 100px;
   display: flex;
   padding: 0rem 0.7rem;
-  color: black;
+  /* color: black; */
   align-items: center;
 }
 .nav-link:hover {
-  color: #297821;
+  color: var(--j-green);
 }
 
 .nav-image {
   height: 100px;
   display: flex;
   padding: 0rem 0.7rem;
-  color: black;
+  color: var(--text-color);
   align-items: center;
 }
 .nav-image:hover {
-  color: #297821;
+  color: var(--j-color2);
 }
 
 .search {
@@ -73,7 +73,7 @@
   justify-content: space-between;
   width: 300px;
   height: 38px;
-  border: 1px solid #dee2e6;
+  border: 2px solid var(--j-green);
   border-radius: 19px;
   padding-left: 15px;
   overflow: hidden;
@@ -120,13 +120,13 @@
   content: "";
   width: 100%;
   height: 51px;
-  background: white;
+  background: var(--background-color);
   position: absolute;
   top: 100px;
   z-index: 98;
   left: 0;
-  border-top: 0.5px solid #dddddd;
-  border-bottom: 0.5px solid #dddddd;
+  border-top: 0.5px solid var(--j-color3);
+  border-bottom: 0.5px solid var(--j-color3);
   display: none;
 }
 
@@ -134,7 +134,7 @@
   position: absolute;
   top: 101px;
   padding: 15px 10px;
-  background: white;
+  background: var(--background-color);
   z-index: 99;
   gap: 20px;
   display: none;
@@ -143,14 +143,14 @@
   font-size: 16px;
 }
 .nav-hover-list:hover {
-  color: #297821;
+  color: var(--j-green);
 }
 /* 반응형 버튼 */
 .drawer_check {
   display: none;
 }
 .drawer_check:checked ~ .nav-inner .drawer_icon .drawer_sticks {
-  background: transparent;
+  background: var(--background-color);
 }
 .drawer_check:checked ~ .nav-inner .drawer_icon .drawer_sticks::before {
   top: 0;
@@ -166,7 +166,7 @@
 }
 
 .drawer_sticks {
-  background: #333333;
+  background: var(--j-color2);
   display: block;
   height: 2px;
   position: relative;
@@ -176,7 +176,7 @@
 
 .drawer_sticks::before {
   top: 7px;
-  background: #333333;
+  background: var(--j-color2);
   content: "";
   display: block;
   height: 100%;
@@ -187,7 +187,7 @@
 
 .drawer_sticks::after {
   top: -7px;
-  background: #333333;
+  background: var(--j-color2);
   content: "";
   display: block;
   height: 100%;
@@ -200,17 +200,17 @@
 .drawer {
   width: 100%;
   height: 100%;
-  background-color: white;
+  background-color: var(--background-color);
 }
 .drawer_check:checked ~ .drawer .nav-inner {
   max-height: 100vh;
   padding: 2rem 1rem 1rem;
-  border-top: 0.5px solid #dddddd;
+  border-top: 0.5px solid var(--j-color3);
 }
 
 /* mini */
 .drawer .nav-inner {
-  border-top: 0.5px solid transaprent;
+  border-top: 0.5px solid var(--background-color);
   height: 100vh;
   max-width: 1080px;
   max-height: 0;
@@ -234,7 +234,7 @@
   justify-content: space-between;
   max-width: 1080px;
   height: 38px;
-  border: 1px solid #dee2e6;
+  border: 2px solid var(--j-color2);
   border-radius: 19px;
   padding-left: 15px;
   overflow: hidden;
@@ -258,7 +258,7 @@
   border: none;
   width: 38px;
   height: 36px;
-  background-color: transparent;
+  background-color: var(--background-color);
   cursor: pointer;
   flex: 0 0 38px;
   justify-content: flex-end;
@@ -297,7 +297,7 @@
 
 .m-nav-drop.open .m-nav-icon {
   transform: rotate(180deg);
-  fill: #297821;
+  fill: var(--j-color2);
 }
 
 .m-nav-drop.open ~ .m-nav-hover-title {

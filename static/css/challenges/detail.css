@@ -2,7 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px;
+  max-width: 1300px;
+  margin: 0 auto;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
 }
 
 .challenges-title-title {
@@ -66,10 +69,15 @@
   font-size: 20px;
   font-weight: 600;
   margin-top: 1rem;
+  margin-left: 1rem;
 }
 
+.input-form {
+  margin: 0 1rem;
+}
 
 .green-button {
+  margin-left: 1rem;
   background-color: green;
   color: white;
   border: none;
@@ -89,7 +97,7 @@
 }
 
 .red-text {
-  color: red;
+  color: var(--j-required_star);
 }
 
 .certification-none {
@@ -98,30 +106,47 @@
 
 .btn-wrapper {
   margin-top: 1rem;
+  margin-right: 1rem;
   display: flex;
   justify-content: end;
   gap: 10px;
 }
 
-.btn-update {
+.btn-delete {
   padding: 0.4rem 1rem;
   border: 1px solid #999999;
   font-size: 16px;
   color: #999999;
-  background-color: #fff;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+.btn-delete:hover {
+  border: 1px solid #333333;
+  background-color: var(--j-dark-gray);
+  color: white;
+}
+
+.btn-update {
+  padding: 0.4rem 1rem;
+  border: 1px solid #297821;
+  font-size: 16px;
+  color: #297821;
+  background-color: transparent;
   cursor: pointer;
   border-radius: 5px;
 }
 
 .btn-update:hover {
-  border: 1px solid #333333;
-  background-color: white;
-  color: #333333;
+  background-color: #297821;
+  color: white;
 }
 
-.btn-delete {
+.c-button {
   padding: 0.4rem 1rem;
-  border: 1px solid #297821;
+  border: none;
   font-size: 16px;
   color: #297821;
   background-color: #fff;
@@ -129,11 +154,10 @@
   border-radius: 5px;
 }
 
-.btn-delete:hover {
+.c-button:hover {
   background-color: #297821;
   color: white;
 }
-
 
 .form-control {
   width: calc(100% - 1rem); 
@@ -179,13 +203,13 @@ textarea:focus {
 }
 
 input::file-selector-button {
-  color: black;
+  color: var(--text-color);
   height: 33px;
   padding: 0 10px;
   overflow: hidden;
   background-color: transparent;
   border: 0;
-  border-right: 1px  solid #00000033;
+  border-right: 1px solid #00000033;
 }
 
 .button-wrapper {
@@ -195,7 +219,8 @@ input::file-selector-button {
 }
 
 .c-wrapper {
-  border: 1px solid #00000033;
+  background-color: var(--block-bg);
+  border: 1px solid var(--j-color3);
   border-radius: 10px;
   width: calc(25% - 1.6rem);
   overflow: hidden;
@@ -254,13 +279,16 @@ input::file-selector-button {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+
   .challenges-title-text {
     font-size: 15px;
   }
+
   .c-wrapper {
     width: calc(50% - 1.6rem);
     aspect-ratio: 4 / 6;
   }
+
   .c-content-wrapper {
     height: calc(33% - 1rem);
   }
@@ -268,10 +296,25 @@ input::file-selector-button {
 @media (max-width: 767px) {
   .c-wrapper {
     width: calc(100% - 1.6rem);
-    aspect-ratio: 8 / 11;
+    aspect-ratio: 7 / 11;
   }
+
   .c-content-wrapper {
-    height: calc(27% - 1rem);
+    height: calc(32% - 1rem);
+  }
+
+  .challenges-title-title {
+    font-size: 40px;
   }
   
+  .challenges-title-text {
+    font-size: 15px;
+  }
+
+  .challenge-date {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
 }

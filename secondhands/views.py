@@ -6,18 +6,22 @@ import os
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 import math
+from django.core.paginator import Paginator
+
 
 @login_required(login_url='accounts:login')
-
 def index(request):
     products = S_Product.objects.all()
     no_status_products = S_Product.objects.filter(status='')
     reserved_products = S_Product.objects.filter(status='예약중')
     in_progress_products = S_Product.objects.filter(status='거래중')
     completed_products = S_Product.objects.filter(status='거래완료')
-
-    u_address = request.user.address
-    u_latitude, u_longitude = get_latlng_from_address(u_address)
+    
+    if request.user.address:
+        u_address = request.user.address
+        u_latitude, u_longitude = get_latlng_from_address(u_address)
+    else:
+        u_latitude, u_longitude = 37.566826, 126.9786567
 
     products_with_distance = []
     for product in products:
@@ -28,6 +32,10 @@ def index(request):
 
     products_with_distance_sorted = sorted(products_with_distance, key=lambda x: x[1])
 
+    page_number = request.GET.get('page')
+    paginator = Paginator(products_with_distance, 12)
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'products' : products,
         'no_status_products': no_status_products,
@@ -36,10 +44,12 @@ def index(request):
         'completed_products': completed_products,
         'products_with_distance': products_with_distance,
         'products_with_distance_sorted': products_with_distance_sorted,
+        'page_obj' : page_obj,
     }
     return render(request, 'secondhands/index.html', context)
 
 
+@login_required
 def create(request):
     product_form = S_ProductForm()
     image_form = S_ProductImageForm()
@@ -69,6 +79,7 @@ def create(request):
     return render(request, 'secondhands/create.html', context)
 
 
+@login_required
 def update(request, product_pk):
     product = S_Product.objects.get(pk=product_pk)
     if request.method == 'POST':
@@ -111,6 +122,7 @@ def update(request, product_pk):
     return render(request, 'secondhands/update.html', context)  
 
 
+@login_required
 def delete(request, product_pk):
     product = S_Product.objects.get(pk=product_pk)
     if request.user == product.user:
@@ -142,12 +154,20 @@ def detail(request, product_pk):
     road_address = product.road_address
     extra_address = product.extra_address
     latitude, longitude = get_latlng_from_address(road_address)
-    u_address = request.user.address
     kakao_script_key = os.getenv('kakao_script_key')
-    u_latitude, u_longitude = get_latlng_from_address(u_address)
+    if request.user.address:
+        u_address = request.user.address
+        u_latitude, u_longitude = get_latlng_from_address(u_address)
+    else:
+        u_latitude, u_longitude = 37.566826, 126.9786567
     distance = calculate_distance(latitude, longitude, u_latitude, u_longitude)
-    kakao_key = os.getenv('kakao_key')
-    s_address = address + ' ' + extra_address
+    kakao_key = os.getenv('KAKAO_KEY')
+
+    if address:
+        s_address = address + ' ' + extra_address
+    else:
+        s_address = road_address + ' ' + extra_address
+
     context = {
         'kakao_script_key': kakao_script_key,
         'kakao_key': kakao_key,
@@ -165,6 +185,7 @@ def detail(request, product_pk):
     return render(request, 'secondhands/detail.html', context)
 
 
+@login_required
 def likes(request, product_pk):
     product = S_Product.objects.get(pk=product_pk)
     if request.user in product.like_users.all():

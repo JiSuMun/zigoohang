@@ -47,6 +47,7 @@
   flex-direction: column;
   padding: 0 9%;
   justify-content: center;
+  background-color: var(--background-color);
 }
 
 .main-button {
@@ -109,5 +110,19 @@
   }
   .m-reverse .main-wrap {
     flex-flow: column-reverse;
+  }
+}
+
+@media (max-width: 768.9px) {
+  .title-wrap {
+    height: 250px;
+  }
+
+  .title-box-title {
+    font-size: 40px;
+  }
+  
+  .title-box-text {
+    font-size: 15px;
   }
 }

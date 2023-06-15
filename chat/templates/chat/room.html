@@ -9,7 +9,7 @@
 <article>
   {% comment %} 출력안되는 {% endcomment %}
   {{ room_name|json_script:"room-name" }}
-  <input type="hidden" id="username" value="{{ request.user.username }}">
+  <input type="hidden" id="username" value="{{ request.user.first_name }}">
   <div class="room_name">
     <a id="inbox-link" href="{% url 'chat:inbox' %}"> < </a>
     {{ room_name }}
