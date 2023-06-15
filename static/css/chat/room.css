@@ -35,7 +35,7 @@ article {
   position: relative;
   text-align: center;
   margin-bottom: 2rem;
-  color: var(--planet-color4);
+  color: var(--text-color);
   font-size: large;
   font-weight: 600;
 }
@@ -67,7 +67,7 @@ article {
     width: 800px;
     overflow-y: scroll;
     height: 50vh;
-    border: 2px solid var(--planet-color3);
+    border: 2px solid var(--j-color1);
     border-radius: 5px;
     padding: 10px;
   }
@@ -98,7 +98,7 @@ article {
 
   #message_input {
     width: 500px;
-    border: 1px solid var(--planet-color3);
+    border: 1px solid var(--j-color1);
     border-radius: 5px;
     height: 30px;
     margin-right: 10px;
@@ -106,11 +106,12 @@ article {
   
   .message-btn {
     width: 100px;
-    background-color: var(--planet-color1);
-    border: 1px solid var(--planet-color3);
+    background-color: var(--j-color1);
+    border: 1px solid var(--j-color1);
     border-radius: 5px;
     height: 35px;
     cursor: pointer;
+    color: white;
   }
 
 }
@@ -122,7 +123,7 @@ article {
     width: 70%;
     overflow-y: scroll;
     height: 50vh;
-    border: 2px solid var(--planet-color3);
+    border: 2px solid var(--j-color1);
     border-radius: 5px;
     padding: 10px;
   }
@@ -153,7 +154,7 @@ article {
 
   #message_input {
     width: 70%;
-    border: 1px solid var(--planet-color3);
+    border: 1px solid var(--j-color1);
     border-radius: 5px;
     height: 30px;
     margin-right: 10px;
@@ -161,11 +162,12 @@ article {
   
   .message-btn {
     width: 20%;
-    background-color: var(--planet-color1);
-    border: 1px solid var(--planet-color3);
+    background-color: var(--j-color1);
+    border: 1px solid var(--j-color1);
     border-radius: 5px;
     height: 35px;
     cursor: pointer;
+    color: white;
   }
 
   .room_name {
@@ -179,7 +181,7 @@ article {
 
 .chat-room::-webkit-scrollbar-thumb {
   height: 30%;
-  background: var(--planet-color3);
+  background: var(--j-color1);
   border-radius: 5px;
 }
 
@@ -188,10 +190,10 @@ article {
 }
 
 #message_input:focus {
-  outline: 2px solid var(--planet-color3);
+  outline: 2px solid var(--j-color1);
 }
 
 .message-btn:hover {
-  background-color: var(--planet-color3);
-  color: var(--planet-color1);
+  background-color: transparent;
+  color: var(--j-color1);
 }
