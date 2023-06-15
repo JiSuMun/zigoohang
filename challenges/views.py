@@ -90,7 +90,7 @@ def detail(request, challenge_pk):
 @staff_only
 @login_required
 def create(request):
-    if not request.user.is_superuser:
+    if not request.user.is_staff:
         return HttpResponseForbidden()
     
     Challenge_form = ChallengeForm()
@@ -118,7 +118,7 @@ def create(request):
 @staff_only
 @login_required
 def update(request, challenge_pk):
-    if not request.user.is_superuser:
+    if not request.request.user.is_staff:
         return HttpResponseForbidden()
     
     challenge = Challenge.objects.get(pk=challenge_pk)
