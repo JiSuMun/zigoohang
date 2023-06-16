@@ -136,7 +136,7 @@
 
 ## 모델(Model) 설계
 
-
+![Alt text](image/erd.png)
 
 ## 화면(Template) 설계
 
