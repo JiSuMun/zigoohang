@@ -7,15 +7,15 @@ from django.contrib.auth import get_user_model
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        # self.room_group_name = 'chat_%s' % self.room_name
+        self.room_group_name = 'chat_%s' % self.room_name
         # 한글이라 깨지는 문제 발생 해결
-        # self.room_group_name = 'aa'
-        name = [ord(char) for char in self.room_name]
-        b = ''
-        for a in name:
-            b += str(a)
+        self.room_group_name = 'aa'
+        # name = [ord(char) for char in self.room_name]
+        # b = ''
+        # for a in name:
+        #     b += str(a)
         
-        self.room_group_name = f'chat{b}'
+        # self.room_group_name = f'chat{b}'
 
         await self.channel_layer.group_add(
             self.room_group_name,
