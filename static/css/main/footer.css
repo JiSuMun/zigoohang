@@ -126,6 +126,10 @@
   color: var(--text-color);
 }
 
+.theme_icon_active {
+  filter: var(--filter-orange)
+}
+
 .theme-btn:hover {
   color: green;
 }

@@ -54,11 +54,18 @@ const darkThemeBtn = document.getElementById("darkThemeBtn");
 lightThemeBtn.addEventListener("click", () => {
   stylesheet.href = '/static/css/main/theme-light.css'
   setStoredTheme("light");
+  lightThemeBtn.classList.add('theme_icon_active')
+  darkThemeBtn.classList.remove('theme_icon_active')
+  userPrefThemeBtn.classList.remove('theme_icon_active')
 });
 
 darkThemeBtn.addEventListener("click", () => {
   stylesheet.href = '/static/css/main/theme-dark.css'
   setStoredTheme("dark");
+  lightThemeBtn.classList.remove('theme_icon_active')
+  darkThemeBtn.classList.add('theme_icon_active')
+  userPrefThemeBtn.classList.remove('theme_icon_active')
+
 });
 function applyOSTheme() {
   stylesheet.href = '/static/css/main/theme-os.css'
@@ -69,13 +76,22 @@ const userPrefThemeBtn = document.getElementById("userPrefThemeBtn");
 
 userPrefThemeBtn.addEventListener("click", () => {
   applyOSTheme();
+  lightThemeBtn.classList.remove('theme_icon_active')
+  darkThemeBtn.classList.remove('theme_icon_active')
+  userPrefThemeBtn.classList.add('theme_icon_active')
 });
 
 // 초기 테마 설정 및 적용 (수정)
 if (getStoredTheme() === null) {
   applyOSTheme();
+  userPrefThemeBtn.classList.add('theme_icon_active')
 } else {
   setTheme(getPreferredTheme());
+  if (getPreferredTheme() === 'light') {
+    lightThemeBtn.classList.add('theme_icon_active')
+  } else if (getPreferredTheme() === 'dark') {
+    darkThemeBtn.classList.add('theme_icon_active')
+  }
 }
 // 초기 테마 설정 및 적용
 // setTheme(getPreferredTheme());
