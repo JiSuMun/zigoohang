@@ -2,11 +2,13 @@
 .find_id-wrapper {
 	position: relative;
 	width: 100%;
-	min-height: 100vh;
 	background: url(../../img/base/find_id.jpg) no-repeat;
+	min-height: 100vh;min-height: calc(100vh - 101px);
+	/* height: 100%; */
 	background-color: white;
-	background-size: 100%;
-  text-align: center;
+	/* background-size: 100%; */
+	background-size: cover;
+	background-position: center;
 }
 .find_id-page {
   width: 500px;
@@ -126,7 +128,7 @@ input[type='password'] {
 /* 반응형 미디어쿼리 */
 @media (max-width: 1079.9px) {
 	.find_id-wrapper {
-		background: none;
+		/* background: none; */
 	}
 	.find_id-page {
 		border: 0.5px solid grey;
@@ -134,7 +136,7 @@ input[type='password'] {
 
 	/* 비밀번호 찾기 */
 	.find_pw-wrapper {
-		background: none;
+		/* background: none; */
 	}
 	.find_pw-page {
 		border: 0.5px solid grey;
