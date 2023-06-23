@@ -420,7 +420,7 @@ label[for="image-clear_id"] {
 		display: none;
 	}
 	.signup-wrapper {
-		background: none;
+		/* background: none; */
   }
 	.agreement-page {
 		border: 0.5px solid grey;
@@ -428,7 +428,7 @@ label[for="image-clear_id"] {
 
 	/* 로그인 */
 	.login-wrapper {
-		background: none;
+		/* background: none; */
 	}
 	.update-wrapper {
 		background: none;

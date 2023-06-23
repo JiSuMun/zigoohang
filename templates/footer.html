@@ -1,3 +1,4 @@
+{% load static %}
 <div class="footer">
   <div class="footer-wrap">
     <div class="title">
@@ -40,19 +41,5 @@
     <p class="copy">
       Copyright © 지구행. all right reserved
     </p>
-    <div>
-      <button class="theme-btn" id="lightThemeBtn">Light Theme</button> |
-      <button class="theme-btn" id="darkThemeBtn">Dark Theme</button> |
-      <button class="theme-btn" id="userPrefThemeBtn">system Theme</button>
-    </div>
   </div>
 </div>
-<script>
-  function toggleInfo() {
-    var infoWrap = document.getElementById("infoWrap");
-    var footerIcon = document.getElementById("icon");
-  
-    infoWrap.classList.toggle("show");
-    footerIcon.classList.toggle("rotate");
-  }
-</script>

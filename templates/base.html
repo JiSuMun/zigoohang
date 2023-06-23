@@ -28,7 +28,18 @@
     {% endblock content %}
   </div>
   <button onclick="scrollToTop()" id="scrollBtn" title="위로 올라가기"><img src="{% static 'img/main/arrow.svg' %}" alt=""></button>
-
+  <div class="theme_btn_box theme_hidden" id="theme_btn_box">
+    <button class="theme-btn" id="lightThemeBtn">
+      <img src="{% static 'img/main/sun.svg' %}" class="theme_icon">
+    </button>
+    <button class="theme-btn" id="darkThemeBtn">
+      <img src="{% static 'img/main/moon-stars.svg' %}" class="theme_icon">
+    </button>
+    <button class="theme-btn" id="userPrefThemeBtn">
+      <img src="{% static 'img/main/star-half.svg' %}" class="theme_icon">
+    </button>
+  </div>
+  <button id="set_btn"><img src="{% static 'img/main/gear.svg' %}" class=""></button>
   {% include 'footer.html' %}
 
   {% include 'carts/base_cart.html' %}
@@ -36,6 +47,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="{% static 'js/main/base.js' %}"></script>
   <script src="{% static 'js/main/header.js' %}"></script>
+  <script src="{% static 'js/main/footer.js' %}"></script>
   <script src="{% static 'carts/js/base_cart.js' %}"></script>
   
   {% if request.user.is_authenticated %}

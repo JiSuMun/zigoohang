@@ -103,23 +103,6 @@
   transform: rotate(180deg);
 }
 
-.theme-btn {
-  margin-top: 10px;
-  background: inherit ;
-  border:none;
-  box-shadow:none;
-  border-radius:0;
-  padding:0;
-  overflow:visible;
-  cursor:pointer;
-  font-size: 14px;
-  color: var(--text-color);
-}
-
-.theme-btn:hover {
-  color: green;
-}
-
 @media (max-width: 767.9px) {
   .cscenter {
     position: relative;

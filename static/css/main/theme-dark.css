@@ -19,4 +19,6 @@
 	--j-btn-fill: #125d3b; /* 다크모드 버튼 */
   --j-required_star: #ea868f;
 	--card-profile: #303030; /* 프로필 정보 카드 */
+
+	--filter-base: invert(100%) sepia(3%) saturate(512%) hue-rotate(192deg) brightness(115%) contrast(91%); /* # f3f3f3 white */
 }
